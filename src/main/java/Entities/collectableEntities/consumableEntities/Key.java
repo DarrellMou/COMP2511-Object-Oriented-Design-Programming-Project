@@ -1,5 +1,5 @@
-package Entities.collectableEntities;
+package Entities.collectableEntities.consumableEntities;
 
 public class Key {
-    
+
 }
