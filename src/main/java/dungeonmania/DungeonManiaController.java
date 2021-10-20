@@ -8,12 +8,26 @@ import dungeonmania.util.FileLoader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import Entities.Entities;
 
 public class DungeonManiaController {
+    private static Map<String, Entities> entities;
     public DungeonManiaController() {
+        entities = new HashMap<String, Entities>();
     }
 
+    public static Map<String, Entities> getEntities() {
+        return entities;
+    }
+
+    public static void setEntities(Map<String, Entities> entities) {
+        DungeonManiaController.entities = entities;
+    }
+    
     public String getSkin() {
         return "default";
     }

@@ -22,19 +22,18 @@ public class MovingEntities extends Entities implements Movable {
 
     @Override
     public boolean checkMovable(Position position) {
-        // TODO Auto-generated method stub
-        // loop through entities and return false if someone is in it's position?
-        // for (Entities e : DungeonManiaController.getEntities()) {
-        //     if (e.getPosition().equals(position)) {
-        //         return false;
-        //     }
-        // }
+        // loop through entities and return false if something is in it's position?
+        for (Entities e : DungeonManiaController.getEntities().values()) {
+            if (e.getPosition().equals(position)) {
+                // TODO some scenarios where character can move onto same position e.g. unlocked door
+                return false;
+            }
+        }
         return true;
     }
 
     @Override
     public void updatePosition(Position position) {
-        // TODO Auto-generated method stub
         setPosition(position);
     }
 
