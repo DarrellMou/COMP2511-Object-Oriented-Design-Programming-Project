@@ -3,7 +3,6 @@ package Entities;
 import dungeonmania.util.Position;
 
 public class Entities {
-
     private String id;
     private String type;
     private Position position;
