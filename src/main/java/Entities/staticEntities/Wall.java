@@ -9,4 +9,9 @@ public class Wall extends StaticEntities {
 
     }
 
+    @Override
+    public boolean checkBlockable() {
+        return true;
+    }
+
 }
