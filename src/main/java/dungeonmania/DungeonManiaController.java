@@ -26,8 +26,12 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import Entities.Entities;
+import Entities.EntitiesFactory;
 import Entities.movingEntities.*;
 import Entities.movingEntities.Character;
+import Entities.staticEntities.Wall;
+import app.data.Data;
+import app.data.DataEntities;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -44,17 +48,18 @@ import Entities.Item;
 
 public class DungeonManiaController {
     private int noCreatedDungeons;
-    private static Map<String, Entities> entities;
+    private static Map<String, Entities> entities; // why is entities a map again???
     private Dungeon dungeon;
     private Character character;
+    private EntitiesFactory entitiesFactory;
 
     public DungeonManiaController() {
         noCreatedDungeons = 0;
         entities = new HashMap<String, Entities>();
         dungeon = new Dungeon(getDungeonId(), "", "", ""); // fix this
         character = new Character("character", "moving", new Position(0, 0), true, 100); // TODO: Fix this - only
-                                                                                         // instantiating this to grab
-                                                                                         // my inventory
+        entitiesFactory = new EntitiesFactory(); // instantiating this to grab
+        // my inventory
     }
 
     /**
@@ -139,13 +144,36 @@ public class DungeonManiaController {
         if (!dungeons().contains(dungeonName)) {
             throw new IllegalArgumentException("dungeon name is not a dungeon that exists");
         }
+
         dungeon.setDungeonName(dungeonName);
         dungeon.setGameMode(gameMode);
-        List<EntityResponse> entities = new ArrayList<>();
-        List<ItemResponse> inventory = new ArrayList<>();
-        List<String> buildables = new ArrayList<>();
-        return new DungeonResponse(dungeon.getDungeonId(), dungeonName, entities, inventory, buildables,
-                dungeon.getGoals());
+        List<EntityResponse> entitiesResponses = new ArrayList<>();
+        List<ItemResponse> inventoryResponses = new ArrayList<>();
+        List<String> buildableResponses = new ArrayList<>();
+
+        if (dungeonName.equals("advanced")) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader("src/test/resources/dungeons/advanced.json"));
+                Data advanced = new Gson().fromJson(br, Data.class);
+                for (DataEntities entity : advanced.getEntities()) {
+                    // todo: need to create factory for other class
+                    if (entity.getType().equals("wall")) {
+                        Entities newEntity = entitiesFactory.createEntities(entity.getType(),
+                                new Position(entity.getX(), entity.getY()));
+                        EntityResponse item = new EntityResponse(newEntity.getId(), newEntity.getType(),
+                                newEntity.getPosition(), newEntity.isInteractable());
+                        entitiesResponses.add(item);
+                    }
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+
+        }
+        return new DungeonResponse(dungeon.getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
+                buildableResponses, dungeon.getGoals());
     }
 
     /**
@@ -236,12 +264,13 @@ public class DungeonManiaController {
         ArrayList<String> buildables = new ArrayList<>();
 
         for (EntityResponse entitiy : dg.getEntities()) {
-            entities.add(
-                    new Entities(entitiy.getId(), entitiy.getType(), entitiy.getPosition(), entitiy.isInteractable()));
+            Entities newEntity = entitiesFactory.createEntities(entitiy.getId(), entitiy.getPosition());
+            entities.add(newEntity);
         }
 
         for (ItemResponse item : dg.getInventory()) {
-            inventory.add(new Item(item.getId(), item.getType()));
+            // inventory.add(new Item(item.getId(), item.getType())); //todo: create factory
+            // method to spawn these items
         }
 
         for (String builds : dg.getBuildables()) {

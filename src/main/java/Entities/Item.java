@@ -1,19 +1,11 @@
 package Entities;
 
-public class Item {
-    private String id;
-    private String type;
+import dungeonmania.util.Position;
 
-    public Item(String id, String type) {
-        this.id = id;
-        this.type = type;
+public class Item extends Entities {
+
+    public Item(String id, String type, Position position, boolean isInteractable) {
+        super(id, type, position, isInteractable);
     }
 
-    public final String getType() {
-        return type;
-    }
-
-    public final String getId() {
-        return id;
-    }
 }
