@@ -47,14 +47,14 @@ import Entities.Entities;
 import Entities.Item;
 
 public class DungeonManiaController {
-    private int noCreatedDungeons;
+    private int numCreatedDungeons;
     private static Map<String, Entities> entities;
     private Dungeon dungeon;
     private Character character;
     private EntitiesFactory entitiesFactory;
 
     public DungeonManiaController() {
-        noCreatedDungeons = 0;
+        numCreatedDungeons = 0;
         entities = new HashMap<String, Entities>();
         dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
         character = new Character("character", "moving", new Position(0, 0), true, 100); // TODO: Fix this - only
@@ -65,15 +65,15 @@ public class DungeonManiaController {
     /**
      * @return int
      */
-    public int getNoCreatedDungeons() {
-        return this.noCreatedDungeons;
+    public int getNumCreatedDungeons() {
+        return this.numCreatedDungeons;
     }
 
     /**
-     * @param noCreatedDungeons
+     * @param numCreatedDungeons
      */
-    public void setNoCreatedDungeons(int noCreatedDungeons) {
-        this.noCreatedDungeons = noCreatedDungeons;
+    public void setNumCreatedDungeons(int numCreatedDungeons) {
+        this.numCreatedDungeons = numCreatedDungeons;
     }
 
     /**
@@ -125,8 +125,8 @@ public class DungeonManiaController {
      * @return String
      */
     public String getDungeonId() {
-        int currentDungeonNo = getNoCreatedDungeons();
-        setNoCreatedDungeons(noCreatedDungeons + 1); // Increment the next id of dungeon
+        int currentDungeonNo = getNumCreatedDungeons();
+        setNumCreatedDungeons(numCreatedDungeons + 1); // Increment the next id of dungeon
         return "dungeon" + String.valueOf(currentDungeonNo);
     }
 

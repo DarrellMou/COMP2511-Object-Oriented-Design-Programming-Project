@@ -5,7 +5,7 @@ import Entities.movingEntities.Movable;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
-public class Boulder extends StaticEntities implements Movable {
+public class Boulder extends StaticEntities implements Movable, Triggerable {
 
     public Boulder(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable, false);
@@ -21,5 +21,12 @@ public class Boulder extends StaticEntities implements Movable {
         }
         return true;
     }
+
+    @Override
+    public void trigger() {
+        // TODO Checks movable and moves boulder if so
+        
+    }
+
 
 }

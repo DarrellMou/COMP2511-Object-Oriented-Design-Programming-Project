@@ -22,11 +22,11 @@ public class EntitiesFactory {
     public Entities createEntities(String type, Position position) {
         Entities newEntity = null;
 
+        // TODO Can someone finissh the rest of this lol
         if (type.equals("wall")) {
             newEntity = new Wall(getNextId(), type, position, false);
         } else if (type.equals("bomb")) {
             newEntity = new Bomb(getNextId(), type, position, false);
-            // Can someone finissh the rest of this lol
         }
 
         return newEntity;

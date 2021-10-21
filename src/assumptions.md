@@ -3,6 +3,7 @@ Assumptions
 Spider
 
 - The maximum number of possilbe allowable spiders to be spawned is 7, this is more than the minimum of 4, and less than the clutter of the screen
+- It is able to walk through anything but boulders and other moving entities (except character) 
 
 saveGame
 
@@ -13,4 +14,4 @@ Bribed mercenary
 
 Movement order
 - Character moves first. 
-- If character moves into boulder, then the boulder will move, then character, then rest of moving entities.
+- If character moves into boulder, then the boulder will move, then character, then spider, then zombie, then mercenary

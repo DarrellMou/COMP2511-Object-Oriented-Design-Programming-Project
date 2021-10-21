@@ -1,5 +1,7 @@
 package Entities.staticEntities;
 
-public class ZombieToastSpawner {
+import dungeonmania.util.Position;
+
+public class ZombieToastSpawner extends StaticEntities implements Triggerable {
 
 }
