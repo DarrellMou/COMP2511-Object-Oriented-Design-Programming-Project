@@ -11,7 +11,7 @@ public class Character extends MovingEntities implements Fightable {
     private Map<Item, Integer> inventory;
     
     public Character(String id, String type, Position position, boolean isInteractable, double health) {
-        super(id, type, position, isInteractable, health);
+        super(id, type, position, isInteractable, true, health);
         inventory = new HashMap<Item, Integer>();
     }
 

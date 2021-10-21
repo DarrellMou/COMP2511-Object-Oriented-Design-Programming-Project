@@ -48,7 +48,7 @@ import Entities.Item;
 
 public class DungeonManiaController {
     private int noCreatedDungeons;
-    private static Map<String, Entities> entities; // why is entities a map again???
+    private static Map<String, Entities> entities;
     private Dungeon dungeon;
     private Character character;
     private EntitiesFactory entitiesFactory;
@@ -56,7 +56,7 @@ public class DungeonManiaController {
     public DungeonManiaController() {
         noCreatedDungeons = 0;
         entities = new HashMap<String, Entities>();
-        dungeon = new Dungeon(getDungeonId(), "", "", ""); // fix this
+        dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
         character = new Character("character", "moving", new Position(0, 0), true, 100); // TODO: Fix this - only
         entitiesFactory = new EntitiesFactory(); // instantiating this to grab
         // my inventory

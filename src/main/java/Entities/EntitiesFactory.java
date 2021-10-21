@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import Entities.collectableEntities.consumableEntities.Bomb;
 import Entities.staticEntities.Wall;
+import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 public class EntitiesFactory {
@@ -12,17 +13,23 @@ public class EntitiesFactory {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * Create entity of given type at given position
+     * @param type
+     * @param position
+     * @return
+     */
     public Entities createEntities(String type, Position position) {
-        Entities entities = null;
+        Entities newEntity = null;
 
         if (type.equals("wall")) {
-            entities = new Wall(getNextId(), type, position, false);
+            newEntity = new Wall(getNextId(), type, position, false);
         } else if (type.equals("bomb")) {
-            entities = new Bomb(getNextId(), type, position, false);
+            newEntity = new Bomb(getNextId(), type, position, false);
             // Can someone finissh the rest of this lol
         }
 
-        return entities;
+        return newEntity;
     }
 
 }

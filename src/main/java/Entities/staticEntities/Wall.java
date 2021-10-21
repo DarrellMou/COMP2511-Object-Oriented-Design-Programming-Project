@@ -5,13 +5,7 @@ import dungeonmania.util.Position;
 public class Wall extends StaticEntities {
 
     public Wall(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
-
-    }
-
-    @Override
-    public boolean checkBlockable() {
-        return true;
+        super(id, type, position, isInteractable, false);
     }
 
 }
