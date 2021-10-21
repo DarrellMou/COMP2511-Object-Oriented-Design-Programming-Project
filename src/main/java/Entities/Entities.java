@@ -3,7 +3,6 @@ package Entities;
 import dungeonmania.util.Position;
 
 public class Entities {
-
     private String id;
     private String type;
     private Position position;
@@ -40,7 +39,7 @@ public class Entities {
         this.position = position;
     }
 
-    public boolean isIsInteractable() {
+    public boolean isInteractable() {
         return this.isInteractable;
     }
 

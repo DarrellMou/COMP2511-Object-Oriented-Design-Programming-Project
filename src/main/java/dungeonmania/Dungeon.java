@@ -3,13 +3,13 @@ package dungeonmania;
 import java.util.ArrayList;
 
 import Entities.Entities;
-import Entities.Items;
+import Entities.Item;
 
 public class Dungeon {
     private String dungeonId;
     private String dungeonName;
     private ArrayList<Entities> entities;
-    private ArrayList<Items> inventory;
+    private ArrayList<Item> inventory;
     private ArrayList<String> buildables;
     private String goals;
     private String gameMode;
@@ -18,7 +18,7 @@ public class Dungeon {
         this.dungeonId = dungeonId;
         this.dungeonName = dungeonName;
         this.entities = new ArrayList<Entities>();
-        this.inventory = new ArrayList<Items>();
+        this.inventory = new ArrayList<Item>();
         this.buildables = new ArrayList<String>();
         this.goals = goals;
         this.gameMode = gameMode;
@@ -48,11 +48,11 @@ public class Dungeon {
         this.entities = entities;
     }
 
-    public ArrayList<Items> getInventory() {
+    public ArrayList<Item> getInventory() {
         return this.inventory;
     }
 
-    public void setInventory(ArrayList<Items> inventory) {
+    public void setInventory(ArrayList<Item> inventory) {
         this.inventory = inventory;
     }
 
@@ -95,7 +95,7 @@ public class Dungeon {
         return this;
     }
 
-    public Dungeon inventory(ArrayList<Items> inventory) {
+    public Dungeon inventory(ArrayList<Item> inventory) {
         setInventory(inventory);
         return this;
     }
