@@ -8,13 +8,16 @@ public class Data {
     private int width;
     private int height;
     private List<DataEntities> entities;
-    private Map<String, String> goalConditions;
+    private Map<String, DataGoals> goalCondition;
 
-    public Data(int width, int height, List<DataEntities> entities, Map<String, String> goalConditions) {
+    public Data() {
+    }
+
+    public Data(int width, int height, List<DataEntities> entities, Map<String, DataGoals> goalCondition) {
         this.width = width;
         this.height = height;
         this.entities = entities;
-        this.goalConditions = goalConditions;
+        this.goalCondition = goalCondition;
     }
 
     public int getWidth() {
@@ -41,12 +44,12 @@ public class Data {
         this.entities = entities;
     }
 
-    public Map<String, String> getGoalConditions() {
-        return this.goalConditions;
+    public Map<String, DataGoals> getGoalCondition() {
+        return this.goalCondition;
     }
 
-    public void setGoalConditions(Map<String, String> goalConditions) {
-        this.goalConditions = goalConditions;
+    public void setGoalCondition(Map<String, DataGoals> goalCondition) {
+        this.goalCondition = goalCondition;
     }
 
     public Data width(int width) {
@@ -64,8 +67,8 @@ public class Data {
         return this;
     }
 
-    public Data goalConditions(Map<String, String> goalConditions) {
-        setGoalConditions(goalConditions);
+    public Data goalCondition(Map<String, DataGoals> goalCondition) {
+        setGoalCondition(goalCondition);
         return this;
     }
 
@@ -78,18 +81,18 @@ public class Data {
         }
         Data data = (Data) o;
         return width == data.width && height == data.height && Objects.equals(entities, data.entities)
-                && Objects.equals(goalConditions, data.goalConditions);
+                && Objects.equals(goalCondition, data.goalCondition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(width, height, entities, goalConditions);
+        return Objects.hash(width, height, entities, goalCondition);
     }
 
     @Override
     public String toString() {
         return "{" + " width='" + getWidth() + "'" + ", height='" + getHeight() + "'" + ", entities='" + getEntities()
-                + "'" + ", goalConditions='" + getGoalConditions() + "'" + "}";
+                + "'" + ", goalCondition='" + getGoalCondition() + "'" + "}";
     }
 
 }

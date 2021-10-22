@@ -48,7 +48,9 @@ import Entities.Item;
 
 public class DungeonManiaController {
     private int numCreatedDungeons;
-    private static Map<String, Entities> entities;
+    private static Map<String, Entities> entities; // change to list of entities
+    // private ArrayList<Entities> entities;
+
     private Dungeon dungeon;
     private Character character;
     private EntitiesFactory entitiesFactory;
@@ -56,10 +58,12 @@ public class DungeonManiaController {
     public DungeonManiaController() {
         numCreatedDungeons = 0;
         entities = new HashMap<String, Entities>();
+        // entities = new ArrayList<>();
         dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
-        character = new Character("character", "moving", new Position(0, 0), true, 100); // TODO: Fix this - only
         entitiesFactory = new EntitiesFactory(); // instantiating this to grab
         // my inventory
+        character = (Character) entitiesFactory.createEntities("player", new Position(0, 0)); // TODO: Fix this - only
+
     }
 
     /**
@@ -83,10 +87,16 @@ public class DungeonManiaController {
         return entities;
     }
 
+    /**
+     * @param entities
+     */
     public static void setEntities(Map<String, Entities> entities) {
         DungeonManiaController.entities = entities;
     }
 
+    /**
+     * @return String
+     */
     public String getSkin() {
         return "default";
     }
@@ -131,6 +141,22 @@ public class DungeonManiaController {
     }
 
     /**
+     * This clears out the json file - all the saved games are removed
+     * 
+     * @return String
+     */
+    public void clear() {
+        try {
+            FileWriter writer = new FileWriter("data.json");
+            new Gson().toJson(new JsonArray(), writer);
+            writer.close();
+        } catch (IOException e) {
+            e.getStackTrace();
+        }
+
+    }
+
+    /**
      * @param dungeonName
      * @param gameMode
      * @return DungeonResponse
@@ -151,29 +177,47 @@ public class DungeonManiaController {
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildableResponses = new ArrayList<>();
 
-        if (dungeonName.equals("advanced")) {
-            try {
-                BufferedReader br = new BufferedReader(new FileReader("src/test/resources/dungeons/advanced.json"));
-                Data advanced = new Gson().fromJson(br, Data.class);
-                for (DataEntities entity : advanced.getEntities()) {
-                    // todo: need to create factory for other class
-                    if (entity.getType().equals("wall")) {
-                        Entities newEntity = entitiesFactory.createEntities(entity.getType(),
-                                new Position(entity.getX(), entity.getY()));
-                        EntityResponse item = new EntityResponse(newEntity.getId(), newEntity.getType(),
-                                newEntity.getPosition(), newEntity.isInteractable());
-                        entitiesResponses.add(item);
-                    }
+        newGameCreateMap(entitiesResponses, dungeonName);
 
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            }
-
-        }
         return new DungeonResponse(dungeon.getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
                 buildableResponses, dungeon.getGoals());
+    }
+
+    public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName) {
+        try {
+            BufferedReader br = new BufferedReader(
+                    new FileReader("src/test/resources/dungeons/" + dungeonName + ".json"));
+            Data data = new Gson().fromJson(br, Data.class);
+            if (data.getGoalCondition().get("goal").getGoal().equals("advanced")) { // Need to fix the serialisation of
+                                                                                    // this
+                // Need to see how to implement two goals in a string
+            } else {
+                dungeon.setGoals(data.getGoalCondition().get("goal").getGoal());
+            }
+            // Set the goals given by the map
+
+            for (DataEntities entity : data.getEntities()) {
+
+                Entities newEntity = entitiesFactory.createEntities(entity.getType(),
+                        new Position(entity.getX(), entity.getY()));
+                // This may change ...
+                ArrayList<Entities> res = dungeon.getEntities();
+                res.add(newEntity);
+                dungeon.setEntities(res);
+
+                EntityResponse item = new EntityResponse(newEntity.getId(), newEntity.getType(),
+                        newEntity.getPosition(), newEntity.isInteractable());
+                entitiesResponses.add(item);
+
+                // Need to somehow separate items from entities
+
+                // Add the items to List<items>
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
     }
 
     /**
@@ -191,13 +235,14 @@ public class DungeonManiaController {
                     entitiy.isInteractable()));
         }
 
-        for (Map.Entry<Item, Integer> entry : character.getInventory().entrySet()) {
-            for (int i = 0; i < entry.getValue(); i++) {
-                inventory.add(new ItemResponse(entry.getKey().getId(), entry.getKey().getType()));
+        // for (Map.Entry<Item, Integer> entry : character.getInventory().entrySet()) {
+        // for (int i = 0; i < entry.getValue(); i++) {
+        // inventory.add(new ItemResponse(entry.getKey().getId(),
+        // entry.getKey().getType()));
 
-            }
+        // }
 
-        }
+        // }
 
         for (String builds : buildables) {
             buildables.add(builds);
@@ -286,6 +331,10 @@ public class DungeonManiaController {
 
     }
 
+    /**
+     * @param fileName
+     * @return String
+     */
     private String readFile(String fileName) {
         String allLines = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {

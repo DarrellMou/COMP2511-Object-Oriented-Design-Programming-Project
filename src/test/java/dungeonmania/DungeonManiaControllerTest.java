@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import dungeonmania.util.Direction;
 import dungeonmania.*;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
+import dungeonmania.response.models.ItemResponse;
 
 public class DungeonManiaControllerTest {
 
@@ -19,8 +22,13 @@ public class DungeonManiaControllerTest {
     public void testDungeonNewGame() {
         // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse dg = controller.newGame("dungeonWorld", "peaceful");
-        assertEquals(dg, new DungeonResponse("dungeon1", "dungeonWorld", null, null, null, null));
+        controller.clear();
+        DungeonResponse dg = controller.newGame("boulders", "Peaceful");
+        List<EntityResponse> entities = new ArrayList<>();
+        List<ItemResponse> inventory = new ArrayList<>();
+        List<String> buildables = new ArrayList<>();
+        assertEquals(dg,
+                new DungeonResponse(dg.getDungeonId(), "boulders", entities, inventory, buildables, "boulders"));
 
         // This should throw IllegalArgumentException as the gameMode is not a valid
         // game mode
