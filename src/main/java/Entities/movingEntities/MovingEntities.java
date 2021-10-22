@@ -7,8 +7,8 @@ import dungeonmania.util.Position;
 public class MovingEntities extends Entities implements Movable {
     private double health;
 
-    public MovingEntities(String id, String type, Position position, boolean isInteractable, double health) {
-        super(id, type, position, isInteractable);
+    public MovingEntities(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double health) {
+        super(id, type, position, isInteractable, isWalkable);
         this.health = health;
     }
 
@@ -22,22 +22,12 @@ public class MovingEntities extends Entities implements Movable {
 
     @Override
     public boolean checkMovable(Position position) {
-        // loop through entities and return false if something is in it's position?
+        // if position has unwalkable entity
         for (Entities e : DungeonManiaController.getEntities().values()) {
-            if (e.getPosition().equals(position)) {
-                // TODO some scenarios where character can move onto same position e.g. unlocked door
+            if (e.getPosition().equals(position) && !e.isWalkable()) {
                 return false;
             }
         }
         return true;
     }
-
-    @Override
-    public void updatePosition(Position position) {
-        setPosition(position);
-    }
-
-    
-    
-
 }
