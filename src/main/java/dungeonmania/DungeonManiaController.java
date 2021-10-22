@@ -188,12 +188,13 @@ public class DungeonManiaController {
             BufferedReader br = new BufferedReader(
                     new FileReader("src/test/resources/dungeons/" + dungeonName + ".json"));
             Data data = new Gson().fromJson(br, Data.class);
-            if (data.getGoalCondition().get("goal").getGoal().equals("advanced")) { // Need to fix the serialisation of
-                                                                                    // this
-                // Need to see how to implement two goals in a string
-            } else {
-                dungeon.setGoals(data.getGoalCondition().get("goal").getGoal());
-            }
+            // if (data.getGoalCondition().get("goal").getGoal().equals("advanced")) { //
+            // Need to fix the serialisation of
+            // // this
+            // // Need to see how to implement two goals in a string
+            // } else {
+            // dungeon.setGoals(data.getGoalCondition().get("goal").getGoal());
+            // }
             // Set the goals given by the map
 
             for (DataEntities entity : data.getEntities()) {
@@ -231,8 +232,13 @@ public class DungeonManiaController {
         List<String> buildables = new ArrayList<>();
 
         for (Entities entitiy : dungeon.getEntities()) {
-            entities.add(new EntityResponse(entitiy.getId(), entitiy.getType(), entitiy.getPosition(),
-                    entitiy.isInteractable()));
+            if (entitiy != null) { // something is breaking sometin is null - temp fix
+                entities.add(new EntityResponse(entitiy.getId(), entitiy.getType(), entitiy.getPosition(),
+                        entitiy.isInteractable()));
+            } else {
+                System.out.println(entitiy);
+            }
+
         }
 
         // for (Map.Entry<Item, Integer> entry : character.getInventory().entrySet()) {
