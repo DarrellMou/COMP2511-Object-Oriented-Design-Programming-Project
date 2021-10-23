@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Data {
     private int width;
     private int height;
     private List<DataEntities> entities;
-    private Map<String, DataGoals> goalCondition;
+    @SerializedName("goal-condition")
+    private DataGoals goalCondition;
 
     public Data() {
     }
 
-    public Data(int width, int height, List<DataEntities> entities, Map<String, DataGoals> goalCondition) {
+    public Data(int width, int height, List<DataEntities> entities, DataGoals goalCondition) {
         this.width = width;
         this.height = height;
         this.entities = entities;
@@ -44,11 +47,11 @@ public class Data {
         this.entities = entities;
     }
 
-    public Map<String, DataGoals> getGoalCondition() {
+    public DataGoals getGoalCondition() {
         return this.goalCondition;
     }
 
-    public void setGoalCondition(Map<String, DataGoals> goalCondition) {
+    public void setGoalCondition(DataGoals goalCondition) {
         this.goalCondition = goalCondition;
     }
 
@@ -67,7 +70,7 @@ public class Data {
         return this;
     }
 
-    public Data goalCondition(Map<String, DataGoals> goalCondition) {
+    public Data goalCondition(DataGoals goalCondition) {
         setGoalCondition(goalCondition);
         return this;
     }
