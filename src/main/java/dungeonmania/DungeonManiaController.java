@@ -383,6 +383,13 @@ public class DungeonManiaController {
      */
     public DungeonResponse tick(String itemUsed, Direction movementDirection)
             throws IllegalArgumentException, InvalidActionException {
+            /**
+             * check movable then move char
+             * if char on entity -> pickup/interact
+             * if entity on character -> fight
+             * check movable then move entities
+             * if entity on character -> fight (if haven't fought yet) 
+             */
         return null;
     }
 
@@ -393,6 +400,7 @@ public class DungeonManiaController {
      * @throws InvalidActionException
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
+        // calls trigger in triggerables
         return null;
     }
 

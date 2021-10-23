@@ -21,11 +21,4 @@ public class Spider extends MovingEntities {
         }
         return true;
     }
-    
-    private boolean isMovingEntityButNotCharacter(Entities e) {
-        if (e instanceof MovingEntities && !(e instanceof Character)) {
-            return true;
-        }
-        return false;
-    }
 }
