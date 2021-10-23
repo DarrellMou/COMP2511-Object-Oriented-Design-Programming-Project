@@ -6,7 +6,7 @@ import dungeonmania.util.Position;
 public class Treasure extends Entities { // fix this to collectables
 
     public Treasure(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable, false);
+        super(id, type, position, isInteractable, true);
         // TODO Auto-generated constructor stub
     }
 

@@ -1,15 +1,17 @@
 package dungeonmania;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Entities.Entities;
-import Entities.Item;
+import Entities.InventoryItem;
+import app.data.Data;
+import app.data.DataSubgoal;
 
 public class Dungeon {
     private String dungeonId;
     private String dungeonName;
     private ArrayList<Entities> entities;
-    private ArrayList<Item> inventory;
     private ArrayList<String> buildables;
     private String goals;
     private String gameMode;
@@ -18,7 +20,6 @@ public class Dungeon {
         this.dungeonId = dungeonId;
         this.dungeonName = dungeonName;
         this.entities = new ArrayList<Entities>();
-        this.inventory = new ArrayList<Item>();
         this.buildables = new ArrayList<String>();
         this.goals = goals;
         this.gameMode = gameMode;
@@ -41,20 +42,21 @@ public class Dungeon {
     }
 
     public ArrayList<Entities> getEntities() {
-        return this.entities;
+        return entities;
     }
 
     public void setEntities(ArrayList<Entities> entities) {
         this.entities = entities;
     }
 
-    public ArrayList<Item> getInventory() {
-        return this.inventory;
-    }
+   public void addEntities(Entities entity) {
+       this.entities.add(entity);
 
-    public void setInventory(ArrayList<Item> inventory) {
-        this.inventory = inventory;
-    }
+   }
+
+   public void removeEntities(Entities entity) {
+        this.entities.remove(entity);
+   }
 
     public ArrayList<String> getBuildables() {
         return this.buildables;
@@ -80,39 +82,23 @@ public class Dungeon {
         this.gameMode = gameMode;
     }
 
-    public Dungeon dungeonId(String dungeonId) {
-        setDungeonId(dungeonId);
-        return this;
-    }
+   
+    public void setAllGoals(Data data) {
+        if (data.getGoalCondition().getGoal().equals("AND")) { 
+            String goal = "";
+            List<DataSubgoal> subgoals = data.getGoalCondition().getSubgoals();
+            for (int i = 0; i < subgoals.size() - 1; i++) {
+                // If it is the last item dont append AND to it
+                goal += subgoals.get(i).getGoal() + " AND ";
+            }
+            goal += subgoals.get(subgoals.size() - 1).getGoal();
 
-    public Dungeon dungeonName(String dungeonName) {
-        setDungeonName(dungeonName);
-        return this;
-    }
+            this.setGoals(goal);
 
-    public Dungeon entities(ArrayList<Entities> entities) {
-        setEntities(entities);
-        return this;
-    }
-
-    public Dungeon inventory(ArrayList<Item> inventory) {
-        setInventory(inventory);
-        return this;
-    }
-
-    public Dungeon buildables(ArrayList<String> buildables) {
-        setBuildables(buildables);
-        return this;
-    }
-
-    public Dungeon goals(String goals) {
-        setGoals(goals);
-        return this;
-    }
-
-    public Dungeon gameMode(String gameMode) {
-        setGameMode(gameMode);
-        return this;
+            // Need to see how to implement two goals in a string
+        } else {
+            this.setGoals(data.getGoalCondition().getGoal());
+        }
     }
 
 }

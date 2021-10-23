@@ -2,6 +2,7 @@ package Entities.movingEntities;
 
 import Entities.Entities;
 import Entities.staticEntities.Boulder;
+import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
@@ -12,10 +13,10 @@ public class Spider extends MovingEntities {
     }
 
     @Override
-    public boolean checkMovable(Position position) {
-        // if position isn't a boulder or moving entity (but can move into character to fight)
-        for (Entities e : DungeonManiaController.getEntities().values()) {
-            if (e.getPosition().equals(position) && (e instanceof Boulder || isMovingEntityButNotCharacter(e))) {
+    public boolean checkMovable(Position position, DungeonManiaController controller) {
+        // if position has unwalkable entity
+        for (Entities e : controller.getEntities()) {
+            if (e.getPosition().equals(position) && !e.isWalkable()) {
                 return false;
             }
         }
