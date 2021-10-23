@@ -30,4 +30,11 @@ public class MovingEntities extends Entities implements Movable {
         }
         return true;
     }
+
+    protected boolean isMovingEntityButNotCharacter(Entities e) {
+        if (e instanceof MovingEntities && !(e instanceof Character)) {
+            return true;
+        }
+        return false;
+    }
 }
