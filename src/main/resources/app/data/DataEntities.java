@@ -6,14 +6,31 @@ public class DataEntities {
     private int x;
     private int y;
     private String type;
+    private int key;
+    private String colour;
 
-    public DataEntities() {
-    }
 
     public DataEntities(int x, int y, String type) {
         this.x = x;
         this.y = y;
         this.type = type;
+    }
+
+
+    public DataEntities(int x, int y, String type, String colour) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.colour = colour;
+    
+    }
+
+    public DataEntities(int x, int y, String type, int key) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.key = key;
+    
     }
 
     public int getX() {
@@ -53,6 +70,24 @@ public class DataEntities {
     public DataEntities type(String type) {
         setType(type);
         return this;
+    }
+
+    public int getKey() {
+        return this.key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+     
+
+    public String getColour() {
+        return this.colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     @Override

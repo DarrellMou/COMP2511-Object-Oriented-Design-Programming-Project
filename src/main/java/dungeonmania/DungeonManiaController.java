@@ -186,7 +186,7 @@ public class DungeonManiaController {
     public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName) {
         try {
             BufferedReader br = new BufferedReader(
-                    new FileReader("src/test/resources/dungeons/" + dungeonName + ".json"));
+                    new FileReader("src/main/resources/dungeons/" + dungeonName + ".json"));
             Data data = new Gson().fromJson(br, Data.class);
             if (data.getGoalCondition().getGoal().equals("AND")) { //
 
@@ -198,8 +198,9 @@ public class DungeonManiaController {
 
             for (DataEntities entity : data.getEntities()) {
 
-                Entities newEntity = entitiesFactory.createEntities(entity.getType(),
-                        new Position(entity.getX(), entity.getY()));
+                // if (entity.getType().equals("door"))
+
+                Entities newEntity = entitiesFactory.creatingEntitiesFactory(entity);
                 // This may change ...
                 ArrayList<Entities> res = dungeon.getEntities();
                 res.add(newEntity);
