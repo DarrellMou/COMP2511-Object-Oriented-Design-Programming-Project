@@ -14,4 +14,4 @@ Bribed mercenary
 
 Movement order
 - Character moves first. 
-- If character moves into boulder, then the boulder will move, then character, then spider, then zombie, then mercenary
+- If character moves into boulder, then the boulder will move, then character, then merc, then spider, then zombie toast

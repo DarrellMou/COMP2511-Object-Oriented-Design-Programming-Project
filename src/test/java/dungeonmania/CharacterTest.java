@@ -13,7 +13,6 @@ import dungeonmania.response.models.DungeonResponse;
 public class CharacterTest {
     /**
      * Tests to implement:
-     * - Check character exists when game starts
      * - Check character moves nowhere when walking into wall
      * - Check character changes position when walking into movable position
      * - Check character can move boulder if free position behind boulder
