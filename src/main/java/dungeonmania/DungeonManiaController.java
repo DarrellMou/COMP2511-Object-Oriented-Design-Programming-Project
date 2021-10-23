@@ -188,13 +188,12 @@ public class DungeonManiaController {
             BufferedReader br = new BufferedReader(
                     new FileReader("src/test/resources/dungeons/" + dungeonName + ".json"));
             Data data = new Gson().fromJson(br, Data.class);
-            // if (data.getGoalCondition().get("goal").getGoal().equals("advanced")) { //
-            // Need to fix the serialisation of
-            // // this
-            // // Need to see how to implement two goals in a string
-            // } else {
-            // dungeon.setGoals(data.getGoalCondition().get("goal").getGoal());
-            // }
+            if (data.getGoalCondition().getGoal().equals("AND")) { //
+
+                // Need to see how to implement two goals in a string
+            } else {
+                dungeon.setGoals(data.getGoalCondition().getGoal());
+            }
             // Set the goals given by the map
 
             for (DataEntities entity : data.getEntities()) {
