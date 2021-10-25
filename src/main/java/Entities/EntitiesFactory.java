@@ -106,9 +106,9 @@ public class EntitiesFactory {
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), type, position, true);
         } else if (type.equals("player")) {
-            newEntity = new Character(getNextId(), type, position, true, 100); // What is character health?
+            newEntity = new Character(getNextId(), position, true, 100); // What is character health?
         } else if (type.equals("boulder")) {
-            newEntity = new Boulder(getNextId(), type, position, false); // is boulder interctable?
+            newEntity = new Boulder(getNextId(), position, false); // is boulder interctable?
         } else if (type.equals("sword")) {
             newEntity = new Sword(getNextId(), type, position, false); // is sword interctable?
         } else if (type.equals("mercenary")) {

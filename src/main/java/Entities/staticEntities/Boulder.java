@@ -8,8 +8,8 @@ import dungeonmania.util.Position;
 
 public class Boulder extends StaticEntities implements Movable, Triggerable {
 
-    public Boulder(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable, false);
+    public Boulder(String id, Position position, boolean isInteractable) {
+        super(id, "boulder", position, isInteractable, false);
     }
 
     @Override

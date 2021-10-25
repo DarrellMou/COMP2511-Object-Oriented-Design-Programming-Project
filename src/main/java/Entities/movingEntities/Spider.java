@@ -14,9 +14,9 @@ public class Spider extends MovingEntities {
 
     @Override
     public boolean checkMovable(Position position, DungeonManiaController controller) {
-        // if position has unwalkable entity
         for (Entities e : controller.getEntities()) {
-            if (e.getPosition().equals(position) && !e.isWalkable()) {
+            if (e.getPosition().equals(position) && (e instanceof Boulder || isMovingEntityButNotCharacter(e))) {
+                // Spider cannot walk on boulder or other moving entities (except player)    
                 return false;
             }
         }
