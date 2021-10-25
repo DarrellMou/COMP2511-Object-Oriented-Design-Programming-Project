@@ -1,13 +1,14 @@
 package Entities.collectableEntities;
 
-import Entities.Item;
+import Entities.Entities;
+import Entities.InventoryItem;
 import dungeonmania.util.Position;
 
-public abstract class ConsumableEntity extends Item {
+public abstract class ConsumableEntity extends Entities {
     // might change to interface
 
     public ConsumableEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+        super(id, type, position, isInteractable, true);
         // TODO Auto-generated constructor stub
     }
 

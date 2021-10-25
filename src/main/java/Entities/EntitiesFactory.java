@@ -20,6 +20,7 @@ import app.data.DataEntities;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 import dungeonmania.DungeonManiaController;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
 public class EntitiesFactory {
@@ -28,6 +29,13 @@ public class EntitiesFactory {
         return UUID.randomUUID().toString();
     }
 
+
+    public Entities creatingEntitiesFactory(EntityResponse entity) {
+
+        return createEntities(entity.getType(), entity.getPosition());
+
+        
+    }
 
     public Entities creatingEntitiesFactory(DataEntities entity) {
         String type = entity.getType();

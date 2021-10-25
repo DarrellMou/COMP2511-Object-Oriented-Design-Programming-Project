@@ -1,9 +1,10 @@
 package Entities.collectableEntities.consumableEntities;
 
-import Entities.Item;
+import Entities.InventoryItem;
+import Entities.collectableEntities.ConsumableEntity;
 import dungeonmania.util.Position;
 
-public class Key extends Item {
+public class Key extends ConsumableEntity {
     private boolean isCollectable;
     private int key;
 
@@ -28,5 +29,10 @@ public class Key extends Item {
 
     public void setKey(int key) {
         this.key = key;
+    }
+    @Override
+    public void consumeItem() {
+        // TODO Auto-generated method stub
+        
     }
 }

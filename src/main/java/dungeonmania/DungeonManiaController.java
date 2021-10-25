@@ -32,6 +32,7 @@ import Entities.movingEntities.Character;
 import Entities.staticEntities.Wall;
 import app.data.Data;
 import app.data.DataEntities;
+import app.data.DataSubgoal;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -44,25 +45,17 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Entities.Entities;
-import Entities.Item;
+import Entities.InventoryItem;
 
 public class DungeonManiaController {
     private int numCreatedDungeons;
-    private static Map<String, Entities> entities; // change to list of entities
-    // private ArrayList<Entities> entities;
-
     private Dungeon dungeon;
-    private Character character;
     private EntitiesFactory entitiesFactory;
 
     public DungeonManiaController() {
         numCreatedDungeons = 0;
-        entities = new HashMap<String, Entities>();
-        // entities = new ArrayList<>();
         dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
         entitiesFactory = new EntitiesFactory(); // instantiating this to grab
-        // my inventory
-        character = (Character) entitiesFactory.createEntities("player", new Position(0, 0)); // TODO: Fix this - only
 
     }
 
@@ -78,20 +71,6 @@ public class DungeonManiaController {
      */
     public void setNumCreatedDungeons(int numCreatedDungeons) {
         this.numCreatedDungeons = numCreatedDungeons;
-    }
-
-    /**
-     * @return String
-     */
-    public static Map<String, Entities> getEntities() {
-        return entities;
-    }
-
-    /**
-     * @param entities
-     */
-    public static void setEntities(Map<String, Entities> entities) {
-        DungeonManiaController.entities = entities;
     }
 
     /**
@@ -188,31 +167,21 @@ public class DungeonManiaController {
             BufferedReader br = new BufferedReader(
                     new FileReader("src/main/resources/dungeons/" + dungeonName + ".json"));
             Data data = new Gson().fromJson(br, Data.class);
-            if (data.getGoalCondition().getGoal().equals("AND")) { //
+            if (data.getGoalCondition() != null) {
+                dungeon.setAllGoals(data);  // Set the goals given by the map only if there is a goal condition
 
-                // Need to see how to implement two goals in a string
-            } else {
-                dungeon.setGoals(data.getGoalCondition().getGoal());
             }
-            // Set the goals given by the map
-
+           
             for (DataEntities entity : data.getEntities()) {
 
-                // if (entity.getType().equals("door"))
-
                 Entities newEntity = entitiesFactory.creatingEntitiesFactory(entity);
-                // This may change ...
-                ArrayList<Entities> res = dungeon.getEntities();
-                res.add(newEntity);
-                dungeon.setEntities(res);
+                dungeon.addEntities(newEntity); // Adding it to the entities of dungeon
 
                 EntityResponse item = new EntityResponse(newEntity.getId(), newEntity.getType(),
                         newEntity.getPosition(), newEntity.isInteractable());
-                entitiesResponses.add(item);
+                entitiesResponses.add(item); // Adding it to the responses
 
                 // Need to somehow separate items from entities
-
-                // Add the items to List<items>
 
             }
         } catch (IOException e) {
@@ -231,24 +200,18 @@ public class DungeonManiaController {
         List<ItemResponse> inventory = new ArrayList<>();
         List<String> buildables = new ArrayList<>();
 
-        for (Entities entitiy : dungeon.getEntities()) {
+        for (Entities entitiy : getEntities()) {
             if (entitiy != null) { // something is breaking sometin is null - temp fix
                 entities.add(new EntityResponse(entitiy.getId(), entitiy.getType(), entitiy.getPosition(),
                         entitiy.isInteractable()));
-            } else {
-                System.out.println(entitiy);
-            }
+            } 
 
         }
 
-        // for (Map.Entry<Item, Integer> entry : character.getInventory().entrySet()) {
-        // for (int i = 0; i < entry.getValue(); i++) {
-        // inventory.add(new ItemResponse(entry.getKey().getId(),
-        // entry.getKey().getType()));
+        for (InventoryItem inventoryItem : getCharacter().getInventory()) {
+            inventory.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
 
-        // }
-
-        // }
+        }
 
         for (String builds : buildables) {
             buildables.add(builds);
@@ -310,29 +273,32 @@ public class DungeonManiaController {
             throw new IllegalArgumentException("Name is not a valid name");
         }
         // Otherwise we load the dungeon
-        ArrayList<Entities> entities = new ArrayList<>();
-        ArrayList<Item> inventory = new ArrayList<>();
-        ArrayList<String> buildables = new ArrayList<>();
+        ArrayList<Entities> newEntities = new ArrayList<>();
+        ArrayList<InventoryItem> newInventory = new ArrayList<>();
+        ArrayList<String> newBuildables = new ArrayList<>();
 
-        for (EntityResponse entitiy : dg.getEntities()) {
-            Entities newEntity = entitiesFactory.createEntities(entitiy.getId(), entitiy.getPosition());
-            entities.add(newEntity);
+        for (EntityResponse entity : dg.getEntities()) {
+            Entities newEntity = entitiesFactory.creatingEntitiesFactory(entity);
+            newEntities.add(newEntity);
         }
-
+        
         for (ItemResponse item : dg.getInventory()) {
-            // inventory.add(new Item(item.getId(), item.getType())); //todo: create factory
-            // method to spawn these items
+            
+            newInventory.add(new InventoryItem(item.getId(), item.getType()));
+     
         }
 
         for (String builds : dg.getBuildables()) {
-            buildables.add(builds);
+            newBuildables.add(builds);
         }
         dungeon.setDungeonId(dg.getDungeonId());
         dungeon.setDungeonName(dg.getDungeonName());
-        dungeon.setEntities(entities);
-        dungeon.setInventory(inventory);
-        dungeon.setBuildables(buildables);
+        dungeon.setEntities(newEntities);
+        getCharacter().setInventory(newInventory);
+        dungeon.setBuildables(newBuildables);
         dungeon.setGoals(dg.getGoals());
+
+
         return dg;
 
     }
@@ -412,5 +378,22 @@ public class DungeonManiaController {
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
         return null;
+    }
+
+    public Character getCharacter() {
+        
+        for (Entities entity: getEntities()) {
+            if (entity.getType().equals("player")) {
+                if (entity instanceof Character) return (Character) entity;
+            }
+        }
+        return null;
+
+    }
+
+    public ArrayList<Entities> getEntities() {
+        
+        return dungeon.getEntities();
+
     }
 }

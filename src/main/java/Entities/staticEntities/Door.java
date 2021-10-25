@@ -22,11 +22,6 @@ public class Door extends StaticEntities implements Triggerable {
         this.key = key;
     }
 
-    public Door key(int key) {
-        setKey(key);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)

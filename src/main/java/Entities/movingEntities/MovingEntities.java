@@ -1,6 +1,7 @@
 package Entities.movingEntities;
 
 import Entities.Entities;
+import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
@@ -21,9 +22,9 @@ public class MovingEntities extends Entities implements Movable {
     }
 
     @Override
-    public boolean checkMovable(Position position) {
+    public boolean checkMovable(Position position, DungeonManiaController controller) {
         // if position has unwalkable entity
-        for (Entities e : DungeonManiaController.getEntities().values()) {
+        for (Entities e : controller.getEntities()) {
             if (e.getPosition().equals(position) && !e.isWalkable()) {
                 return false;
             }
