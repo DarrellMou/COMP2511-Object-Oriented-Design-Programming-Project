@@ -407,4 +407,14 @@ public class DungeonManiaController {
         return dungeon.getEntities();
 
     }
+
+    public Entities getEntityFromPosition(Position position) {
+        // TODO what about layer in position?
+        for (Entities e : getEntities()) {
+            if (e.getPosition().equals(position)) {
+                return e;
+            }
+        }
+        return null;
+    }
 }
