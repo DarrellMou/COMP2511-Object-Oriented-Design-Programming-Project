@@ -30,6 +30,7 @@ import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.movingEntities.*;
 import Entities.movingEntities.Character;
+import Entities.staticEntities.Triggerable;
 import Entities.staticEntities.Wall;
 import app.data.Data;
 import app.data.DataEntities;
@@ -53,6 +54,7 @@ public class DungeonManiaController {
     private Dungeon dungeon;
     private EntitiesFactory entitiesFactory;
     private Random random;
+    private Character character;
 
 
     
@@ -182,6 +184,7 @@ public class DungeonManiaController {
         List<String> buildableResponses = new ArrayList<>();
 
         newGameCreateMap(entitiesResponses, dungeonName);
+        character = getCharacter();
 
         return new DungeonResponse(dungeon.getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
                 buildableResponses, dungeon.getGoals());
@@ -225,9 +228,9 @@ public class DungeonManiaController {
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildablesResponses = new ArrayList<>();
 
-        for (Entities entitiy : getEntities()) {
-                entitiesResponses.add(new EntityResponse(entitiy.getId(), entitiy.getType(), entitiy.getPosition(),
-                        entitiy.isInteractable()));
+        for (Entities entity : getEntities()) {
+                entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                        entity.isInteractable()));
 
         }
 
@@ -379,7 +382,7 @@ public class DungeonManiaController {
         //     throw new IllegalArgumentException("itemUsedId provided is an empty string");
         // }
 
-        Character character = getCharacter();
+        // Character character = getCharacter();
         if (itemUsedId == null) {
             // throw new IllegalArgumentException("itemUsedId provided is null");
         }
@@ -447,16 +450,23 @@ public class DungeonManiaController {
         // - For now, move character
 
         Position newPosition = character.getPosition().translateBy(movementDirection);
-        character.setPosition(newPosition);
+        if (character.checkMovable(newPosition, getEntities())) {
+            Entities entity = getEntityFromPosition(newPosition);
+            if (entity instanceof Triggerable) {
+                Triggerable triggerable = (Triggerable) entity;
+                triggerable.trigger();
+            }
+            character.setPosition(newPosition);
+        }
 
         List<EntityResponse> entities = new ArrayList<>();
         List<ItemResponse> inventory = new ArrayList<>();
         List<String> buildables = new ArrayList<>();
 
-        for (Entities entitiy : getEntities()) {
-            if (entitiy != null) { // something is breaking sometin is null - temp fix
-                entities.add(new EntityResponse(entitiy.getId(), entitiy.getType(), entitiy.getPosition(),
-                        entitiy.isInteractable()));
+        for (Entities entity : getEntities()) {
+            if (entity != null) { // something is breaking sometin is null - temp fix
+                entities.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                        entity.isInteractable()));
             } 
 
         }
@@ -495,7 +505,7 @@ public class DungeonManiaController {
     }
 
     public Character getCharacter() {
-        System.out.println(getEntities());
+        // System.out.println(getEntities());
         for (Entities entity: getEntities()) {
             if (entity.getType().equals("player")) {
                 if (entity instanceof Character) return (Character) entity;

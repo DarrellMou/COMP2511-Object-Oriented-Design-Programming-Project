@@ -5,6 +5,8 @@ import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
+import java.util.List;
+
 public abstract class MovingEntities extends Entities implements Movable {
     private double health;
 
@@ -37,9 +39,9 @@ public abstract class MovingEntities extends Entities implements Movable {
      * @return boolean
      */
     @Override
-    public boolean checkMovable(Position position, DungeonManiaController controller) {
+    public boolean checkMovable(Position position, List<Entities> entities) {
         // if position has unwalkable entity
-        for (Entities e : controller.getEntities()) {
+        for (Entities e : entities) {
             if (e.getPosition().equals(position) && !e.isWalkable()) {
                 return false;
             }

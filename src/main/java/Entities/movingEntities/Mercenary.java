@@ -1,5 +1,7 @@
 package Entities.movingEntities;
 
+import java.util.List;
+
 import Entities.Entities;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
@@ -12,8 +14,8 @@ public class Mercenary extends MovingEntities {
     }
     
     @Override
-    public boolean checkMovable(Position position, DungeonManiaController controller) {
-        for (Entities e : controller.getEntities()) {
+    public boolean checkMovable(Position position, List<Entities> entities) {
+        for (Entities e : entities) {
             if (e.getPosition().equals(position) && (!e.isWalkable() || isMovingEntityButNotCharacter(e))) {
                 // if position isn't walkable OR another moving entity (e.g. spider)
                 return false;

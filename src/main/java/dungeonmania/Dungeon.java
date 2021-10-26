@@ -16,6 +16,10 @@ public class Dungeon {
     private String goals;
     private String gameMode;
 
+    // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
+    // Map<ItemResponse> inventory = new ArrayList<>();
+    // List<String> buildables = new ArrayList<>();
+
     public Dungeon(String dungeonId, String dungeonName, String goals, String gameMode) {
         this.dungeonId = dungeonId;
         this.dungeonName = dungeonName;
