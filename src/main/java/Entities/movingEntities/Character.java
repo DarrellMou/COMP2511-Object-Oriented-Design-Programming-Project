@@ -5,29 +5,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Entities.Entities;
 import Entities.InventoryItem;
-
+import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 public class Character extends MovingEntities implements Fightable {
-    // Item type: Number of copies
-    // e.g. "wood": [item1, item2]
-    private ArrayList<InventoryItem> inventory;
-    private boolean hasKey;
+    /**
+     * inventory = [
+     *  {item1},
+     *  {item2}...
+     * ]
+     */
+    private ArrayList<InventoryItem> inventory;    
     
-    
-    public Character(String id, String type, Position position, boolean isInteractable, double health) {
-        super(id, type, position, isInteractable, true, health);
+    public Character(String id, Position position, boolean isInteractable, double health) {
+        super(id, "player", position, isInteractable, true, health); //TODO set health (change with diff) and isInteractable for each entity
         inventory = new ArrayList<InventoryItem>();
-        hasKey = false;
     }
     
-    public boolean isHasKey() {
-        return hasKey;
-    }
-
-    public void setHasKey(boolean hasKey) {
-        this.hasKey = hasKey;
+    public boolean hasKey() {
+        for (InventoryItem i : getInventory()) {
+            if (i.getType().equals("key")) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public ArrayList<InventoryItem> getInventory() {
@@ -77,4 +80,14 @@ public class Character extends MovingEntities implements Fightable {
         // TODO
         return 0;
     }
+
+    @Override
+    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+
+
 }

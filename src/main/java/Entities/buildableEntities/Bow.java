@@ -1,5 +1,11 @@
 package Entities.buildableEntities;
 
-public class Bow {
+import Entities.Entities;
+
+public class Bow extends Entities {
+
+    public Bow(String id, boolean isInteractable) {
+        super(id, "bow", isInteractable);
+    }
     
 }

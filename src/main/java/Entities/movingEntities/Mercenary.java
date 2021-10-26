@@ -13,12 +13,21 @@ public class Mercenary extends MovingEntities {
     
     @Override
     public boolean checkMovable(Position position, DungeonManiaController controller) {
-        // if position has unwalkable entity
         for (Entities e : controller.getEntities()) {
-            if (e.getPosition().equals(position) && !e.isWalkable()) {
+            if (e.getPosition().equals(position) && (!e.isWalkable() || isMovingEntityButNotCharacter(e))) {
+                // if position isn't walkable OR another moving entity (e.g. spider)
                 return false;
             }
         }
         return true;
     }
+
+
+    @Override
+    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+        // TODO Auto-generated method stub
+        
+    }
+
+   
 }

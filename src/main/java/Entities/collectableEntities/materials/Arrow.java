@@ -4,9 +4,9 @@ import Entities.InventoryItem;
 import Entities.collectableEntities.ConsumableEntity;
 import dungeonmania.util.Position;
 
-public class Arrows extends ConsumableEntity {
+public class Arrow extends ConsumableEntity {
 
-    public Arrows(String id, String type, Position position, boolean isInteractable) {
+    public Arrow(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable);
         // TODO Auto-generated constructor stub
     }
