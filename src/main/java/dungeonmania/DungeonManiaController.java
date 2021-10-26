@@ -30,6 +30,7 @@ import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.movingEntities.*;
 import Entities.movingEntities.Character;
+import Entities.staticEntities.Triggerable;
 import Entities.staticEntities.Wall;
 import app.data.Data;
 import app.data.DataEntities;
@@ -53,6 +54,7 @@ public class DungeonManiaController {
     private Dungeon dungeon;
     private EntitiesFactory entitiesFactory;
     private Random random;
+    private Character character;
 
 
     
@@ -182,6 +184,7 @@ public class DungeonManiaController {
         List<String> buildableResponses = new ArrayList<>();
 
         newGameCreateMap(entitiesResponses, dungeonName);
+        character = getCharacter();
 
         return new DungeonResponse(dungeon.getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
                 buildableResponses, dungeon.getGoals());
@@ -225,9 +228,9 @@ public class DungeonManiaController {
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildablesResponses = new ArrayList<>();
 
-        for (Entities entitiy : getEntities()) {
-                entitiesResponses.add(new EntityResponse(entitiy.getId(), entitiy.getType(), entitiy.getPosition(),
-                        entitiy.isInteractable()));
+        for (Entities entity : getEntities()) {
+                entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                        entity.isInteractable()));
 
         }
 
@@ -363,20 +366,121 @@ public class DungeonManiaController {
     /**
      * @param itemUsed
      * @param movementDirection
-     * @return DungeonResponse
+     * @return DungeonResponse after a tick has passed
      * @throws IllegalArgumentException
      * @throws InvalidActionException
      */
-    public DungeonResponse tick(String itemUsed, Direction movementDirection)
+    public DungeonResponse tick(String itemUsedId, Direction movementDirection)
             throws IllegalArgumentException, InvalidActionException {
-            /**
+
+        // Checks for valid argument
+        // if (itemUsedId == null) {
+        //     throw new IllegalArgumentException("itemUsedId provided is null");
+        // }
+
+        // if (itemUsedId.equals("")) {
+        //     throw new IllegalArgumentException("itemUsedId provided is an empty string");
+        // }
+
+        // Character character = getCharacter();
+        if (itemUsedId == null) {
+            // throw new IllegalArgumentException("itemUsedId provided is null");
+        }
+        else {
+            InventoryItem item = null;
+            for (InventoryItem currItem : character.getInventory()) {
+                if (currItem.getId().equals(itemUsedId)) {
+                    item = currItem;
+                }
+            }
+
+            if (item.equals(null)) {
+                throw new InvalidActionException(String.format("Character does not have %s in inventory", itemUsedId));
+            }
+
+            List<String> legalItems = new ArrayList<>();
+            legalItems.add("bomb");
+            legalItems.add("health_potion");
+            legalItems.add("invincibility_potion");
+            legalItems.add("invisibility_potion");
+            if (!legalItems.contains((item.getType()))) {
+                throw new IllegalArgumentException("itemUsedId provided does not correspond to a bomb or potion");
+            }
+
+            // Consumes item, needs to be implemented
+            // item.consumeItem();
+        }
+
+        // Character movement
+        /**
              * check movable then move char
              * if char on entity -> pickup/interact
              * if entity on character -> fight
              * check movable then move entities
              * if entity on character -> fight (if haven't fought yet) 
              */
-        return null;
+        // Process:
+        // Use item
+        // Move character
+        // Move all movableEntities
+
+        // Move character
+        // - Calculate character's next move based on given direction
+        // - Check if future position is on entity
+        // - If so, check what type of entity
+        // - If entity is static, behaviour depends
+        // - If entity is wall, character position does not update
+        // - If entity is exit, you win
+        // - If entity is boulder, you push it
+        // - If entity is switch, you can move onto it, nothing happens
+        // - ..etc.
+        // - If entity is moving, fight
+        // - If entity is collectable, move entity to inventory
+        // - Check if items in inventory can build buildables, if so, append to buildables
+        // - Update character movement 
+
+        // Move all movableEntities
+        // - Calculate movableEntity's next move
+        // - Check if future position is on entity
+        // - If so, check what type of entity
+        // - Update moveableEntity movement 
+        
+        // Suggestion
+        // - Each entity has a function for when character/entity moves onto itself
+        // - For now, move character
+
+        Position newPosition = character.getPosition().translateBy(movementDirection);
+        if (character.checkMovable(newPosition, getEntities())) {
+            Entities entity = getEntityFromPosition(newPosition);
+            if (entity instanceof Triggerable) {
+                Triggerable triggerable = (Triggerable) entity;
+                triggerable.trigger();
+            }
+            character.setPosition(newPosition);
+        }
+
+        List<EntityResponse> entities = new ArrayList<>();
+        List<ItemResponse> inventory = new ArrayList<>();
+        List<String> buildables = new ArrayList<>();
+
+        for (Entities entity : getEntities()) {
+            if (entity != null) { // something is breaking sometin is null - temp fix
+                entities.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                        entity.isInteractable()));
+            } 
+
+        }
+
+        for (InventoryItem inventoryItem : getCharacter().getInventory()) {
+            inventory.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
+
+        }
+
+        for (String builds : buildables) {
+            buildables.add(builds);
+        }
+        return new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entities, inventory,
+                buildables, dungeon.getGoals());
     }
 
     /**
@@ -401,7 +505,7 @@ public class DungeonManiaController {
     }
 
     public Character getCharacter() {
-        
+        // System.out.println(getEntities());
         for (Entities entity: getEntities()) {
             if (entity.getType().equals("player")) {
                 if (entity instanceof Character) return (Character) entity;

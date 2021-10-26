@@ -1,5 +1,7 @@
 package Entities.staticEntities;
 
+import java.util.List;
+
 import Entities.Entities;
 import Entities.movingEntities.Movable;
 import dungeonmania.Dungeon;
@@ -13,9 +15,9 @@ public class Boulder extends StaticEntities implements Movable, Triggerable {
     }
 
     @Override
-    public boolean checkMovable(Position position, DungeonManiaController controller) {
+    public boolean checkMovable(Position position, List<Entities> entities) {
         // if position has unwalkable entity
-        for (Entities e : controller.getEntities()) {
+        for (Entities e : entities) {
             if (e.getPosition().equals(position) && !e.isWalkable()) {
                 return false;
             }
