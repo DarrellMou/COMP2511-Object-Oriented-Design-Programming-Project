@@ -120,7 +120,7 @@ public class CharacterTest {
         controller.tick("", Direction.RIGHT); // sword pickup
 
         // Check sword in inventory
-        assertEquals(controller.getCharacter().getInventory(), expectedBefore);
+        assertEquals(expectedBefore, controller.getCharacter().getInventory());
     }
 
     @Test
@@ -143,10 +143,10 @@ public class CharacterTest {
         // Character initial position: (1, 1)
         controller.tick("", Direction.RIGHT); // walk on key 1, pickup key 1
         // Check key1 in inventory
-        assertEquals(controller.getCharacter().getInventory(), expectedBefore);
+        assertEquals(expectedBefore, controller.getCharacter().getInventory());
         controller.tick("", Direction.RIGHT); // walk on key 2, do not pickup key 2
         // Check still only key1 in invenotry
-        assertEquals(controller.getCharacter().getInventory(), expectedBefore);
+        assertEquals(expectedBefore, controller.getCharacter().getInventory());
         // sanity check that character can move ontop of keys despite not being able to pick it up
         assertEquals(new Position(3, 1), controller.getCharacter().getPosition());
     }
@@ -190,12 +190,12 @@ public class CharacterTest {
         controller.tick("", Direction.RIGHT); // pickup arrow2
         controller.tick("", Direction.RIGHT); // pickup arrow3
         // sanity check that character has correct inventory + can build bow
-        assertEquals(controller.getCharacter().getInventory(), expectedBefore);
-        assertEquals(controller.getDungeon().getBuildables(), expectedBuildables);
+        assertEquals(expectedBefore, controller.getCharacter().getInventory());
+        assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
         // build bow
         controller.build("bow");
         // Check bow materials gone and bow is there
-        assertEquals(controller.getCharacter().getInventory(), expectedAfter);
+        assertEquals(expectedAfter, controller.getCharacter().getInventory());
     }
 
     @Test
