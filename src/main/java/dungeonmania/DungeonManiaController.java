@@ -411,6 +411,25 @@ public class DungeonManiaController {
 
     }
 
+
+    public void gameCompleted() {
+    // If you stop returning any goals (i.e. empty string) it'll say the game has been completed
+        dungeon.setGoals(""); 
+    }
+
+    public void gameLost() {
+    // If you no longer give an entity object for a player to the frontend it'll say the game has been lost
+        for (Entities entity: getEntities()) {
+            if (entity instanceof Character) {
+                ArrayList<Entities> newList = getEntities();
+                newList.remove(entity);
+                dungeon.setEntities(newList);
+                return;
+            }
+        }
+
+    }
+
     public ArrayList<Entities> getEntities() {
         
         return dungeon.getEntities();

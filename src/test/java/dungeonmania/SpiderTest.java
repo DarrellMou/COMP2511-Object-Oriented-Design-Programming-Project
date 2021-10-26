@@ -17,7 +17,7 @@ public class SpiderTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.clear();
 
-        controller.newGame("advanced", "peaceful");
+        controller.newGame("advanced", "Peaceful");
 
         Spider spider = new Spider("spider1", "spider", new Position(0, 0), false, 100);
         // Position spiderLocation = spider.spawnSpider();
@@ -33,7 +33,7 @@ public class SpiderTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.clear();
 
-        controller.newGame("advanced", "peaceful");
+        controller.newGame("advanced", "Peaceful");
 
         Spider spider = new Spider("spider1", "spider", new Position(0, 0), false, 100);
         // Position spiderLocation = spider.spawnSpider();
@@ -53,7 +53,7 @@ public class SpiderTest {
         // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
         controller.clear();
-        controller.newGame("advanced", "peaceful");
+        controller.newGame("advanced", "Peaceful");
 
         
         
@@ -65,7 +65,7 @@ public class SpiderTest {
         // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
         controller.clear();
-        controller.newGame("advanced", "peaceful");
+        controller.newGame("advanced", "Peaceful");
         
         
 
