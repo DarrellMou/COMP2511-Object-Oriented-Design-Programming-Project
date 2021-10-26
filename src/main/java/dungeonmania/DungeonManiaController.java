@@ -475,7 +475,7 @@ public class DungeonManiaController {
     }
 
     public Character getCharacter() {
-        
+        System.out.println(getEntities());
         for (Entities entity: getEntities()) {
             if (entity.getType().equals("player")) {
                 if (entity instanceof Character) return (Character) entity;
