@@ -152,16 +152,63 @@ public class CharacterTest {
     }
 
     @Test
+    public void testCharacterInventoryBuilding() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Peaceful");
+
+        // Create bow materials to right of player + bow
+        EntitiesFactory ef = new EntitiesFactory();
+        Wood wood1 = (Wood) ef.createEntities("wood", new Position(2, 1));
+        Arrow arrow1 = (Arrow) ef.createEntities("arrow", new Position(3, 1));
+        Arrow arrow2 = (Arrow) ef.createEntities("arrow", new Position(4, 1));
+        Arrow arrow3 = (Arrow) ef.createEntities("arrow", new Position(5, 1));
+        Bow bow1 = (Bow) ef.createEntities("bow");
+        // Add bow materials to right of player
+        controller.getEntities().add(wood1);
+        controller.getEntities().add(arrow1);
+        controller.getEntities().add(arrow2);
+        controller.getEntities().add(arrow3);
+
+        // 1 wood + 3 arrows expected before build
+        List<InventoryItem> expectedBefore = new ArrayList<>();
+        expectedBefore.add(new InventoryItem(wood1.getId(), wood1.getType()));
+        expectedBefore.add(new InventoryItem(arrow1.getId(), arrow1.getType()));
+        expectedBefore.add(new InventoryItem(arrow2.getId(), arrow2.getType()));
+        expectedBefore.add(new InventoryItem(arrow3.getId(), arrow3.getType()));
+
+        // 1 bow expected after build
+        List<InventoryItem> expectedAfter = new ArrayList<>();
+        expectedAfter.add(new InventoryItem(bow1.getId(), bow1.getType()));
+
+        // Expected for bow to be buildable
+        List<String> expectedBuildables = new ArrayList<>();
+        expectedBuildables.add("bow");
+
+        // Character initial position: (1, 1)
+        controller.tick("", Direction.RIGHT); // pickup wood1
+        controller.tick("", Direction.RIGHT); // pickup arrow1
+        controller.tick("", Direction.RIGHT); // pickup arrow2
+        controller.tick("", Direction.RIGHT); // pickup arrow3
+        // sanity check that character has correct inventory + can build bow
+        assertEquals(controller.getCharacter().getInventory(), expectedBefore);
+        assertEquals(controller.getDungeon().getBuildables(), expectedBuildables);
+        // build bow
+        controller.build("bow");
+        // Check bow materials gone and bow is there
+        assertEquals(controller.getCharacter().getInventory(), expectedAfter);
+    }
+
+    @Test
     public void testCharacterHPAfterFight() {
-        // TODO after agreeing on HP values
+        // TODO discuss hp first
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
     }
 
     @Test
-    public void testTreasureAfterBribe() {
-        // TODO
+    public void testMercenaryBribe() {
+        // TODO 
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
