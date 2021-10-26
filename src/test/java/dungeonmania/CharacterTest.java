@@ -2,8 +2,13 @@ package dungeonmania;
 
 import org.junit.jupiter.api.Test;
 
+import Entities.EntitiesFactory;
 import Entities.InventoryItem;
+import Entities.buildableEntities.Bow;
+import Entities.collectableEntities.consumableEntities.Key;
 import Entities.collectableEntities.equipments.Sword;
+import Entities.collectableEntities.materials.Arrow;
+import Entities.collectableEntities.materials.Wood;
 import Entities.movingEntities.Character;
 import Entities.staticEntities.Boulder;
 
@@ -104,8 +109,8 @@ public class CharacterTest {
 
         // Inventory with sword entity at (6, 1)
         Sword s = (Sword) controller.getEntityFromPosition(new Position(6, 1));
-        List<InventoryItem> expected = new ArrayList<>();
-        expected.add(new InventoryItem(s.getId(), s.getType()));
+        List<InventoryItem> expectedBefore = new ArrayList<>();
+        expectedBefore.add(new InventoryItem(s.getId(), s.getType()));
 
         // Character initial position: (1, 1)
         controller.tick("", Direction.RIGHT);
@@ -115,7 +120,7 @@ public class CharacterTest {
         controller.tick("", Direction.RIGHT); // sword pickup
 
         // Check sword in inventory
-        assertEquals(controller.getCharacter().getInventory(), expected);
+        assertEquals(controller.getCharacter().getInventory(), expectedBefore);
     }
 
     @Test
@@ -124,19 +129,41 @@ public class CharacterTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Peaceful");
 
-        // Inventory with sword entity at (6, 1)
-        Sword s = (Sword) controller.getEntityFromPosition(new Position(6, 1));
-        List<InventoryItem> expected = new ArrayList<>();
-        expected.add(new InventoryItem(s.getId(), s.getType()));
+        // Create two keys at (2, 1) and (3, 1)
+        EntitiesFactory ef = new EntitiesFactory();
+        Key key1 = (Key) ef.createEntities("key", new Position(2, 1), 1);
+        Key key2 = (Key) ef.createEntities("key", new Position(3, 1), 2);
+        // Add keys to right of player
+        controller.getEntities().add(key1);
+        controller.getEntities().add(key2);
+
+        List<InventoryItem> expectedBefore = new ArrayList<>();
+        expectedBefore.add(new InventoryItem(key1.getId(), key1.getType()));
 
         // Character initial position: (1, 1)
-        controller.tick("", Direction.RIGHT);
-        controller.tick("", Direction.RIGHT);
-        controller.tick("", Direction.RIGHT);
-        controller.tick("", Direction.RIGHT);
-        controller.tick("", Direction.RIGHT); // sword pickup
+        controller.tick("", Direction.RIGHT); // walk on key 1, pickup key 1
+        // Check key1 in inventory
+        assertEquals(controller.getCharacter().getInventory(), expectedBefore);
+        controller.tick("", Direction.RIGHT); // walk on key 2, do not pickup key 2
+        // Check still only key1 in invenotry
+        assertEquals(controller.getCharacter().getInventory(), expectedBefore);
+        // sanity check that character can move ontop of keys despite not being able to pick it up
+        assertEquals(new Position(3, 1), controller.getCharacter().getPosition());
+    }
 
-        // Check sword in inventory
-        assertEquals(controller.getCharacter().getInventory(), expected);
+    @Test
+    public void testCharacterHPAfterFight() {
+        // TODO after agreeing on HP values
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Standard");
+
+    }
+
+    @Test
+    public void testTreasureAfterBribe() {
+        // TODO
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Standard");
+
     }
 }

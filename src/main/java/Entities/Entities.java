@@ -17,6 +17,12 @@ public abstract class Entities {
         this.isInteractable = isInteractable;
         this.isWalkable = isWalkable;
     }
+
+    public Entities(String id, String type, boolean isInteractable) {
+        this.id = id;
+        this.type = type;
+        this.isInteractable = isInteractable;
+    }
     
     public String getId() {
         return this.id;
