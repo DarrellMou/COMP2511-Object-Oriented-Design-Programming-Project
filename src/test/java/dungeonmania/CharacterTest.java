@@ -162,22 +162,22 @@ public class CharacterTest {
         Arrow arrow1 = (Arrow) ef.createEntities("arrow", new Position(3, 1));
         Arrow arrow2 = (Arrow) ef.createEntities("arrow", new Position(4, 1));
         Arrow arrow3 = (Arrow) ef.createEntities("arrow", new Position(5, 1));
-        Bow bow1 = (Bow) ef.createEntities("bow");
         // Add bow materials to right of player
         controller.getEntities().add(wood1);
         controller.getEntities().add(arrow1);
         controller.getEntities().add(arrow2);
         controller.getEntities().add(arrow3);
-
+        
         // 1 wood + 3 arrows expected before build
         List<InventoryItem> expectedBefore = new ArrayList<>();
         expectedBefore.add(new InventoryItem(wood1.getId(), wood1.getType()));
         expectedBefore.add(new InventoryItem(arrow1.getId(), arrow1.getType()));
         expectedBefore.add(new InventoryItem(arrow2.getId(), arrow2.getType()));
         expectedBefore.add(new InventoryItem(arrow3.getId(), arrow3.getType()));
-
+        
         // 1 bow expected after build
         List<InventoryItem> expectedAfter = new ArrayList<>();
+        Bow bow1 = new Bow(ef.getNextId(), false);
         expectedAfter.add(new InventoryItem(bow1.getId(), bow1.getType()));
 
         // Expected for bow to be buildable

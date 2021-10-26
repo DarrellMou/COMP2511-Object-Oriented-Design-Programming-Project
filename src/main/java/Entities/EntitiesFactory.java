@@ -81,18 +81,18 @@ public class EntitiesFactory {
         return newEntity;
     }
 
-    public Entities createEntities(String type) {
+    // public Entities createEntities(String type) {
         
-        Entities newEntity = null;
+    //     Entities newEntity = null;
 
-        if (type.equals("bow")) {
-            newEntity = new Bow(getNextId(), true); // is bow interactable?
-        } else if (type.equals("shield")) {
-            newEntity = new Shield(getNextId(), false); // is shield interactable?
-        }
+    //     if (type.equals("bow")) {
+    //         newEntity = new Bow(getNextId(), true); // is bow interactable?
+    //     } else if (type.equals("shield")) {
+    //         newEntity = new Shield(getNextId(), false); // is shield interactable?
+    //     }
         
-        return newEntity;
-    }
+    //     return newEntity;
+    // }
     /**
      * Create entity of given type at given position
      * 
