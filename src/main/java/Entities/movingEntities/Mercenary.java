@@ -21,4 +21,13 @@ public class Mercenary extends MovingEntities {
         }
         return true;
     }
+
+
+    @Override
+    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+        // TODO Auto-generated method stub
+        
+    }
+
+   
 }

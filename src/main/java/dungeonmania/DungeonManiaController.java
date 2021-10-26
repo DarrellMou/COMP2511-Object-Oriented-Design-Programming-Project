@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonParser;
@@ -51,11 +52,14 @@ public class DungeonManiaController {
     private int numCreatedDungeons;
     private Dungeon dungeon;
     private EntitiesFactory entitiesFactory;
+    private Random random;
+
 
     public DungeonManiaController() {
         numCreatedDungeons = 0;
         dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
         entitiesFactory = new EntitiesFactory(); // instantiating this to grab
+        random = new Random(System.currentTimeMillis()); // Seed is the time
 
     }
 
@@ -117,6 +121,18 @@ public class DungeonManiaController {
         int currentDungeonNo = getNumCreatedDungeons();
         setNumCreatedDungeons(numCreatedDungeons + 1); // Increment the next id of dungeon
         return "dungeon" + String.valueOf(currentDungeonNo);
+    }
+
+      /** 
+     * This generates the position that the spider will spawn in
+     * 
+     * @return Position
+     */
+    public Position getRandomPosition(int xBound, int yBound) {
+        int x = random.nextInt(xBound);
+        int y = random.nextInt(yBound);
+        return new Position(x, y);
+
     }
 
     /**

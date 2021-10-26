@@ -29,5 +29,11 @@ public class Boulder extends StaticEntities implements Movable, Triggerable {
         
     }
 
+    @Override
+    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+        // TODO Auto-generated method stub
+        
+    }
+
 
 }

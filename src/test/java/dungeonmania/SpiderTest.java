@@ -20,8 +20,8 @@ public class SpiderTest {
         controller.newGame("advanced", "peaceful");
 
         Spider spider = new Spider("spider1", "spider", new Position(0, 0), false, 100);
-        Position spiderLocation = spider.spawnSpider();
-        assertEquals(spiderLocation, spider.getPosition());
+        // Position spiderLocation = spider.spawnSpider();
+        // assertEquals(spiderLocation, spider.getPosition());
         
         
 
@@ -36,8 +36,8 @@ public class SpiderTest {
         controller.newGame("advanced", "peaceful");
 
         Spider spider = new Spider("spider1", "spider", new Position(0, 0), false, 100);
-        Position spiderLocation = spider.spawnSpider();
-        assertEquals(spiderLocation, spider.getPosition());
+        // Position spiderLocation = spider.spawnSpider();
+        // assertEquals(spiderLocation, spider.getPosition());
 
 
         // Check that the spider goes up and then circles the position that it spawn in
