@@ -87,7 +87,4 @@ public class Character extends MovingEntities implements Fightable {
         
     }
 
-
-
-
 }
