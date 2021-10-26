@@ -356,6 +356,7 @@ public class DungeonManiaController {
              * check movable then move entities
              * if entity on character -> fight (if haven't fought yet) 
              */
+            // test
         return null;
     }
 
