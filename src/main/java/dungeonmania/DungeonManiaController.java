@@ -383,10 +383,7 @@ public class DungeonManiaController {
         // }
 
         // Character character = getCharacter();
-        if (itemUsedId == null) {
-            // throw new IllegalArgumentException("itemUsedId provided is null");
-        }
-        else {
+        if (itemUsedId != null && !itemUsedId.equals("")) {
             InventoryItem item = null;
             for (InventoryItem currItem : character.getInventory()) {
                 if (currItem.getId().equals(itemUsedId)) {
