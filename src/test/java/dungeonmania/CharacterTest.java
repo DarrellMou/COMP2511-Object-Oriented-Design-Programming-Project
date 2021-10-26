@@ -2,12 +2,15 @@ package dungeonmania;
 
 import org.junit.jupiter.api.Test;
 
+import Entities.InventoryItem;
+import Entities.collectableEntities.equipments.Sword;
 import Entities.movingEntities.Character;
 import Entities.staticEntities.Boulder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class CharacterTest {
     public void testCharacterMoves() {
         // Start game in advanced map + peaceful difficulty
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("advanced", "peaceful");
+        controller.newGame("advanced", "Peaceful");
 
         // Character initial position: (1, 1)
         controller.tick("", Direction.DOWN);
@@ -45,7 +48,7 @@ public class CharacterTest {
     public void testCharacterStopsAtWall() {
         // Start game in advanced map + peaceful difficulty
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("advanced", "peaceful");
+        controller.newGame("advanced", "Peaceful");
 
         // Character initial position: (1, 1)
         controller.tick("", Direction.LEFT);
@@ -57,7 +60,7 @@ public class CharacterTest {
     public void testCharacterMovesBoulder() {
         // Start game in advanced map + peaceful difficulty
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("boulders", "peaceful");
+        controller.newGame("boulders", "Peaceful");
 
         // Get boulder that character is about to move
         Boulder b = (Boulder) controller.getEntityFromPosition(new Position(3, 2));
@@ -76,7 +79,7 @@ public class CharacterTest {
     public void testBoulderStopsAtWall() {
         // Start game in advanced map + peaceful difficulty
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("boulders", "peaceful");
+        controller.newGame("boulders", "Peaceful");
 
         // Get boulder that character is about to move
         Boulder b = (Boulder) controller.getEntityFromPosition(new Position(3, 2));
@@ -91,5 +94,49 @@ public class CharacterTest {
 
         // Check position for boulder
         assertEquals(new Position(5, 2), b.getPosition());
+    }
+
+    @Test
+    public void testCharacterPickup() {
+        // Start game in advanced map + peaceful difficulty
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("boulders", "Peaceful");
+
+        // Inventory with sword entity at (6, 1)
+        Sword s = (Sword) controller.getEntityFromPosition(new Position(6, 1));
+        List<InventoryItem> expected = new ArrayList<>();
+        expected.add(new InventoryItem(s.getId(), s.getType()));
+
+        // Character initial position: (1, 1)
+        controller.tick("", Direction.RIGHT);
+        controller.tick("", Direction.RIGHT);
+        controller.tick("", Direction.RIGHT);
+        controller.tick("", Direction.RIGHT);
+        controller.tick("", Direction.RIGHT); // sword pickup
+
+        // Check sword in inventory
+        assertEquals(controller.getCharacter().getInventory(), expected);
+    }
+
+    @Test
+    public void testCharacterPickupTwoKeys() {
+        // Start game in advanced map + peaceful difficulty
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Peaceful");
+
+        // Inventory with sword entity at (6, 1)
+        Sword s = (Sword) controller.getEntityFromPosition(new Position(6, 1));
+        List<InventoryItem> expected = new ArrayList<>();
+        expected.add(new InventoryItem(s.getId(), s.getType()));
+
+        // Character initial position: (1, 1)
+        controller.tick("", Direction.RIGHT);
+        controller.tick("", Direction.RIGHT);
+        controller.tick("", Direction.RIGHT);
+        controller.tick("", Direction.RIGHT);
+        controller.tick("", Direction.RIGHT); // sword pickup
+
+        // Check sword in inventory
+        assertEquals(controller.getCharacter().getInventory(), expected);
     }
 }

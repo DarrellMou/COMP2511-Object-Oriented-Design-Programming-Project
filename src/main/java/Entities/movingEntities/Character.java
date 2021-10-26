@@ -16,22 +16,20 @@ public class Character extends MovingEntities implements Fightable {
      *  {item2}...
      * ]
      */
-    private ArrayList<InventoryItem> inventory;
-    private boolean hasKey;
-    
+    private ArrayList<InventoryItem> inventory;    
     
     public Character(String id, Position position, boolean isInteractable, double health) {
         super(id, "player", position, isInteractable, true, health); //TODO set health (change with diff) and isInteractable for each entity
         inventory = new ArrayList<InventoryItem>();
-        hasKey = false;
     }
     
-    public boolean isHasKey() {
-        return hasKey;
-    }
-
-    public void setHasKey(boolean hasKey) {
-        this.hasKey = hasKey;
+    public boolean hasKey() {
+        for (InventoryItem i : getInventory()) {
+            if (i.getType().equals("key")) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public ArrayList<InventoryItem> getInventory() {
