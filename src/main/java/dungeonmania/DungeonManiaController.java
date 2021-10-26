@@ -55,26 +55,35 @@ public class DungeonManiaController {
     private Random random;
 
 
+    
     public DungeonManiaController() {
         numCreatedDungeons = 0;
         dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
         entitiesFactory = new EntitiesFactory(); // instantiating this to grab
         random = new Random(System.currentTimeMillis()); // Seed is the time
-
+        
     }
-
+    
     /**
      * @return int
      */
     public int getNumCreatedDungeons() {
         return this.numCreatedDungeons;
     }
-
+    
     /**
      * @param numCreatedDungeons
      */
     public void setNumCreatedDungeons(int numCreatedDungeons) {
         this.numCreatedDungeons = numCreatedDungeons;
+    }
+    
+    /**
+     * 
+     * @return Dungeon
+     */
+    public Dungeon getDungeon() {
+        return dungeon;
     }
 
     /**

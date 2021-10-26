@@ -2,11 +2,13 @@ package Entities;
 
 import java.util.UUID;
 
+import Entities.buildableEntities.Bow;
+import Entities.buildableEntities.Shield;
 import Entities.collectableEntities.consumableEntities.Bomb;
 import Entities.collectableEntities.consumableEntities.InvincibilityPotion;
 import Entities.collectableEntities.consumableEntities.Key;
 import Entities.collectableEntities.equipments.Sword;
-import Entities.collectableEntities.materials.Arrows;
+import Entities.collectableEntities.materials.Arrow;
 import Entities.collectableEntities.materials.Treasure;
 import Entities.collectableEntities.materials.Wood;
 import Entities.staticEntities.Boulder;
@@ -78,6 +80,19 @@ public class EntitiesFactory {
         
         return newEntity;
     }
+
+    // public Entities createEntities(String type) {
+        
+    //     Entities newEntity = null;
+
+    //     if (type.equals("bow")) {
+    //         newEntity = new Bow(getNextId(), true); // is bow interactable?
+    //     } else if (type.equals("shield")) {
+    //         newEntity = new Shield(getNextId(), false); // is shield interactable?
+    //     }
+        
+    //     return newEntity;
+    // }
     /**
      * Create entity of given type at given position
      * 
@@ -98,7 +113,7 @@ public class EntitiesFactory {
         } else if (type.equals("treasure")) {
             newEntity = new Treasure(getNextId(), type, position, true);
         }  else if (type.equals("arrow")) {
-            newEntity = new Arrows(getNextId(), type, position, true); // interactable???
+            newEntity = new Arrow(getNextId(), type, position, true); // interactable???
         }  else if (type.equals("wood")) {
             newEntity = new Wood(getNextId(), type, position, true); // interactable???
         }else if (type.equals("invincibility_potion")) {
