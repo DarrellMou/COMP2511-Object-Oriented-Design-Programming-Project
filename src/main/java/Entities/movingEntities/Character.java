@@ -11,6 +11,7 @@ import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 public class Character extends MovingEntities implements Fightable {
+    
     /**
      * inventory = [
      *  {item1},
@@ -19,8 +20,9 @@ public class Character extends MovingEntities implements Fightable {
      */
     private ArrayList<InventoryItem> inventory;    
     
-    public Character(String id, Position position, boolean isInteractable, double health) {
-        super(id, "player", position, isInteractable, true, health); //TODO set health (change with diff) and isInteractable for each entity
+    public Character(String id, String type, Position position, boolean isInteractable,
+            double health, double attackDamage) {
+        super(id, type, position, isInteractable, true, health, attackDamage);
         inventory = new ArrayList<InventoryItem>();
     }
     

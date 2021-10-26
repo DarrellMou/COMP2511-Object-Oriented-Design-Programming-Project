@@ -1,6 +1,14 @@
 package dungeonmania;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
+
+import Entities.Entities;
+import Entities.staticEntities.ZombieToast;
+import dungeonmania.util.Direction;
 
 public class ZombieTest {
 
@@ -13,13 +21,87 @@ public class ZombieTest {
         controller.clear();
         controller.newGame("advanced", "Peaceful");
 
-        
-        
-        
+        for (int i = 0; i < 20; i++) {
+            
+            controller.tick("",  Direction.UP);
+        }
+
+        // After 20 ticks a zombie should be spawned and move in random directions. Zombies are limited by the same movement 
+        // constraints as the character, except portals have no effect on them.
+
+        // Checkf if there is a zombie inside
+        boolean containsZombie = false;
+        for (Entities entities: controller.getEntities() ) {
+            if (entities instanceof ZombieToast) {
+                containsZombie = true;
+                break;
+            }
+        }
+
+        assertTrue(containsZombie);
 
     }
 
-    // Zombies spawn at zombie spawners and move in random directions. Zombies are limited by the same movement 
-    // constraints as the character, except portals have no effect on them.
+    @Test
+    public void testZombieTravelling() {
+        // Create a new game
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.clear();
+        controller.newGame("advanced", "Peaceful");
+
+        for (int i = 0; i < 20; i++) {
+            
+            controller.tick("",  Direction.UP);
+        }
+
+     
+
+        // Checkf if there is a zombie inside
+        boolean containsZombie = false;
+        for (Entities entities: controller.getEntities() ) {
+            if (entities instanceof ZombieToast) {
+                containsZombie = true;
+                break;
+            }
+        }
+
+        assertTrue(containsZombie);
+
+         // Zombies are limited by the same movement 
+        // constraints as the character, except portals have no effect on them.
+
+    }
+
+    @Test
+    public void testKillZombieAndSpawner() {
+        // Create a new game
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.clear();
+        controller.newGame("advanced", "Peaceful");
+
+        for (int i = 0; i < 20; i++) {
+            
+            controller.tick("",  Direction.UP);
+        }
+
+     
+
+        // Checkf if there is a zombie inside
+        boolean containsZombie = false;
+        for (Entities entities: controller.getEntities() ) {
+            if (entities instanceof ZombieToast) {
+                containsZombie = true;
+                break;
+            }
+        }
+
+        assertTrue(containsZombie);
+
+         // Zombies are limited by the same movement 
+        // constraints as the character, except portals have no effect on them.
+
+    }
+
+
     
 }
