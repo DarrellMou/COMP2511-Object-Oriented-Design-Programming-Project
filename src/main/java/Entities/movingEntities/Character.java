@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Entities.Entities;
 import Entities.InventoryItem;
-
+import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 public class Character extends MovingEntities implements Fightable {
@@ -79,4 +80,14 @@ public class Character extends MovingEntities implements Fightable {
         // TODO
         return 0;
     }
+
+    @Override
+    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+
+
 }

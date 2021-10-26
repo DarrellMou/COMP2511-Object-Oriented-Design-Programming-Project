@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonParser;
@@ -51,11 +52,14 @@ public class DungeonManiaController {
     private int numCreatedDungeons;
     private Dungeon dungeon;
     private EntitiesFactory entitiesFactory;
+    private Random random;
+
 
     public DungeonManiaController() {
         numCreatedDungeons = 0;
         dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
         entitiesFactory = new EntitiesFactory(); // instantiating this to grab
+        random = new Random(System.currentTimeMillis()); // Seed is the time
 
     }
 
@@ -117,6 +121,18 @@ public class DungeonManiaController {
         int currentDungeonNo = getNumCreatedDungeons();
         setNumCreatedDungeons(numCreatedDungeons + 1); // Increment the next id of dungeon
         return "dungeon" + String.valueOf(currentDungeonNo);
+    }
+
+      /** 
+     * This generates the position that the spider will spawn in
+     * 
+     * @return Position
+     */
+    public Position getRandomPosition(int xBound, int yBound) {
+        int x = random.nextInt(xBound);
+        int y = random.nextInt(yBound);
+        return new Position(x, y);
+
     }
 
     /**
@@ -196,35 +212,33 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-        List<EntityResponse> entities = new ArrayList<>();
-        List<ItemResponse> inventory = new ArrayList<>();
-        List<String> buildables = new ArrayList<>();
+        List<EntityResponse> entitiesResponses = new ArrayList<>();
+        List<ItemResponse> inventoryResponses = new ArrayList<>();
+        List<String> buildablesResponses = new ArrayList<>();
 
         for (Entities entitiy : getEntities()) {
-            if (entitiy != null) { // something is breaking sometin is null - temp fix
-                entities.add(new EntityResponse(entitiy.getId(), entitiy.getType(), entitiy.getPosition(),
+                entitiesResponses.add(new EntityResponse(entitiy.getId(), entitiy.getType(), entitiy.getPosition(),
                         entitiy.isInteractable()));
-            } 
 
         }
 
         for (InventoryItem inventoryItem : getCharacter().getInventory()) {
-            inventory.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
+            inventoryResponses.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
 
         }
 
-        for (String builds : buildables) {
-            buildables.add(builds);
+        for (String builds : dungeon.getBuildables()) {
+            buildablesResponses.add(builds);
         }
-        DungeonResponse dg = new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entities, inventory,
-                buildables, dungeon.getGoals());
+        DungeonResponse dg = new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entitiesResponses, inventoryResponses,
+        buildablesResponses, dungeon.getGoals());
 
         Gson gson = new Gson();
         try {
 
             String data = readFile("data.json");
-            List<Map<String, DungeonResponse>> dungeonList = gson.fromJson(data,
-                    new TypeToken<List<Map<String, DungeonResponse>>>() {
+            List<Map<String, DungeonResponse>> dungeonList = gson.fromJson(data, new TypeToken<List<Map<String, DungeonResponse>>>() {
+                
                     }.getType());
             if (dungeonList == null) {
                 dungeonList = new ArrayList<Map<String, DungeonResponse>>();
@@ -278,14 +292,11 @@ public class DungeonManiaController {
         ArrayList<String> newBuildables = new ArrayList<>();
 
         for (EntityResponse entity : dg.getEntities()) {
-            Entities newEntity = entitiesFactory.creatingEntitiesFactory(entity);
-            newEntities.add(newEntity);
+            newEntities.add(entitiesFactory.creatingEntitiesFactory(entity));
         }
         
         for (ItemResponse item : dg.getInventory()) {
-            
             newInventory.add(new InventoryItem(item.getId(), item.getType()));
-     
         }
 
         for (String builds : dg.getBuildables()) {
