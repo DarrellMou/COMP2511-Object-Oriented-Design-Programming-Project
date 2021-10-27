@@ -513,13 +513,7 @@ public class DungeonManiaController {
 
         spawnEnemies(getDungeon().getGameMode()); // Spawn Enemies
         for (Entities entity: getEntities()) {
-<<<<<<< HEAD
-                if (entity instanceof Spider) {
-                    Spider spider = (Spider) entity;
-                    spider.makeMovement(new Position(0, 9), this);
-=======
             if (entity instanceof Spider) {
->>>>>>> master
 
                 Spider spider = (Spider) entity;
                 spider.makeMovement(spider.getSpawnPosition(), this);
