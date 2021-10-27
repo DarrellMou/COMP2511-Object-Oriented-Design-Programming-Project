@@ -2,6 +2,7 @@ package dungeonmania;
 
 import org.junit.jupiter.api.Test;
 
+import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.InventoryItem;
 import Entities.buildableEntities.Bow;
@@ -10,6 +11,7 @@ import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
 import Entities.collectableEntities.materials.Wood;
 import Entities.movingEntities.Character;
+import Entities.movingEntities.Mercenary;
 import Entities.staticEntities.Boulder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,7 +71,7 @@ public class CharacterTest {
         controller.newGame("boulders", "Peaceful");
 
         // Get boulder that character is about to move
-        Boulder b = (Boulder) controller.getEntityFromPosition(new Position(3, 2));
+        Entities b = controller.getEntityFromPosition(new Position(3, 2));
 
         // Character initial position: (2, 2)
         controller.tick("", Direction.RIGHT);
@@ -88,7 +90,7 @@ public class CharacterTest {
         controller.newGame("boulders", "Peaceful");
 
         // Get boulder that character is about to move
-        Boulder b = (Boulder) controller.getEntityFromPosition(new Position(3, 2));
+        Entities b = controller.getEntityFromPosition(new Position(3, 2));
 
         // Character initial position: (2, 2)
         controller.tick("", Direction.RIGHT);
@@ -106,7 +108,7 @@ public class CharacterTest {
     public void testCharacterPickup() {
         // Start game in advanced map + peaceful difficulty
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("boulders", "Peaceful");
+        controller.newGame("advanced", "Peaceful");
 
         // Inventory with sword entity at (6, 1)
         Sword s = (Sword) controller.getEntityFromPosition(new Position(6, 1));
@@ -131,9 +133,8 @@ public class CharacterTest {
         controller.newGame("advanced", "Peaceful");
 
         // Create two keys at (2, 1) and (3, 1)
-        EntitiesFactory ef = new EntitiesFactory();
-        Key key1 = (Key) ef.createEntities("key", new Position(2, 1), 1);
-        Key key2 = (Key) ef.createEntities("key", new Position(3, 1), 2);
+        Entities key1 = EntitiesFactory.createEntities("key", new Position(2, 1), 1);
+        Entities key2 = EntitiesFactory.createEntities("key", new Position(3, 1), 2);
         // Add keys to right of player
         controller.getEntities().add(key1);
         controller.getEntities().add(key2);
@@ -158,15 +159,14 @@ public class CharacterTest {
         controller.newGame("advanced", "Peaceful");
 
         // Create bow materials to right of player + bow
-        EntitiesFactory ef = new EntitiesFactory();
-        controller.getCharacter().addInventory(new InventoryItem(ef.getNextId(), "wood"));
-        controller.getCharacter().addInventory(new InventoryItem(ef.getNextId(), "arrow"));
-        controller.getCharacter().addInventory(new InventoryItem(ef.getNextId(), "arrow"));
-        controller.getCharacter().addInventory(new InventoryItem(ef.getNextId(), "arrow"));
+        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "wood"));
+        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
+        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
+        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
         
         // 1 bow expected after build
         List<InventoryItem> expectedAfter = new ArrayList<>();
-        expectedAfter.add(new InventoryItem(ef.getNextId(), "bow"));
+        expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "bow"));
 
         // Expected for bow to be buildable
         List<String> expectedBuildables = new ArrayList<>();
@@ -196,6 +196,12 @@ public class CharacterTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
+        // Add merc to right of player
+        Entities m = EntitiesFactory.createEntities("mercenary", new Position(2, 1));
+        // move to merc and fight
+        controller.tick("", Direction.RIGHT);
+        // check HP
+        // assertEquals();
     }
 
     @Test

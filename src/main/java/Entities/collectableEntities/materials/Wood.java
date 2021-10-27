@@ -6,8 +6,8 @@ import dungeonmania.util.Position;
 
 public class Wood extends Entities {
 
-    public Wood(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable, false);
+    public Wood(String id, Position position) {
+        super(id, "wood", position, false, true);
         // TODO Auto-generated constructor stub
     }
 

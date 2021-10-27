@@ -18,10 +18,8 @@ public class Spider extends MovingEntities {
 
 
 
-    public Spider(String id, String type, Position position, boolean isInteractable,  double health,
-            double attackDamage) {
-        super(id, type, position, isInteractable, true, health, attackDamage);
-        //TODO Auto-generated constructor stub
+    public Spider(String id, Position position) {
+        super(id, "spider", position, false, true, 30, 1);
     }
 
 
@@ -71,10 +69,10 @@ public class Spider extends MovingEntities {
      * @param spider
      */
     @Override
-    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
         // The general movement of the spider is to go up then circles around the starting position
         List<Position> spiderMovementPositions = getSpiderMovement(startingPosition);
-        if (checkBoulder(spider.getPosition(), controller)) {
+        if (checkBoulder(getPosition(), controller)) {
             Collections.reverse(spiderMovementPositions); // Now the spider will go the opposite way
         }
 
@@ -82,12 +80,12 @@ public class Spider extends MovingEntities {
 
         for (int i = 0; i < spiderMovementPositions.size(); i++) {
     
-            if (spider.getPosition().getX() == spiderMovementPositions.get(i).getX() && spider.getPosition().getY() == spiderMovementPositions.get(i).getY()) {
+            if (getPosition().getX() == spiderMovementPositions.get(i).getX() && getPosition().getY() == spiderMovementPositions.get(i).getY()) {
                 // Check if the next value exists
                 if (i == spiderMovementPositions.size() - 1) {
-                    spider.setPosition(new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY()));
+                    setPosition(new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY()));
                 } else {
-                    spider.setPosition(new Position(spiderMovementPositions.get(i + 1).getX(), spiderMovementPositions.get(i+1).getY()));
+                    setPosition(new Position(spiderMovementPositions.get(i + 1).getX(), spiderMovementPositions.get(i+1).getY()));
                 }
                 break;
             }

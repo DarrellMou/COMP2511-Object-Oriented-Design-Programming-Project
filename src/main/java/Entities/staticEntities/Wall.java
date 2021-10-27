@@ -4,8 +4,8 @@ import dungeonmania.util.Position;
 
 public class Wall extends StaticEntities {
 
-    public Wall(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable, false);
+    public Wall(String id, Position position) {
+        super(id, "wall", position, false, false);
     }
 
 }

@@ -28,7 +28,11 @@ Movement order
 Iteration 2
 
 Health, Damages
-Character: Full Health: 100, Attack Damage: 30
-Spider: Full Health: 30, Attack Damage: 5
-Zombie Toast: Full Health: 50, Attack Damage: 10
-Mercenary: Full Health: 80, Attack Damage: 20
+Rationale:
+    - Character health high enough to survive enemy hits + low enough to notice gradual decrease in damage as fights occur
+    - Character attack enough to not immediately kill some enemies (merc at full hp and zombie toast as hp goes down)
+Character: Full Health: 100, Attack Damage: 3
+Spider: Full Health: 30, Attack Damage: 1
+Zombie Toast: Full Health: 50, Attack Damage: 1
+Mercenary: Full Health: 80, Attack Damage: 1
+

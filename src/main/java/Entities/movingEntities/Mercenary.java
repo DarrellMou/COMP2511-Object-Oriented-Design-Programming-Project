@@ -11,10 +11,8 @@ public class Mercenary extends MovingEntities {
 
     
     
-    public Mercenary(String id, String type, Position position, boolean isInteractable, 
-            double health, double attackDamage) {
-        super(id, type, position, isInteractable, true, health, attackDamage);
-        //TODO Auto-generated constructor stub
+    public Mercenary(String id, Position position) {
+        super(id, "mercenary", position, true, true, 80, 1);
     }
 
 
@@ -31,7 +29,7 @@ public class Mercenary extends MovingEntities {
 
 
     @Override
-    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
         // TODO Auto-generated method stub
         
     }
