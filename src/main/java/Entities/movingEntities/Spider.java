@@ -64,7 +64,6 @@ public class Spider extends MovingEntities implements Spawnable {
      * @return Boolean
      */
     public Boolean checkBoulder(Position position, DungeonManiaController controller) {
-        System.out.println(controller.getEntities());
         for (Entities e : controller.getEntities()) {
    
             if (e.getPosition().equals(position) && e.getType().equals("boulder")) {
@@ -142,13 +141,13 @@ public class Spider extends MovingEntities implements Spawnable {
     }
 
 
-    @Override
-    public Entities spawn(int ticksCounter, String gameMode, Random random) {
+    // @Override
+    // public Entities spawn(int ticksCounter, String gameMode, Random random) {
 
-      return EntitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10)));
+    //   return EntitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10)));
 
         
-    }
+    // }
 
 
 

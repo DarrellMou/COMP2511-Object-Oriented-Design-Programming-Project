@@ -1,7 +1,9 @@
 package dungeonmania;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import Entities.Entities;
 import Entities.InventoryItem;
@@ -12,7 +14,7 @@ public class Dungeon {
     private String dungeonId;
     private String dungeonName;
     private ArrayList<Entities> entities;
-    private ArrayList<String> buildables;
+    private Set<String> buildables;
     private String goals;
     private String gameMode;
     private int ticksCounter;
@@ -26,7 +28,7 @@ public class Dungeon {
         this.dungeonId = dungeonId;
         this.dungeonName = dungeonName;
         this.entities = new ArrayList<Entities>();
-        this.buildables = new ArrayList<String>();
+        this.buildables = new HashSet<String>();
         this.goals = goals;
         this.gameMode = gameMode;
         ticksCounter = 0;
@@ -66,12 +68,16 @@ public class Dungeon {
         this.entities.remove(entity);
    }
 
-    public ArrayList<String> getBuildables() {
+    public Set<String> getBuildables() {
         return this.buildables;
     }
 
-    public void setBuildables(ArrayList<String> buildables) {
+    public void setBuildables(Set<String> buildables) {
         this.buildables = buildables;
+    }
+
+    public void addBuildables(String buildable) {
+        this.buildables.add(buildable);
     }
 
     public String getGoals() {

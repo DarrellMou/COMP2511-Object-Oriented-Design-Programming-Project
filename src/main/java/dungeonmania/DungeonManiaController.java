@@ -18,9 +18,11 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonParser;
@@ -338,7 +340,7 @@ public class DungeonManiaController {
         // Otherwise we load the dungeon
         ArrayList<Entities> newEntities = new ArrayList<>();
         ArrayList<InventoryItem> newInventory = new ArrayList<>();
-        ArrayList<String> newBuildables = new ArrayList<>();
+        Set<String> newBuildables = new HashSet<>();
 
         for (EntityResponse entity : dg.getEntities()) {
             newEntities.add(EntitiesFactory.creatingEntitiesFactory(entity));
@@ -501,7 +503,7 @@ public class DungeonManiaController {
             character.setPosition(newPosition);
         }
 
-        spawnEnemies(); // Spawn Enemies
+        spawnEnemies(dungeon.getGameMode()); // Spawn Enemies
         for (Entities entity: getEntities()) {
             if (entity instanceof Spider) {
 
@@ -513,31 +515,28 @@ public class DungeonManiaController {
 
             
         }    
-        
-        
 
-        List<EntityResponse> entities = new ArrayList<>();
-        List<ItemResponse> inventory = new ArrayList<>();
-        List<String> buildables = new ArrayList<>();
+        List<EntityResponse> entitiesResponses = new ArrayList<>();
+        List<ItemResponse> inventoryResponses = new ArrayList<>();
+        List<String> buildablesResponses = new ArrayList<>();
 
         for (Entities entity : getEntities()) {
-            if (entity != null) { // something is breaking sometin is null - temp fix
-                entities.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
                         entity.isInteractable()));
-            } 
 
         }
 
         for (InventoryItem inventoryItem : getCharacter().getInventory()) {
-            inventory.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
+            inventoryResponses.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
 
         }
 
-        for (String builds : buildables) {
-            buildables.add(builds);
+        for (String builds : dungeon.getBuildables()) {
+            buildablesResponses.add(builds);
         }
-        return new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entities, inventory,
-                buildables, dungeon.getGoals());
+        
+        return new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entitiesResponses, inventoryResponses,
+        buildablesResponses, dungeon.getGoals());
     }
 
     /**
@@ -558,6 +557,7 @@ public class DungeonManiaController {
      * @throws InvalidActionException
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
+        
         return null;
     }
 

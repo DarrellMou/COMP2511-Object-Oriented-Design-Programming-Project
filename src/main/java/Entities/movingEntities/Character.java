@@ -82,6 +82,7 @@ public class Character extends MovingEntities implements Fightable {
         int arrow = 0;
         int treasure = 0;
         int key = 0;
+
         for (InventoryItem item : inventory) {
             if (item.getType().equals("wood")) {
                 wood++;
@@ -99,17 +100,18 @@ public class Character extends MovingEntities implements Fightable {
 
         // bow
         if (wood >= 1 && arrow >= 3) {
-
+            dungeon.addBuildables("bow");
         }
         
         // shield
-        else if (wood >= 2 && treasure >= 1) {
+        if (wood >= 2) {
+            if (treasure >= 1) {
+                dungeon.addBuildables("shield");
 
-        }
-
-        // shield
-        else if (wood >= 2 && key >= 1) {
-
+            }
+            else if (key >= 1) {
+                dungeon.addBuildables("shield");
+            }
         }
     }
 
