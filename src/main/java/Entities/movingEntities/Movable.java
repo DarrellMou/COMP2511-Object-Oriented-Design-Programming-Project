@@ -14,5 +14,5 @@ public interface Movable {
      * @param position
      * @param controller
      */
-    public abstract void makeMovement(Position startingPosition, DungeonManiaController controller);
+    public abstract void makeMovement(Position currentPosition, DungeonManiaController controller);
 }

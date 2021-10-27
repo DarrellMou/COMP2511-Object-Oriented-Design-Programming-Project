@@ -15,26 +15,14 @@ import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
-public class Spider extends MovingEntities implements Spawnable{
+public class Spider extends SpawningEntities {
 
-    private Position spawnPosition;
     
     public Spider(String id, Position position) {
         super(id, "spider", position, false, true, 30, 1);
-        spawnPosition = position;
+
     }
     
-
-    public Position getSpawnPosition() {
-        return this.spawnPosition;
-    }
-
-    public void setSpawnPosition(Position spawnPosition) {
-        this.spawnPosition = spawnPosition;
-    }
-    
-    
-
     /** 
      * 
      * For a spider, it can traverse through anywhere
@@ -141,13 +129,4 @@ public class Spider extends MovingEntities implements Spawnable{
     }
 
 
-    @Override
-    public Entities spawn(int ticksCounter, String gameMode, EntitiesFactory entitiesFactory, Random random) {
-
-      return entitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10)));
-
-        
-    }
-    
-  
 }
