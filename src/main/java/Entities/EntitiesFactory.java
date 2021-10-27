@@ -30,17 +30,17 @@ import dungeonmania.util.Position;
 
 public class EntitiesFactory {
 
-    public String getNextId() {
+    public static String getNextId() {
         return UUID.randomUUID().toString();
     }
 
-    public Entities creatingEntitiesFactory(EntityResponse entity) {
+    public static Entities creatingEntitiesFactory(EntityResponse entity) {
 
         return createEntities(entity.getType(), entity.getPosition());
 
     }
 
-    public Entities creatingEntitiesFactory(DataEntities entity) {
+    public static Entities creatingEntitiesFactory(DataEntities entity) {
         String type = entity.getType();
         if (type.equals("door") || type.equals("key")) {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()), entity.getKey());
@@ -54,7 +54,7 @@ public class EntitiesFactory {
         }
     }
 
-    public Entities createEntities(String type, Position position, String colour) {
+    public static Entities createEntities(String type, Position position, String colour) {
 
         Entities newEntity = null;
 
@@ -65,7 +65,7 @@ public class EntitiesFactory {
         return newEntity;
     }
 
-    public Entities createEntities(String type, Position position, int key) {
+    public static Entities createEntities(String type, Position position, int key) {
 
         Entities newEntity = null;
 
@@ -97,10 +97,12 @@ public class EntitiesFactory {
      * @param position
      * @return
      */
-    public Entities createEntities(String type, Position position) {
+    public static Entities createEntities(String type, Position position) {
         Entities newEntity = null;
+
+        // TODO Can someone finissh the rest of this lol
         if (type.equals("wall")) {
-            newEntity = new Wall(getNextId(), type, position, false);
+            newEntity = new Wall(getNextId(), position);
         } else if (type.equals("bomb")) {
             newEntity = new Bomb(getNextId(), type, position, false);
         } else if (type.equals("exit")) {
@@ -110,25 +112,29 @@ public class EntitiesFactory {
         } else if (type.equals("arrow")) {
             newEntity = new Arrow(getNextId(), type, position, true); // interactable???
         } else if (type.equals("wood")) {
-            newEntity = new Wood(getNextId(), type, position, true); // interactable???
+            newEntity = new Wood(getNextId(), position); // interactable???
         } else if (type.equals("invincibility_potion")) {
             newEntity = new InvincibilityPotion(getNextId(), type, position, true);
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), type, position, true);
         } else if (type.equals("player")) {
-            newEntity = new Character(getNextId(), type, position, true, 100, 30); // What is character health?
+            newEntity = new Character(getNextId(), position); // What is character health?
         } else if (type.equals("boulder")) {
-            newEntity = new Boulder(getNextId(), position, false); // is boulder interctable?
+            newEntity = new Boulder(getNextId(), position);
         } else if (type.equals("sword")) {
-            newEntity = new Sword(getNextId(), type, position, false); // is sword interctable?
+            newEntity = new Sword(getNextId(), type, position, false); // is sword interctable?no
         } else if (type.equals("mercenary")) {
-            newEntity = new Mercenary(getNextId(), type, position, true, 80, 20);
-        } else if (type.equals("zombie_toast_spawner")) {
-            newEntity = new ZombieToastSpawner(getNextId(), type, position, true);
+            newEntity = new Mercenary(getNextId(), position); // What is mecernary health?
         } else if (type.equals("spider")) {
-            newEntity = new Spider(getNextId(), type, position, true, 30, 5);
+            newEntity = new Spider(getNextId(), position);
+        } else if (type.equals("bow")) {
+            newEntity = new Bow(getNextId(), true);
+        } else if (type.equals("shield")) {
+            newEntity = new Shield(getNextId(), true);
         } else if (type.equals("zombie_toast")) {
-            newEntity = new ZombieToast(getNextId(), type, position, true, 50, 20);
+            newEntity = new ZombieToast(getNextId(), position);
+        } else if (type.equals("zombie_toast_spawner")) {
+            newEntity = new ZombieToastSpawner(getNextId(), position);
         }
 
         return newEntity;

@@ -12,10 +12,8 @@ public class ZombieToast extends MovingEntities {
 
    
     
-    public ZombieToast(String id, String type, Position position, boolean isInteractable,
-            double health, double attackDamage) {
-        super(id, type, position, isInteractable, true, health, attackDamage);
-        //TODO Auto-generated constructor stub
+    public ZombieToast(String id, Position position) {
+        super(id, "zombie_toast", position, false, true, 50, 1);
     }
 
     @Override
@@ -30,7 +28,7 @@ public class ZombieToast extends MovingEntities {
     }
 
     @Override
-    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
         // TODO Auto-generated method stub
         
     }

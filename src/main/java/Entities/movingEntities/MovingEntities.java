@@ -1,13 +1,12 @@
 package Entities.movingEntities;
 
 import Entities.Entities;
-import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 import java.util.List;
 
-public  class MovingEntities extends Entities implements Movable {
+public abstract class MovingEntities extends Entities implements Movable {
     private double health;
     private double attackDamage;
 
@@ -75,7 +74,7 @@ public  class MovingEntities extends Entities implements Movable {
 
 
     @Override
-    public void makeMovement(Position startingPosition, Entities entity, DungeonManiaController controller) {
+    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
         // TODO Auto-generated method stub
         
     }

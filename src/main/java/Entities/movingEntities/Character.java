@@ -7,6 +7,7 @@ import java.util.Map;
 
 import Entities.Entities;
 import Items.InventoryItem;
+import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
@@ -17,9 +18,8 @@ public class Character extends MovingEntities implements Fightable {
      */
     private ArrayList<InventoryItem> inventory;
 
-    public Character(String id, String type, Position position, boolean isInteractable, double health,
-            double attackDamage) {
-        super(id, type, position, isInteractable, true, health, attackDamage);
+    public Character(String id, Position position) {
+        super(id, "player", position, false, true, 120, 3);
         inventory = new ArrayList<InventoryItem>();
     }
 
@@ -74,6 +74,40 @@ public class Character extends MovingEntities implements Fightable {
         // TODO
     }
 
+    public void checkForBuildables(Dungeon dungeon) {
+        int wood = 0;
+        int arrow = 0;
+        int treasure = 0;
+        int key = 0;
+
+        for (InventoryItem item : inventory) {
+            if (item.getType().equals("wood")) {
+                wood++;
+            } else if (item.getType().equals("arrow")) {
+                arrow++;
+            } else if (item.getType().equals("treasure")) {
+                treasure++;
+            } else if (item.getType().equals("key")) {
+                key++;
+            }
+        }
+
+        // bow
+        if (wood >= 1 && arrow >= 3) {
+            dungeon.addBuildables("bow");
+        }
+
+        // shield
+        if (wood >= 2) {
+            if (treasure >= 1) {
+                dungeon.addBuildables("shield");
+
+            } else if (key >= 1) {
+                dungeon.addBuildables("shield");
+            }
+        }
+    }
+
     @Override
     public double calculateDamage() {
         // TODO
@@ -81,7 +115,7 @@ public class Character extends MovingEntities implements Fightable {
     }
 
     @Override
-    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
         // TODO Auto-generated method stub
 
     }
