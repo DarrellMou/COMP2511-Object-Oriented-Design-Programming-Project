@@ -122,7 +122,7 @@ public class EntitiesFactory {
         } else if (type.equals("invincibility_potion")) {
             newEntity = new InvincibilityPotion(getNextId(), type, position, true);
         } else if (type.equals("switch")) {
-            newEntity = new FloorSwitch(getNextId(), type, position, true);
+            newEntity = new FloorSwitch(getNextId(), position);
         } else if (type.equals("player")) {
             newEntity = new Character(getNextId(), position); // What is character health?
         } else if (type.equals("boulder")) {

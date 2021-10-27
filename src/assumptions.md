@@ -60,3 +60,7 @@ Sword: Durability: 4, Attack Damage: 1.5 x Character Attack Damage
 Bow: Durability: 3, Attack Damage: 2 x Character Attack Damage
 Armour: Durability: 4, Decrease Attack Damage of Enemy: 0.5
 Shield: Durability: 3, Decrease Attack Damage of Enemy: 0.5
+
+
+Building
+- Crafting shield will use whatever is first in inventory (treasure/key)
