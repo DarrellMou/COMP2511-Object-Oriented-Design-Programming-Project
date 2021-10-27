@@ -5,24 +5,18 @@ import org.junit.jupiter.api.Test;
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.InventoryItem;
-import Entities.buildableEntities.Bow;
-import Entities.collectableEntities.consumables.Key;
 import Entities.collectableEntities.equipments.Sword;
-import Entities.collectableEntities.materials.Arrow;
-import Entities.collectableEntities.materials.Wood;
-import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
-import Entities.staticEntities.Boulder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
-import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -158,18 +152,28 @@ public class CharacterTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Peaceful");
 
-        // Create bow materials to right of player + bow
-        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "wood"));
-        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
-        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
-        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
+        // Create bow materials to right of player
+        Entities w = EntitiesFactory.createEntities("key", new Position(2, 1));
+        Entities a1 = EntitiesFactory.createEntities("arrow", new Position(3, 1));
+        Entities a2 = EntitiesFactory.createEntities("arrow", new Position(4, 1));
+        Entities a3 = EntitiesFactory.createEntities("arrow", new Position(5, 1));
+        // Add keys to right of player
+        controller.getEntities().add(w);
+        controller.getEntities().add(a1);
+        controller.getEntities().add(a2);
+        controller.getEntities().add(a3);
+
+        controller.tick("", Direction.RIGHT); // wood
+        controller.tick("", Direction.RIGHT); // arrow1
+        controller.tick("", Direction.RIGHT); // arrow2
+        controller.tick("", Direction.RIGHT); // arroe3
         
         // 1 bow expected after build
         List<InventoryItem> expectedAfter = new ArrayList<>();
         expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "bow"));
 
         // Expected for bow to be buildable
-        List<String> expectedBuildables = new ArrayList<>();
+        Set<String> expectedBuildables = new HashSet<>();
         expectedBuildables.add("bow");
 
         assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
@@ -192,23 +196,34 @@ public class CharacterTest {
     }
 
     @Test
-    public void testCharacterHPAfterFight() {
+    public void testHPAfterStandardFight() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
         // Add merc to right of player
-        Entities m = EntitiesFactory.createEntities("mercenary", new Position(2, 1));
+        Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(2, 1));
         // move to merc and fight
         controller.tick("", Direction.RIGHT);
         // check HP
-        // assertEquals();
+        // Character HP = 120 - ((80 * 1) / 10) = 112
+        assertEquals(112, controller.getCharacter().getHealth());
+        // Merc HP = 80 - ((120 * 3 ) / 5) = 8
+        assertEquals(8, m.getHealth());
     }
 
     @Test
-    public void testMercenaryBribe() {
-        // TODO 
+    public void testHPAfterHardFight() {
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("advanced", "Standard");
+        controller.newGame("advanced", "Hard");
 
+        // Add merc to right of player
+        Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(2, 1));
+        // move to merc and fight
+        controller.tick("", Direction.RIGHT);
+        // check HP
+        // Character HP = 100 - ((80 * 1) / 10) = 92
+        assertEquals(92, controller.getCharacter().getHealth());
+        // Merc HP = 80 - ((100 * 3 ) / 5) = 8
+        assertEquals(20, m.getHealth());
     }
 }
