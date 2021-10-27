@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Entities.Entities;
 import Entities.InventoryItem;
+import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
@@ -14,8 +15,9 @@ public class CollectableEntity extends Entities {
         // TODO Auto-generated constructor stub
     }
 
-    public void Pickup(Dungeon dungeon) {
+    public void Pickup(Dungeon dungeon, Character character) {
         InventoryItem item = new InventoryItem(this.getId(), this.getType());
-        ArrayList<Entities> entities = dungeon.getEntities();
+        character.addInventory(item);
+        dungeon.removeEntities(this);
     }
 }
