@@ -15,7 +15,7 @@ import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
-public class Spider extends MovingEntities implements Spawnable{
+public class Spider extends MovingEntities implements Spawnable {
 
     private Position spawnPosition;
     
@@ -141,12 +141,21 @@ public class Spider extends MovingEntities implements Spawnable{
     }
 
 
-    @Override
-    public Entities spawn(int ticksCounter, String gameMode, EntitiesFactory entitiesFactory, Random random) {
+    // @Override
+    // public Entities spawn(int ticksCounter, String gameMode, Random random) {
 
-      return entitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10)));
+    //   return EntitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10)));
 
         
+    // }
+
+
+
+
+    @Override
+    public Entities spawn(int ticksCounter, String gameMode, EntitiesFactory entitiesFactory, Random random) {
+        // TODO Auto-generated method stub
+        return null;
     }
     
   

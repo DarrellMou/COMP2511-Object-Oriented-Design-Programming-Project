@@ -11,7 +11,10 @@ import Entities.movingEntities.Mercenary;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import dungeonmania.util.Direction;
@@ -170,7 +173,7 @@ public class CharacterTest {
         expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "bow"));
 
         // Expected for bow to be buildable
-        List<String> expectedBuildables = new ArrayList<>();
+        Set<String> expectedBuildables = new HashSet<>();
         expectedBuildables.add("bow");
 
         assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
