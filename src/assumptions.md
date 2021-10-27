@@ -23,9 +23,9 @@ Zombie Toast Spawner
 
 Zombie
 
-Mercernary
-
-- The mercernary will not move if there is no path to the player
+Mercenary
+- It will normally move in the direction of the player
+- If the path is blocked it will not move
 
 Bribed mercenary
 
@@ -48,10 +48,13 @@ The player will wear the first armour and shield that they have in their invento
 Assume there is only one treasure on the map, with more than one we can bribe more than one mercenary
 
 Health, Damages
-Character: Full Health: 100, Attack Damage: 30
-Spider: Full Health: 30, Attack Damage: 5
-Zombie Toast: Full Health: 50, Attack Damage: 10
-Mercenary: Full Health: 80, Attack Damage: 20
+Rationale:
+    - Character health high enough to survive enemy hits + low enough to notice gradual decrease in damage as fights occur
+    - Character attack low enough to not immediately kill some enemies (merc at full hp and zombie toast as hp goes down)
+Character: Health: 120/100 (standard/hard mode), Attack Damage: 3
+Spider: Health: 30, Attack Damage: 1
+Zombie Toast: Health: 50, Attack Damage: 1
+Mercenary: Health: 80, Attack Damage: 1
 
 Sword: Durability: 4, Attack Damage: 1.5 x Character Attack Damage
 Bow: Durability: 3, Attack Damage: 2 x Character Attack Damage

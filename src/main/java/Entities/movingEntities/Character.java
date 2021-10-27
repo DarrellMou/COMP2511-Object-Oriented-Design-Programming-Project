@@ -20,9 +20,8 @@ public class Character extends MovingEntities implements Fightable {
      */
     private ArrayList<InventoryItem> inventory;    
     
-    public Character(String id, String type, Position position, boolean isInteractable,
-            double health, double attackDamage) {
-        super(id, type, position, isInteractable, true, health, attackDamage);
+    public Character(String id, Position position) {
+        super(id, "player", position, false, true, 120, 3);
         inventory = new ArrayList<InventoryItem>();
     }
     
@@ -84,7 +83,7 @@ public class Character extends MovingEntities implements Fightable {
     }
 
     @Override
-    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
         // TODO Auto-generated method stub
         
     }

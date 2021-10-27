@@ -53,7 +53,6 @@ import Entities.collectableEntities.CollectableEntity;
 public class DungeonManiaController {
     private int numCreatedDungeons;
     private Dungeon dungeon;
-    private EntitiesFactory entitiesFactory;
     private Random random;
     private Character character;
    
@@ -63,9 +62,7 @@ public class DungeonManiaController {
     public DungeonManiaController() {
         numCreatedDungeons = 0;
         dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
-        entitiesFactory = new EntitiesFactory(); // instantiating this to grab
         random = new Random(System.currentTimeMillis()); // Seed is the time
-        
     }
 
     
@@ -259,7 +256,7 @@ public class DungeonManiaController {
            
             for (DataEntities entity : data.getEntities()) {
 
-                Entities newEntity = entitiesFactory.creatingEntitiesFactory(entity);
+                Entities newEntity = EntitiesFactory.creatingEntitiesFactory(entity);
                 dungeon.addEntities(newEntity); // Adding it to the entities of dungeon
 
                 EntityResponse item = new EntityResponse(newEntity.getId(), newEntity.getType(),
@@ -361,7 +358,7 @@ public class DungeonManiaController {
         ArrayList<String> newBuildables = new ArrayList<>();
 
         for (EntityResponse entity : dg.getEntities()) {
-            newEntities.add(entitiesFactory.creatingEntitiesFactory(entity));
+            newEntities.add(EntitiesFactory.creatingEntitiesFactory(entity));
         }
         
         for (ItemResponse item : dg.getInventory()) {
@@ -565,7 +562,7 @@ public class DungeonManiaController {
      * @throws InvalidActionException
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        // calls trigger in triggerables
+        // click on something
         return null;
     }
 
