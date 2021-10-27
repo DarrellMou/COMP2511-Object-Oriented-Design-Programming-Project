@@ -24,7 +24,7 @@ public class MercenaryTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
-        Boulder boulder = new Boulder("boulder", "boulder", new Position(1, 2), false);
+        Boulder boulder = new Boulder("boulder", new Position(1, 2), false);
         Wall wall1 = new Wall("wall1", "wall", new Position(2, 2), false);
         Wall wall2 = new Wall("wall2", "wall", new Position(2, 1), false);
         Mercenary mercenary = new Mercenary("mercenary", "mercenary", new Position(3, 4), false, 1000);
@@ -60,7 +60,7 @@ public class MercenaryTest {
         // walls
 
         // create character at position 0, 3
-        Character character = new Character("character", "character", new Position(0, 3), false, 1000);
+        Character character = new Character("character", new Position(0, 3), false, 1000);
         controller.getEntities().add(character);
 
         // create mercenary at position 3, 0
@@ -136,7 +136,7 @@ public class MercenaryTest {
         controller.getEntities().add(wall16);
 
         // create character at position 0, 2
-        Character character = new Character("character", "character", new Position(0, 2), false, 1000);
+        Character character = new Character("character", new Position(0, 2), false, 1000);
         controller.getEntities().add(character);
 
         // create mercenary at position 3, 2

@@ -28,14 +28,13 @@ public class Boulder extends StaticEntities implements Movable, Triggerable {
     @Override
     public void trigger() {
         // TODO Checks movable and moves boulder if so
-        
+
     }
 
     @Override
     public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
 }

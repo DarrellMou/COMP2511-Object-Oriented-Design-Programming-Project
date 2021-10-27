@@ -31,12 +31,10 @@ public class EntitiesFactory {
         return UUID.randomUUID().toString();
     }
 
-
     public Entities creatingEntitiesFactory(EntityResponse entity) {
 
         return createEntities(entity.getType(), entity.getPosition());
 
-        
     }
 
     public Entities creatingEntitiesFactory(DataEntities entity) {
@@ -44,10 +42,8 @@ public class EntitiesFactory {
         if (type.equals("door") || type.equals("key")) {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()), entity.getKey());
 
-            
         } else if (type.equals("portal")) {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()), entity.getColour());
-
 
         } else {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()));
@@ -55,21 +51,19 @@ public class EntitiesFactory {
         }
     }
 
-    
-    
     public Entities createEntities(String type, Position position, String colour) {
-        
+
         Entities newEntity = null;
 
         if (type.equals("portal")) {
             newEntity = new Portal(getNextId(), type, position, true, colour); // is door interactable?
-        } 
-        
+        }
+
         return newEntity;
     }
 
     public Entities createEntities(String type, Position position, int key) {
-        
+
         Entities newEntity = null;
 
         if (type.equals("door")) {
@@ -77,21 +71,21 @@ public class EntitiesFactory {
         } else if (type.equals("key")) {
             newEntity = new Key(getNextId(), type, position, false, key); // is key interactable?
         }
-        
+
         return newEntity;
     }
 
     // public Entities createEntities(String type) {
-        
-    //     Entities newEntity = null;
 
-    //     if (type.equals("bow")) {
-    //         newEntity = new Bow(getNextId(), true); // is bow interactable?
-    //     } else if (type.equals("shield")) {
-    //         newEntity = new Shield(getNextId(), false); // is shield interactable?
-    //     }
-        
-    //     return newEntity;
+    // Entities newEntity = null;
+
+    // if (type.equals("bow")) {
+    // newEntity = new Bow(getNextId(), true); // is bow interactable?
+    // } else if (type.equals("shield")) {
+    // newEntity = new Shield(getNextId(), false); // is shield interactable?
+    // }
+
+    // return newEntity;
     // }
     /**
      * Create entity of given type at given position
@@ -108,15 +102,15 @@ public class EntitiesFactory {
             newEntity = new Wall(getNextId(), type, position, false);
         } else if (type.equals("bomb")) {
             newEntity = new Bomb(getNextId(), type, position, false);
-        }  else if (type.equals("exit")) {
+        } else if (type.equals("exit")) {
             newEntity = new Exit(getNextId(), type, position, false); // is exit interactable?
         } else if (type.equals("treasure")) {
             newEntity = new Treasure(getNextId(), type, position, true);
-        }  else if (type.equals("arrow")) {
+        } else if (type.equals("arrow")) {
             newEntity = new Arrow(getNextId(), type, position, true); // interactable???
-        }  else if (type.equals("wood")) {
+        } else if (type.equals("wood")) {
             newEntity = new Wood(getNextId(), type, position, true); // interactable???
-        }else if (type.equals("invincibility_potion")) {
+        } else if (type.equals("invincibility_potion")) {
             newEntity = new InvincibilityPotion(getNextId(), type, position, true);
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), type, position, true);
