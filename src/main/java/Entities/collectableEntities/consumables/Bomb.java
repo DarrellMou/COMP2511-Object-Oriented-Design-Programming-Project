@@ -1,21 +1,14 @@
-package Entities.collectableEntities.consumableEntities;
+package Entities.collectableEntities.consumables;
 
 import Entities.Entities;
 import Entities.InventoryItem;
-import Entities.collectableEntities.ConsumableEntity;
+import Entities.collectableEntities.CollectableEntity;
 import dungeonmania.util.Position;
 
-public class Bomb extends ConsumableEntity {
+public class Bomb extends CollectableEntity {
 
     public Bomb(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable);
         // TODO Auto-generated constructor stub
     }
-
-    @Override
-    public void consumeItem() {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

@@ -15,6 +15,8 @@ public class Dungeon {
     private ArrayList<String> buildables;
     private String goals;
     private String gameMode;
+    private int ticksCounter;
+
 
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
@@ -27,6 +29,8 @@ public class Dungeon {
         this.buildables = new ArrayList<String>();
         this.goals = goals;
         this.gameMode = gameMode;
+        ticksCounter = 0;
+
     }
 
     public String getDungeonId() {
@@ -84,6 +88,21 @@ public class Dungeon {
 
     public void setGameMode(String gameMode) {
         this.gameMode = gameMode;
+    }
+
+        /** 
+     * @return int
+     */
+    public int getTicksCounter() {
+        return this.ticksCounter;
+    }
+
+    
+    /** 
+     * 
+     */
+    public void incrementTicks() {
+        this.ticksCounter++;
     }
 
    

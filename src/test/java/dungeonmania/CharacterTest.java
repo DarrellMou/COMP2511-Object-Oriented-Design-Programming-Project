@@ -6,7 +6,7 @@ import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.InventoryItem;
 import Entities.buildableEntities.Bow;
-import Entities.collectableEntities.consumableEntities.Key;
+import Entities.collectableEntities.consumables.Key;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
 import Entities.collectableEntities.materials.Wood;
