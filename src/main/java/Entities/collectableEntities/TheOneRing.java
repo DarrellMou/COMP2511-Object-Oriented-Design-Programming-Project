@@ -1,7 +1,7 @@
 package Entities.collectableEntities;
 
 import Entities.Entities;
-import Entities.InventoryItem;
+import Items.InventoryItem;
 import dungeonmania.util.Position;
 
 public class TheOneRing extends Entities {

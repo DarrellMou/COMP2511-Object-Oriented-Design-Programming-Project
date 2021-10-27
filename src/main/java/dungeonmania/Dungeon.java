@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import Entities.Entities;
-import Entities.InventoryItem;
+import Items.InventoryItem;
 import app.data.Data;
 import app.data.DataSubgoal;
 
@@ -18,7 +18,6 @@ public class Dungeon {
     private String goals;
     private String gameMode;
     private int ticksCounter;
-
 
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
@@ -59,14 +58,14 @@ public class Dungeon {
         this.entities = entities;
     }
 
-   public void addEntities(Entities entity) {
-       this.entities.add(entity);
+    public void addEntities(Entities entity) {
+        this.entities.add(entity);
 
-   }
+    }
 
-   public void removeEntities(Entities entity) {
+    public void removeEntities(Entities entity) {
         this.entities.remove(entity);
-   }
+    }
 
     public Set<String> getBuildables() {
         return this.buildables;
@@ -96,14 +95,13 @@ public class Dungeon {
         this.gameMode = gameMode;
     }
 
-        /** 
+    /**
      * @return int
      */
     public int getTicksCounter() {
         return this.ticksCounter;
     }
 
-    
     /** 
      * 
      */
@@ -111,9 +109,8 @@ public class Dungeon {
         this.ticksCounter++;
     }
 
-   
     public void setAllGoals(Data data) {
-        if (data.getGoalCondition().getGoal().equals("AND")) { 
+        if (data.getGoalCondition().getGoal().equals("AND")) {
             String goal = "";
             List<DataSubgoal> subgoals = data.getGoalCondition().getSubgoals();
             for (int i = 0; i < subgoals.size() - 1; i++) {
