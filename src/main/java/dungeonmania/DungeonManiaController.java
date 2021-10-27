@@ -75,22 +75,6 @@ public class DungeonManiaController {
 
     
     /** 
-     * @return EntitiesFactory
-     */
-    public EntitiesFactory getEntitiesFactory() {
-        return this.entitiesFactory;
-    }
-
-    
-    /** 
-     * @param entitiesFactory
-     */
-    public void setEntitiesFactory(EntitiesFactory entitiesFactory) {
-        this.entitiesFactory = entitiesFactory;
-    }
-
-    
-    /** 
      * @return Random
      */
     public Random getRandom() {
@@ -638,12 +622,12 @@ public class DungeonManiaController {
 
     public void spawnEnemies() {
         if (dungeon.getTicksCounter() % 10 == 0) {
-            Entities spider = entitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10), 2));
+            Entities spider = EntitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10), 2));
             dungeon.addEntities(spider);
         }
 
         if (dungeon.getTicksCounter() % 20 == 0) {
-            Entities zombieToast = entitiesFactory.createEntities("zombie_toast", new Position(random.nextInt(10), random.nextInt(10)));
+            Entities zombieToast = EntitiesFactory.createEntities("zombie_toast", new Position(random.nextInt(10), random.nextInt(10)));
             dungeon.addEntities(zombieToast);
         }
     }
