@@ -2,7 +2,7 @@ package Entities.collectableEntities.equipments;
 
 import Entities.Defence;
 import Entities.Entities;
-import Entities.InventoryItem;
+import Items.InventoryItem;
 import Entities.collectableEntities.CollectableEntity;
 import dungeonmania.util.Position;
 
