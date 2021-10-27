@@ -9,12 +9,13 @@ import java.util.Iterator;
 
 
 import Entities.Entities;
+import Entities.EntitiesFactory;
 import Entities.staticEntities.Boulder;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
-public class Spider extends MovingEntities {
+public class Spider extends MovingEntities implements Spawnable{
 
 
     public Spider(String id, String type, Position position, boolean isInteractable, double health) {
@@ -115,6 +116,15 @@ public class Spider extends MovingEntities {
         spiderMovementPositions.add(new Position(x-1, y-1));
 
         return spiderMovementPositions;
+    }
+
+
+    @Override
+    public Entities spawn(int ticksCounter, String gameMode, EntitiesFactory entitiesFactory, Random random) {
+
+      return entitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10)));
+
+        
     }
     
   

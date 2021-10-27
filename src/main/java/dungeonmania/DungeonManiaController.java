@@ -55,6 +55,7 @@ public class DungeonManiaController {
     private EntitiesFactory entitiesFactory;
     private Random random;
     private Character character;
+   
 
 
     
@@ -65,6 +66,56 @@ public class DungeonManiaController {
         random = new Random(System.currentTimeMillis()); // Seed is the time
         
     }
+
+    
+    /** 
+     * @param dungeon
+     */
+    public void setDungeon(Dungeon dungeon) {
+        this.dungeon = dungeon;
+    }
+
+    
+    /** 
+     * @return EntitiesFactory
+     */
+    public EntitiesFactory getEntitiesFactory() {
+        return this.entitiesFactory;
+    }
+
+    
+    /** 
+     * @param entitiesFactory
+     */
+    public void setEntitiesFactory(EntitiesFactory entitiesFactory) {
+        this.entitiesFactory = entitiesFactory;
+    }
+
+    
+    /** 
+     * @return Random
+     */
+    public Random getRandom() {
+        return this.random;
+    }
+
+    
+    /** 
+     * @param random
+     */
+    public void setRandom(Random random) {
+        this.random = random;
+    }
+    
+    /** 
+     * @param character
+     */
+    public void setCharacter(Character character) {
+        this.character = character;
+    }
+
+    
+
     
     /**
      * @return int
@@ -190,6 +241,11 @@ public class DungeonManiaController {
                 buildableResponses, dungeon.getGoals());
     }
 
+    
+    /** 
+     * @param entitiesResponses
+     * @param dungeonName
+     */
     public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName) {
         try {
             BufferedReader br = new BufferedReader(
@@ -382,6 +438,8 @@ public class DungeonManiaController {
         //     throw new IllegalArgumentException("itemUsedId provided is an empty string");
         // }
 
+        dungeon.incrementTicks(); // This increments the number of ticks in this dungeon
+
         // Character character = getCharacter();
         if (itemUsedId != null && !itemUsedId.equals("")) {
             InventoryItem item = null;
@@ -395,6 +453,7 @@ public class DungeonManiaController {
                 throw new InvalidActionException(String.format("Character does not have %s in inventory", itemUsedId));
             }
 
+            // Move this function somewehre else
             List<String> legalItems = new ArrayList<>();
             legalItems.add("bomb");
             legalItems.add("health_potion");
@@ -456,6 +515,10 @@ public class DungeonManiaController {
             character.setPosition(newPosition);
         }
 
+        spawnEnemies(); // Spawn Enemies
+        
+        
+
         List<EntityResponse> entities = new ArrayList<>();
         List<ItemResponse> inventory = new ArrayList<>();
         List<String> buildables = new ArrayList<>();
@@ -501,6 +564,10 @@ public class DungeonManiaController {
         return null;
     }
 
+    
+    /** 
+     * @return Character
+     */
     public Character getCharacter() {
         // System.out.println(getEntities());
         for (Entities entity: getEntities()) {
@@ -512,12 +579,21 @@ public class DungeonManiaController {
 
     }
 
+    
+    /** 
+     * @return ArrayList<Entities>
+     */
     public ArrayList<Entities> getEntities() {
         
         return dungeon.getEntities();
 
     }
 
+    
+    /** 
+     * @param position
+     * @return Entities
+     */
     public Entities getEntityFromPosition(Position position) {
         // TODO what about layer in position?
         for (Entities e : getEntities()) {
@@ -526,5 +602,18 @@ public class DungeonManiaController {
             }
         }
         return null;
+    }
+
+
+    public void spawnEnemies() {
+        if (dungeon.getTicksCounter() % 10 == 0) {
+            Entities spider = entitiesFactory.createEntities("spider", new Position(5, 5, 2));
+            dungeon.addEntities(spider);
+        }
+
+        if (dungeon.getTicksCounter() % 20 == 0) {
+            Entities zombieToast = entitiesFactory.createEntities("zombie_toast", new Position(random.nextInt(10), random.nextInt(10)));
+            dungeon.addEntities(zombieToast);
+        }
     }
 }
