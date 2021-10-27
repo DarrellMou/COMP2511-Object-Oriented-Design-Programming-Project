@@ -514,7 +514,8 @@ public class DungeonManiaController {
                 triggerable.trigger();
             }
             else if (entity instanceof CollectableEntity) {
-                
+                CollectableEntity collectable = (CollectableEntity) entity;
+                collectable.Pickup(getDungeon());
             }
             character.setPosition(newPosition);
         }
