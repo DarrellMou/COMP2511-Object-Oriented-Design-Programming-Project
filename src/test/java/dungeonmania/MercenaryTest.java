@@ -20,6 +20,14 @@ import dungeonmania.util.Position;
 public class MercenaryTest {
 
     @Test
+    public void testMercenaryBribe() {
+        // TODO 
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Standard");
+
+    }
+    
+    @Test
     public void testMercenaryBattleRadiusSpeed() {
         // TODO 
         DungeonManiaController controller = new DungeonManiaController();
@@ -27,13 +35,6 @@ public class MercenaryTest {
 
     }
 
-    @Test
-    public void testMercenaryBribe() {
-        // TODO 
-        DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("advanced", "Standard");
-
-    }
 
     @Test
     public void testMercenaryBribeOutOfRange() {

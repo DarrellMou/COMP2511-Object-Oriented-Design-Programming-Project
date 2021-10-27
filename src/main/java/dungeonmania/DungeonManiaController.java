@@ -32,6 +32,7 @@ import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.movingEntities.*;
 import Entities.movingEntities.Character;
+import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Triggerable;
 import Entities.staticEntities.Wall;
 import app.data.Data;
@@ -489,6 +490,15 @@ public class DungeonManiaController {
         // - For now, move character
 
         Position newPosition = character.getPosition().translateBy(movementDirection);
+        Entities newPositionEntity = getEntityFromPosition(newPosition);
+        // Boulder movement
+        if (newPositionEntity instanceof Boulder) {
+            Boulder b = (Boulder) newPositionEntity;
+            Position newBoulderPosition = b.getPosition().translateBy(movementDirection);
+            if (b.checkMovable(newBoulderPosition, getEntities())) {
+                b.setPosition(newBoulderPosition);
+            }
+        }
         if (character.checkMovable(newPosition, getEntities())) {
             Entities entity = getEntityFromPosition(newPosition);
             if (entity instanceof Triggerable) {
