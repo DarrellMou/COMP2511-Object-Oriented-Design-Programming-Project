@@ -621,15 +621,15 @@ public class DungeonManiaController {
     }
 
 
-    public void spawnEnemies() {
+    public void spawnEnemies(String gameMode) {
         if (dungeon.getTicksCounter() % 10 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10), 2));
             dungeon.addEntities(spider);
         }
 
-        if (dungeon.getTicksCounter() % 20 == 0) {
-            Entities zombieToast = EntitiesFactory.createEntities("zombie_toast", new Position(random.nextInt(10), random.nextInt(10)));
-            dungeon.addEntities(zombieToast);
-        }
+        // if (dungeon.getTicksCounter() % 20 == 0) {
+        //     Entities zombieToast = EntitiesFactory.createEntities("zombie_toast", new Position(random.nextInt(10), random.nextInt(10)));
+        //     dungeon.addEntities(zombieToast);
+        // }
     }
 }
