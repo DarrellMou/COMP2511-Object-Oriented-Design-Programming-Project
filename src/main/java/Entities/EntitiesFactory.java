@@ -133,8 +133,19 @@ public class EntitiesFactory {
             newEntity = new Mercenary(getNextId(), position); // What is mecernary health?
         } else if (type.equals("spider")) {
             newEntity = new Spider(getNextId(), position);
+<<<<<<< HEAD
         } else if (type.equals("zombie_toast")) {
             newEntity = new Spider(getNextId(), position);
+=======
+        } else if (type.equals("bow")) {
+            newEntity = new Bow(getNextId(), true);
+        }  else if (type.equals("shield")) {
+            newEntity = new Shield(getNextId(), true);
+        } else if (type.equals("zombie_toast")) {
+            newEntity = new ZombieToast(getNextId(), position);
+        } else if (type.equals("zombie_toast_spawner")) {
+            newEntity = new ZombieToastSpawner(getNextId(), position);
+>>>>>>> master
         }
 
         return newEntity;
