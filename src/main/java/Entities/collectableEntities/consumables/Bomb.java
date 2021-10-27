@@ -1,7 +1,7 @@
 package Entities.collectableEntities.consumables;
 
 import Entities.Entities;
-import Entities.InventoryItem;
+import Items.InventoryItem;
 import Entities.collectableEntities.CollectableEntity;
 import dungeonmania.util.Position;
 

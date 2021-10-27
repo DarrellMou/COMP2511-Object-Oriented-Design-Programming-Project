@@ -3,7 +3,6 @@ package dungeonmania;
 import org.junit.jupiter.api.Test;
 
 import Entities.EntitiesFactory;
-import Entities.InventoryItem;
 import Entities.buildableEntities.Bow;
 import Entities.collectableEntities.consumables.Key;
 import Entities.collectableEntities.equipments.Sword;
@@ -11,6 +10,7 @@ import Entities.collectableEntities.materials.Arrow;
 import Entities.collectableEntities.materials.Wood;
 import Entities.movingEntities.Character;
 import Entities.staticEntities.Boulder;
+import Items.InventoryItem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,16 +25,14 @@ import dungeonmania.util.Position;
 
 public class CharacterTest {
     /**
-     * Tests to implement:
-     * - Check character changes position when walking into movable position
-     * - Check character moves nowhere when walking into wall
-     * - Check character can move boulder if free position behind boulder
-     * - Check character cannot move if no free position behind boulder
-     * - Check character can pick up items
-     * - Check character cannot pick up 2 keys
-     * - Check character items update after building an item (add built item + remove component items)
-     * - Check character HP is calculated correctly after fight
-     * - Check treasure updates after bribing mercenary
+     * Tests to implement: - Check character changes position when walking into
+     * movable position - Check character moves nowhere when walking into wall -
+     * Check character can move boulder if free position behind boulder - Check
+     * character cannot move if no free position behind boulder - Check character
+     * can pick up items - Check character cannot pick up 2 keys - Check character
+     * items update after building an item (add built item + remove component items)
+     * - Check character HP is calculated correctly after fight - Check treasure
+     * updates after bribing mercenary
      */
 
     @Test
@@ -91,8 +89,9 @@ public class CharacterTest {
 
         // Character initial position: (2, 2)
         controller.tick("", Direction.RIGHT);
-        controller.tick("", Direction.RIGHT);   // boulder at wall
-        controller.tick("", Direction.RIGHT);   // boulder cannot move into wall. Char + boulder should not change positions
+        controller.tick("", Direction.RIGHT); // boulder at wall
+        controller.tick("", Direction.RIGHT); // boulder cannot move into wall. Char + boulder should not change
+                                              // positions
 
         // Check position for character
         assertEquals(new Position(4, 2), controller.getCharacter().getPosition());
@@ -147,7 +146,8 @@ public class CharacterTest {
         controller.tick("", Direction.RIGHT); // walk on key 2, do not pickup key 2
         // Check still only key1 in invenotry
         assertEquals(controller.getCharacter().getInventory(), expectedBefore);
-        // sanity check that character can move ontop of keys despite not being able to pick it up
+        // sanity check that character can move ontop of keys despite not being able to
+        // pick it up
         assertEquals(new Position(3, 1), controller.getCharacter().getPosition());
     }
 
@@ -167,14 +167,14 @@ public class CharacterTest {
         controller.getEntities().add(arrow1);
         controller.getEntities().add(arrow2);
         controller.getEntities().add(arrow3);
-        
+
         // 1 wood + 3 arrows expected before build
         List<InventoryItem> expectedBefore = new ArrayList<>();
         expectedBefore.add(new InventoryItem(wood1.getId(), wood1.getType()));
         expectedBefore.add(new InventoryItem(arrow1.getId(), arrow1.getType()));
         expectedBefore.add(new InventoryItem(arrow2.getId(), arrow2.getType()));
         expectedBefore.add(new InventoryItem(arrow3.getId(), arrow3.getType()));
-        
+
         // 1 bow expected after build
         List<InventoryItem> expectedAfter = new ArrayList<>();
         Bow bow1 = new Bow(ef.getNextId(), false);
@@ -208,7 +208,7 @@ public class CharacterTest {
 
     @Test
     public void testMercenaryBribe() {
-        // TODO 
+        // TODO
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 

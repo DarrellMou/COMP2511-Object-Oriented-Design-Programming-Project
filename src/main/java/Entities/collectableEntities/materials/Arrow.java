@@ -1,6 +1,6 @@
 package Entities.collectableEntities.materials;
 
-import Entities.InventoryItem;
+import Items.InventoryItem;
 import Entities.collectableEntities.CollectableEntity;
 import dungeonmania.util.Position;
 

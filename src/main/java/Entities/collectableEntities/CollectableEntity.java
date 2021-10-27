@@ -3,7 +3,7 @@ package Entities.collectableEntities;
 import java.util.ArrayList;
 
 import Entities.Entities;
-import Entities.InventoryItem;
+import Items.InventoryItem;
 import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;

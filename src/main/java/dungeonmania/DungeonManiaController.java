@@ -32,6 +32,7 @@ import Entities.movingEntities.*;
 import Entities.movingEntities.Character;
 import Entities.staticEntities.Triggerable;
 import Entities.staticEntities.Wall;
+import Items.InventoryItem;
 import app.data.Data;
 import app.data.DataEntities;
 import app.data.DataSubgoal;
@@ -47,7 +48,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Entities.Entities;
-import Entities.InventoryItem;
 import Entities.collectableEntities.CollectableEntity;
 
 public class DungeonManiaController {
@@ -56,82 +56,71 @@ public class DungeonManiaController {
     private EntitiesFactory entitiesFactory;
     private Random random;
     private Character character;
-   
 
-
-    
     public DungeonManiaController() {
         numCreatedDungeons = 0;
         dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
         entitiesFactory = new EntitiesFactory(); // instantiating this to grab
         random = new Random(System.currentTimeMillis()); // Seed is the time
-        
+
     }
 
-    
-    /** 
+    /**
      * @param dungeon
      */
     public void setDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
 
-    
-    /** 
+    /**
      * @return EntitiesFactory
      */
     public EntitiesFactory getEntitiesFactory() {
         return this.entitiesFactory;
     }
 
-    
-    /** 
+    /**
      * @param entitiesFactory
      */
     public void setEntitiesFactory(EntitiesFactory entitiesFactory) {
         this.entitiesFactory = entitiesFactory;
     }
 
-    
-    /** 
+    /**
      * @return Random
      */
     public Random getRandom() {
         return this.random;
     }
 
-    
-    /** 
+    /**
      * @param random
      */
     public void setRandom(Random random) {
         this.random = random;
     }
-    
-    /** 
+
+    /**
      * @param character
      */
     public void setCharacter(Character character) {
         this.character = character;
     }
 
-    
-
-    
     /**
      * @return int
      */
     public int getNumCreatedDungeons() {
         return this.numCreatedDungeons;
     }
-    
+
     /**
      * @param numCreatedDungeons
      */
     public void setNumCreatedDungeons(int numCreatedDungeons) {
         this.numCreatedDungeons = numCreatedDungeons;
     }
-    
+
     /**
      * 
      * @return Dungeon
@@ -186,7 +175,7 @@ public class DungeonManiaController {
         return "dungeon" + String.valueOf(currentDungeonNo);
     }
 
-      /** 
+    /**
      * This generates the position that the spider will spawn in
      * 
      * @return Position
@@ -242,8 +231,7 @@ public class DungeonManiaController {
                 buildableResponses, dungeon.getGoals());
     }
 
-    
-    /** 
+    /**
      * @param entitiesResponses
      * @param dungeonName
      */
@@ -253,10 +241,10 @@ public class DungeonManiaController {
                     new FileReader("src/main/resources/dungeons/" + dungeonName + ".json"));
             Data data = new Gson().fromJson(br, Data.class);
             if (data.getGoalCondition() != null) {
-                dungeon.setAllGoals(data);  // Set the goals given by the map only if there is a goal condition
+                dungeon.setAllGoals(data); // Set the goals given by the map only if there is a goal condition
 
             }
-           
+
             for (DataEntities entity : data.getEntities()) {
 
                 Entities newEntity = entitiesFactory.creatingEntitiesFactory(entity);
@@ -286,28 +274,29 @@ public class DungeonManiaController {
         List<String> buildablesResponses = new ArrayList<>();
 
         for (Entities entity : getEntities()) {
-                entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
-                        entity.isInteractable()));
+            entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                    entity.isInteractable()));
 
         }
 
         for (InventoryItem inventoryItem : getCharacter().getInventory()) {
-            inventoryResponses.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
+            inventoryResponses.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
 
         }
 
         for (String builds : dungeon.getBuildables()) {
             buildablesResponses.add(builds);
         }
-        DungeonResponse dg = new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entitiesResponses, inventoryResponses,
-        buildablesResponses, dungeon.getGoals());
+        DungeonResponse dg = new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entitiesResponses,
+                inventoryResponses, buildablesResponses, dungeon.getGoals());
 
         Gson gson = new Gson();
         try {
 
             String data = readFile("data.json");
-            List<Map<String, DungeonResponse>> dungeonList = gson.fromJson(data, new TypeToken<List<Map<String, DungeonResponse>>>() {
-                
+            List<Map<String, DungeonResponse>> dungeonList = gson.fromJson(data,
+                    new TypeToken<List<Map<String, DungeonResponse>>>() {
+
                     }.getType());
             if (dungeonList == null) {
                 dungeonList = new ArrayList<Map<String, DungeonResponse>>();
@@ -363,7 +352,7 @@ public class DungeonManiaController {
         for (EntityResponse entity : dg.getEntities()) {
             newEntities.add(entitiesFactory.creatingEntitiesFactory(entity));
         }
-        
+
         for (ItemResponse item : dg.getInventory()) {
             newInventory.add(new InventoryItem(item.getId(), item.getType()));
         }
@@ -377,7 +366,6 @@ public class DungeonManiaController {
         getCharacter().setInventory(newInventory);
         dungeon.setBuildables(newBuildables);
         dungeon.setGoals(dg.getGoals());
-
 
         return dg;
 
@@ -432,11 +420,11 @@ public class DungeonManiaController {
 
         // Checks for valid argument
         // if (itemUsedId == null) {
-        //     throw new IllegalArgumentException("itemUsedId provided is null");
+        // throw new IllegalArgumentException("itemUsedId provided is null");
         // }
 
         // if (itemUsedId.equals("")) {
-        //     throw new IllegalArgumentException("itemUsedId provided is an empty string");
+        // throw new IllegalArgumentException("itemUsedId provided is an empty string");
         // }
 
         dungeon.incrementTicks(); // This increments the number of ticks in this dungeon
@@ -470,12 +458,10 @@ public class DungeonManiaController {
 
         // Character movement
         /**
-             * check movable then move char
-             * if char on entity -> pickup/interact
-             * if entity on character -> fight
-             * check movable then move entities
-             * if entity on character -> fight (if haven't fought yet) 
-             */
+         * check movable then move char if char on entity -> pickup/interact if entity
+         * on character -> fight check movable then move entities if entity on character
+         * -> fight (if haven't fought yet)
+         */
         // Process:
         // Use item
         // Move character
@@ -493,15 +479,16 @@ public class DungeonManiaController {
         // - ..etc.
         // - If entity is moving, fight
         // - If entity is collectable, move entity to inventory
-        // - Check if items in inventory can build buildables, if so, append to buildables
-        // - Update character movement 
+        // - Check if items in inventory can build buildables, if so, append to
+        // buildables
+        // - Update character movement
 
         // Move all movableEntities
         // - Calculate movableEntity's next move
         // - Check if future position is on entity
         // - If so, check what type of entity
-        // - Update moveableEntity movement 
-        
+        // - Update moveableEntity movement
+
         // Suggestion
         // - Each entity has a function for when character/entity moves onto itself
         // - For now, move character
@@ -512,8 +499,7 @@ public class DungeonManiaController {
             if (entity instanceof Triggerable) {
                 Triggerable triggerable = (Triggerable) entity;
                 triggerable.trigger();
-            }
-            else if (entity instanceof CollectableEntity) {
+            } else if (entity instanceof CollectableEntity) {
                 CollectableEntity collectable = (CollectableEntity) entity;
                 collectable.Pickup(dungeon, character);
             }
@@ -521,18 +507,14 @@ public class DungeonManiaController {
         }
 
         spawnEnemies(); // Spawn Enemies
-        for (Entities entity: getEntities()) {
-                if (entity instanceof Spider) {
-                    Spider spider = (Spider) entity;
-                    spider.makeMovement(new Position(0, 9), entity, this);
+        for (Entities entity : getEntities()) {
+            if (entity instanceof Spider) {
+                Spider spider = (Spider) entity;
+                spider.makeMovement(new Position(0, 9), entity, this);
 
-                }
+            }
 
-
-            
-        }    
-        
-        
+        }
 
         List<EntityResponse> entities = new ArrayList<>();
         List<ItemResponse> inventory = new ArrayList<>();
@@ -542,20 +524,20 @@ public class DungeonManiaController {
             if (entity != null) { // something is breaking sometin is null - temp fix
                 entities.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
                         entity.isInteractable()));
-            } 
+            }
 
         }
 
         for (InventoryItem inventoryItem : getCharacter().getInventory()) {
-            inventory.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
+            inventory.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
 
         }
 
         for (String builds : buildables) {
             buildables.add(builds);
         }
-        return new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entities, inventory,
-                buildables, dungeon.getGoals());
+        return new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entities, inventory, buildables,
+                dungeon.getGoals());
     }
 
     /**
@@ -579,34 +561,35 @@ public class DungeonManiaController {
         return null;
     }
 
-    
-    /** 
+    /**
      * @return Character
      */
     public Character getCharacter() {
         // System.out.println(getEntities());
-        for (Entities entity: getEntities()) {
+        for (Entities entity : getEntities()) {
             if (entity.getType().equals("player")) {
-                if (entity instanceof Character) return (Character) entity;
+                if (entity instanceof Character)
+                    return (Character) entity;
             }
         }
         return null;
 
     }
 
-    
-    /** 
+    /**
      * @return ArrayList<Entities>
      */
 
     public void gameCompleted() {
-    // If you stop returning any goals (i.e. empty string) it'll say the game has been completed
-        dungeon.setGoals(""); 
+        // If you stop returning any goals (i.e. empty string) it'll say the game has
+        // been completed
+        dungeon.setGoals("");
     }
 
     public void gameLost() {
-    // If you no longer give an entity object for a player to the frontend it'll say the game has been lost
-        for (Entities entity: getEntities()) {
+        // If you no longer give an entity object for a player to the frontend it'll say
+        // the game has been lost
+        for (Entities entity : getEntities()) {
             if (entity instanceof Character) {
                 ArrayList<Entities> newList = getEntities();
                 newList.remove(entity);
@@ -618,13 +601,12 @@ public class DungeonManiaController {
     }
 
     public ArrayList<Entities> getEntities() {
-        
+
         return dungeon.getEntities();
 
     }
 
-    
-    /** 
+    /**
      * @param position
      * @return Entities
      */
@@ -638,15 +620,16 @@ public class DungeonManiaController {
         return null;
     }
 
-
     public void spawnEnemies() {
         if (dungeon.getTicksCounter() % 10 == 0) {
-            Entities spider = entitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10), 2));
+            Entities spider = entitiesFactory.createEntities("spider",
+                    new Position(random.nextInt(10), random.nextInt(10), 2));
             dungeon.addEntities(spider);
         }
 
         if (dungeon.getTicksCounter() % 20 == 0) {
-            Entities zombieToast = entitiesFactory.createEntities("zombie_toast", new Position(random.nextInt(10), random.nextInt(10)));
+            Entities zombieToast = entitiesFactory.createEntities("zombie_toast",
+                    new Position(random.nextInt(10), random.nextInt(10)));
             dungeon.addEntities(zombieToast);
         }
     }
