@@ -627,9 +627,9 @@ public class DungeonManiaController {
             dungeon.addEntities(spider);
         }
 
-        // if (dungeon.getTicksCounter() % 20 == 0) {
-        //     Entities zombieToast = EntitiesFactory.createEntities("zombie_toast", new Position(random.nextInt(10), random.nextInt(10)));
-        //     dungeon.addEntities(zombieToast);
-        // }
+        if (dungeon.getTicksCounter() % 20 == 0) {
+            Entities zombieToast = EntitiesFactory.createEntities("zombie_toast", new Position(random.nextInt(10), random.nextInt(10)));
+            dungeon.addEntities(zombieToast);
+        }
     }
 }
