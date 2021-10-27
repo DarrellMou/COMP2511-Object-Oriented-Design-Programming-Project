@@ -6,8 +6,9 @@ Character:
 
 Spider
 
-- The maximum number of possilbe allowable spiders to be spawned is 7, this is more than the minimum of 4, and less than the clutter of the screen
+- There is no maximum number of possilbe allowable spiders, this is more than the minimum of 4
 - It is able to walk through anything but boulders and other moving entities (except character)
+- Assume that the spider spawns every 10 ticks
 - If a spider was to spawn on top of the boulder, it will just go in the reverse direction
 - The Spider will break out of its cycle if the player is using the invincivility potion, and will resume the cycle once the invincivility potion is used
 - Spider cannot go through portals
