@@ -18,6 +18,7 @@ public abstract class Entities {
         this.isWalkable = isWalkable;
     }
 
+    // TODO should not be here. Craftables (shield/bow) should have their own class?
     public Entities(String id, String type, boolean isInteractable) {
         this.id = id;
         this.type = type;

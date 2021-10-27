@@ -10,8 +10,8 @@ import dungeonmania.util.Position;
 
 public class Boulder extends StaticEntities implements Movable, Triggerable {
 
-    public Boulder(String id, Position position, boolean isInteractable) {
-        super(id, "boulder", position, isInteractable, false);
+    public Boulder(String id, Position position) {
+        super(id, "boulder", position, false, false);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class Boulder extends StaticEntities implements Movable, Triggerable {
     }
 
     @Override
-    public void makeMovement(Position startingPosition, Entities spider, DungeonManiaController controller) {
+    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
         // TODO Auto-generated method stub
         
     }
