@@ -8,13 +8,10 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
 
-import org.json.*;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,7 +22,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import Entities.Entities;
@@ -34,24 +30,15 @@ import Entities.movingEntities.*;
 import Entities.movingEntities.Character;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Triggerable;
-import Entities.staticEntities.Wall;
 import Items.InventoryItem;
 import Entities.staticEntities.ZombieToastSpawner;
 import app.data.Data;
 import app.data.DataEntities;
-import app.data.DataSubgoal;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import Entities.Entities;
 import Entities.collectableEntities.CollectableEntity;
 
 public class DungeonManiaController {

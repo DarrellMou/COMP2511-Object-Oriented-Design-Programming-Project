@@ -1,11 +1,7 @@
 package Entities.movingEntities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import Entities.Entities;
 import Items.InventoryItem;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import Entities.Entities;
-import Items.InventoryItem;
 import app.data.Data;
 import app.data.DataSubgoal;
 

@@ -18,13 +18,11 @@ import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.Portal;
 import Entities.staticEntities.Wall;
 import Entities.staticEntities.ZombieToastSpawner;
-import app.data.Data;
 import app.data.DataEntities;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;
 import Entities.movingEntities.ZombieToast;
-import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
@@ -116,7 +114,7 @@ public class EntitiesFactory {
         } else if (type.equals("invincibility_potion")) {
             newEntity = new InvincibilityPotion(getNextId(), type, position, true);
         } else if (type.equals("switch")) {
-            newEntity = new FloorSwitch(getNextId(), type, position, true);
+            newEntity = new FloorSwitch(getNextId(), position);
         } else if (type.equals("player")) {
             newEntity = new Character(getNextId(), position); // What is character health?
         } else if (type.equals("boulder")) {
