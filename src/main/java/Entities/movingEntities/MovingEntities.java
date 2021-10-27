@@ -7,12 +7,16 @@ import dungeonmania.util.Position;
 
 import java.util.List;
 
-public abstract class MovingEntities extends Entities implements Movable {
+public  class MovingEntities extends Entities implements Movable {
     private double health;
+    private double attackDamage;
 
-    public MovingEntities(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double health) {
+
+
+    public MovingEntities(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double health, double attackDamage) {
         super(id, type, position, isInteractable, isWalkable);
         this.health = health;
+        this.attackDamage = attackDamage;
     }
 
     
@@ -29,6 +33,14 @@ public abstract class MovingEntities extends Entities implements Movable {
      */
     public void setHealth(double health) {
         this.health = health;
+    }
+
+    public double getAttackDamage() {
+        return this.attackDamage;
+    }
+
+    public void setAttackDamage(double attackDamage) {
+        this.attackDamage = attackDamage;
     }
 
 
@@ -59,5 +71,12 @@ public abstract class MovingEntities extends Entities implements Movable {
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    public void makeMovement(Position startingPosition, Entities entity, DungeonManiaController controller) {
+        // TODO Auto-generated method stub
+        
     }
 }
