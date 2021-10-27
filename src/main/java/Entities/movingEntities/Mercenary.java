@@ -9,10 +9,15 @@ import dungeonmania.util.Position;
 
 public class Mercenary extends MovingEntities {
 
-    public Mercenary(String id, String type, Position position, boolean isInteractable, double health) {
-        super(id, type, position, isInteractable, true, health);
-    }
     
+    
+    public Mercenary(String id, String type, Position position, boolean isInteractable, 
+            double health, double attackDamage) {
+        super(id, type, position, isInteractable, true, health, attackDamage);
+        //TODO Auto-generated constructor stub
+    }
+
+
     @Override
     public boolean checkMovable(Position position, List<Entities> entities) {
         for (Entities e : entities) {
