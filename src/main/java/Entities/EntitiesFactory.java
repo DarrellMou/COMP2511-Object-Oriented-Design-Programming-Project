@@ -119,7 +119,7 @@ public class EntitiesFactory {
             newEntity = new Arrow(getNextId(), type, position, true); // interactable???
         }  else if (type.equals("wood")) {
             newEntity = new Wood(getNextId(), position); // interactable???
-        }else if (type.equals("invincibility_potion")) {
+        } else if (type.equals("invincibility_potion")) {
             newEntity = new InvincibilityPotion(getNextId(), type, position, true);
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), type, position, true);
@@ -133,6 +133,14 @@ public class EntitiesFactory {
             newEntity = new Mercenary(getNextId(), position); // What is mecernary health?
         } else if (type.equals("spider")) {
             newEntity = new Spider(getNextId(), position);
+        } else if (type.equals("bow")) {
+            newEntity = new Bow(getNextId(), true);
+        }  else if (type.equals("shield")) {
+            newEntity = new Shield(getNextId(), true);
+        } else if (type.equals("zombie_toast")) {
+            newEntity = new ZombieToast(getNextId(), position);
+        } else if (type.equals("zombie_toast_spawner")) {
+            newEntity = new ZombieToastSpawner(getNextId(), position);
         }
 
         return newEntity;

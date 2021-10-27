@@ -17,14 +17,23 @@ import dungeonmania.util.Position;
 
 public class Spider extends MovingEntities implements Spawnable{
 
-
-
+    private Position spawnPosition;
+    
     public Spider(String id, Position position) {
         super(id, "spider", position, false, true, 30, 1);
+        spawnPosition = position;
+    }
+    
+
+    public Position getSpawnPosition() {
+        return this.spawnPosition;
     }
 
-
-
+    public void setSpawnPosition(Position spawnPosition) {
+        this.spawnPosition = spawnPosition;
+    }
+    
+    
 
     /** 
      * 
@@ -56,9 +65,14 @@ public class Spider extends MovingEntities implements Spawnable{
      */
     public Boolean checkBoulder(Position position, DungeonManiaController controller) {
         for (Entities e : controller.getEntities()) {
+   
             if (e.getPosition().equals(position) && e.getType().equals("boulder")) {
                 return true;
             }
+       
+              
+            
+     
         }
         return false;
     }
@@ -88,9 +102,14 @@ public class Spider extends MovingEntities implements Spawnable{
                 } else {
                     setPosition(new Position(spiderMovementPositions.get(i + 1).getX(), spiderMovementPositions.get(i+1).getY()));
                 }
-                break;
-            }
+                return;
+            } 
         }
+
+     
+        // Have the spider move up if this is the beginning position
+        setPosition(new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY()));
+       
 
      
         
