@@ -17,9 +17,14 @@ import dungeonmania.util.Position;
 public class Spider extends MovingEntities {
 
 
-    public Spider(String id, String type, Position position, boolean isInteractable, double health) {
-        super(id, type, position, isInteractable, true, health);
+
+    public Spider(String id, String type, Position position, boolean isInteractable,  double health,
+            double attackDamage) {
+        super(id, type, position, isInteractable, true, health, attackDamage);
+        //TODO Auto-generated constructor stub
     }
+
+
 
 
     /** 

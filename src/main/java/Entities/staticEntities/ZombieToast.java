@@ -10,11 +10,14 @@ import dungeonmania.util.Position;
 
 public class ZombieToast extends MovingEntities {
 
-    public ZombieToast(String id, String type, Position position, boolean isInteractable, double health) {
-        super(id, type, position, isInteractable, true, health);
+   
+    
+    public ZombieToast(String id, String type, Position position, boolean isInteractable,
+            double health, double attackDamage) {
+        super(id, type, position, isInteractable, true, health, attackDamage);
         //TODO Auto-generated constructor stub
     }
-    
+
     @Override
     public boolean checkMovable(Position position, List<Entities> entities) {
         // if position has unwalkable entity
