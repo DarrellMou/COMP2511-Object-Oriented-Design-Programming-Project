@@ -72,10 +72,6 @@ public class DungeonManiaController {
     public void setDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> master
     
     /** 
      * @return Random
@@ -507,11 +503,11 @@ public class DungeonManiaController {
 
         spawnEnemies(); // Spawn Enemies
         for (Entities entity: getEntities()) {
-                if (entity instanceof Spider) {
-                    Spider spider = (Spider) entity;
-                    spider.makeMovement(new Position(0, 9), this);
+            if (entity instanceof Spider) {
+                Spider spider = (Spider) entity;
+                spider.makeMovement(new Position(0, 9), this);
 
-                }
+            }
 
 
             
@@ -630,9 +626,9 @@ public class DungeonManiaController {
             dungeon.addEntities(spider);
         }
 
-        if (dungeon.getTicksCounter() % 20 == 0) {
-            Entities zombieToast = EntitiesFactory.createEntities("zombie_toast", new Position(random.nextInt(10), random.nextInt(10)));
-            dungeon.addEntities(zombieToast);
-        }
+        // if (dungeon.getTicksCounter() % 20 == 0) {
+        //     Entities zombieToast = EntitiesFactory.createEntities("zombie_toast", new Position(random.nextInt(10), random.nextInt(10)));
+        //     dungeon.addEntities(zombieToast);
+        // }
     }
 }
