@@ -72,6 +72,10 @@ public class DungeonManiaController {
     public void setDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
     
     /** 
      * @return Random
