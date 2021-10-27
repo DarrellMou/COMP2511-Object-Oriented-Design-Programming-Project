@@ -337,6 +337,7 @@ public class DungeonManiaController {
         dungeon.setDungeonId(dg.getDungeonId());
         dungeon.setDungeonName(dg.getDungeonName());
         dungeon.setEntities(newEntities);
+        // TODO set character
         getCharacter().setInventory(newInventory);
         dungeon.setBuildables(newBuildables);
         dungeon.setGoals(dg.getGoals());
@@ -467,6 +468,9 @@ public class DungeonManiaController {
         // - Each entity has a function for when character/entity moves onto itself
         // - For now, move character
 
+        // for boulder movement in character class
+        character.setMovementDirection(movementDirection);
+        
         Position newPosition = character.getPosition().translateBy(movementDirection);
         Entities newPositionEntity = getEntityFromPosition(newPosition);
         // Boulder movement
@@ -480,6 +484,7 @@ public class DungeonManiaController {
         if (character.checkMovable(newPosition, getEntities())) {
             Entities entity = getEntityFromPosition(newPosition);
             if (entity instanceof Triggerable) {
+                // something happens when you try to walk onto it
                 Triggerable triggerable = (Triggerable) entity;
                 triggerable.trigger();
             } else if (entity instanceof CollectableEntity) {

@@ -1,10 +1,16 @@
 package Entities.movingEntities;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import Entities.Entities;
+import Entities.collectableEntities.CollectableEntity;
+import Entities.staticEntities.Boulder;
+import Entities.staticEntities.Triggerable;
 import Items.InventoryItem;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Character extends MovingEntities implements Fightable {
@@ -13,11 +19,21 @@ public class Character extends MovingEntities implements Fightable {
      * inventory = [ {item1}, {item2}... ]
      */
     private ArrayList<InventoryItem> inventory;
+    private Direction movementDirection;
 
     public Character(String id, Position position) {
         super(id, "player", position, false, true, 120, 3);
         inventory = new ArrayList<InventoryItem>();
     }
+
+    public Direction getMovementDirection() {
+        return movementDirection;
+    }
+
+    public void setMovementDirection(Direction movementDirection) {
+        this.movementDirection = movementDirection;
+    }
+
 
     public boolean hasKey() {
         for (InventoryItem i : getInventory()) {
@@ -75,7 +91,7 @@ public class Character extends MovingEntities implements Fightable {
         int arrow = 0;
         int treasure = 0;
         int key = 0;
-
+        // TODO put recipes in classes e.g. requiredMaterials in bow and shield
         for (InventoryItem item : inventory) {
             if (item.getType().equals("wood")) {
                 wood++;
@@ -111,9 +127,45 @@ public class Character extends MovingEntities implements Fightable {
     }
 
     @Override
-    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
-        // TODO Auto-generated method stub
-
+    public void makeMovement(Position targetPosition, DungeonManiaController controller) {
+        if (checkMovable(targetPosition, controller.getEntities())) {
+            setPosition(targetPosition);
+        }
     }
 
+    @Override
+    public boolean checkMovable(Position position, List<Entities> entities) {
+        // Does stuff with entity at target position
+        // TODO refactor all entities when walkedOn(Character)
+        // wall: nothing
+        // collectable item: pickup
+        // enemy: battle
+        // boulder: moves if it can
+        // triggerables: trigger
+        for (Entities e : entities) {
+            if (e.getPosition().equals(position)) {
+                // Boulder movement
+                if (e instanceof Boulder) {
+                    Boulder b = (Boulder) e;
+                    Position newBoulderPosition = b.getPosition().translateBy(getMovementDirection());
+                    if (b.checkMovable(newBoulderPosition, entities)) {
+                        b.setPosition(newBoulderPosition);
+                    }
+                } else if (e instanceof Triggerable) {
+                    // something happens when you try to walk onto it (door, portal)
+                    // door: if inventory contains correct key, door isMovable = true
+                    // portal: setPosition to position of other portal
+                    Triggerable t = (Triggerable) e;
+                    t.trigger();
+                    break;
+                }
+            }
+        }
+        for (Entities e : entities) {
+            if (e.getPosition().equals(position) && (!e.isWalkable())) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

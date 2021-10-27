@@ -52,10 +52,6 @@ public class Spider extends SpawningEntities {
             if (e.getPosition().equals(position) && e.getType().equals("boulder")) {
                 return true;
             }
-       
-              
-            
-     
         }
         return false;
     }

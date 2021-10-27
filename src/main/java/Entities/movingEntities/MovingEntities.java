@@ -1,6 +1,7 @@
 package Entities.movingEntities;
 
 import Entities.Entities;
+import Entities.staticEntities.Triggerable;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
@@ -45,20 +46,12 @@ public abstract class MovingEntities extends Entities implements Movable {
 
     
     /** 
+     * Checks if the position is movable onto. 
      * @param position
      * @param controller
      * @return boolean
      */
-    @Override
-    public boolean checkMovable(Position position, List<Entities> entities) {
-        // if position has unwalkable entity
-        for (Entities e : entities) {
-            if (e.getPosition().equals(position) && !e.isWalkable()) {
-                return false;
-            }
-        }
-        return true;
-    }
+    public abstract boolean checkMovable(Position position, List<Entities> entities);
 
     
     /** 
@@ -74,8 +67,5 @@ public abstract class MovingEntities extends Entities implements Movable {
 
 
     @Override
-    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
-        // TODO Auto-generated method stub
-        
-    }
+    public abstract void makeMovement(Position position, DungeonManiaController controller);
 }

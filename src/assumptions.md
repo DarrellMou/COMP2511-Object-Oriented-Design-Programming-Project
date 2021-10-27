@@ -64,3 +64,6 @@ Shield: Durability: 3, Decrease Attack Damage of Enemy: 0.5
 
 Building
 - Crafting shield will use whatever is first in inventory (treasure/key)
+
+Portal
+- Walking into a portal will teleport the player to the position of the other portal
