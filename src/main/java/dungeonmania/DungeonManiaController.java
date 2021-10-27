@@ -515,7 +515,8 @@ public class DungeonManiaController {
             }
             else if (entity instanceof CollectableEntity) {
                 CollectableEntity collectable = (CollectableEntity) entity;
-                collectable.Pickup(dungeon, character);
+                collectable.pickup(dungeon, character);
+                character.checkForBuildables(dungeon);
             }
             character.setPosition(newPosition);
         }
