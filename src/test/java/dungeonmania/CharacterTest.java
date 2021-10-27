@@ -5,24 +5,15 @@ import org.junit.jupiter.api.Test;
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.InventoryItem;
-import Entities.buildableEntities.Bow;
-import Entities.collectableEntities.consumables.Key;
 import Entities.collectableEntities.equipments.Sword;
-import Entities.collectableEntities.materials.Arrow;
-import Entities.collectableEntities.materials.Wood;
-import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
-import Entities.staticEntities.Boulder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -192,23 +183,34 @@ public class CharacterTest {
     }
 
     @Test
-    public void testCharacterHPAfterFight() {
+    public void testHPAfterStandardFight() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
         // Add merc to right of player
-        Entities m = EntitiesFactory.createEntities("mercenary", new Position(2, 1));
+        Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(2, 1));
         // move to merc and fight
         controller.tick("", Direction.RIGHT);
         // check HP
-        // assertEquals();
+        // Character HP = 120 - ((80 * 1) / 10) = 112
+        assertEquals(112, controller.getCharacter().getHealth());
+        // Merc HP = 80 - ((120 * 3 ) / 5) = 8
+        assertEquals(8, m.getHealth());
     }
 
     @Test
-    public void testMercenaryBribe() {
-        // TODO 
+    public void testHPAfterHardFight() {
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("advanced", "Standard");
+        controller.newGame("advanced", "Hard");
 
+        // Add merc to right of player
+        Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(2, 1));
+        // move to merc and fight
+        controller.tick("", Direction.RIGHT);
+        // check HP
+        // Character HP = 100 - ((80 * 1) / 10) = 92
+        assertEquals(92, controller.getCharacter().getHealth());
+        // Merc HP = 80 - ((100 * 3 ) / 5) = 8
+        assertEquals(20, m.getHealth());
     }
 }

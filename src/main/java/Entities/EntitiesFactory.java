@@ -111,15 +111,15 @@ public class EntitiesFactory {
             newEntity = new Wall(getNextId(), position);
         } else if (type.equals("bomb")) {
             newEntity = new Bomb(getNextId(), type, position, false);
-        }  else if (type.equals("exit")) {
+        } else if (type.equals("exit")) {
             newEntity = new Exit(getNextId(), type, position, false); // is exit interactable?
         } else if (type.equals("treasure")) {
             newEntity = new Treasure(getNextId(), type, position, true);
-        }  else if (type.equals("arrow")) {
+        } else if (type.equals("arrow")) {
             newEntity = new Arrow(getNextId(), type, position, true); // interactable???
-        }  else if (type.equals("wood")) {
+        } else if (type.equals("wood")) {
             newEntity = new Wood(getNextId(), position); // interactable???
-        }else if (type.equals("invincibility_potion")) {
+        } else if (type.equals("invincibility_potion")) {
             newEntity = new InvincibilityPotion(getNextId(), type, position, true);
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), type, position, true);
@@ -132,6 +132,8 @@ public class EntitiesFactory {
         } else if (type.equals("mercenary")) {
             newEntity = new Mercenary(getNextId(), position); // What is mecernary health?
         } else if (type.equals("spider")) {
+            newEntity = new Spider(getNextId(), position);
+        } else if (type.equals("zombie_toast")) {
             newEntity = new Spider(getNextId(), position);
         }
 

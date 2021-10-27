@@ -505,7 +505,7 @@ public class DungeonManiaController {
         for (Entities entity: getEntities()) {
                 if (entity instanceof Spider) {
                     Spider spider = (Spider) entity;
-                    spider.makeMovement(new Position(0, 9), entity, this);
+                    spider.makeMovement(new Position(0, 9), this);
 
                 }
 
