@@ -4,20 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import Entities.Entities;
 import Entities.EntitiesFactory;
-<<<<<<< HEAD
-import Entities.buildableEntities.Bow;
-import Entities.collectableEntities.consumables.Key;
-import Entities.collectableEntities.equipments.Sword;
-import Entities.collectableEntities.materials.Arrow;
-import Entities.collectableEntities.materials.Wood;
-import Entities.movingEntities.Character;
-import Entities.staticEntities.Boulder;
 import Items.InventoryItem;
-=======
-import Entities.InventoryItem;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.movingEntities.Mercenary;
->>>>>>> master
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -152,14 +141,9 @@ public class CharacterTest {
         assertEquals(expectedBefore, controller.getCharacter().getInventory());
         controller.tick("", Direction.RIGHT); // walk on key 2, do not pickup key 2
         // Check still only key1 in invenotry
-<<<<<<< HEAD
-        assertEquals(controller.getCharacter().getInventory(), expectedBefore);
+        assertEquals(expectedBefore, controller.getCharacter().getInventory());
         // sanity check that character can move ontop of keys despite not being able to
         // pick it up
-=======
-        assertEquals(expectedBefore, controller.getCharacter().getInventory());
-        // sanity check that character can move ontop of keys despite not being able to pick it up
->>>>>>> master
         assertEquals(new Position(3, 1), controller.getCharacter().getPosition());
     }
 
@@ -168,27 +152,6 @@ public class CharacterTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Peaceful");
 
-<<<<<<< HEAD
-        // Create bow materials to right of player + bow
-        EntitiesFactory ef = new EntitiesFactory();
-        Wood wood1 = (Wood) ef.createEntities("wood", new Position(2, 1));
-        Arrow arrow1 = (Arrow) ef.createEntities("arrow", new Position(3, 1));
-        Arrow arrow2 = (Arrow) ef.createEntities("arrow", new Position(4, 1));
-        Arrow arrow3 = (Arrow) ef.createEntities("arrow", new Position(5, 1));
-        // Add bow materials to right of player
-        controller.getEntities().add(wood1);
-        controller.getEntities().add(arrow1);
-        controller.getEntities().add(arrow2);
-        controller.getEntities().add(arrow3);
-
-        // 1 wood + 3 arrows expected before build
-        List<InventoryItem> expectedBefore = new ArrayList<>();
-        expectedBefore.add(new InventoryItem(wood1.getId(), wood1.getType()));
-        expectedBefore.add(new InventoryItem(arrow1.getId(), arrow1.getType()));
-        expectedBefore.add(new InventoryItem(arrow2.getId(), arrow2.getType()));
-        expectedBefore.add(new InventoryItem(arrow3.getId(), arrow3.getType()));
-
-=======
         // Create bow materials to right of player
         Entities w = EntitiesFactory.createEntities("key", new Position(2, 1));
         Entities a1 = EntitiesFactory.createEntities("arrow", new Position(3, 1));
@@ -204,8 +167,7 @@ public class CharacterTest {
         controller.tick("", Direction.RIGHT); // arrow1
         controller.tick("", Direction.RIGHT); // arrow2
         controller.tick("", Direction.RIGHT); // arroe3
-        
->>>>>>> master
+
         // 1 bow expected after build
         List<InventoryItem> expectedAfter = new ArrayList<>();
         expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "bow"));
@@ -218,19 +180,12 @@ public class CharacterTest {
         // build bow
         controller.build("bow");
         // Check 1 bow is in inventory
-        assertEquals(1, controller.getCharacter().getInventory()
-            .stream()
-            .filter(i -> i.getType().equals("bow"))
-            .count()
-        );
+        assertEquals(1,
+                controller.getCharacter().getInventory().stream().filter(i -> i.getType().equals("bow")).count());
         // Check materials are gone
         Predicate<InventoryItem> woodPred = i -> i.getType().equals("wood");
         Predicate<InventoryItem> arrowPred = i -> i.getType().equals("arrow");
-        assertEquals(0, controller.getCharacter().getInventory()
-            .stream()
-            .filter(woodPred.or(arrowPred))
-            .count()
-        );
+        assertEquals(0, controller.getCharacter().getInventory().stream().filter(woodPred.or(arrowPred)).count());
     }
 
     @Test
@@ -250,12 +205,8 @@ public class CharacterTest {
     }
 
     @Test
-<<<<<<< HEAD
-    public void testMercenaryBribe() {
-        // TODO
-=======
+
     public void testHPAfterHardFight() {
->>>>>>> master
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Hard");
 
