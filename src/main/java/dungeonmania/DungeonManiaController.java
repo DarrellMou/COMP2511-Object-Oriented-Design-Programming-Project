@@ -504,8 +504,9 @@ public class DungeonManiaController {
         spawnEnemies(); // Spawn Enemies
         for (Entities entity: getEntities()) {
             if (entity instanceof Spider) {
+
                 Spider spider = (Spider) entity;
-                spider.makeMovement(new Position(0, 9), this);
+                spider.makeMovement(spider.getSpawnPosition(), this);
 
             }
 
@@ -620,7 +621,7 @@ public class DungeonManiaController {
     }
 
 
-    public void spawnEnemies() {
+    public void spawnEnemies(String gameMode) {
         if (dungeon.getTicksCounter() % 10 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider", new Position(random.nextInt(10), random.nextInt(10), 2));
             dungeon.addEntities(spider);

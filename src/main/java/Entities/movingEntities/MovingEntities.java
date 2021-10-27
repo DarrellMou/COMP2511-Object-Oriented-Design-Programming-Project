@@ -7,7 +7,7 @@ import dungeonmania.util.Position;
 
 import java.util.List;
 
-public  class MovingEntities extends Entities implements Movable {
+public abstract class MovingEntities extends Entities implements Movable {
     private double health;
     private double attackDamage;
 
