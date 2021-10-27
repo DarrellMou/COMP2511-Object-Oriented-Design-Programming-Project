@@ -75,7 +75,7 @@ public  class MovingEntities extends Entities implements Movable {
 
 
     @Override
-    public void makeMovement(Position startingPosition, Entities entity, DungeonManiaController controller) {
+    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
         // TODO Auto-generated method stub
         
     }
