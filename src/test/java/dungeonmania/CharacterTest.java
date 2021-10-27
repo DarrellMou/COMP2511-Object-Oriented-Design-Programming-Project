@@ -158,11 +158,21 @@ public class CharacterTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Peaceful");
 
-        // Create bow materials to right of player + bow
-        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "wood"));
-        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
-        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
-        controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
+        // Create bow materials to right of player
+        Entities w = EntitiesFactory.createEntities("key", new Position(2, 1));
+        Entities a1 = EntitiesFactory.createEntities("arrow", new Position(3, 1));
+        Entities a2 = EntitiesFactory.createEntities("arrow", new Position(4, 1));
+        Entities a3 = EntitiesFactory.createEntities("arrow", new Position(5, 1));
+        // Add keys to right of player
+        controller.getEntities().add(w);
+        controller.getEntities().add(a1);
+        controller.getEntities().add(a2);
+        controller.getEntities().add(a3);
+
+        controller.tick("", Direction.RIGHT); // wood
+        controller.tick("", Direction.RIGHT); // arrow1
+        controller.tick("", Direction.RIGHT); // arrow2
+        controller.tick("", Direction.RIGHT); // arroe3
         
         // 1 bow expected after build
         List<InventoryItem> expectedAfter = new ArrayList<>();
@@ -201,7 +211,6 @@ public class CharacterTest {
         // move to merc and fight
         controller.tick("", Direction.RIGHT);
         // check HP
-        // assertEquals();
     }
 
     @Test
