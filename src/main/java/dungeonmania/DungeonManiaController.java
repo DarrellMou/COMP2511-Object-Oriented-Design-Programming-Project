@@ -501,7 +501,7 @@ public class DungeonManiaController {
             character.setPosition(newPosition);
         }
 
-        spawnEnemies(); // Spawn Enemies
+        spawnEnemies(getDungeon().getGameMode()); // Spawn Enemies
         for (Entities entity: getEntities()) {
             if (entity instanceof Spider) {
 
