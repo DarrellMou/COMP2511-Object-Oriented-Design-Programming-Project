@@ -17,10 +17,13 @@ import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.Portal;
 import Entities.staticEntities.Wall;
+import Entities.staticEntities.ZombieToast;
+import Entities.staticEntities.ZombieToastSpawner;
 import app.data.Data;
 import app.data.DataEntities;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
+import Entities.movingEntities.Spider;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
@@ -102,8 +105,6 @@ public class EntitiesFactory {
      */
     public Entities createEntities(String type, Position position) {
         Entities newEntity = null;
-
-        // TODO Can someone finissh the rest of this lol
         if (type.equals("wall")) {
             newEntity = new Wall(getNextId(), type, position, false);
         } else if (type.equals("bomb")) {
@@ -121,13 +122,19 @@ public class EntitiesFactory {
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), type, position, true);
         } else if (type.equals("player")) {
-            newEntity = new Character(getNextId(), position, true, 100); // What is character health?
+            newEntity = new Character(getNextId(), type, position, true, 100, 30); // What is character health?
         } else if (type.equals("boulder")) {
             newEntity = new Boulder(getNextId(), position, false); // is boulder interctable?
         } else if (type.equals("sword")) {
             newEntity = new Sword(getNextId(), type, position, false); // is sword interctable?
         } else if (type.equals("mercenary")) {
-            newEntity = new Mercenary(getNextId(), type, position, true, 100); // What is mecernary health?
+            newEntity = new Mercenary(getNextId(), type, position, true, 80, 20); 
+        }  else if (type.equals("zombie_toast_spawner")) {
+            newEntity = new ZombieToastSpawner(getNextId(), type, position, true); 
+        }   else if (type.equals("spider")) {
+            newEntity = new Spider(getNextId(), type, position, true, 30, 5);
+        }   else if (type.equals("zombie_toast")) {
+            newEntity = new ZombieToast(getNextId(), type, position, true, 50, 20); 
         }
 
         return newEntity;
