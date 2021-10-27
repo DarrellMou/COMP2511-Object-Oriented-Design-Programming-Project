@@ -36,6 +36,7 @@ import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Triggerable;
 import Entities.staticEntities.Wall;
 import Items.InventoryItem;
+import Entities.staticEntities.ZombieToastSpawner;
 import app.data.Data;
 import app.data.DataEntities;
 import app.data.DataSubgoal;
@@ -504,9 +505,10 @@ public class DungeonManiaController {
 
         spawnEnemies(getDungeon().getGameMode()); // Spawn Enemies
         for (Entities entity : getEntities()) {
-            if (entity instanceof Spider) {
-                Spider spider = (Spider) entity;
-                spider.makeMovement(spider.getSpawnPosition(), this);
+            if (entity instanceof SpawningEntities) {
+                SpawningEntities spawningEntities = (SpawningEntities) entity;
+                spawningEntities.makeMovement(spawningEntities.getSpawnPosition(), this);
+
             }
         }
 
@@ -557,12 +559,12 @@ public class DungeonManiaController {
      * @return Character
      */
     public Character getCharacter() {
-        // System.out.println(getEntities());
+
         for (Entities entity : getEntities()) {
-            if (entity.getType().equals("player")) {
-                if (entity instanceof Character)
-                    return (Character) entity;
-            }
+            // if (entity.getType().equals("player")) {
+            if (entity instanceof Character)
+                return (Character) entity;
+            // }
         }
         return null;
 
@@ -619,10 +621,16 @@ public class DungeonManiaController {
             dungeon.addEntities(spider);
         }
 
-        // if (dungeon.getTicksCounter() % 20 == 0) {
-        // Entities zombieToast = EntitiesFactory.createEntities("zombie_toast", new
-        // Position(random.nextInt(10), random.nextInt(10)));
-        // dungeon.addEntities(zombieToast);
-        // }
+        if (dungeon.getTicksCounter() % 20 == 0) {
+            for (Entities entity : getEntities()) {
+                if (entity instanceof ZombieToastSpawner) {
+                    ZombieToastSpawner zombieToastSpawner = (ZombieToastSpawner) entity;
+                    Entities zombieToast = zombieToastSpawner.spawnZombies();
+                    dungeon.addEntities(zombieToast);
+
+                }
+            }
+        }
+
     }
 }
