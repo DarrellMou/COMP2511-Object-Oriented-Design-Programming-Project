@@ -30,16 +30,14 @@ public class DungeonManiaControllerTest {
         assertEquals(dg,
                 new DungeonResponse(dg.getDungeonId(), "boulders", entities, inventory, buildables, "boulders"));
 
-        // This should throw IllegalArgumentException as the gameMode is not a valid
-        // game mode
+        // This should throw IllegalArgumentException as the gameMode is not a valid game mode
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.newGame("dungeonWorld2", "not peaceful");
+            controller.newGame("advanced", "invalid game mode");
         });
 
-        // This should throw IllegalArgumentException as the as the dungeon name already
-        // exits
+        // This should throw IllegalArgumentException as the as the dungeon name doesn't exist
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.newGame("dungeonWorld", "peaceful");
+            controller.newGame("invalid dungeon name", "Peaceful");
         });
     }
 
@@ -48,8 +46,8 @@ public class DungeonManiaControllerTest {
 
         // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse dg = controller.newGame("dungeonWorld", "peaceful");
-        assertEquals(dg, new DungeonResponse("dungeon1", "dungeonWorld", null, null, null, null));
+        DungeonResponse dg = controller.newGame("advanced", "peaceful");
+        assertEquals(dg, new DungeonResponse("dungeon1", "advanced", null, null, null, null));
 
         // This should throw IllegalArgumentException as the id is not a valid id to
         // save
