@@ -4,9 +4,9 @@ import java.util.UUID;
 
 import Entities.buildableEntities.Bow;
 import Entities.buildableEntities.Shield;
-import Entities.collectableEntities.consumableEntities.Bomb;
-import Entities.collectableEntities.consumableEntities.InvincibilityPotion;
-import Entities.collectableEntities.consumableEntities.Key;
+import Entities.collectableEntities.consumables.Bomb;
+import Entities.collectableEntities.consumables.InvincibilityPotion;
+import Entities.collectableEntities.consumables.Key;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
 import Entities.collectableEntities.materials.Treasure;

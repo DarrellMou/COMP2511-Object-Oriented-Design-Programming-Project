@@ -48,6 +48,7 @@ import org.json.JSONObject;
 
 import Entities.Entities;
 import Entities.InventoryItem;
+import Entities.collectableEntities.CollectableEntity;
 
 public class DungeonManiaController {
     private int numCreatedDungeons;
@@ -511,6 +512,10 @@ public class DungeonManiaController {
             if (entity instanceof Triggerable) {
                 Triggerable triggerable = (Triggerable) entity;
                 triggerable.trigger();
+            }
+            else if (entity instanceof CollectableEntity) {
+                CollectableEntity collectable = (CollectableEntity) entity;
+                collectable.Pickup(dungeon, character);
             }
             character.setPosition(newPosition);
         }
