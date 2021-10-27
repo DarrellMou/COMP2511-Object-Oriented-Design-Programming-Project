@@ -19,7 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import dungeonmania.response.models.DungeonResponse;
@@ -163,13 +165,13 @@ public class CharacterTest {
         controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
         controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
         controller.getCharacter().addInventory(new InventoryItem(EntitiesFactory.getNextId(), "arrow"));
-        
+                
         // 1 bow expected after build
         List<InventoryItem> expectedAfter = new ArrayList<>();
         expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "bow"));
 
         // Expected for bow to be buildable
-        List<String> expectedBuildables = new ArrayList<>();
+        Set<String> expectedBuildables = new HashSet<>();
         expectedBuildables.add("bow");
 
         assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
