@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
@@ -158,49 +159,40 @@ public class CharacterTest {
 
         // Create bow materials to right of player + bow
         EntitiesFactory ef = new EntitiesFactory();
-        Wood wood1 = (Wood) ef.createEntities("wood", new Position(2, 1));
-        Arrow arrow1 = (Arrow) ef.createEntities("arrow", new Position(3, 1));
-        Arrow arrow2 = (Arrow) ef.createEntities("arrow", new Position(4, 1));
-        Arrow arrow3 = (Arrow) ef.createEntities("arrow", new Position(5, 1));
-        // Add bow materials to right of player
-        controller.getEntities().add(wood1);
-        controller.getEntities().add(arrow1);
-        controller.getEntities().add(arrow2);
-        controller.getEntities().add(arrow3);
-        
-        // 1 wood + 3 arrows expected before build
-        List<InventoryItem> expectedBefore = new ArrayList<>();
-        expectedBefore.add(new InventoryItem(wood1.getId(), wood1.getType()));
-        expectedBefore.add(new InventoryItem(arrow1.getId(), arrow1.getType()));
-        expectedBefore.add(new InventoryItem(arrow2.getId(), arrow2.getType()));
-        expectedBefore.add(new InventoryItem(arrow3.getId(), arrow3.getType()));
+        controller.getCharacter().addInventory(new InventoryItem(ef.getNextId(), "wood"));
+        controller.getCharacter().addInventory(new InventoryItem(ef.getNextId(), "arrow"));
+        controller.getCharacter().addInventory(new InventoryItem(ef.getNextId(), "arrow"));
+        controller.getCharacter().addInventory(new InventoryItem(ef.getNextId(), "arrow"));
         
         // 1 bow expected after build
         List<InventoryItem> expectedAfter = new ArrayList<>();
-        Bow bow1 = new Bow(ef.getNextId(), false);
-        expectedAfter.add(new InventoryItem(bow1.getId(), bow1.getType()));
+        expectedAfter.add(new InventoryItem(ef.getNextId(), "bow"));
 
         // Expected for bow to be buildable
         List<String> expectedBuildables = new ArrayList<>();
         expectedBuildables.add("bow");
 
-        // Character initial position: (1, 1)
-        controller.tick("", Direction.RIGHT); // pickup wood1
-        controller.tick("", Direction.RIGHT); // pickup arrow1
-        controller.tick("", Direction.RIGHT); // pickup arrow2
-        controller.tick("", Direction.RIGHT); // pickup arrow3
-        // sanity check that character has correct inventory + can build bow
-        assertEquals(expectedBefore, controller.getCharacter().getInventory());
         assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
         // build bow
         controller.build("bow");
-        // Check bow materials gone and bow is there
-        assertEquals(expectedAfter, controller.getCharacter().getInventory());
+        // Check 1 bow is in inventory
+        assertEquals(1, controller.getCharacter().getInventory()
+            .stream()
+            .filter(i -> i.getType().equals("bow"))
+            .count()
+        );
+        // Check materials are gone
+        Predicate<InventoryItem> woodPred = i -> i.getType().equals("wood");
+        Predicate<InventoryItem> arrowPred = i -> i.getType().equals("arrow");
+        assertEquals(0, controller.getCharacter().getInventory()
+            .stream()
+            .filter(woodPred.or(arrowPred))
+            .count()
+        );
     }
 
     @Test
     public void testCharacterHPAfterFight() {
-        // TODO discuss hp first
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
