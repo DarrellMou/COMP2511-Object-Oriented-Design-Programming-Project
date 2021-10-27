@@ -18,13 +18,11 @@ import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.Portal;
 import Entities.staticEntities.Wall;
 import Entities.staticEntities.ZombieToastSpawner;
-import app.data.Data;
 import app.data.DataEntities;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;
 import Entities.movingEntities.ZombieToast;
-import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 

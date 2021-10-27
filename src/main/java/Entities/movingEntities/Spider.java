@@ -2,16 +2,11 @@ package Entities.movingEntities;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-import java.util.Iterator;
 
 
 import Entities.Entities;
-import Entities.EntitiesFactory;
 import Entities.staticEntities.Boulder;
-import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
