@@ -65,11 +65,4 @@ public abstract class Entities {
     public void setWalkable(boolean isWalkable) {
         this.isWalkable = isWalkable;
     }
-
-    /**
-     * Is called when some entity moves onto this entity
-     * @param dungeon
-     * @param walker
-     */
-    public abstract void walkedOn(Dungeon dungeon, Entities walker);
 }

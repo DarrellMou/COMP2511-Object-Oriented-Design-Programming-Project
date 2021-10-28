@@ -1,11 +1,12 @@
 package Entities.staticEntities;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class Exit extends StaticEntities implements Triggerable, Untriggerable {
+public class Exit extends StaticEntities implements Triggerable, Untriggerable, WalkedOn {
 
     public Exit(String id, Position position) {
         super(id, "exit", position, false, true); // is exit walkable?

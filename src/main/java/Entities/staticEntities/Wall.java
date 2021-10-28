@@ -10,9 +10,4 @@ public class Wall extends StaticEntities {
         super(id, "wall", position, false, false);
     }
 
-    @Override
-    public void walkedOn(Dungeon dungeon, Entities walker) {
-        return;
-    }
-
 }

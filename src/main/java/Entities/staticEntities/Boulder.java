@@ -3,12 +3,13 @@ package Entities.staticEntities;
 import java.util.List;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Movable;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class Boulder extends StaticEntities implements Movable {
+public class Boulder extends StaticEntities implements Movable, WalkedOn {
 
     public Boulder(String id, Position position) {
         super(id, "boulder", position, false, false);

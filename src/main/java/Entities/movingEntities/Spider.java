@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Entities.staticEntities.Boulder;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
@@ -116,14 +117,6 @@ public class Spider extends SpawningEntities {
         spiderMovementPositions.add(new Position(x - 1, y - 1));
 
         return spiderMovementPositions;
-    }
-
-    @Override
-    public void walkedOn(Dungeon dungeon, Entities walker) {
-        if (walker instanceof Character) {
-            // Character character = (Character) walker;
-            // fight
-        }
     }
 
 }

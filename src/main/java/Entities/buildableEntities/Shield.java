@@ -9,10 +9,5 @@ public class Shield extends Entities {
     public Shield(String id) {
         super(id, "shield", false);
     }
-
-    @Override
-    public void walkedOn(Dungeon dungeon, Entities walker) {
-        return;
-    }
     
 }

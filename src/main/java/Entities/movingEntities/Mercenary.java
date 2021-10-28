@@ -3,11 +3,12 @@ package Entities.movingEntities;
 import java.util.List;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
-public class Mercenary extends SpawningEntities {
+public class Mercenary extends SpawningEntities implements WalkedOn {
 
     public Mercenary(String id, Position position) {
         super(id, "mercenary", position, true, true, 80, 1);

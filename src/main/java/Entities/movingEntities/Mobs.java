@@ -1,6 +1,7 @@
 package Entities.movingEntities;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Entities.staticEntities.Triggerable;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
@@ -8,7 +9,7 @@ import dungeonmania.util.Position;
 
 import java.util.List;
 
-public abstract class Mobs extends Entities implements Movable {
+public abstract class Mobs extends Entities implements Movable, WalkedOn {
     private double health;
     private double attackDamage;
 

@@ -3,11 +3,12 @@ package Entities.staticEntities;
 import java.util.Objects;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class Door extends StaticEntities implements Triggerable {
+public class Door extends StaticEntities implements Triggerable, WalkedOn {
 
     private int key;
 
