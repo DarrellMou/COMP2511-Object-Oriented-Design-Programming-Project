@@ -8,6 +8,9 @@ import java.util.Map;
 import Entities.Entities;
 import Items.InventoryItem;
 import Items.ItemsFactory;
+import Items.Equipments.Armours.Armours;
+import Items.Equipments.Shields.Shields;
+import Items.Equipments.Weapons.Weapons;
 import Items.materialItem.MaterialItem;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
@@ -87,15 +90,15 @@ public class Character extends Mobs implements Fightable {
             if (materials.containsKey(collectable.getType())) {
                 int value = materials.get(collectable.getType());
                 materials.put(collectable.getType(), ++value);
-            }
-            else if (collectable instanceof MaterialItem) {
+            } else if (collectable instanceof MaterialItem) {
                 materials.put(collectable.getType(), 1);
             }
         }
 
         // Temporary, refactor later
         // bow
-        if ((materials.containsKey("wood") && materials.get("wood") >= 1) && (materials.containsKey("arrow") && materials.get("arrow") >= 3)) {
+        if ((materials.containsKey("wood") && materials.get("wood") >= 1)
+                && (materials.containsKey("arrow") && materials.get("arrow") >= 3)) {
             dungeon.addBuildables("bow");
         }
 
