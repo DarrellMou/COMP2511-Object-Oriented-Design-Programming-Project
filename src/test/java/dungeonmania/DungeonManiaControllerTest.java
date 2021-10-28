@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import dungeonmania.util.Direction;
-import dungeonmania.*;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;

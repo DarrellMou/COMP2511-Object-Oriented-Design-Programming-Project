@@ -1,39 +1,41 @@
 package Entities.movingEntities;
 
 import Entities.Entities;
-import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 import java.util.List;
 
-public abstract class MovingEntities extends Entities implements Movable {
+public abstract class Mobs extends Entities implements Movable {
     private double health;
+    private double attackDamage;
 
-    public MovingEntities(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double health) {
+    public Mobs(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double health,
+            double attackDamage) {
         super(id, type, position, isInteractable, isWalkable);
         this.health = health;
+        this.attackDamage = attackDamage;
     }
 
-    
-    /** 
+    /**
      * @return double
      */
     public double getHealth() {
         return health;
     }
 
-    
-    /** 
+    /**
      * @param health
      */
     public void setHealth(double health) {
         this.health = health;
     }
 
+    public double getAttackDamage() {
+        return this.attackDamage;
+    }
 
-    
-    /** 
+    /**
      * @param position
      * @param controller
      * @return boolean
@@ -49,15 +51,24 @@ public abstract class MovingEntities extends Entities implements Movable {
         return true;
     }
 
-    
-    /** 
+    /**
      * @param e
      * @return boolean
      */
     protected boolean isMovingEntityButNotCharacter(Entities e) {
-        if (e instanceof MovingEntities && !(e instanceof Character)) {
+        if (e instanceof Mobs && !(e instanceof Character)) {
             return true;
         }
         return false;
     }
+
+    @Override
+    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public abstract double calculateDamage();
+
+    public abstract void takeDamage(double Damage);
 }

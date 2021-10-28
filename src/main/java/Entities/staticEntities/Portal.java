@@ -5,8 +5,6 @@ import dungeonmania.util.Position;
 public class Portal extends StaticEntities{
     private String colour;
 
-
-
     public Portal(String id, String type, Position position, boolean isInteractable, String colour) {
         super(id, type, position, isInteractable, true);
         this.colour = colour;

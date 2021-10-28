@@ -1,12 +1,12 @@
 package Entities.collectableEntities.materials;
 
-import Entities.Entities;
+import Entities.collectableEntities.CollectableEntity;
 import dungeonmania.util.Position;
 
-public class Treasure extends Entities { // fix this to collectables
+public class Treasure extends CollectableEntity { // fix this to collectables
 
-    public Treasure(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable, true);
+    public Treasure(String id, Position position, boolean isInteractable) {
+        super(id, "treasure", position, false);
         // TODO Auto-generated constructor stub
     }
 

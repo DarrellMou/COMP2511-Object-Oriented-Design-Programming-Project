@@ -1,10 +1,9 @@
-package Entities.collectableEntities.consumableEntities;
+package Entities.collectableEntities.consumables;
 
-import Entities.InventoryItem;
-import Entities.collectableEntities.ConsumableEntity;
+import Entities.collectableEntities.CollectableEntity;
 import dungeonmania.util.Position;
 
-public class Key extends ConsumableEntity {
+public class Key extends CollectableEntity {
     private boolean isCollectable;
     private int key;
 
@@ -13,8 +12,11 @@ public class Key extends ConsumableEntity {
         isCollectable = true; // TODO temp
         this.key = key;
     }
-    // TODO if character already has key in inventory, the key should not be picked up
-    // TODO observer pattern maybe? Keys should observe inventory and update their isCollectable
+
+    // TODO if character already has key in inventory, the key should not be picked
+    // up
+    // TODO observer pattern maybe? Keys should observe inventory and update their
+    // isCollectable
     public boolean isCollectable() {
         return isCollectable;
     }
@@ -29,10 +31,5 @@ public class Key extends ConsumableEntity {
 
     public void setKey(int key) {
         this.key = key;
-    }
-    @Override
-    public void consumeItem() {
-        // TODO Auto-generated method stub
-        
     }
 }
