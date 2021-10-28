@@ -491,8 +491,8 @@ public class DungeonManiaController {
                 triggerable.trigger();
             } else if (entity instanceof CollectableEntity) {
                 CollectableEntity collectable = (CollectableEntity) entity;
-                collectable.pickup(dungeon, character);
-                character.checkForBuildables(dungeon);
+                InventoryItem item = collectable.pickup(dungeon, character);
+                character.checkForBuildables(item, dungeon);
             }
             character.setPosition(newPosition);
         }
@@ -547,7 +547,7 @@ public class DungeonManiaController {
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
         if (character.build(buildable)) {
-            character.checkForBuildables(dungeon);
+            character.checkForBuildables(null, dungeon);
         }
 
         // Temporary, store responses and change necessary responses only
