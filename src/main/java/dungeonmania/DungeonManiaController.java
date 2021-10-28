@@ -8,24 +8,18 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
 
-import org.json.*;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import Entities.Entities;
@@ -34,45 +28,32 @@ import Entities.movingEntities.*;
 import Entities.movingEntities.Character;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Triggerable;
-import Entities.staticEntities.Wall;
 import Items.InventoryItem;
 import Entities.staticEntities.ZombieToastSpawner;
 import app.data.Data;
 import app.data.DataEntities;
-import app.data.DataSubgoal;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import Entities.Entities;
 import Entities.collectableEntities.CollectableEntity;
 
 public class DungeonManiaController {
     private int numCreatedDungeons;
     private Dungeon dungeon;
+
+
     private Random random;
     private Character character;
 
     public DungeonManiaController() {
         numCreatedDungeons = 0;
-        dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
+        dungeon = new Dungeon(getDungeonId()); 
         random = new Random(System.currentTimeMillis()); // Seed is the time
     }
 
-    /**
-     * @param dungeon
-     */
-    public void setDungeon(Dungeon dungeon) {
-        this.dungeon = dungeon;
-    }
-
+   
     /**
      * @return Random
      */
@@ -107,14 +88,18 @@ public class DungeonManiaController {
     public void setNumCreatedDungeons(int numCreatedDungeons) {
         this.numCreatedDungeons = numCreatedDungeons;
     }
+    public Dungeon getDungeon() {
+        return this.dungeon;
+    }
 
     /**
-     * 
-     * @return Dungeon
+     * @param dungeon
      */
-    public Dungeon getDungeon() {
-        return dungeon;
+    public void setDungeon(Dungeon dungeon) {
+        this.dungeon = dungeon;
     }
+
+
 
     /**
      * @return String
@@ -207,6 +192,9 @@ public class DungeonManiaController {
 
         dungeon.setDungeonName(dungeonName);
         dungeon.setGameMode(gameMode);
+        dungeon.setEntities(new ArrayList<Entities>()); // Clear out anything from the previous game
+        dungeon.setBuildables(new ArrayList<String>());
+
         List<EntityResponse> entitiesResponses = new ArrayList<>();
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildableResponses = new ArrayList<>();
@@ -231,6 +219,12 @@ public class DungeonManiaController {
                 dungeon.setAllGoals(data); // Set the goals given by the map only if there is a goal condition
 
             }
+
+            int height = data.getHeight(); // Sets the height and width dimensions of the dungeons
+            int width = data.getWidth();
+
+            dungeon.setHeight(height);
+            dungeon.setWidth(width);
 
             for (DataEntities entity : data.getEntities()) {
 
@@ -334,7 +328,7 @@ public class DungeonManiaController {
         // Otherwise we load the dungeon
         ArrayList<Entities> newEntities = new ArrayList<>();
         ArrayList<InventoryItem> newInventory = new ArrayList<>();
-        Set<String> newBuildables = new HashSet<>();
+        ArrayList<String> newBuildables = new ArrayList<>();
 
         for (EntityResponse entity : dg.getEntities()) {
             newEntities.add(EntitiesFactory.creatingEntitiesFactory(entity));
@@ -503,15 +497,22 @@ public class DungeonManiaController {
             character.setPosition(newPosition);
         }
 
-        spawnEnemies(getDungeon().getGameMode()); // Spawn Enemies
+        spawnEnemies(dungeon.getGameMode(), dungeon.getHeight(), dungeon.getWidth()); // Spawn Enemies
         for (Entities entity : getEntities()) {
             if (entity instanceof SpawningEntities) {
                 SpawningEntities spawningEntities = (SpawningEntities) entity;
-                spawningEntities.makeMovement(spawningEntities.getSpawnPosition(), this);
+                if (spawningEntities instanceof Spider) {
+                    spawningEntities.makeMovement(spawningEntities.getSpawnPosition(), this);
 
+                } else {
+                    spawningEntities.makeMovement(spawningEntities.getPosition(), this);
+
+                }
+        
             }
         }
 
+        // Temporary, store responses and change necessary responses only
         List<EntityResponse> entitiesResponses = new ArrayList<>();
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildablesResponses = new ArrayList<>();
@@ -551,8 +552,32 @@ public class DungeonManiaController {
      * @throws InvalidActionException
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
+        if (character.build(buildable)) {
+            character.checkForBuildables(dungeon);
+        }
 
-        return null;
+        // Temporary, store responses and change necessary responses only
+        List<EntityResponse> entitiesResponses = new ArrayList<>();
+        List<ItemResponse> inventoryResponses = new ArrayList<>();
+        List<String> buildablesResponses = new ArrayList<>();
+
+        for (Entities entity : getEntities()) {
+                entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                        entity.isInteractable()));
+
+        }
+
+        for (InventoryItem inventoryItem : getCharacter().getInventory()) {
+            inventoryResponses.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
+
+        }
+
+        for (String builds : dungeon.getBuildables()) {
+            buildablesResponses.add(builds);
+        }
+        
+        return new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entitiesResponses, inventoryResponses,
+        buildablesResponses, dungeon.getGoals());
     }
 
     /**
@@ -614,10 +639,10 @@ public class DungeonManiaController {
         return null;
     }
 
-    public void spawnEnemies(String gameMode) {
+    public void spawnEnemies(String gameMode, int height, int width) {
         if (dungeon.getTicksCounter() % 10 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
-                    new Position(random.nextInt(10), random.nextInt(10), 2));
+                    new Position(random.nextInt(width), random.nextInt(height), 2));
             dungeon.addEntities(spider);
         }
 
@@ -627,6 +652,7 @@ public class DungeonManiaController {
                     ZombieToastSpawner zombieToastSpawner = (ZombieToastSpawner) entity;
                     Entities zombieToast = zombieToastSpawner.spawnZombies();
                     dungeon.addEntities(zombieToast);
+                    break;
 
                 }
             }

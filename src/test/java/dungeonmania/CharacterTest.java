@@ -11,7 +11,6 @@ import Entities.movingEntities.Mercenary;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -153,7 +152,7 @@ public class CharacterTest {
         controller.newGame("advanced", "Peaceful");
 
         // Create bow materials to right of player
-        Entities w = EntitiesFactory.createEntities("key", new Position(2, 1));
+        Entities w = EntitiesFactory.createEntities("wood", new Position(2, 1));
         Entities a1 = EntitiesFactory.createEntities("arrow", new Position(3, 1));
         Entities a2 = EntitiesFactory.createEntities("arrow", new Position(4, 1));
         Entities a3 = EntitiesFactory.createEntities("arrow", new Position(5, 1));
@@ -173,7 +172,7 @@ public class CharacterTest {
         expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "bow"));
 
         // Expected for bow to be buildable
-        Set<String> expectedBuildables = new HashSet<>();
+        List<String> expectedBuildables = new ArrayList<>();
         expectedBuildables.add("bow");
 
         assertEquals(expectedBuildables, controller.getDungeon().getBuildables());

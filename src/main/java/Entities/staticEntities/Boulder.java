@@ -6,7 +6,6 @@ import Entities.Entities;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Movable;
 import Entities.movingEntities.Mobs;
-import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 

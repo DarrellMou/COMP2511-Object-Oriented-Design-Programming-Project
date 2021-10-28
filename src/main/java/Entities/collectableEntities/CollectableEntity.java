@@ -1,6 +1,5 @@
 package Entities.collectableEntities;
 
-import java.util.ArrayList;
 
 import Entities.Entities;
 import Items.InventoryItem;

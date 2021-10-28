@@ -1,13 +1,9 @@
 package dungeonmania;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import Entities.Entities;
-import Items.InventoryItem;
 import app.data.Data;
 import app.data.DataSubgoal;
 
@@ -15,41 +11,29 @@ public class Dungeon {
     private String dungeonId;
     private String dungeonName;
     private ArrayList<Entities> entities;
-    private Set<String> buildables;
+    private ArrayList<String> buildables;
     private String goals;
     private String gameMode;
     private int ticksCounter;
+    private int width;
+    private int height;
 
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
     // List<String> buildables = new ArrayList<>();
 
-    public Dungeon(String dungeonId, String dungeonName, String goals, String gameMode) {
+    public Dungeon(String dungeonId) {
         this.dungeonId = dungeonId;
-        this.dungeonName = dungeonName;
+        this.dungeonName = "";
         this.entities = new ArrayList<Entities>();
-        this.buildables = new HashSet<String>();
+        this.buildables = new ArrayList<String>();
         this.goals = goals;
         this.gameMode = gameMode;
         ticksCounter = 0;
+        this.width = 0;
+        this.height = 0;
+
     }
-
-    // public Dungeon(String dungeonId, String dungeonName, ArrayList<Entities>
-    // entities, Set<String> buildables, String goals, String gameMode) {
-    // this.dungeonId = dungeonId;
-    // this.dungeonName = dungeonName;
-    // this.entities = new ArrayList<Entities>();
-
-    // Iterator<Entities> iterator = entities.iterator();
-    // while(iterator.hasNext()){
-    // this.entities.add((Entities) iterator.next().clone());
-    // }
-
-    // this.buildables = new HashSet<String>();
-    // this.goals = goals;
-    // this.gameMode = gameMode;
-    // ticksCounter = 0;
-    // }
 
     public String getDungeonId() {
         return this.dungeonId;
@@ -84,11 +68,11 @@ public class Dungeon {
         this.entities.remove(entity);
     }
 
-    public Set<String> getBuildables() {
+    public ArrayList<String> getBuildables() {
         return this.buildables;
     }
 
-    public void setBuildables(Set<String> buildables) {
+    public void setBuildables(ArrayList<String> buildables) {
         this.buildables = buildables;
     }
 
@@ -124,6 +108,26 @@ public class Dungeon {
      */
     public void incrementTicks() {
         this.ticksCounter++;
+    }
+
+    public void setTicksCounter(int ticksCounter) {
+        this.ticksCounter = ticksCounter;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public void setAllGoals(Data data) {
