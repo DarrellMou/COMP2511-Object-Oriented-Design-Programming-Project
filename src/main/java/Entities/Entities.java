@@ -1,5 +1,7 @@
 package Entities;
 
+import Entities.movingEntities.Character;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
 public abstract class Entities {
@@ -64,4 +66,6 @@ public abstract class Entities {
     public void setWalkable(boolean isWalkable) {
         this.isWalkable = isWalkable;
     }
+
+    public abstract void walkedOn(Dungeon dungeon, Character character);
 }

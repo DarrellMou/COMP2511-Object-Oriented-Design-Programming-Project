@@ -8,4 +8,10 @@ public class Wall extends StaticEntities {
         super(id, "wall", position, false, false);
     }
 
+    @Override
+    public void walkedOn() {
+        // Wall will never be walked on
+        return;
+    }
+
 }

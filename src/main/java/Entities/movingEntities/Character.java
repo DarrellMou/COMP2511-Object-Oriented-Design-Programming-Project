@@ -168,4 +168,9 @@ public class Character extends MovingEntities implements Fightable {
         }
         return true;
     }
+
+    @Override
+    public void walkedOn(Dungeon dungeon, Character character) {
+        return;
+    }
 }

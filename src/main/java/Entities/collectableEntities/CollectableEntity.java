@@ -19,4 +19,10 @@ public class CollectableEntity extends Entities {
         character.addInventory(item);
         dungeon.removeEntities(this);
     }
+
+    @Override
+    public void walkedOn(Dungeon dungeon, Character character) {
+        // TODO Auto-generated method stub
+        pickup(dungeon, character);
+    }
 }

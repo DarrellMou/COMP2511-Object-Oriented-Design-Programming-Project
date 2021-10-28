@@ -65,7 +65,6 @@ public abstract class MovingEntities extends Entities implements Movable {
         return false;
     }
 
-
     @Override
     public abstract void makeMovement(Position position, DungeonManiaController controller);
 }
