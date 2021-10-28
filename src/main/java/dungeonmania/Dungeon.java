@@ -17,7 +17,7 @@ public class Dungeon {
     private int ticksCounter;
     private int width;
     private int height;
- 
+
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
     // List<String> buildables = new ArrayList<>();
@@ -129,7 +129,6 @@ public class Dungeon {
     public void setHeight(int height) {
         this.height = height;
     }
-
 
     public void setAllGoals(Data data) {
         if (data.getGoalCondition().getGoal().equals("AND")) {
