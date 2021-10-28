@@ -17,19 +17,23 @@ public class Dungeon {
     private String goals;
     private String gameMode;
     private int ticksCounter;
-
+    private int width;
+    private int height;
+ 
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
     // List<String> buildables = new ArrayList<>();
 
-    public Dungeon(String dungeonId, String dungeonName, String goals, String gameMode) {
+    public Dungeon(String dungeonId) {
         this.dungeonId = dungeonId;
-        this.dungeonName = dungeonName;
+        this.dungeonName = "";
         this.entities = new ArrayList<Entities>();
         this.buildables = new HashSet<String>();
-        this.goals = goals;
-        this.gameMode = gameMode;
+        this.goals = "";
+        this.gameMode = "";
         ticksCounter = 0;
+        this.width = 0;
+        this.height = 0;
 
     }
 
@@ -107,6 +111,27 @@ public class Dungeon {
     public void incrementTicks() {
         this.ticksCounter++;
     }
+
+    public void setTicksCounter(int ticksCounter) {
+        this.ticksCounter = ticksCounter;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
 
     public void setAllGoals(Data data) {
         if (data.getGoalCondition().getGoal().equals("AND")) {
