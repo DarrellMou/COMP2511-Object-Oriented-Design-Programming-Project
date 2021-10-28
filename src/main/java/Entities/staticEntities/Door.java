@@ -4,7 +4,9 @@ import java.util.Objects;
 
 import Entities.Entities;
 import Entities.WalkedOn;
+import Entities.collectableEntities.consumables.Key;
 import Entities.movingEntities.Character;
+import Items.InventoryItem;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
@@ -53,6 +55,13 @@ public class Door extends StaticEntities implements Triggerable, WalkedOn {
     public void trigger(Dungeon dungeon, Entities walker) {
         Character character = (Character) walker;
         // check for key, if so make door unlocked + isMovable
+        if (character.hasKey()) {
+            for (InventoryItem i : character.getInventory()) {
+                if (i.getType().contains("key")) {
+                    // TODO daniel
+                }
+            }
+        }
     }
 
     @Override

@@ -15,11 +15,6 @@ public class Key extends CollectableEntity {
         this.key = key;
     }
 
-    // TODO if character already has key in inventory, the key should not be picked
-    // up
-    // TODO observer pattern maybe? Keys should observe inventory and update their
-    // isCollectable
-
     public int getKey() {
         return this.key;
     }
@@ -32,8 +27,10 @@ public class Key extends CollectableEntity {
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             Character character = (Character) walker;
-            InventoryItem item = pickup(dungeon, character);
-            character.checkForBuildables(item, dungeon);
+            if (!character.hasKey()) {
+                InventoryItem item = pickup(dungeon, character);
+                character.checkForBuildables(item, dungeon);
+            }
         }
     }
 }
