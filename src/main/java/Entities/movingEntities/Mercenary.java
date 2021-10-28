@@ -3,7 +3,6 @@ package Entities.movingEntities;
 import java.util.List;
 
 import Entities.Entities;
-import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 

@@ -13,6 +13,10 @@ Spider
 - The Spider will break out of its cycle if the player is using the invincivility potion, and will resume the cycle once the invincivility potion is used
 - Spider cannot go through portals
 
+loadGame
+
+- The itemResponse doesnt store the type of the key and door so we wont be able to match the type of keys and doors for games that are loaded.
+
 saveGame
 
 - The user will get access to all the saves, so they can have access to previous saves which wont be overriden.
@@ -24,6 +28,7 @@ Zombie Toast Spawner
 Zombie
 
 Mercenary
+
 - It will normally move in the direction of the player
 - If the path is blocked it will not move
 
@@ -48,9 +53,7 @@ The player will wear the first armour and shield that they have in their invento
 Assume there is only one treasure on the map, with more than one we can bribe more than one mercenary
 
 Health, Damages
-Rationale:
-    - Character health high enough to survive enemy hits + low enough to notice gradual decrease in damage as fights occur
-    - Character attack low enough to not immediately kill some enemies (merc at full hp and zombie toast as hp goes down)
+Rationale: - Character health high enough to survive enemy hits + low enough to notice gradual decrease in damage as fights occur - Character attack low enough to not immediately kill some enemies (merc at full hp and zombie toast as hp goes down)
 Character: Health: 120/100 (standard/hard mode), Attack Damage: 3
 Spider: Health: 30, Attack Damage: 1
 Zombie Toast: Health: 50, Attack Damage: 1
@@ -60,3 +63,7 @@ Sword: Durability: 4, Attack Damage: 1.5 x Character Attack Damage
 Bow: Durability: 3, Attack Damage: 2 x Character Attack Damage
 Armour: Durability: 4, Decrease Attack Damage of Enemy: 0.5
 Shield: Durability: 3, Decrease Attack Damage of Enemy: 0.5
+
+Building
+
+- Crafting shield will use whatever is first in inventory (treasure/key)

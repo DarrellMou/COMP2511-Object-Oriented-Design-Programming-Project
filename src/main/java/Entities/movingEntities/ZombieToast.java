@@ -1,14 +1,13 @@
-package Entities.staticEntities;
+package Entities.movingEntities;
 
 import java.util.List;
+import java.util.Random;
 
 import Entities.Entities;
-import Entities.movingEntities.MovingEntities;
-import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
-public class ZombieToast extends MovingEntities {
+public class ZombieToast extends SpawningEntities {
 
    
     
@@ -28,8 +27,11 @@ public class ZombieToast extends MovingEntities {
     }
 
     @Override
-    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
-        // TODO Auto-generated method stub
-        
+    public void makeMovement(Position currentPosition, DungeonManiaController controller) {
+        List<Position> positions = currentPosition.getAdjacentPositions();
+        // 9 possible different directions that the zombie might be able to go
+        Random random = controller.getRandom();
+        // Get a random position
+        setPosition(positions.get(random.nextInt(9)));
     }
 }

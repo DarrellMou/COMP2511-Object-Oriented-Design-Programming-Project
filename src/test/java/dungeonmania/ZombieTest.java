@@ -2,12 +2,10 @@ package dungeonmania;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
 
 import Entities.Entities;
-import Entities.staticEntities.ZombieToast;
+import Entities.movingEntities.ZombieToast;
 import dungeonmania.util.Direction;
 
 public class ZombieTest {

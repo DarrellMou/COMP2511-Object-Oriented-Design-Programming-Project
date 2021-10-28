@@ -17,14 +17,12 @@ import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.Portal;
 import Entities.staticEntities.Wall;
-import Entities.staticEntities.ZombieToast;
 import Entities.staticEntities.ZombieToastSpawner;
-import app.data.Data;
 import app.data.DataEntities;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;
-import dungeonmania.DungeonManiaController;
+import Entities.movingEntities.ZombieToast;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
@@ -34,12 +32,10 @@ public class EntitiesFactory {
         return UUID.randomUUID().toString();
     }
 
-
     public static Entities creatingEntitiesFactory(EntityResponse entity) {
 
         return createEntities(entity.getType(), entity.getPosition());
 
-        
     }
 
     public static Entities creatingEntitiesFactory(DataEntities entity) {
@@ -47,10 +43,8 @@ public class EntitiesFactory {
         if (type.equals("door") || type.equals("key")) {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()), entity.getKey());
 
-            
         } else if (type.equals("portal")) {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()), entity.getColour());
-
 
         } else {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()));
@@ -58,21 +52,19 @@ public class EntitiesFactory {
         }
     }
 
-    
-    
     public static Entities createEntities(String type, Position position, String colour) {
-        
+
         Entities newEntity = null;
 
         if (type.equals("portal")) {
             newEntity = new Portal(getNextId(), type, position, true, colour); // is door interactable?
-        } 
-        
+        }
+
         return newEntity;
     }
 
     public static Entities createEntities(String type, Position position, int key) {
-        
+
         Entities newEntity = null;
 
         if (type.equals("door")) {
@@ -80,21 +72,21 @@ public class EntitiesFactory {
         } else if (type.equals("key")) {
             newEntity = new Key(getNextId(), type, position, false, key); // is key interactable?
         }
-        
+
         return newEntity;
     }
 
     // public Entities createEntities(String type) {
-        
-    //     Entities newEntity = null;
 
-    //     if (type.equals("bow")) {
-    //         newEntity = new Bow(getNextId(), true); // is bow interactable?
-    //     } else if (type.equals("shield")) {
-    //         newEntity = new Shield(getNextId(), false); // is shield interactable?
-    //     }
-        
-    //     return newEntity;
+    // Entities newEntity = null;
+
+    // if (type.equals("bow")) {
+    // newEntity = new Bow(getNextId(), true); // is bow interactable?
+    // } else if (type.equals("shield")) {
+    // newEntity = new Shield(getNextId(), false); // is shield interactable?
+    // }
+
+    // return newEntity;
     // }
     /**
      * Create entity of given type at given position
@@ -122,7 +114,7 @@ public class EntitiesFactory {
         } else if (type.equals("invincibility_potion")) {
             newEntity = new InvincibilityPotion(getNextId(), type, position, true);
         } else if (type.equals("switch")) {
-            newEntity = new FloorSwitch(getNextId(), type, position, true);
+            newEntity = new FloorSwitch(getNextId(), position);
         } else if (type.equals("player")) {
             newEntity = new Character(getNextId(), position); // What is character health?
         } else if (type.equals("boulder")) {
