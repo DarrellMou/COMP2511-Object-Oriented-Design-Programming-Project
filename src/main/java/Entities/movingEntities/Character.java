@@ -15,9 +15,11 @@ public class Character extends MovingEntities implements Fightable {
      * inventory = [ {item1}, {item2}... ]
      */
     private ArrayList<InventoryItem> inventory;
+    private final int maxHealth;
 
     public Character(String id, Position position) {
         super(id, "player", position, false, true, 120, 3);
+        this.maxHealth = 120;
         inventory = new ArrayList<InventoryItem>();
     }
 
