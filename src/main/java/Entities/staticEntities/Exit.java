@@ -32,5 +32,4 @@ public class Exit extends StaticEntities implements Triggerable, Untriggerable {
         // Add exit goal
         // System.out.println("walked off exit");
     }
-
 }

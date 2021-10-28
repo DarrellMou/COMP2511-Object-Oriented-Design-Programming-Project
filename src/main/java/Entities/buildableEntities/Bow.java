@@ -15,5 +15,7 @@ public class Bow extends Entities {
         // bow never on map
         return;
     }
+
+    
     
 }

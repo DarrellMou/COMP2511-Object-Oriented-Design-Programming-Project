@@ -410,7 +410,8 @@ public class DungeonManiaController {
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
         if (getCharacter().build(buildable)) {
-            getCharacter().checkForBuildables(dungeon);
+            //TODO Darrell fix this plz :)
+            // getCharacter().checkForBuildables(null, dungeon);
         }
 
         // Temporary, store responses and change necessary responses only

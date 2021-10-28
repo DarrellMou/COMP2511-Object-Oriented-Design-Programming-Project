@@ -173,7 +173,6 @@ public class Dungeon {
         this.height = height;
     }
 
-
     public void setAllGoals(Data data) {
         if (data.getGoalCondition().getGoal().equals("AND")) {
             String goal = "";

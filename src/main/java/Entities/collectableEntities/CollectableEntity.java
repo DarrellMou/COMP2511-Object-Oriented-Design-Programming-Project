@@ -3,6 +3,7 @@ package Entities.collectableEntities;
 
 import Entities.Entities;
 import Items.InventoryItem;
+import Items.ItemsFactory;
 import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
@@ -13,10 +14,11 @@ public class CollectableEntity extends Entities {
         super(id, type, position, isInteractable, true);
     }
 
-    public void pickup(Dungeon dungeon, Character character) {
-        InventoryItem item = new InventoryItem(this.getId(), this.getType());
+    public InventoryItem pickup(Dungeon dungeon, Character character) {
+        InventoryItem item = ItemsFactory.createItem(this.getType());
         character.addInventory(item);
         dungeon.removeEntities(this);
+        return item;
     }
 
     /**

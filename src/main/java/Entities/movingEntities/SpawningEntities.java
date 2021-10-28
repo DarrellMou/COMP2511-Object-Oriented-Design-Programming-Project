@@ -7,7 +7,7 @@ import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
-public abstract class SpawningEntities extends MovingEntities {
+public abstract class SpawningEntities extends Mobs {
 
     private Position spawnPosition;
 
@@ -24,5 +24,5 @@ public abstract class SpawningEntities extends MovingEntities {
     public void setSpawnPosition(Position spawnPosition) {
         this.spawnPosition = spawnPosition;
     }
-    
+
 }

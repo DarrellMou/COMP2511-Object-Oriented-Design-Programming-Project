@@ -13,7 +13,6 @@ public class Mercenary extends SpawningEntities {
         super(id, "mercenary", position, true, true, 80, 1);
     }
 
-
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
         for (Entities e : dungeon.getEntities()) {

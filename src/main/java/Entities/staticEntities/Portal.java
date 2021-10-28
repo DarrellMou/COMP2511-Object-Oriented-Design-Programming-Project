@@ -6,6 +6,7 @@ import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
 public class Portal extends StaticEntities implements Triggerable {
+    
     private String colour;
 
     public Portal(String id, Position position, String colour) {

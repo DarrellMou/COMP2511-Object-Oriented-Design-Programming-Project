@@ -24,5 +24,4 @@ public class ZombieToastSpawner extends StaticEntities {
         // does nothing, isn't walkable on
         return;
     }
-
 }

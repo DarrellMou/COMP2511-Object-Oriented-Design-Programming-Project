@@ -11,7 +11,6 @@ public abstract class Entities {
     private boolean isInteractable;
     private boolean isWalkable;
 
-    
     public Entities(String id, String type, Position position, boolean isInteractable, boolean isWalkable) {
         this.id = id;
         this.type = type;
@@ -26,43 +25,43 @@ public abstract class Entities {
         this.type = type;
         this.isInteractable = isInteractable;
     }
-    
+
     public String getId() {
         return this.id;
     }
-    
+
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public String getType() {
         return this.type;
     }
-    
+
     public void setType(String type) {
         this.type = type;
     }
-    
+
     public Position getPosition() {
         return this.position;
     }
-    
+
     public void setPosition(Position position) {
         this.position = position;
     }
-    
+
     public boolean isInteractable() {
         return this.isInteractable;
     }
-    
+
     public void setInteractable(boolean isInteractable) {
         this.isInteractable = isInteractable;
     }
-    
+
     public boolean isWalkable() {
         return isWalkable;
     }
-    
+
     public void setWalkable(boolean isWalkable) {
         this.isWalkable = isWalkable;
     }

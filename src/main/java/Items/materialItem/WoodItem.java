@@ -1,6 +1,6 @@
-package Items;
+package Items.materialItem;
 
-public class WoodItem extends InventoryItem {
+public class WoodItem extends MaterialItem {
 
     public WoodItem(String id) {
         super(id, "wood");

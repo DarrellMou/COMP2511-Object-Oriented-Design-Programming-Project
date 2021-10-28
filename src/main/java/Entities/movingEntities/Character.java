@@ -1,7 +1,9 @@
 package Entities.movingEntities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Entities.Entities;
 import Entities.collectableEntities.CollectableEntity;
@@ -9,19 +11,25 @@ import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Triggerable;
 import Entities.staticEntities.Untriggerable;
 import Items.InventoryItem;
+import Items.ItemsFactory;
+import Items.Equipments.Armours.Armours;
+import Items.Equipments.Shields.Shields;
+import Items.Equipments.Weapons.Weapons;
+import Items.materialItem.MaterialItem;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Direction;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Position;
 
-public class Character extends MovingEntities implements Fightable {
+public class Character extends Mobs implements Fightable {
 
     /**
      * inventory = [ {item1}, {item2}... ]
      */
     private ArrayList<InventoryItem> inventory;
     private Direction movementDirection;
+    Map<String, Integer> materials = new HashMap<>();
     private final int maxHealth;
 
     public Character(String id, Position position) {
@@ -90,99 +98,113 @@ public class Character extends MovingEntities implements Fightable {
         // TODO
     }
 
-    public void checkForBuildables(Dungeon dungeon) {
+    public void checkForBuildables(InventoryItem collectable, Dungeon dungeon) {
         dungeon.setBuildables(new ArrayList<String>());
-        int wood = 0;
-        int arrow = 0;
-        int treasure = 0;
-        int key = 0;
-        // TODO put recipes in classes e.g. requiredMaterials in bow and shield
-        for (InventoryItem item : inventory) {
-            if (item.getType().equals("wood")) {
-                wood++;
-            } else if (item.getType().equals("arrow")) {
-                arrow++;
-            } else if (item.getType().equals("treasure")) {
-                treasure++;
-            } else if (item.getType().equals("key")) {
-                key++;
+
+        if (collectable != null) {
+            if (materials.containsKey(collectable.getType())) {
+                int value = materials.get(collectable.getType());
+                materials.put(collectable.getType(), ++value);
+            } else if (collectable instanceof MaterialItem) {
+                materials.put(collectable.getType(), 1);
             }
         }
 
+        // Temporary, refactor later
         // bow
-        if (wood >= 1 && arrow >= 3) {
+        if ((materials.containsKey("wood") && materials.get("wood") >= 1)
+                && (materials.containsKey("arrow") && materials.get("arrow") >= 3)) {
             dungeon.addBuildables("bow");
         }
 
         // shield
-        if (wood >= 2) {
-            if (treasure >= 1) {
+        if ((materials.containsKey("wood") && materials.get("wood") >= 2)) {
+            if (materials.containsKey("treasure") && materials.get("treasure") >= 1) {
                 dungeon.addBuildables("shield");
 
-            } else if (key >= 1) {
+            } else if (materials.containsKey("key") && materials.get("key") >= 1) {
                 dungeon.addBuildables("shield");
             }
         }
     }
 
     public boolean build(String buildable) throws IllegalArgumentException, InvalidActionException {
+        // Refactor later
         if (buildable.equals("bow")) {
             List<InventoryItem> wood = new ArrayList<>();
             List<InventoryItem> arrow = new ArrayList<>();
             for (InventoryItem item : inventory) {
-                if (wood.size() < 1 && item.getType().equals("wood")) wood.add(item);
-                else if (arrow.size() < 3 && item.getType().equals("arrow")) arrow.add(item);
-                
+                if (wood.size() < 1 && item.getType().equals("wood"))
+                    wood.add(item);
+                else if (arrow.size() < 3 && item.getType().equals("arrow"))
+                    arrow.add(item);
+
                 if (wood.size() == 1 && arrow.size() == 3) {
                     // build bow
                     inventory.removeAll(wood);
                     inventory.removeAll(arrow);
-                    InventoryItem bow = new InventoryItem("bow", "bow");
+
+                    int woodAmount = materials.get("wood");
+                    materials.put("wood", --woodAmount);
+                    int arrowAmount = materials.get("arrow");
+                    arrowAmount -= 3;
+                    materials.put("key", arrowAmount);
+
+                    InventoryItem bow = ItemsFactory.createItem("bow");
                     inventory.add(bow);
+                    System.out.println(inventory);
                     return true;
                 }
             }
             throw new IllegalArgumentException("Player does not have required materials");
-        }
-        else if (buildable.equals("shield")) {
+        } else if (buildable.equals("shield")) {
             List<InventoryItem> wood = new ArrayList<>();
             List<InventoryItem> key = new ArrayList<>();
             List<InventoryItem> treasure = new ArrayList<>();
             for (InventoryItem item : inventory) {
-                if (wood.size() < 2 && item.getType().equals("wood")) wood.add(item);
-                else if (key.size() < 1 && item.getType().equals("key")) key.add(item);
-                else if (treasure.size() < 1 && item.getType().equals("treasure")) treasure.add(item);
-                
+                if (wood.size() < 2 && item.getType().equals("wood"))
+                    wood.add(item);
+                else if (key.size() < 1 && item.getType().equals("key"))
+                    key.add(item);
+                else if (treasure.size() < 1 && item.getType().equals("treasure"))
+                    treasure.add(item);
+
                 if (wood.size() == 2) {
                     if (key.size() == 1) {
                         // build shield
                         inventory.removeAll(wood);
                         inventory.removeAll(key);
-                        InventoryItem shield = new InventoryItem("shield", "shield");
+
+                        int woodAmount = materials.get("wood");
+                        woodAmount -= 2;
+                        materials.put("wood", woodAmount);
+                        int keyAmount = materials.get("key");
+                        materials.put("key", --keyAmount);
+
+                        InventoryItem shield = ItemsFactory.createItem("shield");
                         inventory.add(shield);
                         return true;
-                    }
-                    else if (treasure.size() == 1) {
+                    } else if (treasure.size() == 1) {
                         // build bow
                         inventory.removeAll(wood);
                         inventory.removeAll(treasure);
-                        InventoryItem shield = new InventoryItem("shield", "shield");
+
+                        int woodAmount = materials.get("wood");
+                        woodAmount -= 2;
+                        materials.put("wood", woodAmount);
+                        int treasureAmount = materials.get("treasure");
+                        materials.put("treasure", --treasureAmount);
+
+                        InventoryItem shield = ItemsFactory.createItem("shield");
                         inventory.add(shield);
                         return true;
                     }
                 }
             }
             throw new IllegalArgumentException("Player does not have required materials");
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Buildable is not bow or shield");
         }
-    }
-
-    @Override
-    public double calculateDamage() {
-        // TODO
-        return 0;
     }
 
     @Override
@@ -214,8 +236,41 @@ public class Character extends MovingEntities implements Fightable {
         return true;
     }
 
+    public double calculateDamage() {
+        for (InventoryItem item : getInventory()) {
+            if (item instanceof Weapons) {
+                Weapons weapon = (Weapons) item;
+                return weapon.calculateDamage(getAttackDamage());
+            }
+        }
+        return getAttackDamage();
+    }
+
+    @Override
+    public void takeDamage(double damage) {
+        boolean armourChecked = false;
+        boolean shieldChecked = false;
+        for (InventoryItem item : getInventory()) {
+            if (item instanceof Armours && !armourChecked) {
+                Armours armour = (Armours) item;
+                damage = armour.calculateDamage(getAttackDamage());
+                armourChecked = true;
+            }
+            if (item instanceof Armours && !shieldChecked) {
+                Shields shield = (Shields) item;
+                damage = shield.calculateDamage(getAttackDamage());
+                shieldChecked = true;
+            }
+            if (armourChecked && shieldChecked)
+                break;
+        }
+        setHealth(getHealth() - damage);
+        return;
+    }
+
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
+        // if enemy walks on char
         return;
     }
 }

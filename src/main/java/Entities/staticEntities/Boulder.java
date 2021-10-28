@@ -5,9 +5,7 @@ import java.util.List;
 import Entities.Entities;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Movable;
-import Entities.movingEntities.MovingEntities;
 import dungeonmania.Dungeon;
-import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 public class Boulder extends StaticEntities implements Movable {
@@ -56,7 +54,7 @@ public class Boulder extends StaticEntities implements Movable {
      * @return boolean
      */
     private boolean isMovingEntityButNotCharacter(Entities e) {
-        if (e instanceof MovingEntities && !(e instanceof Character)) {
+        if (e instanceof Movable && !(e instanceof Character)) {
             return true;
         }
         return false;
