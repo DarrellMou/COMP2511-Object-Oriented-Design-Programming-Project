@@ -7,7 +7,7 @@ import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
-public abstract class SpawningEntities extends Mobs {
+public abstract class SpawningEntities extends Enemy {
 
     private Position spawnPosition;
 

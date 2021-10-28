@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Entities.collectableEntities.CollectableEntity;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Triggerable;
@@ -226,7 +227,10 @@ public class Character extends Mobs implements Fightable {
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
             // Do what happens when character wants to walk onto entities at
             // target position
-            e.walkedOn(dungeon, this);
+            if (e instanceof WalkedOn) {
+                WalkedOn w = (WalkedOn) e;
+                w.walkedOn(dungeon, this);
+            }
         }
         for (Entities e : dungeon.getEntities()) {
             if (e.getPosition().equals(position) && !e.isWalkable()) {

@@ -9,13 +9,5 @@ public class Bow extends Entities {
     public Bow(String id) {
         super(id, "bow", false);
     }
-
-    @Override
-    public void walkedOn(Dungeon dungeon, Entities walker) {
-        // bow never on map
-        return;
-    }
-
-    
     
 }
