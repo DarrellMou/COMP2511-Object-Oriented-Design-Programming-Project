@@ -15,11 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.reflect.TypeToken;
@@ -195,7 +193,7 @@ public class DungeonManiaController {
         dungeon.setDungeonName(dungeonName);
         dungeon.setGameMode(gameMode);
         dungeon.setEntities(new ArrayList<Entities>()); // Clear out anything from the previous game
-        dungeon.setBuildables(new HashSet<String>());
+        dungeon.setBuildables(new ArrayList<String>());
 
         List<EntityResponse> entitiesResponses = new ArrayList<>();
         List<ItemResponse> inventoryResponses = new ArrayList<>();
@@ -330,7 +328,7 @@ public class DungeonManiaController {
         // Otherwise we load the dungeon
         ArrayList<Entities> newEntities = new ArrayList<>();
         ArrayList<InventoryItem> newInventory = new ArrayList<>();
-        Set<String> newBuildables = new HashSet<>();
+        ArrayList<String> newBuildables = new ArrayList<>();
 
         for (EntityResponse entity : dg.getEntities()) {
             newEntities.add(EntitiesFactory.creatingEntitiesFactory(entity));
@@ -508,6 +506,7 @@ public class DungeonManiaController {
             }
         }
 
+        // Temporary, store responses and change necessary responses only
         List<EntityResponse> entitiesResponses = new ArrayList<>();
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildablesResponses = new ArrayList<>();
@@ -547,8 +546,32 @@ public class DungeonManiaController {
      * @throws InvalidActionException
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
+        if (character.build(buildable)) {
+            character.checkForBuildables(dungeon);
+        }
 
-        return null;
+        // Temporary, store responses and change necessary responses only
+        List<EntityResponse> entitiesResponses = new ArrayList<>();
+        List<ItemResponse> inventoryResponses = new ArrayList<>();
+        List<String> buildablesResponses = new ArrayList<>();
+
+        for (Entities entity : getEntities()) {
+                entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                        entity.isInteractable()));
+
+        }
+
+        for (InventoryItem inventoryItem : getCharacter().getInventory()) {
+            inventoryResponses.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
+
+        }
+
+        for (String builds : dungeon.getBuildables()) {
+            buildablesResponses.add(builds);
+        }
+        
+        return new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entitiesResponses, inventoryResponses,
+        buildablesResponses, dungeon.getGoals());
     }
 
     /**

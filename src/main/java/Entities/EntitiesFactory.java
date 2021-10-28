@@ -106,9 +106,9 @@ public class EntitiesFactory {
         } else if (type.equals("exit")) {
             newEntity = new Exit(getNextId(), type, position, false); // is exit interactable?
         } else if (type.equals("treasure")) {
-            newEntity = new Treasure(getNextId(), type, position, true);
+            newEntity = new Treasure(getNextId(), position, true);
         } else if (type.equals("arrow")) {
-            newEntity = new Arrow(getNextId(), type, position, true); // interactable???
+            newEntity = new Arrow(getNextId(), position); // interactable???
         } else if (type.equals("wood")) {
             newEntity = new Wood(getNextId(), position); // interactable???
         } else if (type.equals("invincibility_potion")) {
