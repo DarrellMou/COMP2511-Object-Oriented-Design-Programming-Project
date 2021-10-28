@@ -1,5 +1,6 @@
 package Entities.movingEntities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -29,9 +30,12 @@ public class ZombieToast extends SpawningEntities {
     @Override
     public void makeMovement(Position currentPosition, DungeonManiaController controller) {
         List<Position> positions = currentPosition.getAdjacentPositions();
+        // List<Position> positions = getRandomMovements(currentPosition);
+
         // 9 possible different directions that the zombie might be able to go
         Random random = controller.getRandom();
         // Get a random position
-        setPosition(positions.get(random.nextInt(9)));
+        setPosition(positions.get(random.nextInt(8)));
     }
+
 }
