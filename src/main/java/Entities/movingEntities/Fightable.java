@@ -12,5 +12,5 @@ public interface Fightable {
      */
     public double calculateDamage();
 
-    public double takeDamage(double Damage);
+    public void takeDamage(double Damage);
 }
