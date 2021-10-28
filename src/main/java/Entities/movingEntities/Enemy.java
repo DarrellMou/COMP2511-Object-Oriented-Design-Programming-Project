@@ -1,5 +1,7 @@
 package Entities.movingEntities;
 
+import Entities.Entities;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
 public class Enemy extends Mobs implements Fightable {
@@ -15,5 +17,23 @@ public class Enemy extends Mobs implements Fightable {
 
     public void takeDamage(double Damage) {
         setHealth(getHealth() - Damage);
+    }
+
+    @Override
+    public boolean checkMovable(Position position, Dungeon dungeon) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void makeMovement(Dungeon dungeon) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        // TODO Auto-generated method stub
+        
     }
 }

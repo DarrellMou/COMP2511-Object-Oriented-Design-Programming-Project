@@ -1,12 +1,16 @@
 package Entities.staticEntities;
 
+import Entities.Entities;
+import Entities.movingEntities.Character;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class Portal extends StaticEntities{
+public class Portal extends StaticEntities implements Triggerable {
+    
     private String colour;
 
-    public Portal(String id, String type, Position position, boolean isInteractable, String colour) {
-        super(id, type, position, isInteractable, true);
+    public Portal(String id, Position position, String colour) {
+        super(id, "portal", position, false, true);
         this.colour = colour;
     }
 
@@ -18,5 +22,24 @@ public class Portal extends StaticEntities{
         this.colour = colour;
     }
 
+    @Override
+    public void trigger(Dungeon dungeon, Entities walker) {
+        Character character = (Character) walker;
+        // set character position to other portal's position
+        for (Entities e : dungeon.getEntities()) {
+            if (e instanceof Portal && !e.getId().equals(getId())) {
+                Portal p = (Portal) e;
+                if (p.getColour().equals(getColour())) {
+                    character.setPosition(p.getPosition());
+                }
+            }
+        }
+    }
 
+    @Override
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        if (walker instanceof Character) {
+            trigger(dungeon, walker);
+        }
+    }
 }

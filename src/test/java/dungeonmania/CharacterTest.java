@@ -40,7 +40,7 @@ public class CharacterTest {
         // Character initial position: (1, 1)
         controller.tick("", Direction.DOWN);
         // Check position is different
-        assertEquals(new Position(1, 2), controller.getCharacter().getPosition());
+        assertEquals(new Position(1, 2), controller.getDungeon().getCharacter().getPosition());
     }
 
     @Test
@@ -52,7 +52,7 @@ public class CharacterTest {
         // Character initial position: (1, 1)
         controller.tick("", Direction.LEFT);
         // Check position is same after moving into wall
-        assertEquals(new Position(1, 1), controller.getCharacter().getPosition());
+        assertEquals(new Position(1, 1), controller.getDungeon().getCharacter().getPosition());
     }
 
     @Test
@@ -62,13 +62,13 @@ public class CharacterTest {
         controller.newGame("boulders", "Peaceful");
 
         // Get boulder that character is about to move
-        Entities b = controller.getEntityFromPosition(new Position(3, 2));
+        Entities b = controller.getDungeon().getEntitiesOnTile(new Position(3, 2)).get(0);
 
         // Character initial position: (2, 2)
         controller.tick("", Direction.RIGHT);
 
         // Check position for character
-        assertEquals(new Position(3, 2), controller.getCharacter().getPosition());
+        assertEquals(new Position(3, 2), controller.getDungeon().getCharacter().getPosition());
 
         // Check position for boulder
         assertEquals(new Position(4, 2), b.getPosition());
@@ -81,7 +81,7 @@ public class CharacterTest {
         controller.newGame("boulders", "Peaceful");
 
         // Get boulder that character is about to move
-        Entities b = controller.getEntityFromPosition(new Position(3, 2));
+        Entities b = controller.getDungeon().getEntitiesOnTile(new Position(3, 2)).get(0);
 
         // Character initial position: (2, 2)
         controller.tick("", Direction.RIGHT);
@@ -90,7 +90,7 @@ public class CharacterTest {
                                               // positions
 
         // Check position for character
-        assertEquals(new Position(4, 2), controller.getCharacter().getPosition());
+        assertEquals(new Position(4, 2), controller.getDungeon().getCharacter().getPosition());
 
         // Check position for boulder
         assertEquals(new Position(5, 2), b.getPosition());
@@ -103,7 +103,7 @@ public class CharacterTest {
         controller.newGame("advanced", "Peaceful");
 
         // Inventory with sword entity at (6, 1)
-        Sword s = (Sword) controller.getEntityFromPosition(new Position(6, 1));
+        Sword s = (Sword) controller.getDungeon().getEntitiesOnTile(new Position(6, 1)).get(0);
         List<InventoryItem> expectedBefore = new ArrayList<>();
         expectedBefore.add(new InventoryItem(s.getId(), s.getType()));
 
@@ -115,7 +115,7 @@ public class CharacterTest {
         controller.tick("", Direction.RIGHT); // sword pickup
 
         // Check sword in inventory
-        assertEquals(expectedBefore, controller.getCharacter().getInventory());
+        assertEquals(expectedBefore, controller.getDungeon().getCharacter().getInventory());
     }
 
     @Test
@@ -128,8 +128,8 @@ public class CharacterTest {
         Entities key1 = EntitiesFactory.createEntities("key", new Position(2, 1), 1);
         Entities key2 = EntitiesFactory.createEntities("key", new Position(3, 1), 2);
         // Add keys to right of player
-        controller.getEntities().add(key1);
-        controller.getEntities().add(key2);
+        controller.getDungeon().getEntities().add(key1);
+        controller.getDungeon().getEntities().add(key2);
 
         List<InventoryItem> expectedBefore = new ArrayList<>();
         expectedBefore.add(new InventoryItem(key1.getId(), key1.getType()));
@@ -137,13 +137,13 @@ public class CharacterTest {
         // Character initial position: (1, 1)
         controller.tick("", Direction.RIGHT); // walk on key 1, pickup key 1
         // Check key1 in inventory
-        assertEquals(expectedBefore, controller.getCharacter().getInventory());
+        assertEquals(expectedBefore, controller.getDungeon().getCharacter().getInventory());
         controller.tick("", Direction.RIGHT); // walk on key 2, do not pickup key 2
         // Check still only key1 in invenotry
-        assertEquals(expectedBefore, controller.getCharacter().getInventory());
+        assertEquals(expectedBefore, controller.getDungeon().getCharacter().getInventory());
         // sanity check that character can move ontop of keys despite not being able to
         // pick it up
-        assertEquals(new Position(3, 1), controller.getCharacter().getPosition());
+        assertEquals(new Position(3, 1), controller.getDungeon().getCharacter().getPosition());
     }
 
     @Test
@@ -157,10 +157,10 @@ public class CharacterTest {
         Entities a2 = EntitiesFactory.createEntities("arrow", new Position(4, 1));
         Entities a3 = EntitiesFactory.createEntities("arrow", new Position(5, 1));
         // Add keys to right of player
-        controller.getEntities().add(w);
-        controller.getEntities().add(a1);
-        controller.getEntities().add(a2);
-        controller.getEntities().add(a3);
+        controller.getDungeon().getEntities().add(w);
+        controller.getDungeon().getEntities().add(a1);
+        controller.getDungeon().getEntities().add(a2);
+        controller.getDungeon().getEntities().add(a3);
 
         controller.tick("", Direction.RIGHT); // wood
         controller.tick("", Direction.RIGHT); // arrow1
@@ -180,11 +180,15 @@ public class CharacterTest {
         controller.build("bow");
         // Check 1 bow is in inventory
         assertEquals(1,
-                controller.getCharacter().getInventory().stream().filter(i -> i.getType().equals("bow")).count());
+                controller.getDungeon().getCharacter().getInventory().stream()
+                            .filter(i -> i.getType().equals("bow"))
+                            .count());
         // Check materials are gone
         Predicate<InventoryItem> woodPred = i -> i.getType().equals("wood");
         Predicate<InventoryItem> arrowPred = i -> i.getType().equals("arrow");
-        assertEquals(0, controller.getCharacter().getInventory().stream().filter(woodPred.or(arrowPred)).count());
+        assertEquals(0, controller.getDungeon().getCharacter().getInventory().stream()
+                            .filter(woodPred.or(arrowPred))
+                            .count());
     }
 
     @Test
@@ -198,7 +202,7 @@ public class CharacterTest {
         controller.tick("", Direction.RIGHT);
         // check HP
         // Character HP = 120 - ((80 * 1) / 10) = 112
-        assertEquals(112, controller.getCharacter().getHealth());
+        assertEquals(112, controller.getDungeon().getCharacter().getHealth());
         // Merc HP = 80 - ((120 * 3 ) / 5) = 8
         assertEquals(8, m.getHealth());
     }
@@ -215,7 +219,7 @@ public class CharacterTest {
         controller.tick("", Direction.RIGHT);
         // check HP
         // Character HP = 100 - ((80 * 1) / 10) = 92
-        assertEquals(92, controller.getCharacter().getHealth());
+        assertEquals(92, controller.getDungeon().getCharacter().getHealth());
         // Merc HP = 80 - ((100 * 3 ) / 5) = 8
         assertEquals(20, m.getHealth());
     }
