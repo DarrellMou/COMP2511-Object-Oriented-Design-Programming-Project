@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import Entities.Entities;
+import Entities.collectableEntities.CollectableEntity;
+import Entities.staticEntities.Boulder;
+import Entities.staticEntities.Triggerable;
+import Entities.staticEntities.Untriggerable;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.Equipments.Armours.Armours;
@@ -14,6 +18,7 @@ import Items.Equipments.Weapons.Weapons;
 import Items.materialItem.MaterialItem;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
+import dungeonmania.util.Direction;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Position;
 
@@ -23,6 +28,7 @@ public class Character extends Mobs implements Fightable {
      * inventory = [ {item1}, {item2}... ]
      */
     private ArrayList<InventoryItem> inventory;
+    private Direction movementDirection;
     Map<String, Integer> materials = new HashMap<>();
     private final int maxHealth;
 
@@ -30,6 +36,14 @@ public class Character extends Mobs implements Fightable {
         super(id, "player", position, false, true, 120, 3);
         this.maxHealth = 120;
         inventory = new ArrayList<InventoryItem>();
+    }
+
+    public Direction getMovementDirection() {
+        return movementDirection;
+    }
+
+    public void setMovementDirection(Direction movementDirection) {
+        this.movementDirection = movementDirection;
     }
 
     public boolean hasKey() {
@@ -193,9 +207,32 @@ public class Character extends Mobs implements Fightable {
     }
 
     @Override
-    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
-        // TODO Auto-generated method stub
+    public void makeMovement(Dungeon dungeon) {
+        if (checkMovable(getPosition().translateBy(getMovementDirection()), dungeon)) {
+            // Untrigger if moving off untriggerable
+            for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
+                if (e instanceof Untriggerable) {
+                    Untriggerable u = (Untriggerable) e;
+                    u.untrigger(dungeon, this);
+                }
+            }
+            setPosition(getPosition().translateBy(getMovementDirection()));
+        }
+    }
 
+    @Override
+    public boolean checkMovable(Position position, Dungeon dungeon) {
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            // Do what happens when character wants to walk onto entities at
+            // target position
+            e.walkedOn(dungeon, this);
+        }
+        for (Entities e : dungeon.getEntities()) {
+            if (e.getPosition().equals(position) && !e.isWalkable()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -206,7 +243,7 @@ public class Character extends Mobs implements Fightable {
                 return weapon.calculateDamage(getAttackDamage());
             }
         }
-        return getAttackDamage();
+        return getHealth() * getAttackDamage();
     }
 
     @Override
@@ -227,8 +264,12 @@ public class Character extends Mobs implements Fightable {
             if (armourChecked && shieldChecked)
                 break;
         }
-        setHealth(getHealth() - damage);
-        return;
+        setHealth(getHealth() - (damage / 10));
     }
 
+    @Override
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        // if enemy walks on char
+        return;
+    }
 }

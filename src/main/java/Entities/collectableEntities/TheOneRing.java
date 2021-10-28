@@ -1,12 +1,11 @@
 package Entities.collectableEntities;
 
-import Entities.Entities;
 import dungeonmania.util.Position;
 
-public class TheOneRing extends Entities {
+public class TheOneRing extends CollectableEntity {
 
-    public TheOneRing(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable, true);
+    public TheOneRing(String id, Position position) {
+        super(id, "one_ring", position, false);
         // TODO Auto-generated constructor stub
     }
 

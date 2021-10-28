@@ -1,5 +1,7 @@
 package Entities.movingEntities;
 
+import Entities.Entities;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
 public class BribedMercenary extends Mobs {
@@ -11,15 +13,13 @@ public class BribedMercenary extends Mobs {
     }
 
     @Override
-    public double calculateDamage() {
+    public void makeMovement(Dungeon dungeon) {
         // TODO Auto-generated method stub
-        return 0;
+
     }
 
     @Override
-    public void takeDamage(double Damage) {
+    public void walkedOn(Dungeon dungeon, Entities walker) {
         // TODO Auto-generated method stub
-
     }
-
 }

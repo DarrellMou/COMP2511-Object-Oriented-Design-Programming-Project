@@ -1,5 +1,7 @@
 package Entities;
 
+import Entities.movingEntities.Character;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
 public abstract class Entities {
@@ -17,7 +19,7 @@ public abstract class Entities {
         this.isWalkable = isWalkable;
     }
 
-    // TODO should not be here. Craftables (shield/bow) should have their own class?
+    // For craftable entities
     public Entities(String id, String type, boolean isInteractable) {
         this.id = id;
         this.type = type;
@@ -63,4 +65,11 @@ public abstract class Entities {
     public void setWalkable(boolean isWalkable) {
         this.isWalkable = isWalkable;
     }
+
+    /**
+     * Is called when some entity moves onto this entity
+     * @param dungeon
+     * @param walker
+     */
+    public abstract void walkedOn(Dungeon dungeon, Entities walker);
 }
