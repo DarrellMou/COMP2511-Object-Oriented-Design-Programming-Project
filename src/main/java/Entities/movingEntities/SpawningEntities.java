@@ -2,11 +2,9 @@ package Entities.movingEntities;
 
 import dungeonmania.util.Position;
 
-public class SpawningEntities extends MovingEntities {
-
+public class SpawningEntities extends Enemy {
 
     private Position spawnPosition;
-
 
     public SpawningEntities(String id, String type, Position position, boolean isInteractable, boolean isWalkable,
             double health, double attackDamage) {
@@ -21,5 +19,5 @@ public class SpawningEntities extends MovingEntities {
     public void setSpawnPosition(Position spawnPosition) {
         this.spawnPosition = spawnPosition;
     }
-    
+
 }

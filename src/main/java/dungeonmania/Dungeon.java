@@ -2,6 +2,7 @@ package dungeonmania;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -31,8 +32,24 @@ public class Dungeon {
         this.goals = goals;
         this.gameMode = gameMode;
         ticksCounter = 0;
-
     }
+
+    // public Dungeon(String dungeonId, String dungeonName, ArrayList<Entities>
+    // entities, Set<String> buildables, String goals, String gameMode) {
+    // this.dungeonId = dungeonId;
+    // this.dungeonName = dungeonName;
+    // this.entities = new ArrayList<Entities>();
+
+    // Iterator<Entities> iterator = entities.iterator();
+    // while(iterator.hasNext()){
+    // this.entities.add((Entities) iterator.next().clone());
+    // }
+
+    // this.buildables = new HashSet<String>();
+    // this.goals = goals;
+    // this.gameMode = gameMode;
+    // ticksCounter = 0;
+    // }
 
     public String getDungeonId() {
         return this.dungeonId;

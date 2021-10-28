@@ -7,11 +7,14 @@ import java.util.Map;
 
 import Entities.Entities;
 import Items.InventoryItem;
+import Items.Equipments.Armours.Armours;
+import Items.Equipments.Shields.Shields;
+import Items.Equipments.Weapons.Weapons;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
-public class Character extends MovingEntities implements Fightable {
+public class Character extends Mobs {
 
     /**
      * inventory = [ {item1}, {item2}... ]
@@ -70,10 +73,6 @@ public class Character extends MovingEntities implements Fightable {
         // }
     }
 
-    public void fight(Fightable target) {
-        // TODO
-    }
-
     public void checkForBuildables(Dungeon dungeon) {
         int wood = 0;
         int arrow = 0;
@@ -109,15 +108,42 @@ public class Character extends MovingEntities implements Fightable {
     }
 
     @Override
-    public double calculateDamage() {
-        // TODO
-        return 0;
-    }
-
-    @Override
     public void makeMovement(Position startingPosition, DungeonManiaController controller) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public double calculateDamage() {
+        for (InventoryItem item : getInventory()) {
+            if (item instanceof Weapons) {
+                Weapons weapon = (Weapons) item;
+                return weapon.calculateDamage(getAttackDamage());
+            }
+        }
+        return getAttackDamage();
+    }
+
+    @Override
+    public void takeDamage(double damage) {
+        boolean armourChecked = false;
+        boolean shieldChecked = false;
+        for (InventoryItem item : getInventory()) {
+            if (item instanceof Armours && !armourChecked) {
+                Armours armour = (Armours) item;
+                damage = armour.calculateDamage(getAttackDamage());
+                armourChecked = true;
+            }
+            if (item instanceof Armours && !shieldChecked) {
+                Shields shield = (Shields) item;
+                damage = shield.calculateDamage(getAttackDamage());
+                shieldChecked = true;
+            }
+            if (armourChecked && shieldChecked)
+                break;
+        }
+        setHealth(getHealth() - damage);
+        return;
     }
 
 }

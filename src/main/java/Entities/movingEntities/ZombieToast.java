@@ -10,8 +10,6 @@ import dungeonmania.util.Position;
 
 public class ZombieToast extends SpawningEntities {
 
-   
-    
     public ZombieToast(String id, Position position) {
         super(id, "zombie_toast", position, false, true, 50, 1);
     }
