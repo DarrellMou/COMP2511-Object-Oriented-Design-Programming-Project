@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import Entities.Entities;
 import Entities.EntitiesFactory;
-import Entities.InventoryItem;
+import Items.InventoryItem;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.movingEntities.Mercenary;
 
@@ -21,41 +21,39 @@ public class MercenaryTest {
 
     @Test
     public void testMercenaryBribe() {
-        // TODO 
+        // TODO
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
     }
-    
+
     @Test
     public void testMercenaryBattleRadiusSpeed() {
-        // TODO 
+        // TODO
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
     }
-
 
     @Test
     public void testMercenaryBribeOutOfRange() {
-        // TODO 
+        // TODO
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
     }
-    
+
     @Test
     public void testMercenaryFollow() {
-        // TODO 
+        // TODO
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 
     }
-
 
     @Test
     public void testMercenaryAllyFight() {
-        // TODO 
+        // TODO
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
 

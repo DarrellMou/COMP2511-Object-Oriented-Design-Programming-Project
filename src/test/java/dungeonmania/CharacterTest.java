@@ -4,14 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import Entities.Entities;
 import Entities.EntitiesFactory;
-import Entities.InventoryItem;
+import Items.InventoryItem;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.movingEntities.Mercenary;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,16 +21,14 @@ import dungeonmania.util.Position;
 
 public class CharacterTest {
     /**
-     * Tests to implement:
-     * - Check character changes position when walking into movable position
-     * - Check character moves nowhere when walking into wall
-     * - Check character can move boulder if free position behind boulder
-     * - Check character cannot move if no free position behind boulder
-     * - Check character can pick up items
-     * - Check character cannot pick up 2 keys
-     * - Check character items update after building an item (add built item + remove component items)
-     * - Check character HP is calculated correctly after fight
-     * - Check treasure updates after bribing mercenary
+     * Tests to implement: - Check character changes position when walking into
+     * movable position - Check character moves nowhere when walking into wall -
+     * Check character can move boulder if free position behind boulder - Check
+     * character cannot move if no free position behind boulder - Check character
+     * can pick up items - Check character cannot pick up 2 keys - Check character
+     * items update after building an item (add built item + remove component items)
+     * - Check character HP is calculated correctly after fight - Check treasure
+     * updates after bribing mercenary
      */
 
     @Test
@@ -88,8 +85,9 @@ public class CharacterTest {
 
         // Character initial position: (2, 2)
         controller.tick("", Direction.RIGHT);
-        controller.tick("", Direction.RIGHT);   // boulder at wall
-        controller.tick("", Direction.RIGHT);   // boulder cannot move into wall. Char + boulder should not change positions
+        controller.tick("", Direction.RIGHT); // boulder at wall
+        controller.tick("", Direction.RIGHT); // boulder cannot move into wall. Char + boulder should not change
+                                              // positions
 
         // Check position for character
         assertEquals(new Position(4, 2), controller.getCharacter().getPosition());
@@ -143,7 +141,8 @@ public class CharacterTest {
         controller.tick("", Direction.RIGHT); // walk on key 2, do not pickup key 2
         // Check still only key1 in invenotry
         assertEquals(expectedBefore, controller.getCharacter().getInventory());
-        // sanity check that character can move ontop of keys despite not being able to pick it up
+        // sanity check that character can move ontop of keys despite not being able to
+        // pick it up
         assertEquals(new Position(3, 1), controller.getCharacter().getPosition());
     }
 
@@ -153,7 +152,7 @@ public class CharacterTest {
         controller.newGame("advanced", "Peaceful");
 
         // Create bow materials to right of player
-        Entities w = EntitiesFactory.createEntities("key", new Position(2, 1));
+        Entities w = EntitiesFactory.createEntities("wood", new Position(2, 1));
         Entities a1 = EntitiesFactory.createEntities("arrow", new Position(3, 1));
         Entities a2 = EntitiesFactory.createEntities("arrow", new Position(4, 1));
         Entities a3 = EntitiesFactory.createEntities("arrow", new Position(5, 1));
@@ -167,32 +166,25 @@ public class CharacterTest {
         controller.tick("", Direction.RIGHT); // arrow1
         controller.tick("", Direction.RIGHT); // arrow2
         controller.tick("", Direction.RIGHT); // arroe3
-        
+
         // 1 bow expected after build
         List<InventoryItem> expectedAfter = new ArrayList<>();
         expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "bow"));
 
         // Expected for bow to be buildable
-        Set<String> expectedBuildables = new HashSet<>();
+        List<String> expectedBuildables = new ArrayList<>();
         expectedBuildables.add("bow");
 
         assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
         // build bow
         controller.build("bow");
         // Check 1 bow is in inventory
-        assertEquals(1, controller.getCharacter().getInventory()
-            .stream()
-            .filter(i -> i.getType().equals("bow"))
-            .count()
-        );
+        assertEquals(1,
+                controller.getCharacter().getInventory().stream().filter(i -> i.getType().equals("bow")).count());
         // Check materials are gone
         Predicate<InventoryItem> woodPred = i -> i.getType().equals("wood");
         Predicate<InventoryItem> arrowPred = i -> i.getType().equals("arrow");
-        assertEquals(0, controller.getCharacter().getInventory()
-            .stream()
-            .filter(woodPred.or(arrowPred))
-            .count()
-        );
+        assertEquals(0, controller.getCharacter().getInventory().stream().filter(woodPred.or(arrowPred)).count());
     }
 
     @Test
@@ -212,6 +204,7 @@ public class CharacterTest {
     }
 
     @Test
+
     public void testHPAfterHardFight() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Hard");

@@ -1,11 +1,8 @@
-package Entities;
+package Items;
 
 import java.util.Objects;
 
-import dungeonmania.util.Position;
-
-public class InventoryItem  {
-
+public class InventoryItem {
     private String id;
     private String type;
 
@@ -58,12 +55,7 @@ public class InventoryItem  {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", type='" + getType() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", type='" + getType() + "'" + "}";
     }
-
-    
 
 }

@@ -1,12 +1,9 @@
 package dungeonmania;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import Entities.Entities;
-import Entities.InventoryItem;
 import app.data.Data;
 import app.data.DataSubgoal;
 
@@ -14,24 +11,27 @@ public class Dungeon {
     private String dungeonId;
     private String dungeonName;
     private ArrayList<Entities> entities;
-    private Set<String> buildables;
+    private ArrayList<String> buildables;
     private String goals;
     private String gameMode;
     private int ticksCounter;
-
-
+    private int width;
+    private int height;
+ 
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
     // List<String> buildables = new ArrayList<>();
 
-    public Dungeon(String dungeonId, String dungeonName, String goals, String gameMode) {
+    public Dungeon(String dungeonId) {
         this.dungeonId = dungeonId;
-        this.dungeonName = dungeonName;
+        this.dungeonName = "";
         this.entities = new ArrayList<Entities>();
-        this.buildables = new HashSet<String>();
+        this.buildables = new ArrayList<String>();
         this.goals = goals;
         this.gameMode = gameMode;
         ticksCounter = 0;
+        this.width = 0;
+        this.height = 0;
 
     }
 
@@ -59,20 +59,20 @@ public class Dungeon {
         this.entities = entities;
     }
 
-   public void addEntities(Entities entity) {
-       this.entities.add(entity);
+    public void addEntities(Entities entity) {
+        this.entities.add(entity);
 
-   }
+    }
 
-   public void removeEntities(Entities entity) {
+    public void removeEntities(Entities entity) {
         this.entities.remove(entity);
-   }
+    }
 
-    public Set<String> getBuildables() {
+    public ArrayList<String> getBuildables() {
         return this.buildables;
     }
 
-    public void setBuildables(Set<String> buildables) {
+    public void setBuildables(ArrayList<String> buildables) {
         this.buildables = buildables;
     }
 
@@ -96,14 +96,13 @@ public class Dungeon {
         this.gameMode = gameMode;
     }
 
-        /** 
+    /**
      * @return int
      */
     public int getTicksCounter() {
         return this.ticksCounter;
     }
 
-    
     /** 
      * 
      */
@@ -111,9 +110,29 @@ public class Dungeon {
         this.ticksCounter++;
     }
 
-   
+    public void setTicksCounter(int ticksCounter) {
+        this.ticksCounter = ticksCounter;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+
     public void setAllGoals(Data data) {
-        if (data.getGoalCondition().getGoal().equals("AND")) { 
+        if (data.getGoalCondition().getGoal().equals("AND")) {
             String goal = "";
             List<DataSubgoal> subgoals = data.getGoalCondition().getSubgoals();
             for (int i = 0; i < subgoals.size() - 1; i++) {

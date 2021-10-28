@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import Entities.Entities;
-import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
