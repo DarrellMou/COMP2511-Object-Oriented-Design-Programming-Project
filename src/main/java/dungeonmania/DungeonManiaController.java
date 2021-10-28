@@ -518,8 +518,14 @@ public class DungeonManiaController {
         for (Entities entity: getEntities()) {
             if (entity instanceof SpawningEntities) {
                 SpawningEntities spawningEntities = (SpawningEntities) entity;
-                spawningEntities.makeMovement(spawningEntities.getSpawnPosition(), this);
+                if (spawningEntities instanceof Spider) {
+                    spawningEntities.makeMovement(spawningEntities.getSpawnPosition(), this);
 
+                } else {
+                    spawningEntities.makeMovement(spawningEntities.getPosition(), this);
+
+                }
+        
             }
 
 
@@ -643,6 +649,7 @@ public class DungeonManiaController {
                     ZombieToastSpawner zombieToastSpawner = (ZombieToastSpawner) entity;
                     Entities zombieToast = zombieToastSpawner.spawnZombies();
                     dungeon.addEntities(zombieToast);
+                    break;
 
                 }
             }
