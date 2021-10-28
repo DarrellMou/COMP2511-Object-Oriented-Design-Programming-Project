@@ -2,6 +2,7 @@ package Entities.movingEntities;
 
 import Entities.Entities;
 import Entities.staticEntities.Triggerable;
+import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
@@ -11,14 +12,11 @@ public abstract class MovingEntities extends Entities implements Movable {
     private double health;
     private double attackDamage;
 
-
-
     public MovingEntities(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double health, double attackDamage) {
         super(id, type, position, isInteractable, isWalkable);
         this.health = health;
         this.attackDamage = attackDamage;
     }
-
     
     /** 
      * @return double
@@ -27,7 +25,6 @@ public abstract class MovingEntities extends Entities implements Movable {
         return health;
     }
 
-    
     /** 
      * @param health
      */
@@ -42,17 +39,6 @@ public abstract class MovingEntities extends Entities implements Movable {
     public void setAttackDamage(double attackDamage) {
         this.attackDamage = attackDamage;
     }
-
-
-    
-    /** 
-     * Checks if the position is movable onto. 
-     * @param position
-     * @param controller
-     * @return boolean
-     */
-    public abstract boolean checkMovable(Position position, List<Entities> entities);
-
     
     /** 
      * @param e
@@ -64,7 +50,4 @@ public abstract class MovingEntities extends Entities implements Movable {
         }
         return false;
     }
-
-    @Override
-    public abstract void makeMovement(Position position, DungeonManiaController controller);
 }

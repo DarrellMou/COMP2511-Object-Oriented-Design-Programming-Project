@@ -7,12 +7,11 @@ import java.util.List;
 
 import Entities.Entities;
 import Entities.staticEntities.Boulder;
+import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 public class Spider extends SpawningEntities {
-
-    
     public Spider(String id, Position position) {
         super(id, "spider", position, false, true, 30, 1);
 
@@ -26,8 +25,8 @@ public class Spider extends SpawningEntities {
      * @return boolean
      */
     @Override
-    public boolean checkMovable(Position position, List<Entities> entities) {
-        for (Entities e : entities) {
+    public boolean checkMovable(Position position, Dungeon dungeon) {
+        for (Entities e : dungeon.getEntities()) {
             if (e.getPosition().equals(position) && (e instanceof Boulder || isMovingEntityButNotCharacter(e))) {
                 // Spider cannot walk on boulder or other moving entities (except player)    
                 return false;
@@ -35,9 +34,6 @@ public class Spider extends SpawningEntities {
         }
         return true;
     }
-
-
-
     
     /** 
      * 
@@ -46,8 +42,8 @@ public class Spider extends SpawningEntities {
      * @param controller
      * @return Boolean
      */
-    public Boolean checkBoulder(Position position, DungeonManiaController controller) {
-        for (Entities e : controller.getEntities()) {
+    public Boolean checkBoulder(Position position, Dungeon dungeon) {
+        for (Entities e : dungeon.getEntities()) {
    
             if (e.getPosition().equals(position) && e.getType().equals("boulder")) {
                 return true;
@@ -56,17 +52,17 @@ public class Spider extends SpawningEntities {
         return false;
     }
 
-
-    
     /** 
+     * Takes starting position and calculates the next movement of this spider.
+     * Reverses direction if it encounters a boulder or a moving entity other than player.
      * @param startingPosition
      * @param spider
      */
     @Override
-    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
+    public void makeMovement(Dungeon dungeon) {
         // The general movement of the spider is to go up then circles around the starting position
-        List<Position> spiderMovementPositions = getSpiderMovement(startingPosition);
-        if (checkBoulder(getPosition(), controller)) {
+        List<Position> spiderMovementPositions = getSpiderMovement(getSpawnPosition());
+        if (checkBoulder(getPosition(), dungeon)) {
             Collections.reverse(spiderMovementPositions); // Now the spider will go the opposite way
         }
 
@@ -85,13 +81,8 @@ public class Spider extends SpawningEntities {
             } 
         }
 
-     
         // Have the spider move up if this is the beginning position
         setPosition(new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY()));
-       
-
-     
-        
     }
 
         
@@ -119,5 +110,12 @@ public class Spider extends SpawningEntities {
         return spiderMovementPositions;
     }
 
+    @Override
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        if (walker instanceof Character) {
+            // Character character = (Character) walker;
+            // fight
+        }
+    }
 
 }

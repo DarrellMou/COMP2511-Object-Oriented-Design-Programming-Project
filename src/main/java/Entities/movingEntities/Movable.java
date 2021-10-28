@@ -1,18 +1,22 @@
 package Entities.movingEntities;
 
-import Entities.Entities;
-import dungeonmania.DungeonManiaController;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-import java.util.List;
-
 public interface Movable {
-    public boolean checkMovable(Position position, List<Entities> entities);
+    /**
+     * Does what is expected when an entity tries to move to given position, then returns whether
+     * it can move to the position
+     * @param position
+     * @param controller
+     * @return
+     */
+    public boolean checkMovable(Position position, Dungeon dungeon);
        /** 
      * This generates the movement for the movingEntities, override it in the subclass on how we want to move it
      * 
      * @param position
      * @param controller
      */
-    public abstract void makeMovement(Position currentPosition, DungeonManiaController controller);
+    public abstract void makeMovement(Dungeon dungeon);
 }

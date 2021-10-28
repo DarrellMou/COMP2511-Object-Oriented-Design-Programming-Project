@@ -2,10 +2,16 @@ package dungeonmania;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import Entities.Entities;
+import Entities.EntitiesFactory;
+import Entities.movingEntities.Character;
+import Items.InventoryItem;
 import app.data.Data;
 import app.data.DataSubgoal;
+import dungeonmania.util.Position;
 
 public class Dungeon {
     private String dungeonId;
@@ -17,12 +23,17 @@ public class Dungeon {
     private int ticksCounter;
     private int width;
     private int height;
+
+    private Random random;
+    private Character character;
+    private List<InventoryItem> inventory;
  
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
     // List<String> buildables = new ArrayList<>();
 
-    public Dungeon(String dungeonId) {
+    
+    public Dungeon(String dungeonId, Random random) {
         this.dungeonId = dungeonId;
         this.dungeonName = "";
         this.entities = new ArrayList<Entities>();
@@ -32,7 +43,30 @@ public class Dungeon {
         ticksCounter = 0;
         this.width = 0;
         this.height = 0;
+        this.random = random;
+        this.inventory = new ArrayList<InventoryItem>();
+        this.character = getCharacter();
+    }
+    
+    public Random getRandom() {
+        return random;
+    }
 
+    public void setRandom(Random random) {
+        this.random = random;
+    }
+
+    public Character getCharacter() {
+        for (Entities e : getEntities()) {
+            if (e instanceof Character) {
+                return (Character) e;
+            }
+        }
+        return null;
+    }
+
+    public void setCharacter(Character character) {
+        this.character = character;
     }
 
     public String getDungeonId() {
@@ -149,4 +183,18 @@ public class Dungeon {
         }
     }
 
+    /**
+     * Gets position and returns the entities matching the
+     * x and y coordinate (combines all layers)
+     * @param position
+     * @return Entities
+     */
+    public List<Entities> getEntitiesOnTile(Position position) {
+        List<Entities> entitiesList = new ArrayList<>();
+        entitiesList = getEntities().stream()
+            .filter(e -> e.getPosition().getX() == position.getX())
+            .filter(e -> e.getPosition().getY() == position.getY())
+            .collect(Collectors.toList());
+        return entitiesList;
+    }
 }

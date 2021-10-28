@@ -6,6 +6,7 @@ import Entities.Entities;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Movable;
 import Entities.movingEntities.MovingEntities;
+import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
@@ -14,18 +15,42 @@ public class Boulder extends StaticEntities implements Movable {
     public Boulder(String id, Position position) {
         super(id, "boulder", position, false, false);
     }
-
+    
     @Override
-    public boolean checkMovable(Position position, List<Entities> entities) {
-        for (Entities e : entities) {
-            if (e.getPosition().equals(position) && (!e.isWalkable() || isMovingEntityButNotCharacter(e))) {
+    public boolean checkMovable(Position position, Dungeon dungeon) {
+        List<Entities> entitiesAtPosition = dungeon.getEntitiesOnTile(position);
+        for (Entities e : entitiesAtPosition) {
+            if (!e.isWalkable() || isMovingEntityButNotCharacter(e)) {
                 // boulder can't walk on unwalkable entity OR moving entities
                 return false;
             }
         }
         return true;
     }
-
+    
+    @Override
+    public void makeMovement(Dungeon dungeon) {
+        Position newPosition = getPosition().translateBy(dungeon.getCharacter().getMovementDirection());
+        if (checkMovable(newPosition ,dungeon)) {
+            // Untrigger if moving off untriggerable
+            for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
+                if (e instanceof Untriggerable) {
+                    Untriggerable u = (Untriggerable) e;
+                    u.untrigger(dungeon, this);
+                }
+            }
+            setPosition(newPosition);
+        }
+    }
+    
+    @Override
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        if (walker instanceof Character) {
+            // Moves boulder if possible
+            makeMovement(dungeon);
+        }
+    }
+    
     /** 
      * @param e
      * @return boolean
@@ -36,12 +61,4 @@ public class Boulder extends StaticEntities implements Movable {
         }
         return false;
     }
-
-    @Override
-    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
 }

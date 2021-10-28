@@ -11,7 +11,6 @@ public class CollectableEntity extends Entities {
 
     public CollectableEntity(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable, true);
-        // TODO Auto-generated constructor stub
     }
 
     public void pickup(Dungeon dungeon, Character character) {
@@ -20,9 +19,16 @@ public class CollectableEntity extends Entities {
         dungeon.removeEntities(this);
     }
 
+    /**
+     * If the player walks on this collectable, adds item to inventory 
+     * and removes from map. If the item is a build material,
+     * it checks the inventory it the player can build anything.
+     */
     @Override
-    public void walkedOn(Dungeon dungeon, Character character) {
-        // TODO Auto-generated method stub
-        pickup(dungeon, character);
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        if (walker instanceof Character) {
+            Character character = (Character) walker;
+            pickup(dungeon, character);
+        }
     }
 }

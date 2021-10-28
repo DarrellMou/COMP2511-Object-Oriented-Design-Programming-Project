@@ -7,6 +7,7 @@ import Entities.Entities;
 import Entities.collectableEntities.CollectableEntity;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Triggerable;
+import Entities.staticEntities.Untriggerable;
 import Items.InventoryItem;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
@@ -185,42 +186,28 @@ public class Character extends MovingEntities implements Fightable {
     }
 
     @Override
-    public void makeMovement(Position targetPosition, DungeonManiaController controller) {
-        if (checkMovable(targetPosition, controller.getEntities())) {
-            setPosition(targetPosition);
+    public void makeMovement(Dungeon dungeon) {
+        if (checkMovable(getPosition().translateBy(getMovementDirection()), dungeon)) {
+            // Untrigger if moving off untriggerable
+            for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
+                if (e instanceof Untriggerable) {
+                    Untriggerable u = (Untriggerable) e;
+                    u.untrigger(dungeon, this);
+                }
+            }
+            setPosition(getPosition().translateBy(getMovementDirection()));
         }
     }
 
     @Override
-    public boolean checkMovable(Position position, List<Entities> entities) {
-        // Does stuff with entity at target position
-        // TODO refactor all entities when walkedOn(Character)
-        // wall: nothing
-        // collectable item: pickup
-        // enemy: battle
-        // boulder: moves if it can
-        // triggerables: trigger
-        for (Entities e : entities) {
-            if (e.getPosition().equals(position)) {
-                // Boulder movement
-                if (e instanceof Boulder) {
-                    Boulder b = (Boulder) e;
-                    Position newBoulderPosition = b.getPosition().translateBy(getMovementDirection());
-                    if (b.checkMovable(newBoulderPosition, entities)) {
-                        b.setPosition(newBoulderPosition);
-                    }
-                } else if (e instanceof Triggerable) {
-                    // something happens when you try to walk onto it (door, portal)
-                    // door: if inventory contains correct key, door isMovable = true
-                    // portal: setPosition to position of other portal
-                    Triggerable t = (Triggerable) e;
-                    t.trigger();
-                    break;
-                }
-            }
+    public boolean checkMovable(Position position, Dungeon dungeon) {
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            // Do what happens when character wants to walk onto entities at
+            // target position
+            e.walkedOn(dungeon, this);
         }
-        for (Entities e : entities) {
-            if (e.getPosition().equals(position) && (!e.isWalkable())) {
+        for (Entities e : dungeon.getEntities()) {
+            if (e.getPosition().equals(position) && !e.isWalkable()) {
                 return false;
             }
         }
@@ -228,7 +215,7 @@ public class Character extends MovingEntities implements Fightable {
     }
 
     @Override
-    public void walkedOn(Dungeon dungeon, Character character) {
+    public void walkedOn(Dungeon dungeon, Entities walker) {
         return;
     }
 }

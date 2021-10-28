@@ -29,7 +29,7 @@ public class ZombieTest {
 
         // Checkf if there is a zombie inside
         boolean containsZombie = false;
-        for (Entities entities: controller.getEntities() ) {
+        for (Entities entities: controller.getDungeon().getEntities() ) {
             if (entities instanceof ZombieToast) {
                 containsZombie = true;
                 break;
@@ -56,7 +56,7 @@ public class ZombieTest {
 
         // Checkf if there is a zombie inside
         boolean containsZombie = false;
-        for (Entities entities: controller.getEntities() ) {
+        for (Entities entities: controller.getDungeon().getEntities() ) {
             if (entities instanceof ZombieToast) {
                 containsZombie = true;
                 break;
@@ -86,7 +86,7 @@ public class ZombieTest {
 
         // Checkf if there is a zombie inside
         boolean containsZombie = false;
-        for (Entities entities: controller.getEntities() ) {
+        for (Entities entities: controller.getDungeon().getEntities() ) {
             if (entities instanceof ZombieToast) {
                 containsZombie = true;
                 break;

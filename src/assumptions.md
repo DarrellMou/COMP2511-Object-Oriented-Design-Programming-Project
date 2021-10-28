@@ -12,6 +12,7 @@ Spider
 - If a spider was to spawn on top of the boulder, it will just go in the reverse direction
 - The Spider will break out of its cycle if the player is using the invincivility potion, and will resume the cycle once the invincivility potion is used
 - Spider cannot go through portals
+- If a spider were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
 
 loadGame
 
@@ -25,12 +26,13 @@ Zombie Toast Spawner
 
 - A user cannot walk on top of the zombie toast spawner because that is where the zombies are being spawned and the zombie is being spawned
 
-Zombie
+Zombie toast
+- If a zombie toast were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
 
 Mercenary
-
 - It will normally move in the direction of the player
 - If the path is blocked it will not move
+- If a mercenary were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
 
 Bribed mercenary
 
@@ -38,8 +40,9 @@ Bribed mercenary
 
 Movement order
 
-- Character moves first.
-- If character moves into boulder, then the boulder will move, then character, then merc, then spider, then zombie toast
+- Character moves first, then merc, then zombie toast, then spider.
+- If character moves into boulder, then the boulder will move, then character.
+-  then merc, then spider, then zombie toast
 
 Iteration 2
 

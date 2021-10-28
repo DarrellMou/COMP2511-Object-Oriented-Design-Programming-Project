@@ -1,11 +1,36 @@
 package Entities.staticEntities;
 
+import Entities.Entities;
+import Entities.movingEntities.Character;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class FloorSwitch extends StaticEntities {
+public class FloorSwitch extends StaticEntities implements Triggerable, Untriggerable {
 
     public FloorSwitch(String id, Position position) {
         super(id, "switch", position, false, true);
     }
+
+    @Override
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        if (walker instanceof Boulder) {
+            Boulder boulder = (Boulder) walker;
+            // 
+        }
+    }
+
+    @Override
+    public void untrigger(Dungeon dungeon, Entities walker) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void trigger(Dungeon dungeon, Entities walker) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
 
 }

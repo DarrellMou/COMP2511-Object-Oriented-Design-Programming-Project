@@ -1,5 +1,7 @@
 package Entities.staticEntities;
 
+import Entities.Entities;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
 public class Wall extends StaticEntities {
@@ -9,8 +11,7 @@ public class Wall extends StaticEntities {
     }
 
     @Override
-    public void walkedOn() {
-        // Wall will never be walked on
+    public void walkedOn(Dungeon dungeon, Entities walker) {
         return;
     }
 
