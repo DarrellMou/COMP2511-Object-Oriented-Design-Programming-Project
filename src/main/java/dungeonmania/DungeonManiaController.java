@@ -15,11 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.reflect.TypeToken;
@@ -44,22 +42,18 @@ import Entities.collectableEntities.CollectableEntity;
 public class DungeonManiaController {
     private int numCreatedDungeons;
     private Dungeon dungeon;
+
+
     private Random random;
     private Character character;
 
     public DungeonManiaController() {
         numCreatedDungeons = 0;
-        dungeon = new Dungeon(getDungeonId(), "", "", ""); // TODO fix this
+        dungeon = new Dungeon(getDungeonId()); 
         random = new Random(System.currentTimeMillis()); // Seed is the time
     }
 
-    /**
-     * @param dungeon
-     */
-    public void setDungeon(Dungeon dungeon) {
-        this.dungeon = dungeon;
-    }
-
+   
     /**
      * @return Random
      */
@@ -94,14 +88,18 @@ public class DungeonManiaController {
     public void setNumCreatedDungeons(int numCreatedDungeons) {
         this.numCreatedDungeons = numCreatedDungeons;
     }
+    public Dungeon getDungeon() {
+        return this.dungeon;
+    }
 
     /**
-     * 
-     * @return Dungeon
+     * @param dungeon
      */
-    public Dungeon getDungeon() {
-        return dungeon;
+    public void setDungeon(Dungeon dungeon) {
+        this.dungeon = dungeon;
     }
+
+
 
     /**
      * @return String
@@ -194,6 +192,9 @@ public class DungeonManiaController {
 
         dungeon.setDungeonName(dungeonName);
         dungeon.setGameMode(gameMode);
+        dungeon.setEntities(new ArrayList<Entities>()); // Clear out anything from the previous game
+        dungeon.setBuildables(new ArrayList<String>());
+
         List<EntityResponse> entitiesResponses = new ArrayList<>();
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildableResponses = new ArrayList<>();
@@ -218,6 +219,12 @@ public class DungeonManiaController {
                 dungeon.setAllGoals(data); // Set the goals given by the map only if there is a goal condition
 
             }
+
+            int height = data.getHeight(); // Sets the height and width dimensions of the dungeons
+            int width = data.getWidth();
+
+            dungeon.setHeight(height);
+            dungeon.setWidth(width);
 
             for (DataEntities entity : data.getEntities()) {
 
@@ -321,7 +328,7 @@ public class DungeonManiaController {
         // Otherwise we load the dungeon
         ArrayList<Entities> newEntities = new ArrayList<>();
         ArrayList<InventoryItem> newInventory = new ArrayList<>();
-        Set<String> newBuildables = new HashSet<>();
+        ArrayList<String> newBuildables = new ArrayList<>();
 
         for (EntityResponse entity : dg.getEntities()) {
             newEntities.add(EntitiesFactory.creatingEntitiesFactory(entity));
@@ -495,7 +502,7 @@ public class DungeonManiaController {
             character.setPosition(newPosition);
         }
 
-        spawnEnemies(getDungeon().getGameMode()); // Spawn Enemies
+        spawnEnemies(dungeon.getGameMode(), dungeon.getHeight(), dungeon.getWidth()); // Spawn Enemies
         for (Entities entity : getEntities()) {
             if (entity instanceof SpawningEntities) {
                 SpawningEntities spawningEntities = (SpawningEntities) entity;
@@ -504,6 +511,7 @@ public class DungeonManiaController {
             }
         }
 
+        // Temporary, store responses and change necessary responses only
         List<EntityResponse> entitiesResponses = new ArrayList<>();
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildablesResponses = new ArrayList<>();
@@ -543,8 +551,32 @@ public class DungeonManiaController {
      * @throws InvalidActionException
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
+        if (character.build(buildable)) {
+            character.checkForBuildables(dungeon);
+        }
 
-        return null;
+        // Temporary, store responses and change necessary responses only
+        List<EntityResponse> entitiesResponses = new ArrayList<>();
+        List<ItemResponse> inventoryResponses = new ArrayList<>();
+        List<String> buildablesResponses = new ArrayList<>();
+
+        for (Entities entity : getEntities()) {
+                entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                        entity.isInteractable()));
+
+        }
+
+        for (InventoryItem inventoryItem : getCharacter().getInventory()) {
+            inventoryResponses.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
+
+        }
+
+        for (String builds : dungeon.getBuildables()) {
+            buildablesResponses.add(builds);
+        }
+        
+        return new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entitiesResponses, inventoryResponses,
+        buildablesResponses, dungeon.getGoals());
     }
 
     /**
@@ -606,10 +638,10 @@ public class DungeonManiaController {
         return null;
     }
 
-    public void spawnEnemies(String gameMode) {
+    public void spawnEnemies(String gameMode, int height, int width) {
         if (dungeon.getTicksCounter() % 10 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
-                    new Position(random.nextInt(10), random.nextInt(10), 2));
+                    new Position(random.nextInt(width), random.nextInt(height), 2));
             dungeon.addEntities(spider);
         }
 
