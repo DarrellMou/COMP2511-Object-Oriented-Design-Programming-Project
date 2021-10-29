@@ -2,13 +2,14 @@ package Entities.collectableEntities;
 
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class CollectableEntity extends Entities {
+public abstract class CollectableEntity extends Entities implements WalkedOn {
 
     public CollectableEntity(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable, true);

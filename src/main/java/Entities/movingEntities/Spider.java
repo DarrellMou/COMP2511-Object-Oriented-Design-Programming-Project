@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Entities.staticEntities.Boulder;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
+import dungeonmania.util.Battle;
 import dungeonmania.util.Position;
 
 public class Spider extends SpawningEntities {
@@ -26,45 +28,61 @@ public class Spider extends SpawningEntities {
      */
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
-        for (Entities e : dungeon.getEntities()) {
-            if (e.getPosition().equals(position) && (e instanceof Boulder || isMovingEntityButNotCharacter(e))) {
-                // Spider cannot walk on boulder or other moving entities (except player)
+        Character c = null;
+
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            if (e instanceof Boulder || isMovingEntityButNotCharacter(e)) {
+                // If position isn't walkable OR another moving entity (e.g. spider)
                 return false;
+            } else if (e instanceof Character) {
+                // If position has character, get character
+                c = (Character) e;
             }
+        }
+        if (c != null) {
+            // Battle character if character is on position. This is not done in loop as the
+            // character can have another entity on it.
+            Battle.battle(c, this, dungeon);
+            Battle.removeDead(dungeon);
         }
         return true;
     }
-    
-    // /** 
-    //  * 
-    //  * Checks if there is a boulder at the given position
-    //  * 
-    //  * @param position
-    //  * @param controller
-    //  * @return Boolean
-    //  */
+
+    // /**
+    // *
+    // * Checks if there is a boulder at the given position
+    // *
+    // * @param position
+    // * @param controller
+    // * @return Boolean
+    // */
     // public Boolean checkBoulder(Position position, Dungeon dungeon) {
-    //     for (Entities e : dungeon.getEntities()) {
-   
-    //         if (e.getPosition().equals(position) && e.getType().equals("boulder")) {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
+    // for (Entities e : dungeon.getEntities()) {
+
+    // if (e.getPosition().equals(position) && e.getType().equals("boulder")) {
+    // return true;
+    // }
+    // }
+    // return false;
     // }
 
-    /** 
+    /**
      * Takes starting position and calculates the next movement of this spider.
-     * Reverses direction if it encounters a boulder or a moving entity other than player.
+     * Reverses direction if it encounters a boulder or a moving entity other than
+     * player.
+     * 
      * @param startingPosition
      * @param spider
      */
     @Override
     public void makeMovement(Dungeon dungeon) {
         // TODO Sharon fix spider, maybe have spider rotate based on a counter variable.
-        // TODO Every 2 ticks it should rotate it's direction. ATM will be very hard for invincibility potion
-        // TODO Also, don't think spider reverses correctly, since checks current position not next position
-        // The general movement of the spider is to go up then circles around the starting position
+        // TODO Every 2 ticks it should rotate it's direction. ATM will be very hard for
+        // invincibility potion
+        // TODO Also, don't think spider reverses correctly, since checks current
+        // position not next position
+        // The general movement of the spider is to go up then circles around the
+        // starting position
         List<Position> spiderMovementPositions = getSpiderMovement(getSpawnPosition());
         if (!checkMovable(getPosition(), dungeon)) {
             Collections.reverse(spiderMovementPositions); // Now the spider will go the opposite way
@@ -116,14 +134,6 @@ public class Spider extends SpawningEntities {
         spiderMovementPositions.add(new Position(x - 1, y - 1));
 
         return spiderMovementPositions;
-    }
-
-    @Override
-    public void walkedOn(Dungeon dungeon, Entities walker) {
-        if (walker instanceof Character) {
-            // Character character = (Character) walker;
-            // fight
-        }
     }
 
 }

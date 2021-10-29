@@ -36,13 +36,15 @@ Mercenary
 
 Bribed mercenary
 
-- A bribed mercenary will 'follow' the character on the same position using BFS
+- A bribed mercenary will 'follow' the character by trailing behind the player.
+- After bribing a mercenary, it will recover to full hp.
+- Bribed mercenary has a battle radius of 5.
+- Radius is calculated by the sum of the x and y displacement. (NOT PYTHAGORAS)
 
 Movement order
 
 - Character moves first, then merc, then zombie toast, then spider.
-- If character moves into boulder, then the boulder will move, then character.
--  then merc, then spider, then zombie toast
+- If character moves into boulder, then the boulder will move first.
 
 Iteration 2
 
@@ -71,4 +73,4 @@ Building
 - Crafting shield will use whatever is first in inventory (treasure/key)
 
 Portal
-- Walking into a portal will teleport the player to the position of the other portal
+- Walking into a portal will teleport the player to the position of the other portal translated by the movement direction.

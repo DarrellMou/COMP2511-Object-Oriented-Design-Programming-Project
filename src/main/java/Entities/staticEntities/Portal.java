@@ -1,12 +1,13 @@
 package Entities.staticEntities;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class Portal extends StaticEntities implements Triggerable {
-    
+public class Portal extends StaticEntities implements Triggerable, WalkedOn {
+
     private String colour;
 
     public Portal(String id, Position position, String colour) {

@@ -35,11 +35,4 @@ public class ZombieToast extends SpawningEntities {
         setPosition(positions.get(random.nextInt(8)));
     }
 
-	@Override
-	public void walkedOn(Dungeon dungeon, Entities walker) {
-		if (walker instanceof Character) {
-            Character character = (Character) walker;
-            // fight
-        }
-	}
 }

@@ -1,6 +1,7 @@
 package Entities.movingEntities;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Entities.staticEntities.Triggerable;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
@@ -10,7 +11,6 @@ import java.util.List;
 
 public abstract class Mobs extends Entities implements Movable, Fightable {
     private double maxHealth;
-
     private double health;
     private double attackDamage;
 
@@ -56,9 +56,14 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
     }
 
     /**
+     * post health >= 0
+     * 
      * @param health
      */
     public void setHealth(double health) {
+        if (health < 0) {
+            health = 0;
+        }
         this.health = health;
     }
 
@@ -94,6 +99,14 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
      */
     protected boolean isMovingEntityButNotCharacter(Entities e) {
         if (e instanceof Mobs && !(e instanceof Character)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isKilled() {
+        if (this.getHealth() <= 0) {
             return true;
         }
         return false;

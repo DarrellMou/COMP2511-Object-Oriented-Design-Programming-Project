@@ -1,11 +1,12 @@
 package Entities.staticEntities;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class FloorSwitch extends StaticEntities implements Triggerable, Untriggerable {
+public class FloorSwitch extends StaticEntities implements Triggerable, Untriggerable, WalkedOn {
 
     public FloorSwitch(String id, Position position) {
         super(id, "switch", position, false, true);
