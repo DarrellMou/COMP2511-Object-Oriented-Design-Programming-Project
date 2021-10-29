@@ -6,7 +6,7 @@ import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class BribedMercenary extends Mobs {
+public class BribedMercenary extends Mobs implements Portalable {
     private int battleRadius = 5;
 
     public BribedMercenary(String id, Position position) {

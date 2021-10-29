@@ -25,13 +25,12 @@ import dungeonmania.util.Direction;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Position;
 
-public class Character extends Mobs implements WalkedOn {
+public class Character extends Mobs implements WalkedOn, Portalable {
 
     /**
      * inventory = [ {item1}, {item2}... ]
      */
     private ArrayList<InventoryItem> inventory;
-    private Direction movementDirection;
     private Map<String, Integer> materials = new HashMap<>();
     private final int maxHealth;
     private Fightable inBattleWith = null;
@@ -41,14 +40,6 @@ public class Character extends Mobs implements WalkedOn {
         super(id, "player", position, false, true, 120, 3);
         this.maxHealth = 120;
         inventory = new ArrayList<InventoryItem>();
-    }
-
-    public Direction getMovementDirection() {
-        return movementDirection;
-    }
-
-    public void setMovementDirection(Direction movementDirection) {
-        this.movementDirection = movementDirection;
     }
 
     public InventoryItem hasKey() {
