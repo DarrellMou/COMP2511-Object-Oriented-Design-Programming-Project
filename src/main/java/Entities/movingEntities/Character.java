@@ -225,6 +225,7 @@ public class Character extends Mobs implements Fightable {
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            System.out.println(e);
             // Do what happens when character wants to walk onto entities at
             // target position
             if (e instanceof WalkedOn) {

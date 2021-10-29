@@ -13,6 +13,7 @@ import Entities.movingEntities.Spider;
 import Entities.movingEntities.ZombieToast;
 import Entities.staticEntities.ZombieToastSpawner;
 import Items.InventoryItem;
+import Items.ConsumableItem.Consumables;
 import app.data.Data;
 import app.data.DataSubgoal;
 import dungeonmania.exceptions.InvalidActionException;
@@ -240,17 +241,12 @@ public class Dungeon {
             }
 
             // Move this function somewehre else
-            List<String> legalItems = new ArrayList<>();
-            legalItems.add("bomb");
-            legalItems.add("health_potion");
-            legalItems.add("invincibility_potion");
-            legalItems.add("invisibility_potion");
-            if (!legalItems.contains((item.getType()))) {
+            if (!(item instanceof Consumables)) {
                 throw new IllegalArgumentException("itemUsedId provided does not correspond to a bomb or potion");
             }
 
-            // Consumes item, needs to be implemented
-            // item.consumeItem();
+            Consumables consumable = (Consumables) item;
+            consumable.consume(this, getCharacter());
         }
 
         // Character movement
