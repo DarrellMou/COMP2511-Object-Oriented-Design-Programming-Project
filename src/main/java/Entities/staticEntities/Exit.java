@@ -9,7 +9,7 @@ import dungeonmania.util.Position;
 public class Exit extends StaticEntities implements Triggerable, Untriggerable, WalkedOn {
 
     public Exit(String id, Position position) {
-        super(id, "exit", position, false, true); // is exit walkable?
+        super(id, "exit", new Position(position.getX(), position.getY(), 0), false, true); // is exit walkable?
     }
 
     @Override
