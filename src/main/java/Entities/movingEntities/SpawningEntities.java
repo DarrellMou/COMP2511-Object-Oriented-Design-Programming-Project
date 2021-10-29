@@ -1,8 +1,13 @@
 package Entities.movingEntities;
 
+import java.util.List;
+
+import Entities.Entities;
+import dungeonmania.Dungeon;
+import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
-public class SpawningEntities extends Enemy {
+public abstract class SpawningEntities extends Enemy {
 
     private Position spawnPosition;
 

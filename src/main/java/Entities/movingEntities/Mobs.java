@@ -1,20 +1,51 @@
 package Entities.movingEntities;
 
 import Entities.Entities;
+import Entities.WalkedOn;
+import Entities.staticEntities.Triggerable;
+import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 import java.util.List;
 
-public abstract class Mobs extends Entities implements Movable {
+public abstract class Mobs extends Entities implements Movable, Fightable {
+    private double maxHealth;
     private double health;
     private double attackDamage;
 
-    public Mobs(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double health,
+    public Mobs(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double maxHealth,
             double attackDamage) {
-        super(id, type, position, isInteractable, isWalkable);
-        this.health = health;
+        super(id, type, new Position(position.getX(), position.getY(), 1), isInteractable, isWalkable);
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
         this.attackDamage = attackDamage;
+    }
+
+    @Override
+    public double calculateDamage() {
+        return getHealth() * getAttackDamage();
+    }
+
+    @Override
+    public void takeDamage(double damage) {
+        setHealth(getHealth() - (damage / 5));
+    }
+
+    /**
+     * 
+     * @return maxHealth
+     */
+    public double getMaxHealth() {
+        return maxHealth;
+    }
+
+    /**
+     * 
+     * @param maxHealth
+     */
+    public void setMaxHealth(double maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     /**
@@ -25,9 +56,14 @@ public abstract class Mobs extends Entities implements Movable {
     }
 
     /**
+     * post health >= 0
+     * 
      * @param health
      */
     public void setHealth(double health) {
+        if (health < 0) {
+            health = 0;
+        }
         this.health = health;
     }
 
@@ -35,15 +71,21 @@ public abstract class Mobs extends Entities implements Movable {
         return this.attackDamage;
     }
 
+    public void setAttackDamage(double attackDamage) {
+        this.attackDamage = attackDamage;
+    }
+
     /**
+     * /**
+     * 
      * @param position
      * @param controller
      * @return boolean
      */
     @Override
-    public boolean checkMovable(Position position, List<Entities> entities) {
+    public boolean checkMovable(Position position, Dungeon dungeon) {
         // if position has unwalkable entity
-        for (Entities e : entities) {
+        for (Entities e : dungeon.getEntities()) {
             if (e.getPosition().equals(position) && !e.isWalkable()) {
                 return false;
             }
@@ -63,12 +105,10 @@ public abstract class Mobs extends Entities implements Movable {
     }
 
     @Override
-    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
-        // TODO Auto-generated method stub
-
+    public boolean isKilled() {
+        if (this.getHealth() <= 0) {
+            return true;
+        }
+        return false;
     }
-
-    public abstract double calculateDamage();
-
-    public abstract void takeDamage(double Damage);
 }

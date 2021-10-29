@@ -13,4 +13,7 @@ public interface Fightable {
     public double calculateDamage();
 
     public void takeDamage(double Damage);
+
+    public boolean isKilled();
+
 }

@@ -5,26 +5,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Entities.BeforeWalkedOn;
 import Entities.Entities;
+import Entities.WalkedOn;
+import Entities.collectableEntities.CollectableEntity;
+import Entities.staticEntities.Boulder;
+import Entities.staticEntities.Door;
+import Entities.staticEntities.Triggerable;
+import Entities.staticEntities.Untriggerable;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.Equipments.Armours.Armours;
 import Items.Equipments.Shields.Shields;
 import Items.Equipments.Weapons.Weapons;
-import Items.materialItem.MaterialItem;
+import Items.materialItem.Materials;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
+import dungeonmania.util.Direction;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Position;
 
-public class Character extends Mobs implements Fightable {
+public class Character extends Mobs implements WalkedOn {
 
     /**
      * inventory = [ {item1}, {item2}... ]
      */
     private ArrayList<InventoryItem> inventory;
-    Map<String, Integer> materials = new HashMap<>();
+    private Direction movementDirection;
+    private Map<String, Integer> materials = new HashMap<>();
     private final int maxHealth;
+    private Fightable inBattleWith = null;
+    private Position prevPosition;
 
     public Character(String id, Position position) {
         super(id, "player", position, false, true, 120, 3);
@@ -32,13 +43,21 @@ public class Character extends Mobs implements Fightable {
         inventory = new ArrayList<InventoryItem>();
     }
 
-    public boolean hasKey() {
+    public Direction getMovementDirection() {
+        return movementDirection;
+    }
+
+    public void setMovementDirection(Direction movementDirection) {
+        this.movementDirection = movementDirection;
+    }
+
+    public InventoryItem hasKey() {
         for (InventoryItem i : getInventory()) {
-            if (i.getType().equals("key")) {
-                return true;
+            if (i.getType().substring(0, 3).equals("key")) {
+                return i;
             }
         }
-        return false;
+        return null;
     }
 
     public ArrayList<InventoryItem> getInventory() {
@@ -79,10 +98,6 @@ public class Character extends Mobs implements Fightable {
         // }
     }
 
-    public void fight(Fightable target) {
-        // TODO
-    }
-
     public void checkForBuildables(InventoryItem collectable, Dungeon dungeon) {
         dungeon.setBuildables(new ArrayList<String>());
 
@@ -90,7 +105,7 @@ public class Character extends Mobs implements Fightable {
             if (materials.containsKey(collectable.getType())) {
                 int value = materials.get(collectable.getType());
                 materials.put(collectable.getType(), ++value);
-            } else if (collectable instanceof MaterialItem) {
+            } else if (collectable instanceof Materials) {
                 materials.put(collectable.getType(), 1);
             }
         }
@@ -133,11 +148,10 @@ public class Character extends Mobs implements Fightable {
                     materials.put("wood", --woodAmount);
                     int arrowAmount = materials.get("arrow");
                     arrowAmount -= 3;
-                    materials.put("key", arrowAmount);
+                    materials.put("arrow", arrowAmount);
 
                     InventoryItem bow = ItemsFactory.createItem("bow");
                     inventory.add(bow);
-                    System.out.println(inventory);
                     return true;
                 }
             }
@@ -193,20 +207,67 @@ public class Character extends Mobs implements Fightable {
     }
 
     @Override
-    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
-        // TODO Auto-generated method stub
+    public void makeMovement(Dungeon dungeon) {
+        setPrevPosition(getPosition());
+        setInBattleWith(null);
+        if (checkMovable(getPosition().translateBy(getMovementDirection()), dungeon)) {
+            // Untrigger if moving off untriggerable
+            for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
+                if (e instanceof Untriggerable) {
+                    Untriggerable u = (Untriggerable) e;
+                    u.untrigger(dungeon, this);
+                }
+            }
+            setPosition(getPosition().translateBy(getMovementDirection()));
+        } else {
+            for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
+                // Do what happens when character wants to walk onto entities at
+                // target position
+                if (e instanceof WalkedOn) {
+                    WalkedOn w = (WalkedOn) e;
+                    w.walkedOn(dungeon, this);
+                }
+            }
+        }
+    }
 
+    @Override
+    public boolean checkMovable(Position position, Dungeon dungeon) {
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            // Calls walkedOn for entities which should do something if a character wishes
+            // to walk on it (e.g. boulder movement, door unlocking)
+            if (e instanceof BeforeWalkedOn) {
+                BeforeWalkedOn b = (BeforeWalkedOn) e;
+                b.walkedOn(dungeon, this);
+            }
+        }
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            if (!e.isWalkable()) {
+                return false;
+            }
+        }
+        // Player CAN move to given position
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            // Do what happens when character wants to walk onto entities at
+            // target position
+            if (e instanceof WalkedOn) {
+                WalkedOn w = (WalkedOn) e;
+                w.walkedOn(dungeon, this);
+            }
+        }
+        return true;
     }
 
     @Override
     public double calculateDamage() {
+        double damage = getAttackDamage();
         for (InventoryItem item : getInventory()) {
             if (item instanceof Weapons) {
                 Weapons weapon = (Weapons) item;
-                return weapon.calculateDamage(getAttackDamage());
+                damage = weapon.calculateDamage(damage);
             }
         }
-        return getAttackDamage();
+        return getHealth() * damage;
     }
 
     @Override
@@ -227,8 +288,28 @@ public class Character extends Mobs implements Fightable {
             if (armourChecked && shieldChecked)
                 break;
         }
-        setHealth(getHealth() - damage);
+        setHealth(getHealth() - (damage / 10));
+    }
+
+    @Override
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        // if enemy walks on char
         return;
     }
 
+    public Position getPrevPosition() {
+        return prevPosition;
+    }
+
+    public void setPrevPosition(Position prevPosition) {
+        this.prevPosition = prevPosition;
+    }
+
+    public Fightable getInBattleWith() {
+        return inBattleWith;
+    }
+
+    public void setInBattleWith(Fightable inBattleWith) {
+        this.inBattleWith = inBattleWith;
+    }
 }
