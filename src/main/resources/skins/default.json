@@ -34,6 +34,7 @@
     "zombie_toast_spawner": "images/tileset/entities/zombie_spawner.png",
     "door_1": "images/tileset/walls/wooden/door_locked_gold.png",
     "door_2": "images/tileset/walls/wooden/door_locked_silver.png",
+    "door_open": "images/tileset/walls/wooden/door_unlocked.png",
     "portal": "images/tileset/entities/portal_03.png",
     "key_1": "images/tileset/items/key_gold.png",
     "key_2": "images/tileset/items/key_silver.png",
