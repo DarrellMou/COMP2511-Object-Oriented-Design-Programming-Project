@@ -50,6 +50,7 @@ public final class Position {
         return layer;
     }
 
+
     public final Position asLayer(int layer) {
         return new Position(x, y, layer);
     }

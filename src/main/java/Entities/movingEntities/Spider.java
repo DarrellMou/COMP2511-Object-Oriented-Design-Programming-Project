@@ -49,12 +49,6 @@ public class Spider extends SpawningEntities implements Portalable {
             }
         }
 
-        if (c != null) {
-            // Battle character if character is on position. This is not done in loop as the
-            // character can have another entity on it.
-            Battle.battle(c, this, dungeon);
-            Battle.removeDead(dungeon);
-        }
         return true;
     }
 
@@ -86,6 +80,7 @@ public class Spider extends SpawningEntities implements Portalable {
      */
     @Override
     public void makeMovement(Dungeon dungeon) {
+        Position spiderPosition = getPosition();
         // The general movement of the spider is to go up then circles around the
         // starting position
         List<Position> spiderMovementPositions = getSpiderMovement(getSpawnPosition());
@@ -120,16 +115,30 @@ public class Spider extends SpawningEntities implements Portalable {
         // setPosition(nextPosition);
 
         // If position changed after walking on newPosition (e.g. walking into portal)
-        // setMovementDirection(getPosition());
+        Position positionBetween = Position.calculatePositionBetween(spiderPosition, nextPosition);
+        if (positionBetween.getX() != 0) {
+            
+            setMovementDirection(getDirection(positionBetween.getX(), "x"));
+        } else if (positionBetween.getY() != 0) {
+            
+            setMovementDirection(getDirection(positionBetween.getY(), "y"));
+        }
+
+
 
         if (!getPosition().translateBy(getMovementDirection()).equals(nextPosition)) {
-            Position newerPosition = getPosition().translateBy(getMovementDirection());
+            Position newerPosition = getPosition().translateBy(getMovementDirection()).asLayer(2);
             if (checkMovable(newerPosition, dungeon)) {
                 setPosition(newerPosition);
+                setSpawnPosition(newerPosition);
+            } else {
+                setPosition(nextPosition);
             }
         } else {
             setPosition(nextPosition);
         }
+        // setPosition(nextPosition);
+
 
     }
 
@@ -146,14 +155,14 @@ public class Spider extends SpawningEntities implements Portalable {
         int x = startingPosition.getX();
         int y = startingPosition.getY();
         List<Position> spiderMovementPositions = new ArrayList<>();
-        spiderMovementPositions.add(new Position(x, y - 1));
-        spiderMovementPositions.add(new Position(x + 1, y - 1));
-        spiderMovementPositions.add(new Position(x + 1, y));
-        spiderMovementPositions.add(new Position(x + 1, y + 1));
-        spiderMovementPositions.add(new Position(x, y + 1));
-        spiderMovementPositions.add(new Position(x - 1, y + 1));
-        spiderMovementPositions.add(new Position(x - 1, y));
-        spiderMovementPositions.add(new Position(x - 1, y - 1));
+        spiderMovementPositions.add(new Position(x, y - 1, 2));
+        spiderMovementPositions.add(new Position(x + 1, y - 1, 2));
+        spiderMovementPositions.add(new Position(x + 1, y, 2));
+        spiderMovementPositions.add(new Position(x + 1, y + 1, 2));
+        spiderMovementPositions.add(new Position(x, y + 1, 2));
+        spiderMovementPositions.add(new Position(x - 1, y + 1, 2));
+        spiderMovementPositions.add(new Position(x - 1, y, 2));
+        spiderMovementPositions.add(new Position(x - 1, y - 1, 2));
 
         return spiderMovementPositions;
     }
