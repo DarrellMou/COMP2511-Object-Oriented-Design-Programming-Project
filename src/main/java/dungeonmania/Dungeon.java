@@ -353,6 +353,9 @@ public class Dungeon {
         // }
 
         spawnEnemies(getGameMode(), getHeight(), getWidth()); // Spawn Enemies
+        if (hasCompletedGoals()) {
+            gameCompleted();
+        }
         // for (Entities entity : dungeon.getEntities()) {
         // if (entity instanceof SpawningEntities) {
         // SpawningEntities spawningEntities = (SpawningEntities) entity;
@@ -417,5 +420,21 @@ public class Dungeon {
                 return;
             }
         }
+    }
+
+    public Boolean hasCompletedGoals() {
+        for (InventoryItem inventoryItem : getCharacter().getInventory()) {
+            if (getGoals().contains(inventoryItem.getType())) { // need to fix this for and and or
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void gameCompleted() {
+        // If you stop returning any goals (i.e. empty string) it'll say the game has
+        // been completed
+        setGoals("");
     }
 }
