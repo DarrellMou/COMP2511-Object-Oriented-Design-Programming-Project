@@ -217,14 +217,6 @@ public class Dungeon {
      */
     public DungeonResponse tick(String itemUsedId, Direction movementDirection)
             throws IllegalArgumentException, InvalidActionException {
-        // Checks for valid argument
-        // if (itemUsedId == null) {
-        // throw new IllegalArgumentException("itemUsedId provided is null");
-        // }
-
-        // if (itemUsedId.equals("")) {
-        // throw new IllegalArgumentException("itemUsedId provided is an empty string");
-        // }
 
         incrementTicks(); // This increments the number of ticks in this dungeon
 
@@ -237,12 +229,13 @@ public class Dungeon {
                 }
             }
 
+            // Checks for whether itemUsed is in inventory
             if (item.equals(null)) {
                 throw new InvalidActionException(String.format("Character does not have %s in inventory", itemUsedId));
             }
 
-            // Move this function somewehre else
-            if (!(item instanceof Consumables)) {
+            // Checks for valid itemUsedId
+            if (!(item instanceof Consumables || itemUsedId == null)) {
                 throw new IllegalArgumentException("itemUsedId provided does not correspond to a bomb or potion");
             }
 
