@@ -96,10 +96,6 @@ public class Character extends Mobs implements WalkedOn {
         // }
     }
 
-    public void fight(Fightable target) {
-        // TODO
-    }
-
     public void checkForBuildables(InventoryItem collectable, Dungeon dungeon) {
         dungeon.setBuildables(new ArrayList<String>());
 
@@ -150,7 +146,7 @@ public class Character extends Mobs implements WalkedOn {
                     materials.put("wood", --woodAmount);
                     int arrowAmount = materials.get("arrow");
                     arrowAmount -= 3;
-                    materials.put("key", arrowAmount);
+                    materials.put("arrow", arrowAmount);
 
                     InventoryItem bow = ItemsFactory.createItem("bow");
                     inventory.add(bow);
@@ -236,8 +232,17 @@ public class Character extends Mobs implements WalkedOn {
 
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
-        for (Entities e : dungeon.getEntities()) {
-            if (e.getPosition().equals(position) && !e.isWalkable()) {
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            // TODO daniel: temp fix daniel please look at this
+            // Do what happens when character wants to walk onto boulder at
+            // target position
+            if (e instanceof Boulder) {
+                Boulder b = (Boulder) e;
+                b.walkedOn(dungeon, this);
+            }
+        }
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            if (!e.isWalkable()) {
                 return false;
             }
         }
