@@ -76,3 +76,6 @@ Portal
 
 Treasure
 - If the player were to use a treasure (bribe/building material), the treasure goal will still be fulfilled.
+
+Bomb
+- Bomb will not detonate if placed near an already active floor switch.

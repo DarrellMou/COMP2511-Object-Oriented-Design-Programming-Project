@@ -17,7 +17,6 @@ public class FloorSwitch extends StaticEntities implements Triggerable, Untrigge
 
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
-        System.out.println("hi");
         if (walker instanceof Boulder) {
             Boulder boulder = (Boulder) walker;
 

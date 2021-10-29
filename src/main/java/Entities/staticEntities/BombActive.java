@@ -22,6 +22,7 @@ public class BombActive extends StaticEntities {
                 }
             }
         }
+        dungeon.removeEntities(this);
     }
     
 }

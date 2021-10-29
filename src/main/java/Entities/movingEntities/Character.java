@@ -9,6 +9,7 @@ import Entities.Entities;
 import Entities.WalkedOn;
 import Entities.collectableEntities.CollectableEntity;
 import Entities.staticEntities.Boulder;
+import Entities.staticEntities.Door;
 import Entities.staticEntities.Triggerable;
 import Entities.staticEntities.Untriggerable;
 import Items.InventoryItem;
@@ -238,6 +239,8 @@ public class Character extends Mobs implements WalkedOn {
             if (e instanceof Boulder) {
                 Boulder b = (Boulder) e;
                 b.walkedOn(dungeon, this);
+            } else if (e instanceof Door) {
+
             }
         }
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
@@ -246,7 +249,6 @@ public class Character extends Mobs implements WalkedOn {
             }
         }
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            System.out.println(e);
             // Do what happens when character wants to walk onto entities at
             // target position
             if (e instanceof WalkedOn) {
