@@ -12,6 +12,7 @@ Spider
 - If a spider was to spawn on top of the boulder, it will just go in the reverse direction
 - The Spider will break out of its cycle if the player is using the invincivility potion, and will resume the cycle once the invincivility potion is used
 - Spider cannot go through portals
+- If a spider were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
 
 loadGame
 
@@ -25,21 +26,24 @@ Zombie Toast Spawner
 
 - A user cannot walk on top of the zombie toast spawner because that is where the zombies are being spawned and the zombie is being spawned
 
-Zombie
+Zombie toast
+- If a zombie toast were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
 
 Mercenary
-
 - It will normally move in the direction of the player
 - If the path is blocked it will not move
+- If a mercenary were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
 
 Bribed mercenary
 
-- A bribed mercenary will 'follow' the character on the same position using BFS
+- A bribed mercenary will 'follow' the character by trailing behind the player.
+- After bribing a mercenary, it will recover to full hp.
+- The mercenary will not take damage as it fights with the player, since it fights from a distance.
 
 Movement order
 
-- Character moves first.
-- If character moves into boulder, then the boulder will move, then character, then merc, then spider, then zombie toast
+- Character moves first, then merc, then zombie toast, then spider.
+- If character moves into boulder, then the boulder will move first.
 
 Iteration 2
 
@@ -49,8 +53,6 @@ Battle Order:
 
 The battle will use the first weapon in their inventory to attack.
 The player will wear the first armour and shield that they have in their inventory. They cant wear more than one of each armour
-
-Assume there is only one treasure on the map, with more than one we can bribe more than one mercenary
 
 Health, Damages
 Rationale: - Character health high enough to survive enemy hits + low enough to notice gradual decrease in damage as fights occur - Character attack low enough to not immediately kill some enemies (merc at full hp and zombie toast as hp goes down)
@@ -65,5 +67,10 @@ Armour: Durability: 4, Decrease Attack Damage of Enemy: 0.5
 Shield: Durability: 3, Decrease Attack Damage of Enemy: 0.5
 
 Building
-
 - Crafting shield will use whatever is first in inventory (treasure/key)
+
+Portal
+- Walking into a portal will teleport the player to the position of the other portal translated by the movement direction.
+
+Treasure
+- If the player were to use a treasure (bribe/building material), the treasure goal will still be fulfilled.

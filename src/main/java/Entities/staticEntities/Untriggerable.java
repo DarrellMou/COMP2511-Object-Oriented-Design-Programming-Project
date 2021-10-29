@@ -1,12 +1,11 @@
 package Entities.staticEntities;
 
 import Entities.Entities;
-import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 
-public interface Triggerable {
+public interface Untriggerable {
     /**
      * Does something when character walks into it's position
      */
-    public void trigger(Dungeon dungeon, Entities walker);
+    public void untrigger(Dungeon dungeon, Entities walker);
 }

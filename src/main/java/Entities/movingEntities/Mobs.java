@@ -1,12 +1,15 @@
 package Entities.movingEntities;
 
 import Entities.Entities;
+import Entities.WalkedOn;
+import Entities.staticEntities.Triggerable;
+import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 import java.util.List;
 
-public abstract class Mobs extends Entities implements Movable {
+public abstract class Mobs extends Entities implements Movable, WalkedOn {
     private double health;
     private double attackDamage;
 
@@ -35,15 +38,20 @@ public abstract class Mobs extends Entities implements Movable {
         return this.attackDamage;
     }
 
+    public void setAttackDamage(double attackDamage) {
+        this.attackDamage = attackDamage;
+    }
+    
+    /** 
     /**
      * @param position
      * @param controller
      * @return boolean
      */
     @Override
-    public boolean checkMovable(Position position, List<Entities> entities) {
+    public boolean checkMovable(Position position, Dungeon dungeon) {
         // if position has unwalkable entity
-        for (Entities e : entities) {
+        for (Entities e : dungeon.getEntities()) {
             if (e.getPosition().equals(position) && !e.isWalkable()) {
                 return false;
             }
@@ -61,14 +69,4 @@ public abstract class Mobs extends Entities implements Movable {
         }
         return false;
     }
-
-    @Override
-    public void makeMovement(Position startingPosition, DungeonManiaController controller) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public abstract double calculateDamage();
-
-    public abstract void takeDamage(double Damage);
 }

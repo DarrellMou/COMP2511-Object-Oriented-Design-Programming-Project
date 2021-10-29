@@ -2,15 +2,21 @@ package Entities.staticEntities;
 
 import java.util.Objects;
 
+import Entities.Entities;
+import Entities.WalkedOn;
+import Entities.collectableEntities.consumables.Key;
+import Entities.movingEntities.Character;
+import Items.InventoryItem;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class Door extends StaticEntities implements Triggerable {
+public class Door extends StaticEntities implements Triggerable, WalkedOn {
 
     private int key;
 
-    public Door(String id, String type, Position position, boolean isInteractable, int key) {
+    public Door(String id, Position position, int key) {
         // Door is locked initially, so isWalkable = false
-        super(id, type, position, isInteractable, false);
+        super(id, "door", position, false, false);
         this.key = key;
     }
 
@@ -45,10 +51,24 @@ public class Door extends StaticEntities implements Triggerable {
             "}";
     }
 
-
+    @Override
+    public void trigger(Dungeon dungeon, Entities walker) {
+        Character character = (Character) walker;
+        // check for key, if so make door unlocked + isMovable
+        if (character.hasKey()) {
+            for (InventoryItem i : character.getInventory()) {
+                if (i.getType().contains("key")) {
+                    // TODO daniel
+                }
+            }
+        }
+    }
 
     @Override
-    public void trigger() {
-        // TODO checks for key. Need to link door to key
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        if (walker instanceof Character) {
+            Character character = (Character) walker;
+            trigger(dungeon, character);
+        }
     }
 }
