@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Entities.BeforeWalkedOn;
 import Entities.Entities;
 import Entities.WalkedOn;
 import Entities.collectableEntities.CollectableEntity;
@@ -233,14 +234,11 @@ public class Character extends Mobs implements WalkedOn {
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            // TODO daniel: temp fix daniel please look at this
-            // Do what happens when character wants to walk onto boulder at
-            // target position
-            if (e instanceof Boulder) {
-                Boulder b = (Boulder) e;
+            // Calls walkedOn for entities which should do something if a character wishes
+            // to walk on it (e.g. boulder movement, door unlocking)
+            if (e instanceof BeforeWalkedOn) {
+                BeforeWalkedOn b = (BeforeWalkedOn) e;
                 b.walkedOn(dungeon, this);
-            } else if (e instanceof Door) {
-
             }
         }
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
@@ -248,6 +246,7 @@ public class Character extends Mobs implements WalkedOn {
                 return false;
             }
         }
+        // Player CAN move to given position
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
             // Do what happens when character wants to walk onto entities at
             // target position

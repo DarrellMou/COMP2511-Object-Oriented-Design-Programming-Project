@@ -2,6 +2,7 @@ package Entities.staticEntities;
 
 import java.util.Objects;
 
+import Entities.BeforeWalkedOn;
 import Entities.Entities;
 import Entities.WalkedOn;
 import Entities.collectableEntities.consumables.Key;
@@ -11,7 +12,7 @@ import Items.materialItem.KeyItem;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class Door extends StaticEntities implements Triggerable, WalkedOn {
+public class Door extends StaticEntities implements Triggerable, BeforeWalkedOn {
 
     private int key;
 
@@ -70,6 +71,10 @@ public class Door extends StaticEntities implements Triggerable, WalkedOn {
         }
     }
 
+    /**
+     * If a player wants to walk on a door, calls walkedOn. It calls trigger which searches the inventory
+     * for the matching key and unlocks it if so.
+     */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
