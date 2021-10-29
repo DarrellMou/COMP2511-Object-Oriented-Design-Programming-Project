@@ -13,6 +13,7 @@ Spider
 - The Spider will break out of its cycle if the player is using the invincivility potion, and will resume the cycle once the invincivility potion is used
 - Spider cannot go through portals
 - If a spider were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
+- If a spider walks into a portal, the spider will rotate around the other the other side of the portal.
 
 loadGame
 

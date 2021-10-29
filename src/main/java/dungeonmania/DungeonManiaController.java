@@ -443,14 +443,4 @@ public class DungeonManiaController {
         return dungeon.getCharacter();
     }
 
-    /**
-     * @return ArrayList<Entities>
-     */
-
-    public void gameCompleted() {
-        // If you stop returning any goals (i.e. empty string) it'll say the game has
-        // been completed
-        dungeon.setGoals("");
-    }
-
 }
