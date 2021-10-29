@@ -11,6 +11,7 @@ import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
 import Entities.collectableEntities.materials.Treasure;
 import Entities.collectableEntities.materials.Wood;
+import Entities.staticEntities.BombActive;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Door;
 import Entities.staticEntities.Exit;
@@ -133,6 +134,8 @@ public class EntitiesFactory {
             newEntity = new ZombieToast(getNextId(), position);
         } else if (type.equals("zombie_toast_spawner")) {
             newEntity = new ZombieToastSpawner(getNextId(), position);
+        } else if (type.equals("bomb_active")) {
+            newEntity = new BombActive(getNextId(), position);
         }
 
         return newEntity;

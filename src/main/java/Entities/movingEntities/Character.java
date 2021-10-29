@@ -9,6 +9,7 @@ import Entities.Entities;
 import Entities.WalkedOn;
 import Entities.collectableEntities.CollectableEntity;
 import Entities.staticEntities.Boulder;
+import Entities.staticEntities.Door;
 import Entities.staticEntities.Triggerable;
 import Entities.staticEntities.Untriggerable;
 import Items.InventoryItem;
@@ -16,7 +17,7 @@ import Items.ItemsFactory;
 import Items.Equipments.Armours.Armours;
 import Items.Equipments.Shields.Shields;
 import Items.Equipments.Weapons.Weapons;
-import Items.materialItem.MaterialItem;
+import Items.materialItem.Materials;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Direction;
@@ -49,13 +50,13 @@ public class Character extends Mobs implements WalkedOn {
         this.movementDirection = movementDirection;
     }
 
-    public boolean hasKey() {
+    public InventoryItem hasKey() {
         for (InventoryItem i : getInventory()) {
-            if (i.getType().equals("key")) {
-                return true;
+            if (i.getType().substring(0, 3).equals("key")) {
+                return i;
             }
         }
-        return false;
+        return null;
     }
 
     public ArrayList<InventoryItem> getInventory() {
@@ -96,10 +97,6 @@ public class Character extends Mobs implements WalkedOn {
         // }
     }
 
-    public void fight(Fightable target) {
-        // TODO
-    }
-
     public void checkForBuildables(InventoryItem collectable, Dungeon dungeon) {
         dungeon.setBuildables(new ArrayList<String>());
 
@@ -107,7 +104,7 @@ public class Character extends Mobs implements WalkedOn {
             if (materials.containsKey(collectable.getType())) {
                 int value = materials.get(collectable.getType());
                 materials.put(collectable.getType(), ++value);
-            } else if (collectable instanceof MaterialItem) {
+            } else if (collectable instanceof Materials) {
                 materials.put(collectable.getType(), 1);
             }
         }
@@ -150,11 +147,10 @@ public class Character extends Mobs implements WalkedOn {
                     materials.put("wood", --woodAmount);
                     int arrowAmount = materials.get("arrow");
                     arrowAmount -= 3;
-                    materials.put("key", arrowAmount);
+                    materials.put("arrow", arrowAmount);
 
                     InventoryItem bow = ItemsFactory.createItem("bow");
                     inventory.add(bow);
-                    System.out.println(inventory);
                     return true;
                 }
             }
@@ -236,8 +232,19 @@ public class Character extends Mobs implements WalkedOn {
 
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
-        for (Entities e : dungeon.getEntities()) {
-            if (e.getPosition().equals(position) && !e.isWalkable()) {
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            // TODO daniel: temp fix daniel please look at this
+            // Do what happens when character wants to walk onto boulder at
+            // target position
+            if (e instanceof Boulder) {
+                Boulder b = (Boulder) e;
+                b.walkedOn(dungeon, this);
+            } else if (e instanceof Door) {
+
+            }
+        }
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            if (!e.isWalkable()) {
                 return false;
             }
         }
