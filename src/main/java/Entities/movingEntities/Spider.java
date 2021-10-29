@@ -120,14 +120,16 @@ public class Spider extends SpawningEntities implements Portalable {
         // setPosition(nextPosition);
 
         // If position changed after walking on newPosition (e.g. walking into portal)
-        // if (!getPosition().translateBy(getMovementDirection()).equals(nextPosition)) {
-        //     Position newerPosition = getPosition().translateBy(getMovementDirection());
-        //     if (checkMovable(newerPosition, dungeon)) {
-        //         setPosition(newerPosition);
-        //     }
-        // } else {
-        //     setPosition(nextPosition);
-        // }
+        // setMovementDirection(getPosition());
+
+        if (!getPosition().translateBy(getMovementDirection()).equals(nextPosition)) {
+            Position newerPosition = getPosition().translateBy(getMovementDirection());
+            if (checkMovable(newerPosition, dungeon)) {
+                setPosition(newerPosition);
+            }
+        } else {
+            setPosition(nextPosition);
+        }
 
     }
 
