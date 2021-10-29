@@ -34,5 +34,5 @@ public class ZombieToast extends SpawningEntities {
         // Get a random position
         setPosition(positions.get(random.nextInt(8)));
     }
-    
+
 }
