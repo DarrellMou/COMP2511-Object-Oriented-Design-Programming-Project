@@ -9,15 +9,43 @@ import dungeonmania.util.Position;
 
 import java.util.List;
 
-public abstract class Mobs extends Entities implements Movable, WalkedOn {
+public abstract class Mobs extends Entities implements Movable, Fightable {
+    private double maxHealth;
     private double health;
     private double attackDamage;
 
-    public Mobs(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double health,
+    public Mobs(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double maxHealth,
             double attackDamage) {
         super(id, type, position, isInteractable, isWalkable);
-        this.health = health;
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
         this.attackDamage = attackDamage;
+    }
+
+    @Override
+    public double calculateDamage() {
+        return getHealth() * getAttackDamage();
+    }
+
+    @Override
+    public void takeDamage(double damage) {
+        setHealth(getHealth() - (damage / 5));
+    }
+
+    /**
+     * 
+     * @return maxHealth
+     */
+    public double getMaxHealth() {
+        return maxHealth;
+    }
+
+    /**
+     * 
+     * @param maxHealth
+     */
+    public void setMaxHealth(double maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     /**
@@ -28,9 +56,14 @@ public abstract class Mobs extends Entities implements Movable, WalkedOn {
     }
 
     /**
+     * post health >= 0
+     * 
      * @param health
      */
     public void setHealth(double health) {
+        if (health < 0) {
+            health = 0;
+        }
         this.health = health;
     }
 
@@ -41,9 +74,10 @@ public abstract class Mobs extends Entities implements Movable, WalkedOn {
     public void setAttackDamage(double attackDamage) {
         this.attackDamage = attackDamage;
     }
-    
-    /** 
+
     /**
+     * /**
+     * 
      * @param position
      * @param controller
      * @return boolean
@@ -65,6 +99,14 @@ public abstract class Mobs extends Entities implements Movable, WalkedOn {
      */
     protected boolean isMovingEntityButNotCharacter(Entities e) {
         if (e instanceof Mobs && !(e instanceof Character)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isKilled() {
+        if (this.getHealth() <= 0) {
             return true;
         }
         return false;

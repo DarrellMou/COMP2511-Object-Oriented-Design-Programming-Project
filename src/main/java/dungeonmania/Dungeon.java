@@ -36,12 +36,11 @@ public class Dungeon {
     private Random random;
     private Character character;
     private List<InventoryItem> inventory;
- 
+
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
     // List<String> buildables = new ArrayList<>();
 
-    
     public Dungeon(String dungeonId, Random random) {
         this.dungeonId = dungeonId;
         this.dungeonName = "";
@@ -56,7 +55,7 @@ public class Dungeon {
         this.inventory = new ArrayList<InventoryItem>();
         this.character = getCharacter();
     }
-    
+
     public Random getRandom() {
         return random;
     }
@@ -192,17 +191,19 @@ public class Dungeon {
     }
 
     /**
-     * Gets position and returns the entities matching the
-     * x and y coordinate (combines all layers)
+     * <<<<<<< HEAD Gets position and returns the entities matching the x and y
+     * coordinate (combines all layers)
+     * 
+     * ======= Gets position and returns the entities matching the x and y
+     * coordinate (combines all layers) >>>>>>> master
+     * 
      * @param position
      * @return Entities
      */
     public List<Entities> getEntitiesOnTile(Position position) {
         List<Entities> entitiesList = new ArrayList<>();
-        entitiesList = getEntities().stream()
-            .filter(e -> e.getPosition().getX() == position.getX())
-            .filter(e -> e.getPosition().getY() == position.getY())
-            .collect(Collectors.toList());
+        entitiesList = getEntities().stream().filter(e -> e.getPosition().getX() == position.getX())
+                .filter(e -> e.getPosition().getY() == position.getY()).collect(Collectors.toList());
         return entitiesList;
     }
 
@@ -291,73 +292,83 @@ public class Dungeon {
         // - For now, move character
 
         /**
-         * Movement order:
-         *  - Character
-         *  - Mercenary
-         *  - Zombie Toast
-         *  - Spider
+         * Movement order: - Character - Mercenary - Zombie Toast - Spider
          */
-                
-        // Set character movement direction (needed for  boulder movement)
+
+        // Set character movement direction (needed for boulder movement)
         getCharacter().setMovementDirection(movementDirection);
-        
+
         // Character movement (based on character's movement direction)
         getCharacter().makeMovement(this);
 
-        // Mercenary
+        // Mobs List
+        List<Mercenary> mList = new ArrayList<Mercenary>();
+        List<ZombieToast> zList = new ArrayList<ZombieToast>();
+        List<Spider> sList = new ArrayList<Spider>();
+
         for (Entities e : getEntities()) {
             if (e instanceof Mercenary) {
                 Mercenary m = (Mercenary) e;
-                m.makeMovement(this);
-            }
-        }
-
-        // Zombie Toast
-        for (Entities e : getEntities()) {
-            if (e instanceof ZombieToast) {
+                mList.add(m);
+            } else if (e instanceof ZombieToast) {
                 ZombieToast z = (ZombieToast) e;
-                z.makeMovement(this);
+                zList.add(z);
+            } else if (e instanceof Spider) {
+                Spider s = (Spider) e;
+                sList.add(s);
             }
         }
 
-        // Spider
-        for (Entities e : getEntities()) {
-            if (e instanceof Spider) {
-                Spider s = (Spider) e;
-                s.makeMovement(this);
-            }
+        // Mercenary
+        for (Mercenary m : mList) {
+            if (getCharacter() == null)
+                break;
+            m.makeMovement(this);
         }
+        // Zombie Toast
+        for (ZombieToast z : zList) {
+            if (getCharacter() == null)
+                break;
+            z.makeMovement(this);
+        }
+        // Spider
+        for (Spider s : sList) {
+            if (getCharacter() == null)
+                break;
+            s.makeMovement(this);
+        }
+
         // List<Entities> newPositionEntities = dungeon.getEntitiesOnTile(newPosition);
         // for (Entities newPositionEntity : newPositionEntities) {
-        //     // Boulder movement
-        //     if (newPositionEntity instanceof Boulder) {
-        //         Boulder b = (Boulder) newPositionEntity;
-        //         Position newBoulderPosition = b.getPosition().translateBy(movementDirection);
-        //         if (b.checkMovable(newBoulderPosition, dungeon)) {
-        //             b.setPosition(newBoulderPosition);
-        //         }
-        //     }
-        //     if (dungeon.getCharacter().checkMovable(newPosition, getEntities())) {
-        //         Entities entity = getEntityFromPosition(newPosition);
-        //         if (entity instanceof Triggerable) {
-        //             // something happens when you try to walk onto it
-        //             Triggerable triggerable = (Triggerable) entity;
-        //             triggerable.trigger(getDungeon(), dungeon.getCharacter());
-        //         } else if (entity instanceof CollectableEntity) {
-        //             CollectableEntity collectable = (CollectableEntity) entity;
-        //             collectable.pickup(dungeon, dungeon.getCharacter());
-        //             dungeon.getCharacter().checkForBuildables(dungeon);
-        //         }
-        //         dungeon.getCharacter().setPosition(newPosition);
-        //     }
+        // // Boulder movement
+        // if (newPositionEntity instanceof Boulder) {
+        // Boulder b = (Boulder) newPositionEntity;
+        // Position newBoulderPosition = b.getPosition().translateBy(movementDirection);
+        // if (b.checkMovable(newBoulderPosition, dungeon)) {
+        // b.setPosition(newBoulderPosition);
+        // }
+        // }
+        // if (dungeon.getCharacter().checkMovable(newPosition, getEntities())) {
+        // Entities entity = getEntityFromPosition(newPosition);
+        // if (entity instanceof Triggerable) {
+        // // something happens when you try to walk onto it
+        // Triggerable triggerable = (Triggerable) entity;
+        // triggerable.trigger(getDungeon(), dungeon.getCharacter());
+        // } else if (entity instanceof CollectableEntity) {
+        // CollectableEntity collectable = (CollectableEntity) entity;
+        // collectable.pickup(dungeon, dungeon.getCharacter());
+        // dungeon.getCharacter().checkForBuildables(dungeon);
+        // }
+        // dungeon.getCharacter().setPosition(newPosition);
+        // }
         // }
 
         spawnEnemies(getGameMode(), getHeight(), getWidth()); // Spawn Enemies
         // for (Entities entity : dungeon.getEntities()) {
-        //     if (entity instanceof SpawningEntities) {
-        //         SpawningEntities spawningEntities = (SpawningEntities) entity;
-        //         spawningEntities.makeMovement(spawningEntities.getSpawnPosition(), dungeon);
-        //     }
+        // if (entity instanceof SpawningEntities) {
+        // SpawningEntities spawningEntities = (SpawningEntities) entity;
+        // spawningEntities.makeMovement(spawningEntities.getSpawnPosition(), dungeon);
+        // }
         // }
 
         // Temporary, store responses and change necessary responses only
@@ -370,20 +381,22 @@ public class Dungeon {
                     entity.isInteractable()));
         }
 
-        for (InventoryItem inventoryItem : getCharacter().getInventory()) {
-            inventoryResponses.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
+        if (getCharacter() != null) {
+            for (InventoryItem inventoryItem : getCharacter().getInventory()) {
+                inventoryResponses.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
+            }
         }
 
         for (String builds : getBuildables()) {
             buildablesResponses.add(builds);
         }
 
-        return new DungeonResponse(getDungeonId(), getDungeonName(), entitiesResponses,
-                inventoryResponses, buildablesResponses, getGoals());
+        return new DungeonResponse(getDungeonId(), getDungeonName(), entitiesResponses, inventoryResponses,
+                buildablesResponses, getGoals());
     }
 
     public void spawnEnemies(String gameMode, int height, int width) {
-        // TODO For SpawnableEntites ... spawn (timer + spawn position 
+        // TODO For SpawnableEntites ... spawn (timer + spawn position
         // should be in class)
         if (getTicksCounter() % 10 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
@@ -402,5 +415,18 @@ public class Dungeon {
             }
         }
 
+    }
+
+    public void gameLost() {
+        // If you no longer give an entity object for a player to the frontend it'll say
+        // the game has been lost
+        for (Entities entity : getEntities()) {
+            if (entity instanceof Character) {
+                ArrayList<Entities> newList = getEntities();
+                newList.remove(entity);
+                setEntities(newList);
+                return;
+            }
+        }
     }
 }

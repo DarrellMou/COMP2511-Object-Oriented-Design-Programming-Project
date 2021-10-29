@@ -1,19 +1,16 @@
 package Entities.movingEntities;
 
-import java.util.List;
-
 import Entities.Entities;
-import Entities.WalkedOn;
 import dungeonmania.Dungeon;
-import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends SpawningEntities {
+public class BribedMercenary extends Mobs {
+    private int battleRadius = 5;
 
-    public Mercenary(String id, Position position) {
-        super(id, "mercenary", position, true, true, 80, 1);
+    public BribedMercenary(String id, Position position) {
+        super(id, "mercenary", position, false, true, 80, 1);
     }
 
     @Override
@@ -57,12 +54,14 @@ public class Mercenary extends SpawningEntities {
     @Override
     public void makeMovement(Dungeon dungeon) {
         Character character = dungeon.getCharacter();
-        Position positionFromChar = Position.calculatePositionBetween(character.getPosition(), this.getPosition());
+        Position positionFromChar = Position.calculatePositionBetween(character.getPrevPosition(), this.getPosition());
         Position nextPositionX = getPosition().translateBy(getDirection(positionFromChar.getX(), "x"));
         Position nextPositionY = getPosition().translateBy(getDirection(positionFromChar.getY(), "y"));
-        // the movement of the mercenary would prioritise the larger displacement
-        // if it isn't movable in the prioritised direction, it would try to move in
-        // other direction
+        int disFromChar = Math.abs(positionFromChar.getX()) + Math.abs(positionFromChar.getY());
+
+        // the movement of the mercenary would prioritise the larger displacement if it
+        // isn't movable in the prioritised direction, it would try to move in other
+        // direction
         if (Math.abs(positionFromChar.getX()) >= Math.abs(positionFromChar.getY())) {
             if (checkMovable(nextPositionX, dungeon)) {
                 setPosition(nextPositionX);
@@ -76,13 +75,30 @@ public class Mercenary extends SpawningEntities {
                 setPosition(nextPositionX);
             }
         }
+
+        // if character is in battle and within battle range
+        if (character.getInBattleWith() != null && disFromChar <= battleRadius) {
+            // Move again
+            if (Math.abs(positionFromChar.getX()) >= Math.abs(positionFromChar.getY())) {
+                if (checkMovable(nextPositionX, dungeon)) {
+                    setPosition(nextPositionX);
+                } else if (checkMovable(nextPositionY, dungeon)) {
+                    setPosition(nextPositionY);
+                }
+            } else {
+                if (checkMovable(nextPositionY, dungeon)) {
+                    setPosition(nextPositionY);
+                } else if (checkMovable(nextPositionX, dungeon)) {
+                    setPosition(nextPositionX);
+                }
+            }
+            // Fight enemy
+            Battle.battle(this, character.getInBattleWith(), dungeon);
+        }
     }
 
-    public void bribeMercenary(Dungeon dungeon) {
-        // remove mercenary from list
-        dungeon.getEntities().remove(this);
-        // add bribed mercenary from list
-        BribedMercenary newBribedMercenary = new BribedMercenary(getId(), getPosition());
-        dungeon.getEntities().add(newBribedMercenary);
+    @Override
+    public void takeDamage(double damage) {
+        return;
     }
 }

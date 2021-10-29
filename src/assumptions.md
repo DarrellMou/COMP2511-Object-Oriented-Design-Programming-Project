@@ -38,6 +38,8 @@ Bribed mercenary
 
 - A bribed mercenary will 'follow' the character by trailing behind the player.
 - After bribing a mercenary, it will recover to full hp.
+- Bribed mercenary has a battle radius of 5.
+- Radius is calculated by the sum of the x and y displacement. (NOT PYTHAGORAS)
 - The mercenary will not take damage as it fights with the player, since it fights from a distance.
 
 Movement order
