@@ -150,7 +150,6 @@ public class Character extends Mobs implements WalkedOn {
 
                     InventoryItem bow = ItemsFactory.createItem("bow");
                     inventory.add(bow);
-                    System.out.println(inventory);
                     return true;
                 }
             }

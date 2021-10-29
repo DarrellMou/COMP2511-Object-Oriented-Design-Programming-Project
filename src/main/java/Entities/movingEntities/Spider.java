@@ -36,12 +36,10 @@ public class Spider extends SpawningEntities {
                 return false;
             } else if (e instanceof Character) {
                 // If position has character, get character
-                System.out.println("hi");
                 c = (Character) e;
             }
         }
         if (c != null) {
-            System.out.println("hiaaaa");
             // Battle character if character is on position. This is not done in loop as the
             // character can have another entity on it.
             Battle.battle(c, this, dungeon);

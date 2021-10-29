@@ -37,7 +37,6 @@ public final class Battle {
 
     public static void removeDead(Dungeon dungeon) {
         for (Fightable f : Battle.killed) {
-            System.out.println(f);
             if (f instanceof Character) {
                 System.out.println("GAME OVER! YOU SUCK!");
             }
