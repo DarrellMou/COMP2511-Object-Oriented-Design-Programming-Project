@@ -7,6 +7,11 @@
         },
         {
             "x": 1,
+            "y": 1,
+            "type": "boulder"
+        },
+        {
+            "x": 1,
             "y": 0,
             "type": "portal",
             "colour": "BLUE"
