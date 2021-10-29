@@ -27,7 +27,6 @@ public class Mercenary extends SpawningEntities implements Interactable {
         if (position.equals(getPosition())) {
             return false;
         }
-        Character c = null;
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
             if (!e.isWalkable() || isMovingEntityButNotCharacter(e)) {
                 // if position isn't walkable OR another moving entity (e.g. spider)
@@ -65,22 +64,33 @@ public class Mercenary extends SpawningEntities implements Interactable {
         Position positionFromChar = Position.calculatePositionBetween(character.getPosition(), this.getPosition());
         Position nextPositionX = getPosition().translateBy(getDirection(positionFromChar.getX(), "x"));
         Position nextPositionY = getPosition().translateBy(getDirection(positionFromChar.getY(), "y"));
+        Position newPosition = null;
         // the movement of the mercenary would prioritise the larger displacement
         // if it isn't movable in the prioritised direction, it would try to move in
         // other direction
         if (Math.abs(positionFromChar.getX()) >= Math.abs(positionFromChar.getY())) {
             if (checkMovable(nextPositionX, dungeon)) {
-                setPosition(nextPositionX);
+                newPosition = nextPositionX;
             } else if (checkMovable(nextPositionY, dungeon)) {
-                setPosition(nextPositionY);
+                newPosition = nextPositionY;
             }
         } else {
             if (checkMovable(nextPositionY, dungeon)) {
-                setPosition(nextPositionY);
+                newPosition = nextPositionY;
             } else if (checkMovable(nextPositionX, dungeon)) {
-                setPosition(nextPositionX);
+                newPosition = nextPositionX;
             }
         }
+        // // If position changed after walking on newPosition
+        // // (e.g. walking into portal)
+        // if (!getPosition().translateBy(getMovementDirection()).equals(newPosition)) {
+        // Position newerPosition = getPosition().translateBy(getMovementDirection());
+        // if (checkMovable(newerPosition, dungeon)) {
+        // setPosition(newerPosition);
+        // }
+        // } else {
+        // setPosition(newPosition);
+        // }
     }
 
     public void bribeMercenary(Dungeon dungeon) {
@@ -88,8 +98,6 @@ public class Mercenary extends SpawningEntities implements Interactable {
         dungeon.getEntities().remove(this);
         // add bribed mercenary from list
         BribedMercenary newBribedMercenary = new BribedMercenary(getId(), getPosition());
-        System.out.println("x");
-        System.out.println(newBribedMercenary);
         dungeon.addEntities(newBribedMercenary);
     }
 
