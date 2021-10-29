@@ -58,7 +58,7 @@ public class EntitiesFactory {
 
         Entities newEntity = null;
 
-        if (type.equals("portal")) {
+        if (type.substring(0, 6).equals("portal")) {
             newEntity = new Portal(getNextId(), position, colour);
         }
 

@@ -11,7 +11,7 @@ public class Portal extends StaticEntities implements Triggerable, WalkedOn {
     private String colour;
 
     public Portal(String id, Position position, String colour) {
-        super(id, "portal", position, false, true);
+        super(id, String.format("portal_%s", colour), position, false, true);
         this.colour = colour;
     }
 
