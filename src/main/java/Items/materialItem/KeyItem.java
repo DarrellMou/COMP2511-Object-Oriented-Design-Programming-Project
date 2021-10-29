@@ -1,9 +1,9 @@
 package Items.materialItem;
 
-public class KeyItem extends MaterialItem {
+public class KeyItem extends Materials {
 
-    public KeyItem(String id) {
-        super(id, "key");
+    public KeyItem(String id, String type) {
+        super(id, type);
     }
 
 }

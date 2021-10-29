@@ -21,14 +21,22 @@ public class ItemsFactory {
         return UUID.randomUUID().toString();
     }
 
+    // public static InventoryItem createItem(String type, String id) {
+    //     InventoryItem newItem = null;
+
+    //     else if (type.equals("key")) {
+    //         newItem = new KeyItem(getNextId());
+    //     }
+    // }
+
     public static InventoryItem createItem(String type) {
         InventoryItem newItem = null;
 
         if (type.equals("treasure")) {
             newItem = new TreasureItem(getNextId());
         }
-        else if (type.equals("key")) {
-            newItem = new KeyItem(getNextId());
+        else if (type.substring(0, 3).equals("key")) {
+            newItem = new KeyItem(getNextId(), type);
         }
         else if (type.equals("health_potion")) {
             newItem = new HealthPotionItem(getNextId());

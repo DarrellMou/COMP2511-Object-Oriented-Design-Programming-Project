@@ -1,6 +1,8 @@
 package Items.ConsumableItem;
 
+import Entities.movingEntities.Character;
 import Items.InventoryItem;
+import dungeonmania.Dungeon;
 
 public abstract class Consumables extends InventoryItem {
 
@@ -8,5 +10,5 @@ public abstract class Consumables extends InventoryItem {
         super(id, type);
     }
 
-    public abstract void consume();
+    public abstract void consume(Dungeon dungeon, Character character);
 }
