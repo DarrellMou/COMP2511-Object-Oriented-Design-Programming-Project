@@ -70,32 +70,10 @@ public class Character extends Mobs implements WalkedOn {
 
     public void addInventory(InventoryItem item) {
         inventory.add(item);
-        // String itemType = item.getType();
-        // if (getInventory().containsKey(itemType)) {
-        // // add item to inventory
-        // getInventory().get(itemType).add(item);
-        // } else {
-        // // Create new list with item
-        // List<InventoryItem> newList = new ArrayList<>();
-        // newList.add(item);
-        // // add new list to inventory
-        // getInventory().put(itemType, newList);
-        // }
     }
 
     public void removeInventory(InventoryItem item) {
         inventory.remove(item);
-        // String itemType = item.getType();
-        // if (getInventory().containsKey(itemType)) {
-        // // If only 1 copy of item, remove entry from hashmap
-        // Integer itemCount = getInventory().get(itemType).size();
-        // if (itemCount == 1) {
-        // getInventory().remove(itemType);
-        // } else {
-        // // remove item from item list
-        // getInventory().get(itemType).remove(item);
-        // }
-        // }
     }
 
     public void checkForBuildables(InventoryItem collectable, Dungeon dungeon) {
@@ -210,7 +188,8 @@ public class Character extends Mobs implements WalkedOn {
     public void makeMovement(Dungeon dungeon) {
         setPrevPosition(getPosition());
         setInBattleWith(null);
-        if (checkMovable(getPosition().translateBy(getMovementDirection()), dungeon)) {
+        Position newPosition = getPosition().translateBy(getMovementDirection());
+        if (checkMovable(newPosition, dungeon)) {
             // Untrigger if moving off untriggerable
             for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
                 if (e instanceof Untriggerable) {
@@ -218,11 +197,20 @@ public class Character extends Mobs implements WalkedOn {
                     u.untrigger(dungeon, this);
                 }
             }
-            setPosition(getPosition().translateBy(getMovementDirection()));
+
+            // If position changed after walking on newPosition
+            // (e.g. walking into portal)
+            if (!getPosition().translateBy(getMovementDirection()).equals(newPosition)) {
+                Position newerPosition = getPosition().translateBy(getMovementDirection());
+                if (checkMovable(newerPosition, dungeon)) {
+                    setPosition(newerPosition);
+                }
+            } else {
+                setPosition(newPosition);
+            }
         } else {
             for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
-                // Do what happens when character wants to walk onto entities at
-                // target position
+                // Walking on spot, call walkedOn for entities on current position
                 if (e instanceof WalkedOn) {
                     WalkedOn w = (WalkedOn) e;
                     w.walkedOn(dungeon, this);
