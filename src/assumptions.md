@@ -40,6 +40,7 @@ Bribed mercenary
 - After bribing a mercenary, it will recover to full hp.
 - Bribed mercenary has a battle radius of 5.
 - Radius is calculated by the sum of the x and y displacement. (NOT PYTHAGORAS)
+- The mercenary will not take damage as it fights with the player, since it fights from a distance.
 
 Movement order
 
@@ -54,8 +55,6 @@ Battle Order:
 
 The battle will use the first weapon in their inventory to attack.
 The player will wear the first armour and shield that they have in their inventory. They cant wear more than one of each armour
-
-Assume there is only one treasure on the map, with more than one we can bribe more than one mercenary
 
 Health, Damages
 Rationale: - Character health high enough to survive enemy hits + low enough to notice gradual decrease in damage as fights occur - Character attack low enough to not immediately kill some enemies (merc at full hp and zombie toast as hp goes down)
@@ -74,3 +73,6 @@ Building
 
 Portal
 - Walking into a portal will teleport the player to the position of the other portal translated by the movement direction.
+
+Treasure
+- If the player were to use a treasure (bribe/building material), the treasure goal will still be fulfilled.
