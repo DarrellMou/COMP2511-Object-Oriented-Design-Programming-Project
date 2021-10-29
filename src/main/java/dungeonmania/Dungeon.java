@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import Entities.Entities;
 import Entities.EntitiesFactory;
+import Entities.Interactable;
+import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;
@@ -35,6 +37,7 @@ public class Dungeon {
     private int height;
 
     private Random random;
+    private List<String> entitiesClicked = new ArrayList<String>();
 
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
@@ -209,6 +212,7 @@ public class Dungeon {
      */
     public DungeonResponse tick(String itemUsedId, Direction movementDirection)
             throws IllegalArgumentException, InvalidActionException {
+        entitiesClicked = new ArrayList<String>();
 
         incrementTicks(); // This increments the number of ticks in this dungeon
 
@@ -286,6 +290,7 @@ public class Dungeon {
         List<Mercenary> mList = new ArrayList<Mercenary>();
         List<ZombieToast> zList = new ArrayList<ZombieToast>();
         List<Spider> sList = new ArrayList<Spider>();
+        List<BribedMercenary> bList = new ArrayList<BribedMercenary>();
 
         for (Entities e : getEntities()) {
             if (e instanceof Mercenary) {
@@ -297,6 +302,9 @@ public class Dungeon {
             } else if (e instanceof Spider) {
                 Spider s = (Spider) e;
                 sList.add(s);
+            } else if (e instanceof BribedMercenary) {
+                BribedMercenary b = (BribedMercenary) e;
+                bList.add(b);
             }
         }
 
@@ -318,6 +326,12 @@ public class Dungeon {
                 break;
             s.makeMovement(this);
         }
+        // Spider
+        for (BribedMercenary b : bList) {
+            if (getCharacter() == null)
+                break;
+            b.makeMovement(this);
+        }
 
         // List<Entities> newPositionEntities = dungeon.getEntitiesOnTile(newPosition);
         // for (Entities newPositionEntity : newPositionEntities) {
@@ -330,20 +344,19 @@ public class Dungeon {
         // }
         // }
         // if (getCharacter().checkMovable(newPosition, getEntities())) {
-        //     Entities entity = getEntityFromPosition(newPosition);
-        //     if (entity instanceof Triggerable) {
-        //         // something happens when you try to walk onto it
-        //         Triggerable triggerable = (Triggerable) entity;
-        //         triggerable.trigger(getDungeon(), dungeon.getCharacter());
-        //     } else if (entity instanceof CollectableEntity) {
-        //         CollectableEntity collectable = (CollectableEntity) entity;
-        //         collectable.pickup(dungeon, dungeon.getCharacter());
-        //         dungeon.getCharacter().checkForBuildables(dungeon);
-        //     }
-        //     dungeon.getCharacter().setPosition(newPosition);
-        //     }
+        // Entities entity = getEntityFromPosition(newPosition);
+        // if (entity instanceof Triggerable) {
+        // // something happens when you try to walk onto it
+        // Triggerable triggerable = (Triggerable) entity;
+        // triggerable.trigger(getDungeon(), dungeon.getCharacter());
+        // } else if (entity instanceof CollectableEntity) {
+        // CollectableEntity collectable = (CollectableEntity) entity;
+        // collectable.pickup(dungeon, dungeon.getCharacter());
+        // dungeon.getCharacter().checkForBuildables(dungeon);
         // }
-  
+        // dungeon.getCharacter().setPosition(newPosition);
+        // }
+        // }
 
         spawnEnemies(getGameMode(), getHeight(), getWidth()); // Spawn Enemies
         if (hasCompletedGoals()) {
@@ -357,10 +370,43 @@ public class Dungeon {
         // }
 
         // Temporary, store responses and change necessary responses only
+        return newDungeonResponse();
+    }
+
+    public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
+        if (entitiesClicked.contains(entityId)) {
+            return newDungeonResponse();
+        } else {
+            entitiesClicked.add(entityId);
+        }
+        Interactable i = null;
+        System.out.println(entityId);
+        // get entity if interactible
+        for (Entities e : getEntities()) {
+            if (e.getId().equals(entityId)) {
+                if (e instanceof Interactable) {
+                    System.out.println("a");
+                    i = (Interactable) e;
+                }
+                break;
+            }
+        }
+        // if entity isn't interactable, throw error
+        if (i == null) {
+            throw new IllegalArgumentException("Object is not interactable!!");
+        }
+        // interact with interactable
+        i.interact(this);
+        return newDungeonResponse();
+    }
+
+    public DungeonResponse newDungeonResponse() {
         List<EntityResponse> entitiesResponses = new ArrayList<>();
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildablesResponses = new ArrayList<>();
 
+        System.out.println(getEntities());
+        System.out.println();
         for (Entities entity : getEntities()) {
             entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
                     entity.isInteractable()));
@@ -368,6 +414,7 @@ public class Dungeon {
 
         if (getCharacter() != null) {
             for (InventoryItem inventoryItem : getCharacter().getInventory()) {
+                System.out.println(inventoryItem.getId());
                 inventoryResponses.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
             }
         }

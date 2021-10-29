@@ -396,8 +396,7 @@ public class DungeonManiaController {
      * @throws InvalidActionException
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        // click on something
-        return null;
+        return dungeon.interact(entityId);
     }
 
     /**
