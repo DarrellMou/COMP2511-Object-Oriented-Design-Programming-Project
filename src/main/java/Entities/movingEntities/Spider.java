@@ -8,7 +8,6 @@ import Entities.Entities;
 import Entities.WalkedOn;
 import Entities.staticEntities.Boulder;
 import dungeonmania.Dungeon;
-import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Battle;
 import dungeonmania.util.Position;
 
@@ -31,6 +30,7 @@ public class Spider extends SpawningEntities {
         Character c = null;
 
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            
             if (e instanceof Boulder || (isMovingEntityButNotCharacter(e) && !(e instanceof Spider))) {
                 // If position isn't walkable OR another moving entity (e.g. spider)
                 return false;
@@ -39,6 +39,16 @@ public class Spider extends SpawningEntities {
                 c = (Character) e;
             }
         }
+
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            // Do what happens when character wants to walk onto entities at
+            // target position
+            if (e instanceof WalkedOn) {
+                WalkedOn w = (WalkedOn) e;
+                w.walkedOn(dungeon, this);
+            }
+        }
+
         if (c != null) {
             // Battle character if character is on position. This is not done in loop as the
             // character can have another entity on it.
@@ -79,30 +89,45 @@ public class Spider extends SpawningEntities {
         // The general movement of the spider is to go up then circles around the
         // starting position
         List<Position> spiderMovementPositions = getSpiderMovement(getSpawnPosition());
-        if (!checkMovable(getPosition(), dungeon)) {
-            Collections.reverse(spiderMovementPositions); // Now the spider will go the opposite way
-        }
 
         // If we encounter a boulder we want to reverse the movement of the boulder
-
+        Position beginningPosition = new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY(), 2);
+        Position nextPosition = null;
         for (int i = 0; i < spiderMovementPositions.size(); i++) {
 
             if (getPosition().getX() == spiderMovementPositions.get(i).getX()
                     && getPosition().getY() == spiderMovementPositions.get(i).getY()) {
                 // Check if the next value exists
                 if (i == spiderMovementPositions.size() - 1) {
-                    setPosition(
-                            new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY(), 2));
+                    nextPosition = beginningPosition;
+                    // setPosition(beginningPosition);
                 } else {
-                    setPosition(new Position(spiderMovementPositions.get(i + 1).getX(),
-                            spiderMovementPositions.get(i + 1).getY(), 2));
+                    nextPosition = new Position(spiderMovementPositions.get(i + 1).getX(),
+                    spiderMovementPositions.get(i + 1).getY(), 2);
+                    // setPosition();
                 }
-                return;
+                
             }
         }
 
+        if (nextPosition == null) {
+            nextPosition = beginningPosition;
+        }
+        if (!checkMovable(nextPosition, dungeon)) {
+            Collections.reverse(spiderMovementPositions); // Now the spider will go the opposite way
+        }
         // Have the spider move up if this is the beginning position
-        setPosition(new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY(), 2));
+        // setPosition(nextPosition);
+
+        // If position changed after walking on newPosition (e.g. walking into portal)
+        // if (!getPosition().translateBy(getMovementDirection()).equals(nextPosition)) {
+        //     Position newerPosition = getPosition().translateBy(getMovementDirection());
+        //     if (checkMovable(newerPosition, dungeon)) {
+        //         setPosition(newerPosition);
+        //     }
+        // } else {
+        //     setPosition(nextPosition);
+        // }
 
     }
 
