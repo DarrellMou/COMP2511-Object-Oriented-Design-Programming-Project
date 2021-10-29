@@ -35,22 +35,6 @@ public class BribedMercenary extends Mobs implements Portalable {
         return true;
     }
 
-    private Direction getDirection(int number, String axis) {
-        if (number == 0) {
-            return Direction.NONE;
-        }
-        int direction = number / Math.abs(number);
-        if (direction == 1 && axis == "x") {
-            return Direction.LEFT;
-        } else if (direction == -1 && axis == "x") {
-            return Direction.RIGHT;
-        } else if (direction == 1 && axis == "y") {
-            return Direction.UP;
-        } else {
-            return Direction.DOWN;
-        }
-    }
-
     @Override
     public void makeMovement(Dungeon dungeon) {
         System.out.println("x");

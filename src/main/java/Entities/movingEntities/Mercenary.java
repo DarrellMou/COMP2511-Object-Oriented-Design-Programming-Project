@@ -15,7 +15,7 @@ import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends SpawningEntities implements Interactable {
+public class Mercenary extends SpawningEntities implements Interactable, Portalable {
     private final int bribeRadius = 2;
 
     public Mercenary(String id, Position position) {
@@ -42,49 +42,47 @@ public class Mercenary extends SpawningEntities implements Interactable {
         return true;
     }
 
-    private Direction getDirection(int number, String axis) {
-        if (number == 0) {
-            return Direction.NONE;
-        }
-        int direction = number / Math.abs(number);
-        if (direction == 1 && axis == "x") {
-            return Direction.LEFT;
-        } else if (direction == -1 && axis == "x") {
-            return Direction.RIGHT;
-        } else if (direction == 1 && axis == "y") {
-            return Direction.UP;
-        } else {
-            return Direction.DOWN;
-        }
-    }
-
     @Override
     public void makeMovement(Dungeon dungeon) {
         Character character = dungeon.getCharacter();
         Position positionFromChar = Position.calculatePositionBetween(character.getPosition(), this.getPosition());
-        Position nextPositionX = getPosition().translateBy(getDirection(positionFromChar.getX(), "x"));
-        Position nextPositionY = getPosition().translateBy(getDirection(positionFromChar.getY(), "y"));
+        Direction directionX = getDirection(positionFromChar.getX(), "x");
+        Position nextPositionX = getPosition().translateBy(directionX);
+        Direction directionY = getDirection(positionFromChar.getY(), "y");
+        Direction currentDirection = null;
+        Position nextPositionY = getPosition().translateBy(directionY);
         Position newPosition = null;
+
         // the movement of the mercenary would prioritise the larger displacement
         // if it isn't movable in the prioritised direction, it would try to move in
         // other direction
+
         if (Math.abs(positionFromChar.getX()) >= Math.abs(positionFromChar.getY())) {
             if (checkMovable(nextPositionX, dungeon)) {
+                currentDirection = directionX;
                 newPosition = nextPositionX;
             } else if (checkMovable(nextPositionY, dungeon)) {
+                currentDirection = directionY;
                 newPosition = nextPositionY;
             }
         } else {
             if (checkMovable(nextPositionY, dungeon)) {
+                currentDirection = directionY;
                 newPosition = nextPositionY;
             } else if (checkMovable(nextPositionX, dungeon)) {
+                currentDirection = directionX;
                 newPosition = nextPositionX;
             }
         }
+
+        if (newPosition == null) {
+            return;
+        }
+
         // If position changed after walking on newPosition
         // (e.g. walking into portal)
-        if (!getPosition().translateBy(getMovementDirection()).equals(newPosition)) {
-            Position newerPosition = getPosition().translateBy(getMovementDirection());
+        if (!getPosition().translateBy(currentDirection).equals(newPosition)) {
+            Position newerPosition = getPosition().translateBy(currentDirection);
             if (checkMovable(newerPosition, dungeon)) {
                 setPosition(newerPosition);
             }
