@@ -13,7 +13,7 @@ import dungeonmania.util.Position;
 public class Boulder extends StaticEntities implements Movable, BeforeWalkedOn {
 
     public Boulder(String id, Position position) {
-        super(id, "boulder", position, false, false);
+        super(id, "boulder", new Position(position.getX(), position.getY(), 1), false, false);
     }
 
     @Override

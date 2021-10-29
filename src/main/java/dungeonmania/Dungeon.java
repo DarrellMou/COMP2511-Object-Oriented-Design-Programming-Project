@@ -221,14 +221,6 @@ public class Dungeon {
     public DungeonResponse tick(String itemUsedId, Direction movementDirection)
             throws IllegalArgumentException, InvalidActionException {
         entitiesClicked = new ArrayList<String>();
-        // Checks for valid argument
-        // if (itemUsedId == null) {
-        // throw new IllegalArgumentException("itemUsedId provided is null");
-        // }
-
-        // if (itemUsedId.equals("")) {
-        // throw new IllegalArgumentException("itemUsedId provided is an empty string");
-        // }
 
         incrementTicks(); // This increments the number of ticks in this dungeon
 
@@ -241,12 +233,13 @@ public class Dungeon {
                 }
             }
 
+            // Checks for whether itemUsed is in inventory
             if (item.equals(null)) {
                 throw new InvalidActionException(String.format("Character does not have %s in inventory", itemUsedId));
             }
 
-            // Move this function somewehre else
-            if (!(item instanceof Consumables)) {
+            // Checks for valid itemUsedId
+            if (!(item instanceof Consumables || itemUsedId == null)) {
                 throw new IllegalArgumentException("itemUsedId provided does not correspond to a bomb or potion");
             }
 
@@ -358,7 +351,7 @@ public class Dungeon {
         // b.setPosition(newBoulderPosition);
         // }
         // }
-        // if (dungeon.getCharacter().checkMovable(newPosition, getEntities())) {
+        // if (getCharacter().checkMovable(newPosition, getEntities())) {
         // Entities entity = getEntityFromPosition(newPosition);
         // if (entity instanceof Triggerable) {
         // // something happens when you try to walk onto it
@@ -373,7 +366,10 @@ public class Dungeon {
         // }
         // }
 
-        // spawnEnemies(getGameMode(), getHeight(), getWidth()); // Spawn Enemies
+        spawnEnemies(getGameMode(), getHeight(), getWidth()); // Spawn Enemies
+        if (hasCompletedGoals()) {
+            gameCompleted();
+        }
         // for (Entities entity : dungeon.getEntities()) {
         // if (entity instanceof SpawningEntities) {
         // SpawningEntities spawningEntities = (SpawningEntities) entity;
@@ -440,8 +436,7 @@ public class Dungeon {
     }
 
     public void spawnEnemies(String gameMode, int height, int width) {
-        // TODO For SpawnableEntites ... spawn (timer + spawn position
-        // should be in class)
+
         if (getTicksCounter() % 10 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
                     new Position(random.nextInt(width), random.nextInt(height), 2));
@@ -454,6 +449,7 @@ public class Dungeon {
                     ZombieToastSpawner zombieToastSpawner = (ZombieToastSpawner) entity;
                     Entities zombieToast = zombieToastSpawner.spawnZombies();
                     addEntities(zombieToast);
+                    break;
 
                 }
             }
@@ -472,5 +468,21 @@ public class Dungeon {
                 return;
             }
         }
+    }
+
+    public Boolean hasCompletedGoals() {
+        for (InventoryItem inventoryItem : getCharacter().getInventory()) {
+            if (getGoals().contains(inventoryItem.getType())) { // need to fix this for and and or
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void gameCompleted() {
+        // If you stop returning any goals (i.e. empty string) it'll say the game has
+        // been completed
+        setGoals("");
     }
 }

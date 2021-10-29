@@ -81,16 +81,16 @@ public class Mercenary extends SpawningEntities implements Interactable {
                 newPosition = nextPositionX;
             }
         }
-        // // If position changed after walking on newPosition
-        // // (e.g. walking into portal)
-        // if (!getPosition().translateBy(getMovementDirection()).equals(newPosition)) {
-        // Position newerPosition = getPosition().translateBy(getMovementDirection());
-        // if (checkMovable(newerPosition, dungeon)) {
-        // setPosition(newerPosition);
-        // }
-        // } else {
-        // setPosition(newPosition);
-        // }
+        // If position changed after walking on newPosition
+        // (e.g. walking into portal)
+        if (!getPosition().translateBy(getMovementDirection()).equals(newPosition)) {
+            Position newerPosition = getPosition().translateBy(getMovementDirection());
+            if (checkMovable(newerPosition, dungeon)) {
+                setPosition(newerPosition);
+            }
+        } else {
+            setPosition(newPosition);
+        }
     }
 
     public void bribeMercenary(Dungeon dungeon) {

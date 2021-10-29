@@ -14,6 +14,7 @@ import Entities.collectableEntities.materials.Wood;
 import Entities.staticEntities.BombActive;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Door;
+import Entities.staticEntities.DoorOpen;
 import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.Portal;
@@ -57,7 +58,7 @@ public class EntitiesFactory {
 
         Entities newEntity = null;
 
-        if (type.equals("portal")) {
+        if (type.substring(0, 6).equals("portal")) {
             newEntity = new Portal(getNextId(), position, colour);
         }
 
@@ -136,6 +137,8 @@ public class EntitiesFactory {
             newEntity = new ZombieToastSpawner(getNextId(), position);
         } else if (type.equals("bomb_active")) {
             newEntity = new BombActive(getNextId(), position);
+        } else if (type.equals("door_open")) {
+            newEntity = new DoorOpen(getNextId(), position);
         }
 
         return newEntity;

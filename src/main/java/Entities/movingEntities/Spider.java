@@ -12,7 +12,7 @@ import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Battle;
 import dungeonmania.util.Position;
 
-public class Spider extends SpawningEntities {
+public class Spider extends SpawningEntities implements Portalable {
     public Spider(String id, Position position) {
         super(id, "spider", position, false, true, 30, 1);
 
@@ -31,7 +31,7 @@ public class Spider extends SpawningEntities {
         Character c = null;
 
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            if (e instanceof Boulder || isMovingEntityButNotCharacter(e)) {
+            if (e instanceof Boulder || (isMovingEntityButNotCharacter(e) && !(e instanceof Spider))) {
                 // If position isn't walkable OR another moving entity (e.g. spider)
                 return false;
             } else if (e instanceof Character) {
@@ -76,11 +76,6 @@ public class Spider extends SpawningEntities {
      */
     @Override
     public void makeMovement(Dungeon dungeon) {
-        // TODO Sharon fix spider, maybe have spider rotate based on a counter variable.
-        // TODO Every 2 ticks it should rotate it's direction. ATM will be very hard for
-        // invincibility potion
-        // TODO Also, don't think spider reverses correctly, since checks current
-        // position not next position
         // The general movement of the spider is to go up then circles around the
         // starting position
         List<Position> spiderMovementPositions = getSpiderMovement(getSpawnPosition());
@@ -97,17 +92,17 @@ public class Spider extends SpawningEntities {
                 // Check if the next value exists
                 if (i == spiderMovementPositions.size() - 1) {
                     setPosition(
-                            new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY()));
+                            new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY(), 2));
                 } else {
                     setPosition(new Position(spiderMovementPositions.get(i + 1).getX(),
-                            spiderMovementPositions.get(i + 1).getY()));
+                            spiderMovementPositions.get(i + 1).getY(), 2));
                 }
                 return;
             }
         }
 
         // Have the spider move up if this is the beginning position
-        setPosition(new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY()));
+        setPosition(new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY(), 2));
 
     }
 

@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import Entities.BeforeWalkedOn;
 import Entities.Entities;
+import Entities.EntitiesFactory;
 import Entities.WalkedOn;
 import Entities.collectableEntities.consumables.Key;
 import Entities.movingEntities.Character;
@@ -18,7 +19,7 @@ public class Door extends StaticEntities implements Triggerable, BeforeWalkedOn 
 
     public Door(String id, Position position, int key) {
         // Door is locked initially, so isWalkable = false
-        super(id, String.format("door_%s", key), position, false, false);
+        super(id, String.format("door_%s", key), new Position(position.getX(), position.getY(), 0), false, false);
         this.key = key;
     }
 
@@ -60,14 +61,12 @@ public class Door extends StaticEntities implements Triggerable, BeforeWalkedOn 
         InventoryItem item = character.hasKey();
         if (!(item == null)) {
             KeyItem key = (KeyItem) item;
-            if (key.getType().substring(4, 5).equals(key.toString())) {
-                
+            if (key.getType().substring(4, 5).equals(Integer.toString(this.key))) {
+                Entities door_open = EntitiesFactory.createEntities("door_open", this.getPosition());
+                dungeon.removeEntities(this);
+                dungeon.addEntities(door_open);
+                character.removeInventory(key);
             }
-            // for (InventoryItem i : character.getInventory()) {
-            //     if (i.getType().contains("key")) {
-            //         // TODO daniel
-            //     }
-            // }
         }
     }
 
