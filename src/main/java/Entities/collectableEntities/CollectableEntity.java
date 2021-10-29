@@ -12,7 +12,7 @@ import dungeonmania.util.Position;
 public abstract class CollectableEntity extends Entities implements WalkedOn {
 
     public CollectableEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable, true);
+        super(id, type, new Position(position.getX(), position.getY(), 1), isInteractable, true);
     }
 
     public InventoryItem pickup(Dungeon dungeon, Character character) {
