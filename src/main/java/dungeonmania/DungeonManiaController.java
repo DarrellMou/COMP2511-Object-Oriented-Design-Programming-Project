@@ -597,8 +597,8 @@ public class DungeonManiaController {
     }
 
     public Boolean hasCompletedGoals() {
-        for (Entities entity : getEntities()) {
-            if (dungeon.getGoals().contains(entity.getType())) { // need to fix this for and and or
+        for (InventoryItem inventoryItem : getCharacter().getInventory()) {
+            if (dungeon.getGoals().contains(inventoryItem.getType())) { // need to fix this for and and or
                 return true;
             }
         }
