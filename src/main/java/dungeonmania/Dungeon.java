@@ -35,8 +35,6 @@ public class Dungeon {
     private int height;
 
     private Random random;
-    private Character character;
-    private List<InventoryItem> inventory;
 
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
@@ -53,8 +51,6 @@ public class Dungeon {
         this.width = 0;
         this.height = 0;
         this.random = random;
-        this.inventory = new ArrayList<InventoryItem>();
-        this.character = getCharacter();
     }
 
     public Random getRandom() {
@@ -72,10 +68,6 @@ public class Dungeon {
             }
         }
         return null;
-    }
-
-    public void setCharacter(Character character) {
-        this.character = character;
     }
 
     public String getDungeonId() {
