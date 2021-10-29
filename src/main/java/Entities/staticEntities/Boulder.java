@@ -14,7 +14,7 @@ public class Boulder extends StaticEntities implements Movable, WalkedOn {
     public Boulder(String id, Position position) {
         super(id, "boulder", position, false, false);
     }
-    
+
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
         List<Entities> entitiesAtPosition = dungeon.getEntitiesOnTile(position);
@@ -26,11 +26,11 @@ public class Boulder extends StaticEntities implements Movable, WalkedOn {
         }
         return true;
     }
-    
+
     @Override
     public void makeMovement(Dungeon dungeon) {
         Position newPosition = getPosition().translateBy(dungeon.getCharacter().getMovementDirection());
-        if (checkMovable(newPosition ,dungeon)) {
+        if (checkMovable(newPosition, dungeon)) {
             // Untrigger if moving off untriggerable
             for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
                 if (e instanceof Untriggerable) {
@@ -48,7 +48,7 @@ public class Boulder extends StaticEntities implements Movable, WalkedOn {
             setPosition(newPosition);
         }
     }
-    
+
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
@@ -56,8 +56,8 @@ public class Boulder extends StaticEntities implements Movable, WalkedOn {
             makeMovement(dungeon);
         }
     }
-    
-    /** 
+
+    /**
      * @param e
      * @return boolean
      */
