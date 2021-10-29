@@ -18,7 +18,7 @@ public class Door extends StaticEntities implements Triggerable, BeforeWalkedOn 
 
     public Door(String id, Position position, int key) {
         // Door is locked initially, so isWalkable = false
-        super(id, String.format("door_%s", key), position, false, false);
+        super(id, String.format("door_%s", key), new Position(position.getX(), position.getY(), 0), false, false);
         this.key = key;
     }
 

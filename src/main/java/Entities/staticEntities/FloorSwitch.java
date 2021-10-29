@@ -12,7 +12,7 @@ import dungeonmania.util.Position;
 public class FloorSwitch extends StaticEntities implements Triggerable, Untriggerable, WalkedOn {
 
     public FloorSwitch(String id, Position position) {
-        super(id, "switch", position, false, true);
+        super(id, "switch", new Position(position.getX(), position.getY(), 0), false, true);
     }
 
     @Override

@@ -16,7 +16,7 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
 
     public Mobs(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double maxHealth,
             double attackDamage) {
-        super(id, type, position, isInteractable, isWalkable);
+        super(id, type, new Position(position.getX(), position.getY(), 1), isInteractable, isWalkable);
         this.maxHealth = maxHealth;
         this.health = maxHealth;
         this.attackDamage = attackDamage;
