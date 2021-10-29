@@ -11,8 +11,10 @@ import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
 import Entities.collectableEntities.materials.Treasure;
 import Entities.collectableEntities.materials.Wood;
+import Entities.staticEntities.BombActive;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Door;
+import Entities.staticEntities.DoorOpen;
 import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.Portal;
@@ -56,8 +58,8 @@ public class EntitiesFactory {
 
         Entities newEntity = null;
 
-        if (type.equals("portal")) {
-            newEntity = new Portal(getNextId(), type, position, true, colour); // is door interactable?
+        if (type.substring(0, 6).equals("portal")) {
+            newEntity = new Portal(getNextId(), position, colour);
         }
 
         return newEntity;
@@ -68,9 +70,9 @@ public class EntitiesFactory {
         Entities newEntity = null;
 
         if (type.equals("door")) {
-            newEntity = new Door(getNextId(), type, position, true, key); // is door interactable?
+            newEntity = new Door(getNextId(), position, key);
         } else if (type.equals("key")) {
-            newEntity = new Key(getNextId(), type, position, false, key); // is key interactable?
+            newEntity = new Key(getNextId(), position, key);
         }
 
         return newEntity;
@@ -102,17 +104,17 @@ public class EntitiesFactory {
         if (type.equals("wall")) {
             newEntity = new Wall(getNextId(), position);
         } else if (type.equals("bomb")) {
-            newEntity = new Bomb(getNextId(), type, position, false);
+            newEntity = new Bomb(getNextId(), position);
         } else if (type.equals("exit")) {
-            newEntity = new Exit(getNextId(), type, position, false); // is exit interactable?
+            newEntity = new Exit(getNextId(), position);
         } else if (type.equals("treasure")) {
-            newEntity = new Treasure(getNextId(), position, true);
+            newEntity = new Treasure(getNextId(), position);
         } else if (type.equals("arrow")) {
-            newEntity = new Arrow(getNextId(), position); // interactable???
+            newEntity = new Arrow(getNextId(), position);
         } else if (type.equals("wood")) {
-            newEntity = new Wood(getNextId(), position); // interactable???
+            newEntity = new Wood(getNextId(), position);
         } else if (type.equals("invincibility_potion")) {
-            newEntity = new InvincibilityPotion(getNextId(), type, position, true);
+            newEntity = new InvincibilityPotion(getNextId(), position);
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), position);
         } else if (type.equals("player")) {
@@ -120,19 +122,23 @@ public class EntitiesFactory {
         } else if (type.equals("boulder")) {
             newEntity = new Boulder(getNextId(), position);
         } else if (type.equals("sword")) {
-            newEntity = new Sword(getNextId(), type, position, false); // is sword interctable?no
+            newEntity = new Sword(getNextId(), position); // is sword interctable?no
         } else if (type.equals("mercenary")) {
             newEntity = new Mercenary(getNextId(), position); // What is mecernary health?
         } else if (type.equals("spider")) {
             newEntity = new Spider(getNextId(), position);
         } else if (type.equals("bow")) {
-            newEntity = new Bow(getNextId(), true);
+            newEntity = new Bow(getNextId());
         } else if (type.equals("shield")) {
-            newEntity = new Shield(getNextId(), true);
+            newEntity = new Shield(getNextId());
         } else if (type.equals("zombie_toast")) {
             newEntity = new ZombieToast(getNextId(), position);
         } else if (type.equals("zombie_toast_spawner")) {
             newEntity = new ZombieToastSpawner(getNextId(), position);
+        } else if (type.equals("bomb_active")) {
+            newEntity = new BombActive(getNextId(), position);
+        } else if (type.equals("door_open")) {
+            newEntity = new DoorOpen(getNextId(), position);
         }
 
         return newEntity;

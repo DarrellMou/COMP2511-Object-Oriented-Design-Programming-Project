@@ -2,15 +2,24 @@ package Entities.staticEntities;
 
 import java.util.Objects;
 
+import Entities.BeforeWalkedOn;
+import Entities.Entities;
+import Entities.EntitiesFactory;
+import Entities.WalkedOn;
+import Entities.collectableEntities.consumables.Key;
+import Entities.movingEntities.Character;
+import Items.InventoryItem;
+import Items.materialItem.KeyItem;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class Door extends StaticEntities implements Triggerable {
+public class Door extends StaticEntities implements Triggerable, BeforeWalkedOn {
 
     private int key;
 
-    public Door(String id, String type, Position position, boolean isInteractable, int key) {
+    public Door(String id, Position position, int key) {
         // Door is locked initially, so isWalkable = false
-        super(id, type, position, isInteractable, false);
+        super(id, String.format("door_%s", key), new Position(position.getX(), position.getY(), 0), false, false);
         this.key = key;
     }
 
@@ -45,10 +54,31 @@ public class Door extends StaticEntities implements Triggerable {
             "}";
     }
 
-
-
     @Override
-    public void trigger() {
-        // TODO checks for key. Need to link door to key
+    public void trigger(Dungeon dungeon, Entities walker) {
+        Character character = (Character) walker;
+        // check for key, if so make door unlocked + isMovable
+        InventoryItem item = character.hasKey();
+        if (!(item == null)) {
+            KeyItem key = (KeyItem) item;
+            if (key.getType().substring(4, 5).equals(Integer.toString(this.key))) {
+                Entities door_open = EntitiesFactory.createEntities("door_open", this.getPosition());
+                dungeon.removeEntities(this);
+                dungeon.addEntities(door_open);
+                character.removeInventory(key);
+            }
+        }
+    }
+
+    /**
+     * If a player wants to walk on a door, calls walkedOn. It calls trigger which searches the inventory
+     * for the matching key and unlocks it if so.
+     */
+    @Override
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        if (walker instanceof Character) {
+            Character character = (Character) walker;
+            trigger(dungeon, character);
+        }
     }
 }

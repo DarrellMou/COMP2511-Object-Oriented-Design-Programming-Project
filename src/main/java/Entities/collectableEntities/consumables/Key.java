@@ -1,28 +1,18 @@
 package Entities.collectableEntities.consumables;
 
+import Entities.Entities;
 import Entities.collectableEntities.CollectableEntity;
+import Entities.movingEntities.Character;
+import Items.InventoryItem;
+import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
 public class Key extends CollectableEntity {
-    private boolean isCollectable;
     private int key;
 
-    public Key(String id, String type, Position position, boolean isInteractable, int key) {
-        super(id, type, position, isInteractable);
-        isCollectable = true; // TODO temp
+    public Key(String id, Position position, int key) {
+        super(id, String.format("key_%s", key), position, false);
         this.key = key;
-    }
-
-    // TODO if character already has key in inventory, the key should not be picked
-    // up
-    // TODO observer pattern maybe? Keys should observe inventory and update their
-    // isCollectable
-    public boolean isCollectable() {
-        return isCollectable;
-    }
-
-    public void setCollectable(boolean isCollectable) {
-        this.isCollectable = isCollectable;
     }
 
     public int getKey() {
@@ -31,5 +21,16 @@ public class Key extends CollectableEntity {
 
     public void setKey(int key) {
         this.key = key;
+    }
+
+    @Override
+    public void walkedOn(Dungeon dungeon, Entities walker) {
+        if (walker instanceof Character) {
+            Character character = (Character) walker;
+            if (character.hasKey() == null) {
+                InventoryItem item = pickup(dungeon, character);
+                character.checkForBuildables(item, dungeon);
+            }
+        }
     }
 }
