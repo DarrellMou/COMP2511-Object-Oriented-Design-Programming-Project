@@ -1,6 +1,8 @@
 package Items.Equipments;
 
+import Entities.movingEntities.Character;
 import Items.InventoryItem;
+import dungeonmania.Dungeon;
 
 public abstract class Equipments extends InventoryItem {
     private int durability;
@@ -12,8 +14,16 @@ public abstract class Equipments extends InventoryItem {
         this.damageMultiplier = damageMultiplier;
     }
 
-    public double calculateDamage(double damage) {
+    public double calculateDamage(Character character, double damage) {
+        decreaseDurability(character);
         return this.damageMultiplier * damage;
+    }
+
+    public void decreaseDurability(Character character) {
+        this.durability--;
+        if (this.durability == 0) {
+            character.getInventory().remove(this);
+        }
     }
 
     public boolean isBroken() {

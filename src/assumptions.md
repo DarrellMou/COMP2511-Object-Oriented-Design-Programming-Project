@@ -34,6 +34,7 @@ Mercenary
 - It will normally move in the direction of the player
 - If the path is blocked it will not move
 - If a mercenary were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
+- Bribe radius is determined by adding the x and y displacement.
 
 Bribed mercenary
 
