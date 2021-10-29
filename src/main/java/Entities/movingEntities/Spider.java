@@ -12,7 +12,7 @@ import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Battle;
 import dungeonmania.util.Position;
 
-public class Spider extends SpawningEntities {
+public class Spider extends SpawningEntities implements Portalable {
     public Spider(String id, Position position) {
         super(id, "spider", position, false, true, 30, 1);
 
