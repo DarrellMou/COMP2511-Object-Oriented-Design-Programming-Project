@@ -3,14 +3,20 @@ package Entities.movingEntities;
 import java.util.List;
 
 import Entities.Entities;
+import Entities.Interactable;
 import Entities.WalkedOn;
+import Entities.collectableEntities.materials.Treasure;
+import Items.InventoryItem;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
+import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends SpawningEntities {
+public class Mercenary extends SpawningEntities implements Interactable {
+    private final int bribeRadius = 2;
 
     public Mercenary(String id, Position position) {
         super(id, "mercenary", position, true, true, 80, 1);
@@ -26,14 +32,13 @@ public class Mercenary extends SpawningEntities {
             if (!e.isWalkable() || isMovingEntityButNotCharacter(e)) {
                 // if position isn't walkable OR another moving entity (e.g. spider)
                 return false;
-            } else if (e instanceof Character) {
-                // if position has character
-                c = (Character) e;
             }
         }
-        if (c != null) {
-            Battle.battle(c, this, dungeon);
-            Battle.removeDead(dungeon);
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            if (e instanceof WalkedOn) {
+                WalkedOn w = (WalkedOn) e;
+                w.walkedOn(dungeon, this);
+            }
         }
         return true;
     }
@@ -83,6 +88,24 @@ public class Mercenary extends SpawningEntities {
         dungeon.getEntities().remove(this);
         // add bribed mercenary from list
         BribedMercenary newBribedMercenary = new BribedMercenary(getId(), getPosition());
-        dungeon.getEntities().add(newBribedMercenary);
+        System.out.println("x");
+        System.out.println(newBribedMercenary);
+        dungeon.addEntities(newBribedMercenary);
     }
+
+    @Override
+    public void interact(Dungeon dungeon) throws InvalidActionException {
+        Character c = dungeon.getCharacter();
+        InventoryItem i = c.getTreasure();
+        if (i == null) {
+            throw new InvalidActionException("Character does not have a treasure!!");
+        }
+        Position p = Position.calculatePositionBetween(c.getPosition(), this.getPosition());
+        int d = Math.abs(p.getX()) + Math.abs(p.getY());
+        if (d > bribeRadius) {
+            throw new InvalidActionException("Mercenary is not in range!!");
+        }
+        bribeMercenary(dungeon);
+    }
+
 }

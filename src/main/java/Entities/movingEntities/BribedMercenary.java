@@ -10,7 +10,7 @@ public class BribedMercenary extends Mobs {
     private int battleRadius = 5;
 
     public BribedMercenary(String id, Position position) {
-        super(id, "mercenary", position, false, true, 80, 1);
+        super("id", "mercenary", position, false, true, 80, 1);
     }
 
     @Override
@@ -53,6 +53,7 @@ public class BribedMercenary extends Mobs {
 
     @Override
     public void makeMovement(Dungeon dungeon) {
+        System.out.println("x");
         Character character = dungeon.getCharacter();
         Position positionFromChar = Position.calculatePositionBetween(character.getPrevPosition(), this.getPosition());
         Position nextPositionX = getPosition().translateBy(getDirection(positionFromChar.getX(), "x"));
