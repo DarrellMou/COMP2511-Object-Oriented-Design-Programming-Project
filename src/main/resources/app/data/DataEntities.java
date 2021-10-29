@@ -10,6 +10,14 @@ public class DataEntities {
     private String colour;
 
 
+    public DataEntities(int x, int y, String type, int key) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.key = key;
+    
+    }
+
     public DataEntities(int x, int y, String type) {
         this.x = x;
         this.y = y;
@@ -25,13 +33,7 @@ public class DataEntities {
     
     }
 
-    public DataEntities(int x, int y, String type, int key) {
-        this.x = x;
-        this.y = y;
-        this.type = type;
-        this.key = key;
-    
-    }
+
 
     public int getX() {
         return this.x;
