@@ -337,20 +337,21 @@ public class Dungeon {
         // b.setPosition(newBoulderPosition);
         // }
         // }
-        // if (dungeon.getCharacter().checkMovable(newPosition, getEntities())) {
-        // Entities entity = getEntityFromPosition(newPosition);
-        // if (entity instanceof Triggerable) {
-        // // something happens when you try to walk onto it
-        // Triggerable triggerable = (Triggerable) entity;
-        // triggerable.trigger(getDungeon(), dungeon.getCharacter());
-        // } else if (entity instanceof CollectableEntity) {
-        // CollectableEntity collectable = (CollectableEntity) entity;
-        // collectable.pickup(dungeon, dungeon.getCharacter());
-        // dungeon.getCharacter().checkForBuildables(dungeon);
+        // if (getCharacter().checkMovable(newPosition, getEntities())) {
+        //     Entities entity = getEntityFromPosition(newPosition);
+        //     if (entity instanceof Triggerable) {
+        //         // something happens when you try to walk onto it
+        //         Triggerable triggerable = (Triggerable) entity;
+        //         triggerable.trigger(getDungeon(), dungeon.getCharacter());
+        //     } else if (entity instanceof CollectableEntity) {
+        //         CollectableEntity collectable = (CollectableEntity) entity;
+        //         collectable.pickup(dungeon, dungeon.getCharacter());
+        //         dungeon.getCharacter().checkForBuildables(dungeon);
+        //     }
+        //     dungeon.getCharacter().setPosition(newPosition);
+        //     }
         // }
-        // dungeon.getCharacter().setPosition(newPosition);
-        // }
-        // }
+  
 
         spawnEnemies(getGameMode(), getHeight(), getWidth()); // Spawn Enemies
         if (hasCompletedGoals()) {
@@ -388,8 +389,7 @@ public class Dungeon {
     }
 
     public void spawnEnemies(String gameMode, int height, int width) {
-        // TODO For SpawnableEntites ... spawn (timer + spawn position
-        // should be in class)
+
         if (getTicksCounter() % 10 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
                     new Position(random.nextInt(width), random.nextInt(height), 2));
@@ -402,6 +402,7 @@ public class Dungeon {
                     ZombieToastSpawner zombieToastSpawner = (ZombieToastSpawner) entity;
                     Entities zombieToast = zombieToastSpawner.spawnZombies();
                     addEntities(zombieToast);
+                    break;
 
                 }
             }
