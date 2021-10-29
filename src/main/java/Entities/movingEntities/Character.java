@@ -9,6 +9,7 @@ import Entities.BeforeWalkedOn;
 import Entities.Entities;
 import Entities.WalkedOn;
 import Entities.collectableEntities.CollectableEntity;
+import Entities.collectableEntities.materials.Treasure;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Door;
 import Entities.staticEntities.Triggerable;
@@ -19,8 +20,10 @@ import Items.Equipments.Armours.Armours;
 import Items.Equipments.Shields.Shields;
 import Items.Equipments.Weapons.Weapons;
 import Items.materialItem.Materials;
+import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
+import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Position;
@@ -38,6 +41,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
 
     public Character(String id, Position position) {
         super(id, "player", position, false, true, 120, 3);
+        setPrevPosition(getPosition());
         this.maxHealth = 120;
         inventory = new ArrayList<InventoryItem>();
     }
@@ -46,6 +50,24 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         for (InventoryItem i : getInventory()) {
             if (i.getType().substring(0, 3).equals("key")) {
                 return i;
+            }
+        }
+        return null;
+    }
+
+    public InventoryItem getTreasure() {
+        for (InventoryItem i : getInventory()) {
+            if (i instanceof TreasureItem) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public Weapons getWeapon() {
+        for (InventoryItem i : getInventory()) {
+            if (i instanceof Weapons) {
+                return (Weapons) i;
             }
         }
         return null;
@@ -177,7 +199,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
 
     @Override
     public void makeMovement(Dungeon dungeon) {
-        setPrevPosition(getPosition());
         setInBattleWith(null);
         Position newPosition = getPosition().translateBy(getMovementDirection());
         if (checkMovable(newPosition, dungeon)) {
@@ -188,6 +209,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
                     u.untrigger(dungeon, this);
                 }
             }
+            setPrevPosition(getPosition());
 
             // If position changed after walking on newPosition
             // (e.g. walking into portal)
@@ -243,7 +265,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         for (InventoryItem item : getInventory()) {
             if (item instanceof Weapons) {
                 Weapons weapon = (Weapons) item;
-                damage = weapon.calculateDamage(damage);
+                damage = weapon.calculateDamage(this, damage);
             }
         }
         return getHealth() * damage;
@@ -256,12 +278,12 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         for (InventoryItem item : getInventory()) {
             if (item instanceof Armours && !armourChecked) {
                 Armours armour = (Armours) item;
-                damage = armour.calculateDamage(getAttackDamage());
+                damage = armour.calculateDamage(this, damage);
                 armourChecked = true;
             }
             if (item instanceof Armours && !shieldChecked) {
                 Shields shield = (Shields) item;
-                damage = shield.calculateDamage(getAttackDamage());
+                damage = shield.calculateDamage(this, damage);
                 shieldChecked = true;
             }
             if (armourChecked && shieldChecked)
@@ -272,7 +294,8 @@ public class Character extends Mobs implements WalkedOn, Portalable {
 
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
-        // if enemy walks on char
+        Battle.battle(this, (Fightable) walker, dungeon);
+        Battle.removeDead(dungeon);
         return;
     }
 
