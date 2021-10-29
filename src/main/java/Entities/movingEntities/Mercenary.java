@@ -10,7 +10,7 @@ import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends SpawningEntities {
+public class Mercenary extends SpawningEntities implements Portalable {
 
     public Mercenary(String id, Position position) {
         super(id, "mercenary", position, true, true, 80, 1);
