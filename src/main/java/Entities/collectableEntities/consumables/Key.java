@@ -11,7 +11,7 @@ public class Key extends CollectableEntity {
     private int key;
 
     public Key(String id, Position position, int key) {
-        super(id, "key", position, false);
+        super(id, String.format("key_%s", key), position, false);
         this.key = key;
     }
 
