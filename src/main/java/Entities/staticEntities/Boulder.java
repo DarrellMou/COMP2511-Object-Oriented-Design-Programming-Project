@@ -38,6 +38,13 @@ public class Boulder extends StaticEntities implements Movable, WalkedOn {
                     u.untrigger(dungeon, this);
                 }
             }
+            // Call walked on for entities at newPosition
+            for (Entities e : dungeon.getEntitiesOnTile(newPosition)) {
+                if (e instanceof WalkedOn) {
+                    WalkedOn w = (WalkedOn) e;
+                    w.walkedOn(dungeon, this);
+                }
+            }
             setPosition(newPosition);
         }
     }

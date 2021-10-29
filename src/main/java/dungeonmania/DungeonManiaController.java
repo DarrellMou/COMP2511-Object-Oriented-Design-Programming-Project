@@ -47,9 +47,9 @@ public class DungeonManiaController {
     public DungeonManiaController() {
         numCreatedDungeons = 0;
         random = new Random(System.currentTimeMillis()); // Seed is the time
-        dungeon = new Dungeon(getDungeonId(), random); 
+        dungeon = new Dungeon(getDungeonId(), random);
     }
-   
+
     /**
      * @return Random
      */
@@ -77,6 +77,7 @@ public class DungeonManiaController {
     public void setNumCreatedDungeons(int numCreatedDungeons) {
         this.numCreatedDungeons = numCreatedDungeons;
     }
+
     public Dungeon getDungeon() {
         return this.dungeon;
     }
@@ -87,8 +88,6 @@ public class DungeonManiaController {
     public void setDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
-
-
 
     /**
      * @return String
@@ -387,7 +386,6 @@ public class DungeonManiaController {
      */
     public DungeonResponse tick(String itemUsedId, Direction movementDirection)
             throws IllegalArgumentException, InvalidActionException {
-        
         return dungeon.tick(itemUsedId, movementDirection);
     }
 
@@ -420,22 +418,22 @@ public class DungeonManiaController {
         List<String> buildablesResponses = new ArrayList<>();
 
         for (Entities entity : dungeon.getEntities()) {
-                entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
-                        entity.isInteractable()));
+            entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                    entity.isInteractable()));
 
         }
 
         for (InventoryItem inventoryItem : getCharacter().getInventory()) {
-            inventoryResponses.add(new ItemResponse(inventoryItem.getId(),inventoryItem.getType()));
+            inventoryResponses.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
 
         }
 
         for (String builds : dungeon.getBuildables()) {
             buildablesResponses.add(builds);
         }
-        
-        return new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entitiesResponses, inventoryResponses,
-        buildablesResponses, dungeon.getGoals());
+
+        return new DungeonResponse(dungeon.getDungeonId(), dungeon.getDungeonName(), entitiesResponses,
+                inventoryResponses, buildablesResponses, dungeon.getGoals());
     }
 
     /**
@@ -453,20 +451,6 @@ public class DungeonManiaController {
         // If you stop returning any goals (i.e. empty string) it'll say the game has
         // been completed
         dungeon.setGoals("");
-    }
-
-    public void gameLost() {
-        // If you no longer give an entity object for a player to the frontend it'll say
-        // the game has been lost
-        for (Entities entity : dungeon.getEntities()) {
-            if (entity instanceof Character) {
-                ArrayList<Entities> newList = dungeon.getEntities();
-                newList.remove(entity);
-                dungeon.setEntities(newList);
-                return;
-            }
-        }
-
     }
 
 }

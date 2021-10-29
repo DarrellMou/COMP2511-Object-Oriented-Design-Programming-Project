@@ -27,7 +27,7 @@ public class Key extends CollectableEntity {
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             Character character = (Character) walker;
-            if (!character.hasKey()) {
+            if (!(character.hasKey() == null)) {
                 InventoryItem item = pickup(dungeon, character);
                 character.checkForBuildables(item, dungeon);
             }

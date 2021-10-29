@@ -16,7 +16,6 @@ public abstract class CollectableEntity extends Entities implements WalkedOn {
     }
 
     public InventoryItem pickup(Dungeon dungeon, Character character) {
-        System.out.println(this);
         InventoryItem item = ItemsFactory.createItem(this.getType());
         character.addInventory(item);
         dungeon.removeEntities(this);
