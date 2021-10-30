@@ -17,6 +17,7 @@ import Entities.movingEntities.Spider;
 import Entities.movingEntities.ZombieToast;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Exit;
+import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.ZombieToastSpawner;
 import Items.BuildableItems;
 import Items.InventoryItem;
@@ -518,20 +519,20 @@ public class Dungeon {
                 }
                 return false;
 
-
             case "enemies":
                 List<Entities> zombies = getEntities().stream().filter((entity) -> entity.getType().equals("zombie_toast")).collect(Collectors.toList());
                 List<Entities> mercenary = getEntities().stream().filter((entity) -> entity.getType().equals("mercenary")).collect(Collectors.toList());
                 List<Entities> spiders = getEntities().stream().filter((entity) -> entity.getType().equals("spider")).collect(Collectors.toList());
+                List<Entities> zombiespawners = getEntities().stream().filter((entity) -> entity.getType().equals("zombie_toast_spawner")).collect(Collectors.toList());
                 
-                if (zombies.isEmpty() && mercenary.isEmpty() && spiders.isEmpty()) {
+                if (zombies.isEmpty() && mercenary.isEmpty() && spiders.isEmpty() && zombiespawners.isEmpty()) {
                     return true;
                 }
                 return false;
             case "boulders":
-
+                // Check all switches have a boulder on it
                 for (Entities entity: getEntities()) {
-                    if (entity instanceof Boulder) {
+                    if (entity instanceof FloorSwitch) {
                         List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
                         List<Entities> tiles = entityAtPosition.stream().filter((entityOnTile) -> entityOnTile.getType().equals("switch")).collect(Collectors.toList());
                         if (tiles.isEmpty()) {
@@ -545,14 +546,8 @@ public class Dungeon {
                     return true;
                 }
                 return false;
-            default:
-                return false;
-
-
-            
-             
-        }   
-
+        }
+        return false;
     }
 
     public void gameCompleted() {
