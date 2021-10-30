@@ -37,7 +37,6 @@ public class BribedMercenary extends Mobs implements Portalable {
 
     @Override
     public void makeMovement(Dungeon dungeon) {
-        System.out.println("x");
         Character character = dungeon.getCharacter();
         Position positionFromChar = Position.calculatePositionBetween(character.getPrevPosition(), this.getPosition());
         Position nextPositionX = getPosition().translateBy(getDirection(positionFromChar.getX(), "x"));
