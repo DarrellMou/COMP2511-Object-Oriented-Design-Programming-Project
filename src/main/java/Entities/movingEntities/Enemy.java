@@ -65,7 +65,6 @@ public abstract class Enemy extends Mobs implements WalkedOn {
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
-            System.out.println("walked on by char");
             Character character = (Character) walker;
             // fights if character is not invisible
             if (character.getInvisible() == null) {

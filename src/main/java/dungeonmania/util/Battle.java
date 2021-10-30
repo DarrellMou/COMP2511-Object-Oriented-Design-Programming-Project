@@ -22,18 +22,7 @@ public final class Battle {
             Character c = (Character) ally;
             c.setInBattleWith(enemy);
         }
-        System.out.println("fighting");
         enemy.takeDamage(dungeon, allyDamage);
         ally.takeDamage(dungeon, enemyDamage);
     }
-
-    // public static void removeDead(Dungeon dungeon) {
-    // for (Fightable f : Battle.killed) {
-    // if (f instanceof Character) {
-    // System.out.println("GAME OVER! YOU SUCK!");
-    // } else {
-    // }
-    // dungeon.getEntities().remove((Entities) f);
-    // }
-    // killed = new ArrayList<Fightable>();
 }
