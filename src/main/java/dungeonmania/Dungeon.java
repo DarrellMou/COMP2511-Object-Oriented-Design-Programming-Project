@@ -199,7 +199,7 @@ public class Dungeon {
                 goal += ":" + subgoals.get(i).getGoal() + " " + data.getGoalCondition().getGoal() + " ";
             }
             goal += ":" + subgoals.get(subgoals.size() - 1).getGoal();
-
+            
             this.setGoals(goal);
 
             // Need to see how to implement two goals in a string

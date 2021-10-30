@@ -22,6 +22,7 @@ public final class Battle {
             Character c = (Character) ally;
             c.setInBattleWith(enemy);
         }
+        System.out.println("fighting");
         enemy.takeDamage(dungeon, allyDamage);
         ally.takeDamage(dungeon, enemyDamage);
     }

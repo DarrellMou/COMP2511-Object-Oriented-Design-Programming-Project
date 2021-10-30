@@ -15,24 +15,24 @@ public class ZombieToast extends SpawningEntities {
         super(id, "zombie_toast", position, false, true, 50, 1);
     }
 
-    @Override
-    public boolean checkMovable(Position position, Dungeon dungeon) {
-        // if position has unwalkable entity
-        for (Entities e : dungeon.getEntities()) {
-            if (e.getPosition().equals(position) && (!e.isWalkable() || isMovingEntityButNotCharacter(e))) {
-                return false;
-            }
-        }
-        for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            // Do what happens when character wants to walk onto entities at
-            // target position
-            if (e instanceof WalkedOn) {
-                WalkedOn w = (WalkedOn) e;
-                w.walkedOn(dungeon, this);
-            }
-        }
-        return true;
-    }
+    // @Override
+    // public boolean checkMovable(Position position, Dungeon dungeon) {
+    //     // if position has unwalkable entity
+    //     for (Entities e : dungeon.getEntities()) {
+    //         if (e.getPosition().equals(position) && (!e.isWalkable() || isMovingEntityButNotCharacter(e))) {
+    //             return false;
+    //         }
+    //     }
+    //     for (Entities e : dungeon.getEntitiesOnTile(position)) {
+    //         // Do what happens when character wants to walk onto entities at
+    //         // target position
+    //         if (e instanceof WalkedOn) {
+    //             WalkedOn w = (WalkedOn) e;
+    //             w.walkedOn(dungeon, this);
+    //         }
+    //     }
+    //     return true;
+    // }
 
     @Override
     public void makeMovement(Dungeon dungeon) {
