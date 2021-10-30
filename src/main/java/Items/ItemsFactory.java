@@ -22,21 +22,24 @@ public class ItemsFactory {
     }
 
     // public static InventoryItem createItem(String type, String id) {
-    //     InventoryItem newItem = null;
+    // InventoryItem newItem = null;
 
-    //     else if (type.equals("key")) {
-    //         newItem = new KeyItem(id());
-    //     }
+    // else if (type.equals("key")) {
+    // newItem = new KeyItem(id());
+    // }
     // }
 
     public static InventoryItem createItem(String type) {
         InventoryItem newItem = null;
-        
+
         if (type.equals("bow")) {
             newItem = new BowItem(ItemsFactory.id());
-        }
-        else if (type.equals("shield")) {
+        } else if (type.equals("shield")) {
             newItem = new ShieldItem(ItemsFactory.id());
+        } else if (type.equals("one_ring")) {
+            newItem = new TheOneRingItem(ItemsFactory.id());
+        } else if (type.equals("armour")) {
+            newItem = new ArmourItem(ItemsFactory.id());
         }
 
         return newItem;
@@ -47,41 +50,23 @@ public class ItemsFactory {
 
         if (type.equals("treasure")) {
             newItem = new TreasureItem(id);
-        }
-        else if (type.substring(0, 3).equals("key")) {
+        } else if (type.substring(0, 3).equals("key")) {
             newItem = new KeyItem(id, type);
-        }
-        else if (type.equals("health_potion")) {
+        } else if (type.equals("health_potion")) {
             newItem = new HealthPotionItem(id);
-        }
-        else if (type.equals("invincibility_potion")) {
+        } else if (type.equals("invincibility_potion")) {
             newItem = new InvincibilityPotionItem(id);
-        }
-        else if (type.equals("invisibility_potion")) {
+        } else if (type.equals("invisibility_potion")) {
             newItem = new InvisibilityPotionItem(id);
-        }
-        else if (type.equals("wood")) {
+        } else if (type.equals("wood")) {
             newItem = new WoodItem(id);
-        }
-        else if (type.equals("arrow")) {
+        } else if (type.equals("arrow")) {
             newItem = new ArrowItem(id);
-        }
-        else if (type.equals("bomb")) {
+        } else if (type.equals("bomb")) {
             newItem = new BombItem(id);
-        }   
-        else if (type.equals("sword")) {
+        } else if (type.equals("sword")) {
             newItem = new SwordItem(id);
         }
-        else if (type.equals("armour")) {
-            newItem = new ArmourItem(id);
-        }
-        else if (type.equals("bow")) {
-            newItem = new BowItem(id);
-        }
-        else if (type.equals("shield")) {
-            newItem = new ShieldItem(id);
-        }
-
         return newItem;
     }
 

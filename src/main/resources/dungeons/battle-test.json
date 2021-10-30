@@ -11,6 +11,51 @@
             "type": "mercenary"
         },
         {
+            "x": 1,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
             "x": 0,
             "y": 1,
             "type": "treasure"

@@ -16,6 +16,7 @@ import Entities.staticEntities.Triggerable;
 import Items.BuildableItems;
 import Items.InventoryItem;
 import Items.ItemsFactory;
+import Items.TheOneRingItem;
 import Items.Equipments.Armours.Armours;
 import Items.Equipments.Shields.Shields;
 import Items.Equipments.Weapons.BowItem;
@@ -269,7 +270,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     }
 
     @Override
-    public void takeDamage(double damage) {
+    public void takeDamage(Dungeon dungeon, double damage) {
         boolean armourChecked = false;
         boolean shieldChecked = false;
         Armours armour = null;
@@ -293,12 +294,33 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             damage = shield.calculateDamage(this, damage);
         }
         setHealth(getHealth() - (damage / 10));
+
+        if (isKilled()) {
+            InventoryItem i = getOneRing();
+            // character
+            if (i != null) {
+                removeInventory(i);
+                setHealth(getMaxHealth());
+            } else {
+                dungeon.getEntities().remove(this);
+            }
+        }
+    }
+
+    public InventoryItem getOneRing() {
+        for (InventoryItem i : getInventory()) {
+            if (i instanceof TheOneRingItem) {
+                return i;
+            }
+        }
+        return null;
     }
 
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
-        Battle.battle(this, (Fightable) walker, dungeon);
-        Battle.removeDead(dungeon);
+        if (walker instanceof Enemy) {
+            Battle.battle(this, (Enemy) walker, dungeon);
+        }
         return;
     }
 
