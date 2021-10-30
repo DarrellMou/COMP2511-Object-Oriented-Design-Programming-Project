@@ -57,8 +57,8 @@ public class Dungeon {
         this.dungeonName = "";
         this.entities = new ArrayList<Entities>();
         this.buildables = new ArrayList<String>();
-        this.goals = goals;
-        this.gameMode = gameMode;
+        this.goals = "";
+        this.gameMode = "";
         ticksCounter = 0;
         this.width = 0;
         this.height = 0;
@@ -554,7 +554,7 @@ public class Dungeon {
                 if (entity instanceof FloorSwitch) {
                     List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
                     List<Entities> tiles = entityAtPosition.stream()
-                            .filter((entityOnTile) -> entityOnTile.getType().equals("switch"))
+                            .filter((entityOnTile) -> entityOnTile.getType().equals("boulder"))
                             .collect(Collectors.toList());
                     if (tiles.isEmpty()) {
                         return false;

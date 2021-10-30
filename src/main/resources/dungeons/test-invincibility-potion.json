@@ -83,7 +83,7 @@
         "type": "wall"
       },
       {
-        "x": 0,
+        "x": -1,
         "y": 2,
         "type": "player"
       },
@@ -165,7 +165,7 @@
       {
         "x": 2,
         "y": 3,
-        "type": "zombie_toast"
+        "type": "wall"
       },
       {
         "x": 1,

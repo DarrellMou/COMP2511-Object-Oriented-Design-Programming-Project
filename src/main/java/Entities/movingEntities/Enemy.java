@@ -15,8 +15,8 @@ import dungeonmania.util.Position;
 public abstract class Enemy extends Mobs implements WalkedOn {
     public Map<String, Double> itemDrop = new HashMap<String, Double>() {
         {
-            put("one_ring", 0.01);
-            put("armour", 0.50);
+            put("one_ring", 0.05);
+            put("armour", 0.20);
         }
     };
 
@@ -66,6 +66,7 @@ public abstract class Enemy extends Mobs implements WalkedOn {
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             Character character = (Character) walker;
+            // fights if character is not invisible
             if (character.getInvisible() == null) {
                 Battle.battle(character, this, dungeon);
             }

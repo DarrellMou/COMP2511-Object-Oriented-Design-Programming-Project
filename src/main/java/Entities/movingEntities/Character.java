@@ -20,6 +20,7 @@ import Items.materialItem.Materials;
 import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Buffs;
+import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
 import dungeonmania.util.Battle;
 import dungeonmania.exceptions.InvalidActionException;
@@ -55,7 +56,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
 
     public Buffs getInvincible() {
         for (Buffs buff : getBuffs()) {
-            if (buff instanceof Invisible) {
+            if (buff instanceof Invincible) {
                 return buff;
             }
         }
