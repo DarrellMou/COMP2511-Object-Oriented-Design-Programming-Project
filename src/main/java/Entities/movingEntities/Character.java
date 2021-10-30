@@ -9,6 +9,7 @@ import Entities.BeforeWalkedOn;
 import Entities.Entities;
 import Entities.WalkedOn;
 import Entities.collectableEntities.CollectableEntity;
+import Entities.collectableEntities.materials.Treasure;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Door;
 import Entities.staticEntities.Triggerable;
@@ -21,19 +22,20 @@ import Items.Equipments.Shields.Shields;
 import Items.Equipments.Weapons.BowItem;
 import Items.Equipments.Weapons.Weapons;
 import Items.materialItem.Materials;
+import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
+import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Position;
 
-public class Character extends Mobs implements WalkedOn {
+public class Character extends Mobs implements WalkedOn, Portalable {
 
     /**
      * inventory = [ {item1}, {item2}... ]
      */
     private ArrayList<InventoryItem> inventory;
-    private Direction movementDirection;
     private Map<String, Integer> materials = new HashMap<>();
     private final int maxHealth;
     private Fightable inBattleWith = null;
@@ -41,22 +43,33 @@ public class Character extends Mobs implements WalkedOn {
 
     public Character(String id, Position position) {
         super(id, "player", position, false, true, 120, 3);
+        setPrevPosition(getPosition());
         this.maxHealth = 120;
         inventory = new ArrayList<InventoryItem>();
-    }
-
-    public Direction getMovementDirection() {
-        return movementDirection;
-    }
-
-    public void setMovementDirection(Direction movementDirection) {
-        this.movementDirection = movementDirection;
     }
 
     public InventoryItem hasKey() {
         for (InventoryItem i : getInventory()) {
             if (i.getType().substring(0, 3).equals("key")) {
                 return i;
+            }
+        }
+        return null;
+    }
+
+    public InventoryItem getTreasure() {
+        for (InventoryItem i : getInventory()) {
+            if (i instanceof TreasureItem) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public Weapons getWeapon() {
+        for (InventoryItem i : getInventory()) {
+            if (i instanceof Weapons) {
+                return (Weapons) i;
             }
         }
         return null;
@@ -72,32 +85,10 @@ public class Character extends Mobs implements WalkedOn {
 
     public void addInventory(InventoryItem item) {
         inventory.add(item);
-        // String itemType = item.getType();
-        // if (getInventory().containsKey(itemType)) {
-        // // add item to inventory
-        // getInventory().get(itemType).add(item);
-        // } else {
-        // // Create new list with item
-        // List<InventoryItem> newList = new ArrayList<>();
-        // newList.add(item);
-        // // add new list to inventory
-        // getInventory().put(itemType, newList);
-        // }
     }
 
     public void removeInventory(InventoryItem item) {
         inventory.remove(item);
-        // String itemType = item.getType();
-        // if (getInventory().containsKey(itemType)) {
-        // // If only 1 copy of item, remove entry from hashmap
-        // Integer itemCount = getInventory().get(itemType).size();
-        // if (itemCount == 1) {
-        // getInventory().remove(itemType);
-        // } else {
-        // // remove item from item list
-        // getInventory().get(itemType).remove(item);
-        // }
-        // }
     }
 
     public void checkForBuildables(InventoryItem collectable, Dungeon dungeon) {
@@ -212,9 +203,9 @@ public class Character extends Mobs implements WalkedOn {
 
     @Override
     public void makeMovement(Dungeon dungeon) {
-        setPrevPosition(getPosition());
         setInBattleWith(null);
-        if (checkMovable(getPosition().translateBy(getMovementDirection()), dungeon)) {
+        Position newPosition = getPosition().translateBy(getMovementDirection());
+        if (checkMovable(newPosition, dungeon)) {
             // Untrigger if moving off untriggerable
             for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
                 if (e instanceof Untriggerable) {
@@ -222,11 +213,21 @@ public class Character extends Mobs implements WalkedOn {
                     u.untrigger(dungeon, this);
                 }
             }
-            setPosition(getPosition().translateBy(getMovementDirection()));
+            setPrevPosition(getPosition());
+
+            // If position changed after walking on newPosition
+            // (e.g. walking into portal)
+            if (!getPosition().translateBy(getMovementDirection()).equals(newPosition)) {
+                Position newerPosition = getPosition().translateBy(getMovementDirection());
+                if (checkMovable(newerPosition, dungeon)) {
+                    setPosition(newerPosition);
+                }
+            } else {
+                setPosition(newPosition);
+            }
         } else {
             for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
-                // Do what happens when character wants to walk onto entities at
-                // target position
+                // Walking on spot, call walkedOn for entities on current position
                 if (e instanceof WalkedOn) {
                     WalkedOn w = (WalkedOn) e;
                     w.walkedOn(dungeon, this);
@@ -268,7 +269,8 @@ public class Character extends Mobs implements WalkedOn {
         for (InventoryItem item : getInventory()) {
             if (item instanceof Weapons) {
                 Weapons weapon = (Weapons) item;
-                damage = weapon.calculateDamage(damage);
+                damage = weapon.calculateDamage(this, damage);
+                break;
             }
         }
         return getHealth() * damage;
@@ -278,26 +280,33 @@ public class Character extends Mobs implements WalkedOn {
     public void takeDamage(double damage) {
         boolean armourChecked = false;
         boolean shieldChecked = false;
+        Armours armour = null;
+        Shields shield = null;
         for (InventoryItem item : getInventory()) {
             if (item instanceof Armours && !armourChecked) {
-                Armours armour = (Armours) item;
-                damage = armour.calculateDamage(getAttackDamage());
+                armour = (Armours) item;
                 armourChecked = true;
             }
             if (item instanceof Armours && !shieldChecked) {
-                Shields shield = (Shields) item;
-                damage = shield.calculateDamage(getAttackDamage());
+                shield = (Shields) item;
                 shieldChecked = true;
             }
             if (armourChecked && shieldChecked)
                 break;
+        }
+        if (armour != null) {
+            damage = armour.calculateDamage(this, damage);
+        }
+        if (shield != null) {
+            damage = shield.calculateDamage(this, damage);
         }
         setHealth(getHealth() - (damage / 10));
     }
 
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
-        // if enemy walks on char
+        Battle.battle(this, (Fightable) walker, dungeon);
+        Battle.removeDead(dungeon);
         return;
     }
 

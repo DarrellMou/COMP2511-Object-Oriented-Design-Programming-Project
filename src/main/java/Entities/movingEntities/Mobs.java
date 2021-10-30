@@ -5,6 +5,7 @@ import Entities.WalkedOn;
 import Entities.staticEntities.Triggerable;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
     private double maxHealth;
     private double health;
     private double attackDamage;
+    private Direction movementDirection;
 
     public Mobs(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double maxHealth,
             double attackDamage) {
@@ -20,6 +22,14 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
         this.maxHealth = maxHealth;
         this.health = maxHealth;
         this.attackDamage = attackDamage;
+    }
+
+    public Direction getMovementDirection() {
+        return movementDirection;
+    }
+
+    public void setMovementDirection(Direction movementDirection) {
+        this.movementDirection = movementDirection;
     }
 
     @Override
@@ -110,5 +120,21 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
             return true;
         }
         return false;
+    }
+
+    protected Direction getDirection(int number, String axis) {
+        if (number == 0) {
+            return Direction.NONE;
+        }
+        int direction = number / Math.abs(number);
+        if (direction == 1 && axis == "x") {
+            return Direction.LEFT;
+        } else if (direction == -1 && axis == "x") {
+            return Direction.RIGHT;
+        } else if (direction == 1 && axis == "y") {
+            return Direction.UP;
+        } else {
+            return Direction.DOWN;
+        }
     }
 }

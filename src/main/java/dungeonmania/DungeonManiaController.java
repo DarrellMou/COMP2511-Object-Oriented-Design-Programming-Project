@@ -205,6 +205,8 @@ public class DungeonManiaController {
             if (data.getGoalCondition() != null) {
                 dungeon.setAllGoals(data); // Set the goals given by the map only if there is a goal condition
 
+            } else {
+                dungeon.setGoals("");
             }
 
             int height = data.getHeight(); // Sets the height and width dimensions of the dungeons
@@ -396,8 +398,7 @@ public class DungeonManiaController {
      * @throws InvalidActionException
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        // click on something
-        return null;
+        return dungeon.interact(entityId);
     }
 
     /**
@@ -441,16 +442,6 @@ public class DungeonManiaController {
      */
     private Character getCharacter() {
         return dungeon.getCharacter();
-    }
-
-    /**
-     * @return ArrayList<Entities>
-     */
-
-    public void gameCompleted() {
-        // If you stop returning any goals (i.e. empty string) it'll say the game has
-        // been completed
-        dungeon.setGoals("");
     }
 
 }

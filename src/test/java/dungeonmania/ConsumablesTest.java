@@ -19,19 +19,10 @@ import dungeonmania.util.Position;
 public class ConsumablesTest {
 
     /**
-     * Tests to implement:
-     * Bomb
-     *  - Placing
-     *  - Detonating
-     * Health potion
-     *  - Simple healing
-     * Invincibility potion
-     *  - Enemies should move away from character
-     *  - Potion expiry
-     * Invisibility potion
-     *  - Mercenary tracking
-     *  - Passing through enemies
-     *  - Potion expiry
+     * Tests to implement: Bomb - Placing - Detonating Health potion - Simple
+     * healing Invincibility potion - Enemies should move away from character -
+     * Potion expiry Invisibility potion - Mercenary tracking - Passing through
+     * enemies - Potion expiry
      */
 
     @Test
@@ -47,7 +38,6 @@ public class ConsumablesTest {
         // Character initial position: (1, 1)
         controller.tick("", Direction.RIGHT); // bomb pickup
 
-        System.out.println(controller.getDungeon().getCharacter().getInventory());
         // Check sword in inventory
         assertEquals(1, controller.getDungeon().getCharacter().getInventory().size());
 
