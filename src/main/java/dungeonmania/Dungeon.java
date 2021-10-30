@@ -549,10 +549,12 @@ public class Dungeon {
             return false;
         case "boulders":
             // Check all switches have a boulder on it
-            for (Entities entity: getEntities()) {
+            for (Entities entity : getEntities()) {
                 if (entity instanceof FloorSwitch) {
                     List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
-                    List<Entities> bouldersOnSwitch = entityAtPosition.stream().filter((entityOnTile) -> entityOnTile.getType().equals("boulder")).collect(Collectors.toList());
+                    List<Entities> bouldersOnSwitch = entityAtPosition.stream()
+                            .filter((entityOnTile) -> entityOnTile.getType().equals("boulder"))
+                            .collect(Collectors.toList());
                     if (bouldersOnSwitch.isEmpty()) {
                         return false;
                     }
