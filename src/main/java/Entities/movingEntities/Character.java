@@ -13,7 +13,6 @@ import Entities.collectableEntities.materials.Treasure;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Door;
 import Entities.staticEntities.Triggerable;
-import Entities.staticEntities.Untriggerable;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.Equipments.Armours.Armours;
@@ -202,13 +201,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         setInBattleWith(null);
         Position newPosition = getPosition().translateBy(getMovementDirection());
         if (checkMovable(newPosition, dungeon)) {
-            // Untrigger if moving off untriggerable
-            for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
-                if (e instanceof Untriggerable) {
-                    Untriggerable u = (Untriggerable) e;
-                    u.untrigger(dungeon, this);
-                }
-            }
             setPrevPosition(getPosition());
 
             // If position changed after walking on newPosition
