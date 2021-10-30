@@ -28,11 +28,26 @@ public class ZombieToast extends SpawningEntities {
 
     @Override
     public void makeMovement(Dungeon dungeon) {
-        List<Position> positions = getPosition().getAdjacentPositions();
+        List<Position> positions = getZombieMovablePositions(getPosition());
         // 9 possible different directions that the zombie might be able to go
         Random random = dungeon.getRandom();
         // Get a random position
-        setPosition(positions.get(random.nextInt(8)));
+        setPosition(positions.get(random.nextInt(4)));
+    }
+
+
+    public List<Position> getZombieMovablePositions(Position position) {
+        int x = position.getX();
+        int y = position.getY();
+
+        List<Position> adjacentPositions = new ArrayList<>();
+        adjacentPositions.add(new Position(x  , y-1, 2));
+        adjacentPositions.add(new Position(x+1, y, 2));
+        adjacentPositions.add(new Position(x  , y+1, 2));
+        adjacentPositions.add(new Position(x-1, y, 2));
+        return adjacentPositions;
+
+
     }
 
 }

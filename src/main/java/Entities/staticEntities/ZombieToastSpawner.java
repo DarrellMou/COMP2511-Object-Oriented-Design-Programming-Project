@@ -19,7 +19,8 @@ public class ZombieToastSpawner extends StaticEntities implements Interactable {
     }
 
     public Entities spawnZombies() {
-        return EntitiesFactory.createEntities("zombie_toast", getPosition());
+
+        return EntitiesFactory.createEntities("zombie_toast", getPosition().asLayer(2));
     }
 
     public void destroySpawner(Dungeon dungeon, Weapons w) {
