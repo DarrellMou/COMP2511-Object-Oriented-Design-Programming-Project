@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Items.InventoryItem;
+import Items.ItemsFactory;
+import Items.ConsumableItem.HealthPotionItem;
+import Entities.collectableEntities.consumables.HealthPotion;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.movingEntities.Mercenary;
 
@@ -198,6 +201,7 @@ public class CharacterTest {
 
         // Add merc to right of player
         Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(2, 1));
+        controller.getDungeon().addEntities(m);
         // move to merc and fight
         controller.tick("", Direction.RIGHT);
         // check HP
@@ -215,6 +219,7 @@ public class CharacterTest {
 
         // Add merc to right of player
         Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(2, 1));
+        controller.getDungeon().addEntities(m);
         // move to merc and fight
         controller.tick("", Direction.RIGHT);
         // check HP
