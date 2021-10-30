@@ -23,14 +23,23 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
         this.attackDamage = attackDamage;
     }
 
+    /**
+     * @return Direction
+     */
     public Direction getMovementDirection() {
         return movementDirection;
     }
 
+    /**
+     * @param movementDirection
+     */
     public void setMovementDirection(Direction movementDirection) {
         this.movementDirection = movementDirection;
     }
 
+    /**
+     * @return double
+     */
     @Override
     public double calculateDamage() {
         return getHealth() * getAttackDamage();
@@ -71,10 +80,16 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
         this.health = health;
     }
 
+    /**
+     * @return double
+     */
     public double getAttackDamage() {
         return this.attackDamage;
     }
 
+    /**
+     * @param attackDamage
+     */
     public void setAttackDamage(double attackDamage) {
         this.attackDamage = attackDamage;
     }
@@ -108,6 +123,9 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
         return false;
     }
 
+    /**
+     * @return boolean
+     */
     @Override
     public boolean isKilled() {
         if (this.getHealth() <= 0) {
@@ -116,6 +134,11 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
         return false;
     }
 
+    /**
+     * @param number
+     * @param axis
+     * @return Direction
+     */
     public Direction getDirection(int number, String axis) {
         if (number == 0) {
             return Direction.NONE;

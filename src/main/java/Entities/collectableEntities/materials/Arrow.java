@@ -13,6 +13,10 @@ public class Arrow extends CollectableEntity {
         super(id, "arrow", position, false);
     }
 
+    /**
+     * @param dungeon
+     * @param walker
+     */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {

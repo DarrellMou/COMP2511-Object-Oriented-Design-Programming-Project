@@ -15,10 +15,6 @@ Spider
 - If a spider were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
 - If a spider walks into a portal, the spider will rotate around the position of the other portal translated by it's movement direction.
 
-loadGame
-
-- The itemResponse doesnt store the type of the key and door so we wont be able to match the type of keys and doors for games that are loaded.
-
 saveGame
 
 - The user will get access to all the saves, so they can have access to previous saves which wont be overriden.
@@ -28,9 +24,11 @@ Zombie Toast Spawner
 - A user cannot walk on top of the zombie toast spawner because that is where the zombies are being spawned and the zombie is being spawned
 
 Zombie toast
+
 - If a zombie toast were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
 
 Mercenary
+
 - It will normally move in the direction of the player
 - If the path is blocked it will not move
 - If a mercenary were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
@@ -71,24 +69,30 @@ Armour: Durability: 4, Decrease Attack Damage of Enemy: 0.5
 Shield: Durability: 3, Decrease Attack Damage of Enemy: 0.5
 
 Building
+
 - Crafting shield will use whatever is first in inventory (treasure/key)
 
 Portal
+
 - Walking into a portal will teleport the player to the position of the other portal translated by the initial movement direction (and interact with any entities that are there).
 - If the other portal translated by the initial movement direction is blocked, then the player will be teleported to the position of the other portal instead (if there is a boulder/locked door, then the player will try to move the boulder/unlock the door).
 - If the player's movement is blocked whilst on the same position as a portal, it will trigger the portal and the player will end up on the position of the other portal.
 
 Treasure
+
 - If the player were to use a treasure (bribe/building material), the treasure goal cannot be fulfilled anymore unless another treasure spawns.
 
 Bomb
+
 - Bomb will not detonate if placed near an already active floor switch.
 
 Invisibility Potion
+
 - Have a 10 tick duration.
 - Takes priority over invincibility potion (both in movement and in battle)
 
 Invincibility Potion
+
 - Have a 10 tick duration.
 - Does not consume durability in battle
 - One shots enemies when active and character does not take damage

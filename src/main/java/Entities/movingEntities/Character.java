@@ -31,20 +31,23 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     /**
      * inventory = [ {item1}, {item2}... ]
      */
+    private static final int MAX_HEALTH = 120;
+    private static final int ATTACK_DAMAGE = 3;
     private ArrayList<InventoryItem> inventory;
     private Map<String, Integer> materials = new HashMap<>();
-    private final int maxHealth;
     private Fightable inBattleWith = null;
     private Position prevPosition;
     private List<Buffs> buffs = new ArrayList<Buffs>();
 
     public Character(String id, Position position) {
-        super(id, "player", position, false, true, 120, 3);
+        super(id, "player", position, false, true, MAX_HEALTH, ATTACK_DAMAGE);
         setPrevPosition(getPosition());
-        this.maxHealth = 120;
         inventory = new ArrayList<InventoryItem>();
     }
 
+    /**
+     * @return Buffs
+     */
     public Buffs getInvisible() {
         for (Buffs buff : getBuffs()) {
             if (buff instanceof Invisible) {
@@ -54,6 +57,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         return null;
     }
 
+    /**
+     * @return Buffs
+     */
     public Buffs getInvincible() {
         for (Buffs buff : getBuffs()) {
             if (buff instanceof Invincible) {
@@ -63,6 +69,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         return null;
     }
 
+    /**
+     * @param b
+     */
     public void addBuff(Buffs b) {
         for (Buffs buff : getBuffs()) {
             if (buff.getClass() == b.getClass()) {
@@ -73,14 +82,23 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         buffs.add(b);
     }
 
+    /**
+     * @param b
+     */
     public void removeBuff(Buffs b) {
         buffs.remove(b);
     }
 
+    /**
+     * @return List<Buffs>
+     */
     public List<Buffs> getBuffs() {
         return buffs;
     }
 
+    /**
+     * @return InventoryItem
+     */
     public InventoryItem hasKey() {
         for (InventoryItem i : getInventory()) {
             if (i.getType().substring(0, 3).equals("key")) {
@@ -90,6 +108,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         return null;
     }
 
+    /**
+     * @return InventoryItem
+     */
     public InventoryItem getTreasure() {
         for (InventoryItem i : getInventory()) {
             if (i instanceof TreasureItem) {
@@ -99,6 +120,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         return null;
     }
 
+    /**
+     * @return Weapons
+     */
     public Weapons getWeapon() {
         for (InventoryItem i : getInventory()) {
             if (i instanceof Weapons) {
@@ -108,22 +132,38 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         return null;
     }
 
+    /**
+     * @return ArrayList<InventoryItem>
+     */
     public ArrayList<InventoryItem> getInventory() {
         return inventory;
     }
 
+    /**
+     * @param inventory
+     */
     public void setInventory(ArrayList<InventoryItem> inventory) {
         this.inventory = inventory;
     }
 
+    /**
+     * @param item
+     */
     public void addInventory(InventoryItem item) {
         inventory.add(item);
     }
 
+    /**
+     * @param item
+     */
     public void removeInventory(InventoryItem item) {
         inventory.remove(item);
     }
 
+    /**
+     * @param collectable
+     * @param dungeon
+     */
     public void checkForBuildables(InventoryItem collectable, Dungeon dungeon) {
         dungeon.setBuildables(new ArrayList<String>());
 
@@ -155,6 +195,12 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         }
     }
 
+    /**
+     * @param buildable
+     * @return boolean
+     * @throws IllegalArgumentException
+     * @throws InvalidActionException
+     */
     public boolean build(String buildable) throws IllegalArgumentException, InvalidActionException {
         // Refactor later
         if (buildable.equals("bow")) {
@@ -233,6 +279,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         }
     }
 
+    /**
+     * @param dungeon
+     */
     @Override
     public void makeMovement(Dungeon dungeon) {
         setInBattleWith(null);
@@ -261,6 +310,11 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         }
     }
 
+    /**
+     * @param position
+     * @param dungeon
+     * @return boolean
+     */
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
@@ -288,6 +342,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         return true;
     }
 
+    /**
+     * @return double
+     */
     @Override
     public double calculateDamage() {
         double damage = getAttackDamage();
@@ -308,6 +365,10 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         return getHealth() * damage;
     }
 
+    /**
+     * @param dungeon
+     * @param damage
+     */
     @Override
     public void takeDamage(Dungeon dungeon, double damage) {
         // No damage taken when invincible. Equipment durability not lowered.
@@ -357,6 +418,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         }
     }
 
+    /**
+     * @return InventoryItem
+     */
     public InventoryItem getOneRing() {
         for (InventoryItem i : getInventory()) {
             if (i instanceof TheOneRingItem) {
@@ -366,6 +430,10 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         return null;
     }
 
+    /**
+     * @param dungeon
+     * @param walker
+     */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Enemy && getInvisible() == null) {
@@ -374,18 +442,30 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         return;
     }
 
+    /**
+     * @return Position
+     */
     public Position getPrevPosition() {
         return prevPosition;
     }
 
+    /**
+     * @param prevPosition
+     */
     public void setPrevPosition(Position prevPosition) {
         this.prevPosition = prevPosition;
     }
 
+    /**
+     * @return Fightable
+     */
     public Fightable getInBattleWith() {
         return inBattleWith;
     }
 
+    /**
+     * @param inBattleWith
+     */
     public void setInBattleWith(Fightable inBattleWith) {
         this.inBattleWith = inBattleWith;
     }

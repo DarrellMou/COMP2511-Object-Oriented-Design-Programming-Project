@@ -27,16 +27,6 @@ public class InventoryItem {
         this.type = type;
     }
 
-    public InventoryItem id(String id) {
-        setId(id);
-        return this;
-    }
-
-    public InventoryItem type(String type) {
-        setType(type);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -46,16 +36,6 @@ public class InventoryItem {
         }
         InventoryItem inventoryItem = (InventoryItem) o;
         return Objects.equals(id, inventoryItem.id) && Objects.equals(type, inventoryItem.type);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, type);
-    }
-
-    @Override
-    public String toString() {
-        return "{" + " id='" + getId() + "'" + ", type='" + getType() + "'" + "}";
     }
 
 }

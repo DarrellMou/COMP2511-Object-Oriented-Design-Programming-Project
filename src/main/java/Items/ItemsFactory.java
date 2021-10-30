@@ -17,10 +17,16 @@ import Items.materialItem.WoodItem;
 
 public class ItemsFactory {
 
+    /**
+     * @return String
+     */
     public static String id() {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * @return InventoryItem
+     */
     // public static InventoryItem createItem(String type, String id) {
     // InventoryItem newItem = null;
 
@@ -45,6 +51,11 @@ public class ItemsFactory {
         return newItem;
     }
 
+    /**
+     * @param id
+     * @param type
+     * @return InventoryItem
+     */
     public static InventoryItem createItem(String id, String type) {
         InventoryItem newItem = null;
 

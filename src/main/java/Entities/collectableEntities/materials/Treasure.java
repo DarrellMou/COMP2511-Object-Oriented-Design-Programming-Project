@@ -13,6 +13,10 @@ public class Treasure extends CollectableEntity { // fix this to collectables
         super(id, "treasure", position, false);
     }
 
+    /**
+     * @param dungeon
+     * @param walker
+     */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {

@@ -31,16 +31,31 @@ import dungeonmania.util.Position;
 
 public class EntitiesFactory {
 
+    /**
+     * @return String
+     */
     public static String getNextId() {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * @param entity
+     * @return Entities
+     */
     public static Entities creatingEntitiesFactory(EntityResponse entity) {
 
         return createEntities(entity.getType(), entity.getPosition());
 
     }
 
+    /**
+     * 
+     * Given the dataEntities object converted from the JSON object, it creates
+     * entities
+     * 
+     * @param entity
+     * @return Entities
+     */
     public static Entities creatingEntitiesFactory(DataEntities entity) {
         String type = entity.getType();
         if (type.equals("door") || type.equals("key")) {
@@ -55,6 +70,12 @@ public class EntitiesFactory {
         }
     }
 
+    /**
+     * @param type
+     * @param position
+     * @param colour
+     * @return Entities
+     */
     public static Entities createEntities(String type, Position position, String colour) {
 
         Entities newEntity = null;
@@ -66,6 +87,12 @@ public class EntitiesFactory {
         return newEntity;
     }
 
+    /**
+     * @param type
+     * @param position
+     * @param key
+     * @return Entities
+     */
     public static Entities createEntities(String type, Position position, int key) {
 
         Entities newEntity = null;
@@ -79,6 +106,9 @@ public class EntitiesFactory {
         return newEntity;
     }
 
+    /**
+     * @return Entities
+     */
     // public Entities createEntities(String type) {
 
     // Entities newEntity = null;

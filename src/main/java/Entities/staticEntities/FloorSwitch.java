@@ -15,6 +15,10 @@ public class FloorSwitch extends StaticEntities implements Triggerable, WalkedOn
         super(id, "switch", new Position(position.getX(), position.getY(), 0), false, true);
     }
 
+    /**
+     * @param dungeon
+     * @param walker
+     */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Boulder) {
@@ -22,6 +26,10 @@ public class FloorSwitch extends StaticEntities implements Triggerable, WalkedOn
         }
     }
 
+    /**
+     * @param dungeon
+     * @param walker
+     */
     @Override
     public void trigger(Dungeon dungeon, Entities walker) {
         List<Position> positions = getPosition().getAdjacentPositions();
@@ -37,7 +45,5 @@ public class FloorSwitch extends StaticEntities implements Triggerable, WalkedOn
             }
         }
     }
-
-
 
 }
