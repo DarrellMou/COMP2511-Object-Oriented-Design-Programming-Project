@@ -1,15 +1,19 @@
 package app.data;
 
+import java.util.List;
 import java.util.Objects;
 
 public class DataSubgoal {
+
     private String goal;
+    private List<DataSubgoal> subgoals;
 
     public DataSubgoal() {
     }
 
-    public DataSubgoal(String goal) {
+    public DataSubgoal(String goal, List<DataSubgoal> subgoals) {
         this.goal = goal;
+        this.subgoals = subgoals;
     }
 
     public String getGoal() {
@@ -20,8 +24,21 @@ public class DataSubgoal {
         this.goal = goal;
     }
 
+    public List<DataSubgoal> getSubgoals() {
+        return this.subgoals;
+    }
+
+    public void setSubgoals(List<DataSubgoal> subgoals) {
+        this.subgoals = subgoals;
+    }
+
     public DataSubgoal goal(String goal) {
         setGoal(goal);
+        return this;
+    }
+
+    public DataSubgoal subgoals(List<DataSubgoal> subgoals) {
+        setSubgoals(subgoals);
         return this;
     }
 
@@ -33,17 +50,17 @@ public class DataSubgoal {
             return false;
         }
         DataSubgoal dataSubgoal = (DataSubgoal) o;
-        return Objects.equals(goal, dataSubgoal.goal);
+        return Objects.equals(goal, dataSubgoal.goal) && Objects.equals(subgoals, dataSubgoal.subgoals);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(goal);
+        return Objects.hash(goal, subgoals);
     }
 
     @Override
     public String toString() {
-        return "{" + " goal='" + getGoal() + "'" + "}";
+        return "{" + " goal='" + getGoal() + "'" + ", subgoals='" + getSubgoals() + "'" + "}";
     }
 
 }
