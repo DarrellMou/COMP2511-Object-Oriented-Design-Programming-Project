@@ -11,8 +11,9 @@ public class InvincibilityPotionItem extends Consumables {
 
     @Override
     public void consume(Dungeon dungeon, Character character) {
-        // TODO Auto-generated method stub
-
+        if (!dungeon.getGameMode().equals("hard")) {
+            // consume
+        }
     }
 
 }

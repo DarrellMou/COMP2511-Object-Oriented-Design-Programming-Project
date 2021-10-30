@@ -54,12 +54,15 @@ public class EntitiesFactory {
         }
     }
 
-    public static Entities createEntities(String type, Position position, String colour) {
+    public static Entities createEntities(String type, Position position, String option) {
 
         Entities newEntity = null;
 
         if (type.substring(0, 6).equals("portal")) {
-            newEntity = new Portal(getNextId(), position, colour);
+            newEntity = new Portal(getNextId(), position, option);
+        } else if (type.equals("player")) {
+            int maxHealth = option.equals("hard") ? 100 : 120;
+            newEntity = new Character(getNextId(), position, maxHealth); // What is character health?
         }
 
         return newEntity;
@@ -78,18 +81,6 @@ public class EntitiesFactory {
         return newEntity;
     }
 
-    // public Entities createEntities(String type) {
-
-    // Entities newEntity = null;
-
-    // if (type.equals("bow")) {
-    // newEntity = new Bow(getNextId(), true); // is bow interactable?
-    // } else if (type.equals("shield")) {
-    // newEntity = new Shield(getNextId(), false); // is shield interactable?
-    // }
-
-    // return newEntity;
-    // }
     /**
      * Create entity of given type at given position
      * 
@@ -117,8 +108,6 @@ public class EntitiesFactory {
             newEntity = new InvincibilityPotion(getNextId(), position);
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), position);
-        } else if (type.equals("player")) {
-            newEntity = new Character(getNextId(), position); // What is character health?
         } else if (type.equals("boulder")) {
             newEntity = new Boulder(getNextId(), position);
         } else if (type.equals("sword")) {

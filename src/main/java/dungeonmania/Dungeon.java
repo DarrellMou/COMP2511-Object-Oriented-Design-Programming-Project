@@ -436,14 +436,14 @@ public class Dungeon {
     }
 
     public void spawnEnemies(String gameMode, int height, int width) {
-
+        int spawnRate = gameMode.equals("hard") ? 15 : 20;
         if (getTicksCounter() % 25 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
                     new Position(random.nextInt(width), random.nextInt(height), 2));
             addEntities(spider);
         }
 
-        if (getTicksCounter() % 20 == 0) {
+        if (getTicksCounter() % spawnRate == 0) {
             for (Entities entity : getEntities()) {
                 if (entity instanceof ZombieToastSpawner) {
                     ZombieToastSpawner zombieToastSpawner = (ZombieToastSpawner) entity;

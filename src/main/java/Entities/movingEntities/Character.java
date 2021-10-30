@@ -41,10 +41,10 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     private Fightable inBattleWith = null;
     private Position prevPosition;
 
-    public Character(String id, Position position) {
-        super(id, "player", position, false, true, 120, 3);
+    public Character(String id, Position position, int maxHealth) {
+        super(id, "player", position, false, true, maxHealth, 3);
         setPrevPosition(getPosition());
-        this.maxHealth = 120;
+        this.maxHealth = maxHealth;
         inventory = new ArrayList<InventoryItem>();
     }
 

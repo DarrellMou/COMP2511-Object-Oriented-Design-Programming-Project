@@ -18,19 +18,17 @@ public abstract class Enemy extends Mobs implements WalkedOn {
         if (position.equals(getPosition())) {
             return false;
         }
-        Character c = null;
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
             if (!e.isWalkable() || isMovingEntityButNotCharacter(e)) {
                 // if position isn't walkable OR another moving entity (e.g. spider)
                 return false;
-            } else if (e instanceof Character) {
-                // if position has character
-                c = (Character) e;
             }
         }
-        if (c != null) {
-            Battle.battle(c, this, dungeon);
-            Battle.removeDead(dungeon);
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            if (e instanceof WalkedOn) {
+                WalkedOn w = (WalkedOn) e;
+                w.walkedOn(dungeon, this);
+            }
         }
         return true;
     }
