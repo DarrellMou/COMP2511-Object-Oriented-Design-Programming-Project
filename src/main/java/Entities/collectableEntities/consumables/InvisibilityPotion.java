@@ -5,8 +5,7 @@ import dungeonmania.util.Position;
 
 public class InvisibilityPotion extends CollectableEntity {
 
-    public InvisibilityPotion(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
-        // TODO Auto-generated constructor stub
+    public InvisibilityPotion(String id, Position position) {
+        super(id, "invisibility_potion", position, false);
     }
 }

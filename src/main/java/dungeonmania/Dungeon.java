@@ -26,6 +26,7 @@ import Items.Equipments.Shields.ShieldItem;
 import Items.Equipments.Weapons.BowItem;
 import app.data.Data;
 import app.data.DataSubgoal;
+import dungeonmania.Buffs.Buffs;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -259,6 +260,15 @@ public class Dungeon {
 
             Consumables consumable = (Consumables) item;
             consumable.consume(this, getCharacter());
+        }
+
+        // Buffs
+        List<Buffs> removeBuffs = new ArrayList<Buffs>();
+        for (Buffs b : getCharacter().getBuffs()) {
+            b.durationEnd(getTicksCounter(), removeBuffs);
+        }
+        for (Buffs b : removeBuffs) {
+            getCharacter().removeBuff(b);
         }
 
         // Character movement

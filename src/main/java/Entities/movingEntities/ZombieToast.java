@@ -7,6 +7,9 @@ import java.util.Random;
 import Entities.Entities;
 import Entities.WalkedOn;
 import dungeonmania.Dungeon;
+import dungeonmania.Buffs.Buffs;
+import dungeonmania.Buffs.Invincible;
+import dungeonmania.Buffs.Invisible;
 import dungeonmania.util.Position;
 
 public class ZombieToast extends SpawningEntities {
@@ -17,6 +20,21 @@ public class ZombieToast extends SpawningEntities {
 
     @Override
     public void makeMovement(Dungeon dungeon) {
+        Invincible invin = null;
+        for (Buffs b : dungeon.getCharacter().getBuffs()) {
+            if (b instanceof Invisible) {
+                // invis priority over invin
+                invin = null;
+                break;
+            }
+            if (b instanceof Invincible) {
+                invin = (Invincible) b;
+            }
+        }
+        if (invin != null) {
+            invin.invinMovement(dungeon, this);
+            return;
+        }
         List<Position> positions = getZombieMovablePositions(getPosition());
         // 9 possible different directions that the zombie might be able to go
         Random random = dungeon.getRandom();

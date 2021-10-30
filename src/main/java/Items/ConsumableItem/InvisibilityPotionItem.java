@@ -2,6 +2,7 @@ package Items.ConsumableItem;
 
 import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
+import dungeonmania.Buffs.Invisible;
 
 public class InvisibilityPotionItem extends Consumables {
 
@@ -11,8 +12,8 @@ public class InvisibilityPotionItem extends Consumables {
 
     @Override
     public void consume(Dungeon dungeon, Character character) {
-        // TODO Auto-generated method stub
-
+        character.addBuff(new Invisible(dungeon.getTicksCounter()));
+        character.removeInventory(this);
     }
 
 }
