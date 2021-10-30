@@ -189,7 +189,7 @@ public class DungeonManiaController {
 
         newGameCreateMap(entitiesResponses, dungeonName);
 
-        return new DungeonResponse(dungeon.getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
+        return new DungeonResponse(getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
                 buildableResponses, dungeon.getGoals());
     }
 
@@ -236,9 +236,9 @@ public class DungeonManiaController {
     /**
      * @param name
      * @return DungeonResponse
-     * @throws IllegalArgumentException
+     * 
      */
-    public DungeonResponse saveGame(String name) throws IllegalArgumentException {
+    public DungeonResponse saveGame(String name) {
         List<EntityResponse> entitiesResponses = new ArrayList<>();
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildablesResponses = new ArrayList<>();
