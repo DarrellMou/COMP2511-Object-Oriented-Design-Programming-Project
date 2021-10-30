@@ -11,8 +11,7 @@ public class HealthPotionItem extends Consumables {
 
     @Override
     public void consume(Dungeon dungeon, Character character) {
-        // TODO Auto-generated method stub
-
+        character.setHealth(character.getMaxHealth());
     }
 
 }

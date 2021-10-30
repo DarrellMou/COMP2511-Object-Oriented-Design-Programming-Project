@@ -18,8 +18,11 @@ import Entities.movingEntities.ZombieToast;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Exit;
 import Entities.staticEntities.ZombieToastSpawner;
+import Items.BuildableItems;
 import Items.InventoryItem;
 import Items.ConsumableItem.Consumables;
+import Items.Equipments.Shields.ShieldItem;
+import Items.Equipments.Weapons.BowItem;
 import app.data.Data;
 import app.data.DataSubgoal;
 import dungeonmania.exceptions.InvalidActionException;
@@ -121,6 +124,18 @@ public class Dungeon {
     public void addBuildables(String buildable) {
         this.buildables.add(buildable);
     }
+
+    // public List<Class<? extends BuildableItems>> getBuildableItems() {
+    //     return this.buildableItems;
+    // }
+
+    // public void setBuildableItems(List<Class<? extends BuildableItems>> buildableItems) {
+    //     this.buildableItems = buildableItems;
+    // }
+
+    // public void addBuildablesItems(Class<? extends BuildableItems> buildableItems) {
+    //     this.buildableItems.add(buildableItems);
+    // }
 
     public String getGoals() {
         return this.goals;

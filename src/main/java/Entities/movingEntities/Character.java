@@ -14,10 +14,12 @@ import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Door;
 import Entities.staticEntities.Triggerable;
 import Entities.staticEntities.Untriggerable;
+import Items.BuildableItems;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.Equipments.Armours.Armours;
 import Items.Equipments.Shields.Shields;
+import Items.Equipments.Weapons.BowItem;
 import Items.Equipments.Weapons.Weapons;
 import Items.materialItem.Materials;
 import Items.materialItem.TreasureItem;
@@ -101,7 +103,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             }
         }
 
+        
         // Temporary, refactor later
+        // List<Map<String, Integer>> bowRecipes = BowItem.getRecipes();
         // bow
         if ((materials.containsKey("wood") && materials.get("wood") >= 1)
                 && (materials.containsKey("arrow") && materials.get("arrow") >= 3)) {
