@@ -200,7 +200,7 @@ public class Dungeon {
                 goal += ":" + subgoals.get(i).getGoal() + " " + data.getGoalCondition().getGoal() + " ";
             }
             goal += ":" + subgoals.get(subgoals.size() - 1).getGoal();
-
+            
             this.setGoals(goal);
 
             // Need to see how to implement two goals in a string
@@ -533,7 +533,6 @@ public class Dungeon {
                 }
             }
             return false;
-
         case "enemies":
             List<Entities> zombies = getEntities().stream().filter((entity) -> entity.getType().equals("zombie_toast"))
                     .collect(Collectors.toList());
@@ -553,10 +552,10 @@ public class Dungeon {
             for (Entities entity : getEntities()) {
                 if (entity instanceof FloorSwitch) {
                     List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
-                    List<Entities> tiles = entityAtPosition.stream()
+                    List<Entities> bouldersOnSwitch = entityAtPosition.stream()
                             .filter((entityOnTile) -> entityOnTile.getType().equals("boulder"))
                             .collect(Collectors.toList());
-                    if (tiles.isEmpty()) {
+                    if (bouldersOnSwitch.isEmpty()) {
                         return false;
                     }
                 }

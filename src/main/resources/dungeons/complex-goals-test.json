@@ -602,6 +602,11 @@
         "x": 17,
         "y": 15,
         "type": "wall"
+      },
+      {
+        "x": 5,
+        "y": 4,
+        "type": "exit"
       }
     ],
     "goal-condition": {

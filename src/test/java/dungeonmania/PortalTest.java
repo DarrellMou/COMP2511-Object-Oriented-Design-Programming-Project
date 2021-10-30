@@ -22,10 +22,10 @@ import dungeonmania.util.Position;
 public class PortalTest {
     /**
      * Tests:
-     *  - Character in portal
+     *  - Character in portal + blocked by boulder
      *  - zombie in portal
-     *  - Mercenary in portal
-     *  - Spider in portal
+     *  - Mercenary in portal + blocked by boulder
+     *  - Spider in portal + blocked by boulder
      *  - Move boulder after character moves into portal
      *  - Move into wall after character moves into portal
      */
