@@ -187,7 +187,7 @@ public class DungeonManiaController {
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildableResponses = new ArrayList<>();
 
-        newGameCreateMap(entitiesResponses, dungeonName);
+        newGameCreateMap(entitiesResponses, dungeonName, gameMode);
 
         return new DungeonResponse(dungeon.getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
                 buildableResponses, dungeon.getGoals());
@@ -197,7 +197,7 @@ public class DungeonManiaController {
      * @param entitiesResponses
      * @param dungeonName
      */
-    public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName) {
+    public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName, String gameMode) {
         try {
             BufferedReader br = new BufferedReader(
                     new FileReader("src/main/resources/dungeons/" + dungeonName + ".json"));
@@ -217,7 +217,7 @@ public class DungeonManiaController {
 
             for (DataEntities entity : data.getEntities()) {
 
-                Entities newEntity = EntitiesFactory.creatingEntitiesFactory(entity);
+                Entities newEntity = EntitiesFactory.creatingEntitiesFactory(entity, gameMode);
                 dungeon.addEntities(newEntity); // Adding it to the entities of dungeon
 
                 EntityResponse item = new EntityResponse(newEntity.getId(), newEntity.getType(),

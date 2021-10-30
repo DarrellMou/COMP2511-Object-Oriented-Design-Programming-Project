@@ -40,7 +40,7 @@ public class EntitiesFactory {
 
     }
 
-    public static Entities creatingEntitiesFactory(DataEntities entity) {
+    public static Entities creatingEntitiesFactory(DataEntities entity, String gameMode) {
         String type = entity.getType();
         if (type.equals("door") || type.equals("key")) {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()), entity.getKey());
@@ -48,7 +48,10 @@ public class EntitiesFactory {
         } else if (type.equals("portal")) {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()), entity.getColour());
 
-        } else {
+        } else if (type.equals("player")) {
+            return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()), gameMode);
+        } 
+        else {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()));
 
         }
@@ -61,7 +64,7 @@ public class EntitiesFactory {
         if (type.substring(0, 6).equals("portal")) {
             newEntity = new Portal(getNextId(), position, option);
         } else if (type.equals("player")) {
-            int maxHealth = option.equals("hard") ? 100 : 120;
+            int maxHealth = option.equals("Hard") ? 100 : 120;
             newEntity = new Character(getNextId(), position, maxHealth); // What is character health?
         }
 

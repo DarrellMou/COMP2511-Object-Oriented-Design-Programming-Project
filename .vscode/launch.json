@@ -8,6 +8,13 @@
             "type": "java",
             "name": "Launch CharacterTest",
             "request": "launch",
+            "mainClass": "dungeonmania.movingEntities.CharacterTest",
+            "projectName": "project"
+        },
+        {
+            "type": "java",
+            "name": "Launch CharacterTest",
+            "request": "launch",
             "mainClass": "dungeonmania.CharacterTest",
             "projectName": "project"
         },

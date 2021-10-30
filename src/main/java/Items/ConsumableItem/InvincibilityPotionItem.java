@@ -11,7 +11,7 @@ public class InvincibilityPotionItem extends Consumables {
 
     @Override
     public void consume(Dungeon dungeon, Character character) {
-        if (!dungeon.getGameMode().equals("hard")) {
+        if (!dungeon.getGameMode().equals("Hard")) {
             // consume
         }
     }

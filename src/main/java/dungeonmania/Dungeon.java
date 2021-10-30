@@ -436,7 +436,7 @@ public class Dungeon {
     }
 
     public void spawnEnemies(String gameMode, int height, int width) {
-        int spawnRate = gameMode.equals("hard") ? 15 : 20;
+        int spawnRate = gameMode.equals("Hard") ? 15 : 20;
         if (getTicksCounter() % 25 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
                     new Position(random.nextInt(width), random.nextInt(height), 2));
