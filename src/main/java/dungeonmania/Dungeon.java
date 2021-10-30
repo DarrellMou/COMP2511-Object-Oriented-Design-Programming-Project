@@ -26,6 +26,7 @@ import Items.Equipments.Shields.ShieldItem;
 import Items.Equipments.Weapons.BowItem;
 import app.data.Data;
 import app.data.DataSubgoal;
+import dungeonmania.Buffs.Buffs;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -259,6 +260,15 @@ public class Dungeon {
 
             Consumables consumable = (Consumables) item;
             consumable.consume(this, getCharacter());
+        }
+
+        // Buffs
+        List<Buffs> removeBuffs = new ArrayList<Buffs>();
+        for (Buffs b : getCharacter().getBuffs()) {
+            b.durationEnd(getTicksCounter(), removeBuffs);
+        }
+        for (Buffs b : removeBuffs) {
+            getCharacter().removeBuff(b);
         }
 
         // Character movement
@@ -516,41 +526,47 @@ public class Dungeon {
     public Boolean checkIndividualGoals(String goal, List<String> inventoryTypes, List<String> goalsList) {
         switch (goal.toLowerCase()) {
         case "exit":
-                List<Entities> entitiesAtPosition = getEntitiesOnTile(getCharacter().getPosition());
-                for (Entities entity : entitiesAtPosition) {
-                    if (entity instanceof Exit) {
-                        return true;
-                    }
+            List<Entities> entitiesAtPosition = getEntitiesOnTile(getCharacter().getPosition());
+            for (Entities entity : entitiesAtPosition) {
+                if (entity instanceof Exit) {
+                    return true;
                 }
-                return false;
+            }
+            return false;
 
-            case "enemies":
-                List<Entities> zombies = getEntities().stream().filter((entity) -> entity.getType().equals("zombie_toast")).collect(Collectors.toList());
-                List<Entities> mercenary = getEntities().stream().filter((entity) -> entity.getType().equals("mercenary")).collect(Collectors.toList());
-                List<Entities> spiders = getEntities().stream().filter((entity) -> entity.getType().equals("spider")).collect(Collectors.toList());
-                List<Entities> zombiespawners = getEntities().stream().filter((entity) -> entity.getType().equals("zombie_toast_spawner")).collect(Collectors.toList());
-                
-                if (zombies.isEmpty() && mercenary.isEmpty() && spiders.isEmpty() && zombiespawners.isEmpty()) {
-                    return true;
-                }
-                return false;
-            case "boulders":
-                // Check all switches have a boulder on it
-                for (Entities entity: getEntities()) {
-                    if (entity instanceof FloorSwitch) {
-                        List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
-                        List<Entities> tiles = entityAtPosition.stream().filter((entityOnTile) -> entityOnTile.getType().equals("switch")).collect(Collectors.toList());
-                        if (tiles.isEmpty()) {
-                            return false;
-                        }
+        case "enemies":
+            List<Entities> zombies = getEntities().stream().filter((entity) -> entity.getType().equals("zombie_toast"))
+                    .collect(Collectors.toList());
+            List<Entities> mercenary = getEntities().stream().filter((entity) -> entity.getType().equals("mercenary"))
+                    .collect(Collectors.toList());
+            List<Entities> spiders = getEntities().stream().filter((entity) -> entity.getType().equals("spider"))
+                    .collect(Collectors.toList());
+            List<Entities> zombiespawners = getEntities().stream()
+                    .filter((entity) -> entity.getType().equals("zombie_toast_spawner")).collect(Collectors.toList());
+
+            if (zombies.isEmpty() && mercenary.isEmpty() && spiders.isEmpty() && zombiespawners.isEmpty()) {
+                return true;
+            }
+            return false;
+        case "boulders":
+            // Check all switches have a boulder on it
+            for (Entities entity : getEntities()) {
+                if (entity instanceof FloorSwitch) {
+                    List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
+                    List<Entities> tiles = entityAtPosition.stream()
+                            .filter((entityOnTile) -> entityOnTile.getType().equals("switch"))
+                            .collect(Collectors.toList());
+                    if (tiles.isEmpty()) {
+                        return false;
                     }
                 }
+            }
+            return true;
+        case "treasure":
+            if (inventoryTypes.contains("treasure")) {
                 return true;
-            case "treasure":
-                if (inventoryTypes.contains("treasure")) {
-                    return true;
-                }
-                return false;
+            }
+            return false;
         }
         return false;
     }

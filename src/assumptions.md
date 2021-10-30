@@ -81,3 +81,12 @@ Treasure
 
 Bomb
 - Bomb will not detonate if placed near an already active floor switch.
+
+Invisibility Potion
+- Have a 10 tick duration.
+- Takes priority over invincibility potion (both in movement and in battle)
+
+Invincibility Potion
+- Have a 10 tick duration.
+- Does not consume durability in battle
+- One shots enemies when active and character does not take damage

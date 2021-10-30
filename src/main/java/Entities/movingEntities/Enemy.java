@@ -9,6 +9,7 @@ import Items.ItemsFactory;
 import Items.TheOneRingItem;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Battle;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public abstract class Enemy extends Mobs implements WalkedOn {
@@ -65,7 +66,9 @@ public abstract class Enemy extends Mobs implements WalkedOn {
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             Character character = (Character) walker;
-            Battle.battle(character, this, dungeon);
+            if (character.getInvisible() == null) {
+                Battle.battle(character, this, dungeon);
+            }
         }
     }
 }
