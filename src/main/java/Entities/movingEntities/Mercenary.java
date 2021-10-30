@@ -82,10 +82,12 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
     @Override
     public void interact(Dungeon dungeon) throws InvalidActionException {
         Character c = dungeon.getCharacter();
+
         InventoryItem i = c.getTreasure();
         if (i == null) {
             throw new InvalidActionException("Character does not have a treasure!!");
         }
+
         Position p = Position.calculatePositionBetween(c.getPosition(), this.getPosition());
         int d = Math.abs(p.getX()) + Math.abs(p.getY());
         if (d > bribeRadius) {
