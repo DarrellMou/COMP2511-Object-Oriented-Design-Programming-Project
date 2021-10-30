@@ -74,10 +74,12 @@ Building
 - Crafting shield will use whatever is first in inventory (treasure/key)
 
 Portal
-- Walking into a portal will teleport the player to the position of the other portal translated by the movement direction.
+- Walking into a portal will teleport the player to the position of the other portal translated by the initial movement direction (and interact with any entities that are there).
+- If the other portal translated by the initial movement direction is blocked, then the player will be teleported to the position of the other portal instead (if there is a boulder/locked door, then the player will try to move the boulder/unlock the door).
+- If the player's movement is blocked whilst on the same position as a portal, it will trigger the portal and the player will end up on the position of the other portal.
 
 Treasure
-- If the player were to use a treasure (bribe/building material), the treasure goal cannot be fulfilled anymore.
+- If the player were to use a treasure (bribe/building material), the treasure goal cannot be fulfilled anymore unless another treasure spawns.
 
 Bomb
 - Bomb will not detonate if placed near an already active floor switch.
