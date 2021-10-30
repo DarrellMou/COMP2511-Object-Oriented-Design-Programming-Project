@@ -103,7 +103,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             }
         }
 
-        
         // Temporary, refactor later
         // List<Map<String, Integer>> bowRecipes = BowItem.getRecipes();
         // bow
@@ -280,7 +279,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
                 armour = (Armours) item;
                 armourChecked = true;
             }
-            if (item instanceof Armours && !shieldChecked) {
+            if (item instanceof Shields && !shieldChecked) {
                 shield = (Shields) item;
                 shieldChecked = true;
             }
