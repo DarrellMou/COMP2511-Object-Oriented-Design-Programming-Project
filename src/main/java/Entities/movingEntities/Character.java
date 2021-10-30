@@ -266,6 +266,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             if (item instanceof Weapons) {
                 Weapons weapon = (Weapons) item;
                 damage = weapon.calculateDamage(this, damage);
+                break;
             }
         }
         return getHealth() * damage;
@@ -275,19 +276,25 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     public void takeDamage(double damage) {
         boolean armourChecked = false;
         boolean shieldChecked = false;
+        Armours armour = null;
+        Shields shield = null;
         for (InventoryItem item : getInventory()) {
             if (item instanceof Armours && !armourChecked) {
-                Armours armour = (Armours) item;
-                damage = armour.calculateDamage(this, damage);
+                armour = (Armours) item;
                 armourChecked = true;
             }
             if (item instanceof Armours && !shieldChecked) {
-                Shields shield = (Shields) item;
-                damage = shield.calculateDamage(this, damage);
+                shield = (Shields) item;
                 shieldChecked = true;
             }
             if (armourChecked && shieldChecked)
                 break;
+        }
+        if (armour != null) {
+            damage = armour.calculateDamage(this, damage);
+        }
+        if (shield != null) {
+            damage = shield.calculateDamage(this, damage);
         }
         setHealth(getHealth() - (damage / 10));
     }

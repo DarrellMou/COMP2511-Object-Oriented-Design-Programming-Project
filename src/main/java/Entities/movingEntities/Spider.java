@@ -12,9 +12,38 @@ import dungeonmania.util.Battle;
 import dungeonmania.util.Position;
 
 public class Spider extends SpawningEntities implements Portalable {
+    private List<Position> spiderMovementPositions;
+    private int index = -1;
+    private int increment = 1;
+
+    public int getIndex() {
+        return this.index;
+    }
+
+    public void setIndex(int index) {
+        this.index = Math.floorMod(index, spiderMovementPositions.size());
+    }
+
+    public void resetIndex() {
+        this.index = -1;
+    }
+
     public Spider(String id, Position position) {
         super(id, "spider", position, false, true, 30, 1);
+        setSpiderMovementPositions(getSpiderMovement(position));
+    }
 
+    public Position getSpiderMovementPosition(int index) {
+        int newIndex = Math.floorMod(index, spiderMovementPositions.size());
+        return spiderMovementPositions.get(newIndex);
+    }
+
+    public void setSpiderMovementPositions(List<Position> spiderMovementPositions) {
+        this.spiderMovementPositions = spiderMovementPositions;
+    }
+
+    public void reverseIncrement() {
+        this.increment *= -1;
     }
 
     /**
@@ -27,16 +56,11 @@ public class Spider extends SpawningEntities implements Portalable {
      */
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
-        Character c = null;
-
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            
-            if (e instanceof Boulder || (isMovingEntityButNotCharacter(e) && !(e instanceof Spider))) {
+            // && !(e instanceof Spider) ?
+            if (e instanceof Boulder || isMovingEntityButNotCharacter(e)) {
                 // If position isn't walkable OR another moving entity (e.g. spider)
                 return false;
-            } else if (e instanceof Character) {
-                // If position has character, get character
-                c = (Character) e;
             }
         }
 
@@ -52,24 +76,6 @@ public class Spider extends SpawningEntities implements Portalable {
         return true;
     }
 
-    // /**
-    // *
-    // * Checks if there is a boulder at the given position
-    // *
-    // * @param position
-    // * @param controller
-    // * @return Boolean
-    // */
-    // public Boolean checkBoulder(Position position, Dungeon dungeon) {
-    // for (Entities e : dungeon.getEntities()) {
-
-    // if (e.getPosition().equals(position) && e.getType().equals("boulder")) {
-    // return true;
-    // }
-    // }
-    // return false;
-    // }
-
     /**
      * Takes starting position and calculates the next movement of this spider.
      * Reverses direction if it encounters a boulder or a moving entity other than
@@ -83,62 +89,56 @@ public class Spider extends SpawningEntities implements Portalable {
         Position spiderPosition = getPosition();
         // The general movement of the spider is to go up then circles around the
         // starting position
-        List<Position> spiderMovementPositions = getSpiderMovement(getSpawnPosition());
-
-        // If we encounter a boulder we want to reverse the movement of the boulder
-        Position beginningPosition = new Position(spiderMovementPositions.get(0).getX(), spiderMovementPositions.get(0).getY(), 2);
-        Position nextPosition = null;
-        for (int i = 0; i < spiderMovementPositions.size(); i++) {
-
-            if (getPosition().getX() == spiderMovementPositions.get(i).getX()
-                    && getPosition().getY() == spiderMovementPositions.get(i).getY()) {
-                // Check if the next value exists
-                if (i == spiderMovementPositions.size() - 1) {
-                    nextPosition = beginningPosition;
-                    // setPosition(beginningPosition);
+        Position newPosition = getSpiderMovementPosition(getIndex() + increment);
+        if (!checkMovable(newPosition, dungeon)) {
+            // If blocked, attempt to go backwards
+            reverseIncrement();
+            // scenario where the first movement is blocked, the spider will go down and
+            // rotate anti-clockwise
+            if (getIndex() == -1) {
+                newPosition = getSpiderMovementPosition(4);
+                // checkMovable for reverse position
+                if (checkMovable(newPosition, dungeon)) {
+                    setIndex(4);
                 } else {
-                    nextPosition = new Position(spiderMovementPositions.get(i + 1).getX(),
-                    spiderMovementPositions.get(i + 1).getY(), 2);
-                    // setPosition();
+                    // if the position is also blocked, it goes back to original direction and does
+                    // not move
+                    newPosition = getPosition();
+                    reverseIncrement();
                 }
-                
+            } else {
+                newPosition = getSpiderMovementPosition(getIndex() + increment);
+                if (checkMovable(newPosition, dungeon)) {
+                    setIndex(getIndex() + increment);
+                } else {
+                    newPosition = getPosition();
+                    reverseIncrement();
+                }
             }
+        } else {
+            setIndex(getIndex() + increment);
         }
-
-        if (nextPosition == null) {
-            nextPosition = beginningPosition;
-        }
-        if (!checkMovable(nextPosition, dungeon)) {
-            Collections.reverse(spiderMovementPositions); // Now the spider will go the opposite way
-        }
-        // Have the spider move up if this is the beginning position
-        // setPosition(nextPosition);
 
         // If position changed after walking on newPosition (e.g. walking into portal)
-        Position positionBetween = Position.calculatePositionBetween(spiderPosition, nextPosition);
+        Position positionBetween = Position.calculatePositionBetween(newPosition, spiderPosition);
         if (positionBetween.getX() != 0) {
-            
             setMovementDirection(getDirection(positionBetween.getX(), "x"));
         } else if (positionBetween.getY() != 0) {
-            
             setMovementDirection(getDirection(positionBetween.getY(), "y"));
         }
 
-
-
-        if (!getPosition().translateBy(getMovementDirection()).equals(nextPosition)) {
+        if (getPosition().translateBy(getMovementDirection()).equals(newPosition)
+                || newPosition.equals(spiderPosition)) {
+            setPosition(newPosition);
+        } else {
             Position newerPosition = getPosition().translateBy(getMovementDirection()).asLayer(2);
             if (checkMovable(newerPosition, dungeon)) {
                 setPosition(newerPosition);
-                setSpawnPosition(newerPosition);
-            } else {
-                setPosition(nextPosition);
             }
-        } else {
-            setPosition(nextPosition);
+            setSpiderMovementPositions(getSpiderMovement(getPosition()));
+            resetIndex();
+            this.increment = 1;
         }
-        // setPosition(nextPosition);
-
 
     }
 

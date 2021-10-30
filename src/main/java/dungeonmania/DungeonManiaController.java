@@ -205,6 +205,8 @@ public class DungeonManiaController {
             if (data.getGoalCondition() != null) {
                 dungeon.setAllGoals(data); // Set the goals given by the map only if there is a goal condition
 
+            } else {
+                dungeon.setGoals("");
             }
 
             int height = data.getHeight(); // Sets the height and width dimensions of the dungeons
