@@ -38,8 +38,11 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
     }
 
     @Override
-    public void takeDamage(double damage) {
+    public void takeDamage(Dungeon dungeon, double damage) {
         setHealth(getHealth() - (damage / 5));
+        if (isKilled()) {
+            dungeon.getEntities().remove(this);
+        }
     }
 
     /**

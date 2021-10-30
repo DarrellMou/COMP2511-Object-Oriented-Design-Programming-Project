@@ -23,26 +23,6 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
     }
 
     @Override
-    public boolean checkMovable(Position position, Dungeon dungeon) {
-        if (position.equals(getPosition())) {
-            return false;
-        }
-        for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            if (!e.isWalkable() || isMovingEntityButNotCharacter(e)) {
-                // if position isn't walkable OR another moving entity (e.g. spider)
-                return false;
-            }
-        }
-        for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            if (e instanceof WalkedOn) {
-                WalkedOn w = (WalkedOn) e;
-                w.walkedOn(dungeon, this);
-            }
-        }
-        return true;
-    }
-
-    @Override
     public void makeMovement(Dungeon dungeon) {
         Character character = dungeon.getCharacter();
         Position positionFromChar = Position.calculatePositionBetween(character.getPosition(), this.getPosition());
@@ -93,7 +73,7 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
 
     public void bribeMercenary(Dungeon dungeon) {
         // remove mercenary from list
-        dungeon.getEntities().remove(this);
+        dungeon.removeEntities(this);
         // add bribed mercenary from list
         BribedMercenary newBribedMercenary = new BribedMercenary(getId(), getPosition());
         dungeon.addEntities(newBribedMercenary);

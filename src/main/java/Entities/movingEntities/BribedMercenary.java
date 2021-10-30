@@ -14,28 +14,6 @@ public class BribedMercenary extends Mobs implements Portalable {
     }
 
     @Override
-    public boolean checkMovable(Position position, Dungeon dungeon) {
-        if (position.equals(getPosition())) {
-            return false;
-        }
-        Character c = null;
-        for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            if (!e.isWalkable() || isMovingEntityButNotCharacter(e)) {
-                // if position isn't walkable OR another moving entity (e.g. spider)
-                return false;
-            } else if (e instanceof Character) {
-                // if position has character
-                c = (Character) e;
-            }
-        }
-        if (c != null) {
-            Battle.battle(c, this, dungeon);
-            Battle.removeDead(dungeon);
-        }
-        return true;
-    }
-
-    @Override
     public void makeMovement(Dungeon dungeon) {
         Character character = dungeon.getCharacter();
         Position positionFromChar = Position.calculatePositionBetween(character.getPrevPosition(), this.getPosition());
@@ -82,7 +60,8 @@ public class BribedMercenary extends Mobs implements Portalable {
     }
 
     @Override
-    public void takeDamage(double damage) {
+    public void takeDamage(Dungeon dungeon, double damage) {
+        // assume that the bribed mercenary never gets injured
         return;
     }
 }

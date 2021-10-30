@@ -127,15 +127,17 @@ public class Dungeon {
     }
 
     // public List<Class<? extends BuildableItems>> getBuildableItems() {
-    //     return this.buildableItems;
+    // return this.buildableItems;
     // }
 
-    // public void setBuildableItems(List<Class<? extends BuildableItems>> buildableItems) {
-    //     this.buildableItems = buildableItems;
+    // public void setBuildableItems(List<Class<? extends BuildableItems>>
+    // buildableItems) {
+    // this.buildableItems = buildableItems;
     // }
 
-    // public void addBuildablesItems(Class<? extends BuildableItems> buildableItems) {
-    //     this.buildableItems.add(buildableItems);
+    // public void addBuildablesItems(Class<? extends BuildableItems>
+    // buildableItems) {
+    // this.buildableItems.add(buildableItems);
     // }
 
     public String getGoals() {
@@ -331,28 +333,30 @@ public class Dungeon {
         // Mercenary
         for (Mercenary m : mList) {
             if (getCharacter() == null)
-                break;
+                return newDungeonResponse();
             m.makeMovement(this);
         }
         // Zombie Toast
         for (ZombieToast z : zList) {
             if (getCharacter() == null)
-                break;
+                return newDungeonResponse();
             z.makeMovement(this);
         }
         // Spider
         for (Spider s : sList) {
             if (getCharacter() == null)
-                break;
+                return newDungeonResponse();
             s.makeMovement(this);
         }
         // Spider
         for (BribedMercenary b : bList) {
             if (getCharacter() == null)
-                break;
+                return newDungeonResponse();
             b.makeMovement(this);
         }
 
+        if (getCharacter() == null)
+            return newDungeonResponse();
         // List<Entities> newPositionEntities = dungeon.getEntitiesOnTile(newPosition);
         // for (Entities newPositionEntity : newPositionEntities) {
         // // Boulder movement
@@ -473,9 +477,10 @@ public class Dungeon {
 
     public Boolean hasCompletedGoals() {
 
-        List<String> inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType()).collect(Collectors.toList());
+        List<String> inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType())
+                .collect(Collectors.toList());
         List<String> goalsList = new ArrayList<>();
-        for (String goals: getGoals().split(" ")) {
+        for (String goals : getGoals().split(" ")) {
             if (goals.contains(":")) {
                 goalsList.add(goals.split(":")[1]);
             }
@@ -484,35 +489,35 @@ public class Dungeon {
         if (goalsList.isEmpty()) {
             goalsList.add(getGoals());
         }
-        
-        for (String goal: goalsList) {
+
+        for (String goal : goalsList) {
             if (getGoals().contains("OR")) { // Check if the goal is OR or AND
-                if (checkIndividualGoals(goal, inventoryTypes, goalsList)) return true;
+                if (checkIndividualGoals(goal, inventoryTypes, goalsList))
+                    return true;
 
             } else if (getGoals().contains("AND")) {
                 if (!checkIndividualGoals(goal, inventoryTypes, goalsList)) {
                     return false;
                 }
-                
-      
+
             } else {
-                if (checkIndividualGoals(goal, inventoryTypes, goalsList)) return true;
+                if (checkIndividualGoals(goal, inventoryTypes, goalsList))
+                    return true;
             }
 
         }
         if (getGoals().contains("AND")) {
             return true;
         }
-  
 
         return false;
     }
 
-    public Boolean checkIndividualGoals(String goal,  List<String> inventoryTypes, List<String> goalsList ) {
+    public Boolean checkIndividualGoals(String goal, List<String> inventoryTypes, List<String> goalsList) {
         switch (goal.toLowerCase()) {
-            case "exit":
+        case "exit":
                 List<Entities> entitiesAtPosition = getEntitiesOnTile(getCharacter().getPosition());
-                for (Entities entity: entitiesAtPosition) {
+                for (Entities entity : entitiesAtPosition) {
                     if (entity instanceof Exit) {
                         return true;
                     }
