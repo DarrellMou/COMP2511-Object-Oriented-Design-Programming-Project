@@ -1,5 +1,7 @@
 package Entities.movingEntities;
 
+import dungeonmania.Dungeon;
+
 public interface Fightable {
     /**
      * Character Health = Character Health - ((Enemy Health * Enemy Attack Damage) /
@@ -12,7 +14,7 @@ public interface Fightable {
      */
     public double calculateDamage();
 
-    public void takeDamage(double Damage);
+    public void takeDamage(Dungeon dungeon, double Damage);
 
     public boolean isKilled();
 

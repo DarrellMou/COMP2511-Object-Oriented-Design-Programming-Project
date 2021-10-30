@@ -315,28 +315,30 @@ public class Dungeon {
         // Mercenary
         for (Mercenary m : mList) {
             if (getCharacter() == null)
-                break;
+                return newDungeonResponse();
             m.makeMovement(this);
         }
         // Zombie Toast
         for (ZombieToast z : zList) {
             if (getCharacter() == null)
-                break;
+                return newDungeonResponse();
             z.makeMovement(this);
         }
         // Spider
         for (Spider s : sList) {
             if (getCharacter() == null)
-                break;
+                return newDungeonResponse();
             s.makeMovement(this);
         }
         // Spider
         for (BribedMercenary b : bList) {
             if (getCharacter() == null)
-                break;
+                return newDungeonResponse();
             b.makeMovement(this);
         }
 
+        if (getCharacter() == null)
+            return newDungeonResponse();
         // List<Entities> newPositionEntities = dungeon.getEntitiesOnTile(newPosition);
         // for (Entities newPositionEntity : newPositionEntities) {
         // // Boulder movement
@@ -457,9 +459,10 @@ public class Dungeon {
 
     public Boolean hasCompletedGoals() {
 
-        List<String> inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType()).collect(Collectors.toList());
+        List<String> inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType())
+                .collect(Collectors.toList());
         List<String> goalsList = new ArrayList<>();
-        for (String goals: getGoals().split(" ")) {
+        for (String goals : getGoals().split(" ")) {
             if (goals.contains(":")) {
                 goalsList.add(goals.split(":")[1]);
             }
@@ -468,75 +471,76 @@ public class Dungeon {
         if (goalsList.isEmpty()) {
             goalsList.add(getGoals());
         }
-        
-        for (String goal: goalsList) {
+
+        for (String goal : goalsList) {
             if (getGoals().contains("OR")) { // Check if the goal is OR or AND
-                if (checkIndividualGoals(goal, inventoryTypes, goalsList)) return true;
+                if (checkIndividualGoals(goal, inventoryTypes, goalsList))
+                    return true;
 
             } else if (getGoals().contains("AND")) {
                 if (!checkIndividualGoals(goal, inventoryTypes, goalsList)) {
                     return false;
                 }
-                
-      
+
             } else {
-                if (checkIndividualGoals(goal, inventoryTypes, goalsList)) return true;
+                if (checkIndividualGoals(goal, inventoryTypes, goalsList))
+                    return true;
             }
 
         }
         if (getGoals().contains("AND")) {
             return true;
         }
-  
 
         return false;
     }
 
-    public Boolean checkIndividualGoals(String goal,  List<String> inventoryTypes, List<String> goalsList ) {
+    public Boolean checkIndividualGoals(String goal, List<String> inventoryTypes, List<String> goalsList) {
         switch (goal.toLowerCase()) {
-            case "exit":
-                List<Entities> entitiesAtPosition = getEntitiesOnTile(getCharacter().getPosition());
-                for (Entities entity: entitiesAtPosition) {
-                    if (entity instanceof Exit) {
-                        return true;
-                    }
-                }
-                return false;
-
-
-            case "enemies":
-                List<Entities> zombies = getEntities().stream().filter((entity) -> entity.getType().equals("zombie_toast")).collect(Collectors.toList());
-                List<Entities> mercenary = getEntities().stream().filter((entity) -> entity.getType().equals("mercenary")).collect(Collectors.toList());
-                List<Entities> spiders = getEntities().stream().filter((entity) -> entity.getType().equals("spider")).collect(Collectors.toList());
-                
-                if (zombies.isEmpty() && mercenary.isEmpty() && spiders.isEmpty()) {
+        case "exit":
+            List<Entities> entitiesAtPosition = getEntitiesOnTile(getCharacter().getPosition());
+            for (Entities entity : entitiesAtPosition) {
+                if (entity instanceof Exit) {
                     return true;
                 }
-                return false;
-            case "boulders":
+            }
+            return false;
 
-                for (Entities entity: getEntities()) {
-                    if (entity instanceof Boulder) {
-                        List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
-                        List<Entities> tiles = entityAtPosition.stream().filter((entityOnTile) -> entityOnTile.getType().equals("switch")).collect(Collectors.toList());
-                        if (tiles.isEmpty()) {
-                            return false;
-                        }
-                    }
-                }
+        case "enemies":
+            List<Entities> zombies = getEntities().stream().filter((entity) -> entity.getType().equals("zombie_toast"))
+                    .collect(Collectors.toList());
+            List<Entities> mercenary = getEntities().stream().filter((entity) -> entity.getType().equals("mercenary"))
+                    .collect(Collectors.toList());
+            List<Entities> spiders = getEntities().stream().filter((entity) -> entity.getType().equals("spider"))
+                    .collect(Collectors.toList());
+
+            if (zombies.isEmpty() && mercenary.isEmpty() && spiders.isEmpty()) {
                 return true;
-            case "treasure":
-                if (inventoryTypes.contains("treasure")) {
-                    return true;
+            }
+            return false;
+        case "boulders":
+
+            for (Entities entity : getEntities()) {
+                if (entity instanceof Boulder) {
+                    List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
+                    List<Entities> tiles = entityAtPosition.stream()
+                            .filter((entityOnTile) -> entityOnTile.getType().equals("switch"))
+                            .collect(Collectors.toList());
+                    if (tiles.isEmpty()) {
+                        return false;
+                    }
                 }
-                return false;
-            default:
-                return false;
+            }
+            return true;
+        case "treasure":
+            if (inventoryTypes.contains("treasure")) {
+                return true;
+            }
+            return false;
+        default:
+            return false;
 
-
-            
-             
-        }   
+        }
 
     }
 

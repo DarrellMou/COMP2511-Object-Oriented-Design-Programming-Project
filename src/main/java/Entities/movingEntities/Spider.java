@@ -107,10 +107,13 @@ public class Spider extends SpawningEntities implements Portalable {
                     reverseIncrement();
                 }
             } else {
+                // spider would
                 newPosition = getSpiderMovementPosition(getIndex() + increment);
                 if (checkMovable(newPosition, dungeon)) {
                     setIndex(getIndex() + increment);
                 } else {
+                    // if the position is also blocked, it goes back to original direction and does
+                    // not move
                     newPosition = getPosition();
                     reverseIncrement();
                 }
