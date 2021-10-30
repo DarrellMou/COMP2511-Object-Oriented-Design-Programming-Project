@@ -35,7 +35,6 @@ public class ConsumablesTest {
         // Character initial position: (1, 1)
         controller.tick("", Direction.RIGHT); // bomb pickup
 
-        System.out.println(controller.getDungeon().getCharacter().getInventory());
         // Check sword in inventory
         assertEquals(1, controller.getDungeon().getCharacter().getInventory().size());
 
