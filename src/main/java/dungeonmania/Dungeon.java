@@ -15,15 +15,11 @@ import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;
 import Entities.movingEntities.ZombieToast;
-import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.ZombieToastSpawner;
-import Items.BuildableItems;
 import Items.InventoryItem;
 import Items.ConsumableItem.Consumables;
-import Items.Equipments.Shields.ShieldItem;
-import Items.Equipments.Weapons.BowItem;
 import app.data.Data;
 import app.data.DataSubgoal;
 import dungeonmania.Buffs.Buffs;
@@ -65,14 +61,23 @@ public class Dungeon {
         this.random = random;
     }
 
+    /**
+     * @return Random
+     */
     public Random getRandom() {
         return random;
     }
 
+    /**
+     * @param random
+     */
     public void setRandom(Random random) {
         this.random = random;
     }
 
+    /**
+     * @return Character
+     */
     public Character getCharacter() {
         for (Entities e : getEntities()) {
             if (e instanceof Character) {
@@ -82,51 +87,87 @@ public class Dungeon {
         return null;
     }
 
+    /**
+     * @return String
+     */
     public String getDungeonId() {
         return this.dungeonId;
     }
 
+    /**
+     * @param dungeonId
+     */
     public void setDungeonId(String dungeonId) {
         this.dungeonId = dungeonId;
     }
 
+    /**
+     * @return String
+     */
     public String getDungeonName() {
         return this.dungeonName;
     }
 
+    /**
+     * @param dungeonName
+     */
     public void setDungeonName(String dungeonName) {
         this.dungeonName = dungeonName;
     }
 
+    /**
+     * @return ArrayList<Entities>
+     */
     public ArrayList<Entities> getEntities() {
         return entities;
     }
 
+    /**
+     * @param entities
+     */
     public void setEntities(ArrayList<Entities> entities) {
         this.entities = entities;
     }
 
+    /**
+     * @param entity
+     */
     public void addEntities(Entities entity) {
         this.entities.add(entity);
 
     }
 
+    /**
+     * @param entity
+     */
     public void removeEntities(Entities entity) {
         this.entities.remove(entity);
     }
 
+    /**
+     * @return ArrayList<String>
+     */
     public ArrayList<String> getBuildables() {
         return this.buildables;
     }
 
+    /**
+     * @param buildables
+     */
     public void setBuildables(ArrayList<String> buildables) {
         this.buildables = buildables;
     }
 
+    /**
+     * @param buildable
+     */
     public void addBuildables(String buildable) {
         this.buildables.add(buildable);
     }
 
+    /**
+     * @return String
+     */
     // public List<Class<? extends BuildableItems>> getBuildableItems() {
     // return this.buildableItems;
     // }
@@ -145,14 +186,23 @@ public class Dungeon {
         return this.goals;
     }
 
+    /**
+     * @param goals
+     */
     public void setGoals(String goals) {
         this.goals = goals;
     }
 
+    /**
+     * @return String
+     */
     public String getGameMode() {
         return this.gameMode;
     }
 
+    /**
+     * @param gameMode
+     */
     public void setGameMode(String gameMode) {
         this.gameMode = gameMode;
     }
@@ -171,26 +221,44 @@ public class Dungeon {
         this.ticksCounter++;
     }
 
+    /**
+     * @param ticksCounter
+     */
     public void setTicksCounter(int ticksCounter) {
         this.ticksCounter = ticksCounter;
     }
 
+    /**
+     * @return int
+     */
     public int getWidth() {
         return this.width;
     }
 
+    /**
+     * @param width
+     */
     public void setWidth(int width) {
         this.width = width;
     }
 
+    /**
+     * @return int
+     */
     public int getHeight() {
         return this.height;
     }
 
+    /**
+     * @param height
+     */
     public void setHeight(int height) {
         this.height = height;
     }
 
+    /**
+     * @param data
+     */
     public void setAllGoals(Data data) {
         if (data.getGoalCondition().getGoal().equals("AND") || data.getGoalCondition().getGoal().equals("OR")) {
             String goal = "";
@@ -200,7 +268,7 @@ public class Dungeon {
                 goal += ":" + subgoals.get(i).getGoal() + " " + data.getGoalCondition().getGoal() + " ";
             }
             goal += ":" + subgoals.get(subgoals.size() - 1).getGoal();
-            
+
             this.setGoals(goal);
 
             // Need to see how to implement two goals in a string
@@ -401,6 +469,12 @@ public class Dungeon {
         return newDungeonResponse();
     }
 
+    /**
+     * @param entityId
+     * @return DungeonResponse
+     * @throws IllegalArgumentException
+     * @throws InvalidActionException
+     */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
         if (entitiesClicked.contains(entityId)) {
             return newDungeonResponse();
@@ -426,6 +500,9 @@ public class Dungeon {
         return newDungeonResponse();
     }
 
+    /**
+     * @return DungeonResponse
+     */
     public DungeonResponse newDungeonResponse() {
         List<EntityResponse> entitiesResponses = new ArrayList<>();
         List<ItemResponse> inventoryResponses = new ArrayList<>();
@@ -450,6 +527,11 @@ public class Dungeon {
                 buildablesResponses, getGoals());
     }
 
+    /**
+     * @param gameMode
+     * @param height
+     * @param width
+     */
     public void spawnEnemies(String gameMode, int height, int width) {
 
         if (getTicksCounter() % 25 == 0) {
@@ -485,6 +567,9 @@ public class Dungeon {
         }
     }
 
+    /**
+     * @return Boolean
+     */
     public Boolean hasCompletedGoals() {
 
         List<String> inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType())
@@ -523,6 +608,12 @@ public class Dungeon {
         return false;
     }
 
+    /**
+     * @param goal
+     * @param inventoryTypes
+     * @param goalsList
+     * @return Boolean
+     */
     public Boolean checkIndividualGoals(String goal, List<String> inventoryTypes, List<String> goalsList) {
         switch (goal.toLowerCase()) {
         case "exit":
