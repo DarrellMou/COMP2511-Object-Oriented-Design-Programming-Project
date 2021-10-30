@@ -77,7 +77,7 @@ Portal
 - Walking into a portal will teleport the player to the position of the other portal translated by the movement direction.
 
 Treasure
-- If the player were to use a treasure (bribe/building material), the treasure goal will still be fulfilled.
+- If the player were to use a treasure (bribe/building material), the treasure goal cannot be fulfilled anymore.
 
 Bomb
 - Bomb will not detonate if placed near an already active floor switch.

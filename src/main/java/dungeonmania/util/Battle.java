@@ -35,5 +35,4 @@ public final class Battle {
     // dungeon.getEntities().remove((Entities) f);
     // }
     // killed = new ArrayList<Fightable>();
-    // }
 }

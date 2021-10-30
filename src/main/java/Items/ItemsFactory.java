@@ -17,7 +17,7 @@ import Items.materialItem.WoodItem;
 
 public class ItemsFactory {
 
-    public static String getNextId() {
+    public static String id() {
         return UUID.randomUUID().toString();
     }
 
@@ -25,41 +25,48 @@ public class ItemsFactory {
     // InventoryItem newItem = null;
 
     // else if (type.equals("key")) {
-    // newItem = new KeyItem(getNextId());
+    // newItem = new KeyItem(id());
     // }
     // }
 
     public static InventoryItem createItem(String type) {
         InventoryItem newItem = null;
 
-        if (type.equals("treasure")) {
-            newItem = new TreasureItem(getNextId());
-        } else if (type.substring(0, 3).equals("key")) {
-            newItem = new KeyItem(getNextId(), type);
-        } else if (type.equals("health_potion")) {
-            newItem = new HealthPotionItem(getNextId());
-        } else if (type.equals("invincibility_potion")) {
-            newItem = new InvincibilityPotionItem(getNextId());
-        } else if (type.equals("invisibility_potion")) {
-            newItem = new InvisibilityPotionItem(getNextId());
-        } else if (type.equals("wood")) {
-            newItem = new WoodItem(getNextId());
-        } else if (type.equals("arrow")) {
-            newItem = new ArrowItem(getNextId());
-        } else if (type.equals("bomb")) {
-            newItem = new BombItem(getNextId());
-        } else if (type.equals("sword")) {
-            newItem = new SwordItem(getNextId());
-        } else if (type.equals("armour")) {
-            newItem = new ArmourItem(getNextId());
-        } else if (type.equals("bow")) {
-            newItem = new BowItem(getNextId());
+        if (type.equals("bow")) {
+            newItem = new BowItem(ItemsFactory.id());
         } else if (type.equals("shield")) {
-            newItem = new ShieldItem(getNextId());
+            newItem = new ShieldItem(ItemsFactory.id());
         } else if (type.equals("one_ring")) {
-            newItem = new TheOneRingItem(getNextId());
+            newItem = new TheOneRingItem(ItemsFactory.id());
+        } else if (type.equals("armour")) {
+            newItem = new ArmourItem(ItemsFactory.id());
         }
 
+        return newItem;
+    }
+
+    public static InventoryItem createItem(String id, String type) {
+        InventoryItem newItem = null;
+
+        if (type.equals("treasure")) {
+            newItem = new TreasureItem(id);
+        } else if (type.substring(0, 3).equals("key")) {
+            newItem = new KeyItem(id, type);
+        } else if (type.equals("health_potion")) {
+            newItem = new HealthPotionItem(id);
+        } else if (type.equals("invincibility_potion")) {
+            newItem = new InvincibilityPotionItem(id);
+        } else if (type.equals("invisibility_potion")) {
+            newItem = new InvisibilityPotionItem(id);
+        } else if (type.equals("wood")) {
+            newItem = new WoodItem(id);
+        } else if (type.equals("arrow")) {
+            newItem = new ArrowItem(id);
+        } else if (type.equals("bomb")) {
+            newItem = new BombItem(id);
+        } else if (type.equals("sword")) {
+            newItem = new SwordItem(id);
+        }
         return newItem;
     }
 

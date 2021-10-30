@@ -13,12 +13,13 @@ import Entities.collectableEntities.materials.Treasure;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Door;
 import Entities.staticEntities.Triggerable;
-import Entities.staticEntities.Untriggerable;
+import Items.BuildableItems;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.TheOneRingItem;
 import Items.Equipments.Armours.Armours;
 import Items.Equipments.Shields.Shields;
+import Items.Equipments.Weapons.BowItem;
 import Items.Equipments.Weapons.Weapons;
 import Items.materialItem.Materials;
 import Items.materialItem.TreasureItem;
@@ -102,7 +103,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             }
         }
 
+        
         // Temporary, refactor later
+        // List<Map<String, Integer>> bowRecipes = BowItem.getRecipes();
         // bow
         if ((materials.containsKey("wood") && materials.get("wood") >= 1)
                 && (materials.containsKey("arrow") && materials.get("arrow") >= 3)) {
@@ -203,13 +206,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         setInBattleWith(null);
         Position newPosition = getPosition().translateBy(getMovementDirection());
         if (checkMovable(newPosition, dungeon)) {
-            // Untrigger if moving off untriggerable
-            for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
-                if (e instanceof Untriggerable) {
-                    Untriggerable u = (Untriggerable) e;
-                    u.untrigger(dungeon, this);
-                }
-            }
             setPrevPosition(getPosition());
 
             // If position changed after walking on newPosition

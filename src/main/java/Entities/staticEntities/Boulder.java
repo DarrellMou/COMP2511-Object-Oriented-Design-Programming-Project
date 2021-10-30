@@ -32,13 +32,6 @@ public class Boulder extends StaticEntities implements Movable, BeforeWalkedOn {
     public void makeMovement(Dungeon dungeon) {
         Position newPosition = getPosition().translateBy(dungeon.getCharacter().getMovementDirection());
         if (checkMovable(newPosition, dungeon)) {
-            // Untrigger if moving off untriggerable
-            for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
-                if (e instanceof Untriggerable) {
-                    Untriggerable u = (Untriggerable) e;
-                    u.untrigger(dungeon, this);
-                }
-            }
             // Call walked on for entities at newPosition
             for (Entities e : dungeon.getEntitiesOnTile(newPosition)) {
                 if (e instanceof WalkedOn) {
