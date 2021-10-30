@@ -534,8 +534,8 @@ public class Dungeon {
                 for (Entities entity: getEntities()) {
                     if (entity instanceof FloorSwitch) {
                         List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
-                        List<Entities> tiles = entityAtPosition.stream().filter((entityOnTile) -> entityOnTile.getType().equals("switch")).collect(Collectors.toList());
-                        if (tiles.isEmpty()) {
+                        List<Entities> bouldersOnSwitch = entityAtPosition.stream().filter((entityOnTile) -> entityOnTile.getType().equals("boulder")).collect(Collectors.toList());
+                        if (bouldersOnSwitch.isEmpty()) {
                             return false;
                         }
                     }

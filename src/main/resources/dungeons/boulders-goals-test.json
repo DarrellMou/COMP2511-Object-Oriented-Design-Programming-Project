@@ -27,9 +27,22 @@
         "x": 3,
         "y": 1,
         "type": "switch"
+      },
+      {
+        "x": 0,
+        "y": 3,
+        "type": "treasure"
       }
     ],
     "goal-condition": {
-      "goal": "boulders"
+        "goal": "OR",
+        "subgoals": [
+          {
+            "goal": "boulders"
+          },
+          {
+            "goal": "treasure"
+          }
+        ]
     }
   }
