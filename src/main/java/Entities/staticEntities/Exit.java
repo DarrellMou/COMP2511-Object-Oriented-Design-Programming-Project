@@ -24,7 +24,6 @@ public class Exit extends StaticEntities implements Triggerable, Untriggerable, 
     public void trigger(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             // remove exit goal
-            // System.out.println("Player walked on exit");
         }
         
     }
@@ -33,7 +32,6 @@ public class Exit extends StaticEntities implements Triggerable, Untriggerable, 
     public void untrigger(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             // Add exit goal
-            // System.out.println("walked off exit");
         }
     }
 }

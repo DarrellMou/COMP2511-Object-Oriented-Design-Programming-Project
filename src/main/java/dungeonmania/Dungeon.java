@@ -1,6 +1,8 @@
 package dungeonmania;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -13,6 +15,8 @@ import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;
 import Entities.movingEntities.ZombieToast;
+import Entities.staticEntities.Boulder;
+import Entities.staticEntities.Exit;
 import Entities.staticEntities.ZombieToastSpawner;
 import Items.InventoryItem;
 import Items.ConsumableItem.Consumables;
@@ -169,14 +173,14 @@ public class Dungeon {
     }
 
     public void setAllGoals(Data data) {
-        if (data.getGoalCondition().getGoal().equals("AND")) {
+        if (data.getGoalCondition().getGoal().equals("AND") || data.getGoalCondition().getGoal().equals("OR")) {
             String goal = "";
             List<DataSubgoal> subgoals = data.getGoalCondition().getSubgoals();
             for (int i = 0; i < subgoals.size() - 1; i++) {
                 // If it is the last item dont append AND to it
-                goal += subgoals.get(i).getGoal() + " AND ";
+                goal += ":" + subgoals.get(i).getGoal() + " " + data.getGoalCondition().getGoal() + " ";
             }
-            goal += subgoals.get(subgoals.size() - 1).getGoal();
+            goal += ":" + subgoals.get(subgoals.size() - 1).getGoal();
 
             this.setGoals(goal);
 
@@ -362,12 +366,6 @@ public class Dungeon {
         if (hasCompletedGoals()) {
             gameCompleted();
         }
-        // for (Entities entity : dungeon.getEntities()) {
-        // if (entity instanceof SpawningEntities) {
-        // SpawningEntities spawningEntities = (SpawningEntities) entity;
-        // spawningEntities.makeMovement(spawningEntities.getSpawnPosition(), dungeon);
-        // }
-        // }
 
         // Temporary, store responses and change necessary responses only
         return newDungeonResponse();
@@ -380,12 +378,10 @@ public class Dungeon {
             entitiesClicked.add(entityId);
         }
         Interactable i = null;
-        System.out.println(entityId);
         // get entity if interactible
         for (Entities e : getEntities()) {
             if (e.getId().equals(entityId)) {
                 if (e instanceof Interactable) {
-                    System.out.println("a");
                     i = (Interactable) e;
                 }
                 break;
@@ -405,8 +401,6 @@ public class Dungeon {
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildablesResponses = new ArrayList<>();
 
-        System.out.println(getEntities());
-        System.out.println();
         for (Entities entity : getEntities()) {
             entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
                     entity.isInteractable()));
@@ -414,7 +408,6 @@ public class Dungeon {
 
         if (getCharacter() != null) {
             for (InventoryItem inventoryItem : getCharacter().getInventory()) {
-                System.out.println(inventoryItem.getId());
                 inventoryResponses.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
             }
         }
@@ -429,7 +422,7 @@ public class Dungeon {
 
     public void spawnEnemies(String gameMode, int height, int width) {
 
-        if (getTicksCounter() % 10 == 0) {
+        if (getTicksCounter() % 25 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
                     new Position(random.nextInt(width), random.nextInt(height), 2));
             addEntities(spider);
@@ -463,13 +456,88 @@ public class Dungeon {
     }
 
     public Boolean hasCompletedGoals() {
-        for (InventoryItem inventoryItem : getCharacter().getInventory()) {
-            if (getGoals().contains(inventoryItem.getType())) { // need to fix this for and and or
-                return true;
+
+        List<String> inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType()).collect(Collectors.toList());
+        List<String> goalsList = new ArrayList<>();
+        for (String goals: getGoals().split(" ")) {
+            if (goals.contains(":")) {
+                goalsList.add(goals.split(":")[1]);
             }
+
         }
+        if (goalsList.isEmpty()) {
+            goalsList.add(getGoals());
+        }
+        
+        for (String goal: goalsList) {
+            if (getGoals().contains("OR")) { // Check if the goal is OR or AND
+                if (checkIndividualGoals(goal, inventoryTypes, goalsList)) return true;
+
+            } else if (getGoals().contains("AND")) {
+                if (!checkIndividualGoals(goal, inventoryTypes, goalsList)) {
+                    return false;
+                }
+                
+      
+            } else {
+                if (checkIndividualGoals(goal, inventoryTypes, goalsList)) return true;
+            }
+
+        }
+        if (getGoals().contains("AND")) {
+            return true;
+        }
+  
 
         return false;
+    }
+
+    public Boolean checkIndividualGoals(String goal,  List<String> inventoryTypes, List<String> goalsList ) {
+        switch (goal.toLowerCase()) {
+            case "exit":
+                List<Entities> entitiesAtPosition = getEntitiesOnTile(getCharacter().getPosition());
+                for (Entities entity: entitiesAtPosition) {
+                    if (entity instanceof Exit) {
+                        return true;
+                    }
+                }
+                return false;
+
+
+            case "enemies":
+                List<Entities> zombies = getEntities().stream().filter((entity) -> entity.getType().equals("zombie_toast")).collect(Collectors.toList());
+                List<Entities> mercenary = getEntities().stream().filter((entity) -> entity.getType().equals("mercenary")).collect(Collectors.toList());
+                List<Entities> spiders = getEntities().stream().filter((entity) -> entity.getType().equals("spider")).collect(Collectors.toList());
+                
+                if (zombies.isEmpty() && mercenary.isEmpty() && spiders.isEmpty()) {
+                    return true;
+                }
+                return false;
+            case "boulders":
+
+                for (Entities entity: getEntities()) {
+                    if (entity instanceof Boulder) {
+                        List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
+                        List<Entities> tiles = entityAtPosition.stream().filter((entityOnTile) -> entityOnTile.getType().equals("switch")).collect(Collectors.toList());
+                        if (tiles.isEmpty()) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            case "treasure":
+                if (inventoryTypes.contains("treasure")) {
+                    return true;
+                }
+                return false;
+            default:
+                return false;
+
+
+            
+             
+        }   
+
     }
 
     public void gameCompleted() {
