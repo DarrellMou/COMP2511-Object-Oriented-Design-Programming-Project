@@ -1,12 +1,24 @@
 package Entities.movingEntities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import Entities.Entities;
 import Entities.WalkedOn;
+import Items.ItemsFactory;
+import Items.TheOneRingItem;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Battle;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public abstract class Enemy extends Mobs implements WalkedOn {
+    public Map<String, Double> itemDrop = new HashMap<String, Double>() {
+        {
+            put("one_ring", 0.05);
+            put("armour", 0.20);
+        }
+    };
 
     public Enemy(String id, String type, Position position, boolean isInteractable, boolean isWalkable, double health,
             double attackDamage) {
@@ -34,11 +46,31 @@ public abstract class Enemy extends Mobs implements WalkedOn {
     }
 
     @Override
+    public void takeDamage(Dungeon dungeon, double damage) {
+        setHealth(getHealth() - (damage / 5));
+        if (isKilled()) {
+            dropItems(dungeon);
+            dungeon.getEntities().remove(this);
+        }
+    }
+
+    public void dropItems(Dungeon dungeon) {
+        for (String item : itemDrop.keySet()) {
+            if (Math.random() <= itemDrop.get(item)) {
+                dungeon.getCharacter().addInventory(ItemsFactory.createItem(item));
+            }
+        }
+    }
+
+    @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             System.out.println("walked on by char");
             Character character = (Character) walker;
-            Battle.battle(character, this, dungeon);
+            // fights if character is not invisible
+            if (character.getInvisible() == null) {
+                Battle.battle(character, this, dungeon);
+            }
         }
     }
 }

@@ -8,25 +8,21 @@ import java.util.Map;
 import Entities.BeforeWalkedOn;
 import Entities.Entities;
 import Entities.WalkedOn;
-import Entities.collectableEntities.CollectableEntity;
-import Entities.collectableEntities.materials.Treasure;
-import Entities.staticEntities.Boulder;
-import Entities.staticEntities.Door;
-import Entities.staticEntities.Triggerable;
-import Items.BuildableItems;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.TheOneRingItem;
+import Items.ConsumableItem.InvincibilityPotionItem;
+import Items.ConsumableItem.InvisibilityPotionItem;
 import Items.Equipments.Armours.Armours;
 import Items.Equipments.Shields.Shields;
-import Items.Equipments.Weapons.BowItem;
 import Items.Equipments.Weapons.Weapons;
 import Items.materialItem.Materials;
 import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
-import dungeonmania.DungeonManiaController;
+import dungeonmania.Buffs.Buffs;
+import dungeonmania.Buffs.Invincible;
+import dungeonmania.Buffs.Invisible;
 import dungeonmania.util.Battle;
-import dungeonmania.util.Direction;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Position;
 
@@ -40,12 +36,49 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     private final int maxHealth;
     private Fightable inBattleWith = null;
     private Position prevPosition;
+    private List<Buffs> buffs = new ArrayList<Buffs>();
 
     public Character(String id, Position position) {
         super(id, "player", position, false, true, 120, 3);
         setPrevPosition(getPosition());
         this.maxHealth = 120;
         inventory = new ArrayList<InventoryItem>();
+    }
+
+    public Buffs getInvisible() {
+        for (Buffs buff : getBuffs()) {
+            if (buff instanceof Invisible) {
+                return buff;
+            }
+        }
+        return null;
+    }
+
+    public Buffs getInvincible() {
+        for (Buffs buff : getBuffs()) {
+            if (buff instanceof Invincible) {
+                return buff;
+            }
+        }
+        return null;
+    }
+
+    public void addBuff(Buffs b) {
+        for (Buffs buff : getBuffs()) {
+            if (buff.getClass() == b.getClass()) {
+                getBuffs().remove(buff);
+                break;
+            }
+        }
+        buffs.add(b);
+    }
+
+    public void removeBuff(Buffs b) {
+        buffs.remove(b);
+    }
+
+    public List<Buffs> getBuffs() {
+        return buffs;
     }
 
     public InventoryItem hasKey() {
@@ -103,7 +136,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             }
         }
 
-        
         // Temporary, refactor later
         // List<Map<String, Integer>> bowRecipes = BowItem.getRecipes();
         // bow
@@ -259,9 +291,16 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     @Override
     public double calculateDamage() {
         double damage = getAttackDamage();
+        // One shot enemy if invincible. Weapon durability is not lowered when
+        // invincible.
+        if (getInvincible() != null) {
+            return getHealth() * 1000;
+        }
         for (InventoryItem item : getInventory()) {
+            // get first weapon in inventory
             if (item instanceof Weapons) {
                 Weapons weapon = (Weapons) item;
+                // increase damage
                 damage = weapon.calculateDamage(this, damage);
                 break;
             }
@@ -271,37 +310,48 @@ public class Character extends Mobs implements WalkedOn, Portalable {
 
     @Override
     public void takeDamage(Dungeon dungeon, double damage) {
+        // No damage taken when invincible. Equipment durability not lowered.
+        if (getInvincible() != null) {
+            return;
+        }
         boolean armourChecked = false;
         boolean shieldChecked = false;
         Armours armour = null;
         Shields shield = null;
         for (InventoryItem item : getInventory()) {
+            // get first armour
             if (item instanceof Armours && !armourChecked) {
                 armour = (Armours) item;
                 armourChecked = true;
             }
-            if (item instanceof Armours && !shieldChecked) {
+            // get first shield
+            if (item instanceof Shields && !shieldChecked) {
                 shield = (Shields) item;
                 shieldChecked = true;
             }
             if (armourChecked && shieldChecked)
                 break;
         }
+        // reduce damage if character has armour
         if (armour != null) {
             damage = armour.calculateDamage(this, damage);
         }
+        // reduce damage if character has shield
         if (shield != null) {
             damage = shield.calculateDamage(this, damage);
         }
+        // lower health
         setHealth(getHealth() - (damage / 10));
 
+        // if character is killed
         if (isKilled()) {
             InventoryItem i = getOneRing();
-            // character
+            // character revives to full hp if has one ring
             if (i != null) {
                 removeInventory(i);
                 setHealth(getMaxHealth());
             } else {
+                // character dies
                 dungeon.getEntities().remove(this);
             }
         }
@@ -318,7 +368,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
 
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
-        if (walker instanceof Enemy) {
+        if (walker instanceof Enemy && getInvisible() == null) {
             Battle.battle(this, (Enemy) walker, dungeon);
         }
         return;

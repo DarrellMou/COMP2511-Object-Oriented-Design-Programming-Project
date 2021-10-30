@@ -6,6 +6,7 @@ import Entities.buildableEntities.Bow;
 import Entities.buildableEntities.Shield;
 import Entities.collectableEntities.consumables.Bomb;
 import Entities.collectableEntities.consumables.InvincibilityPotion;
+import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.collectableEntities.consumables.Key;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
@@ -115,6 +116,8 @@ public class EntitiesFactory {
             newEntity = new Wood(getNextId(), position);
         } else if (type.equals("invincibility_potion")) {
             newEntity = new InvincibilityPotion(getNextId(), position);
+        } else if (type.equals("invisibility_potion")) {
+            newEntity = new InvisibilityPotion(getNextId(), position);
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), position);
         } else if (type.equals("player")) {

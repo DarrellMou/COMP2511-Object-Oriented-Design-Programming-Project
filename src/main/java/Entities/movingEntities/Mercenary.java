@@ -9,6 +9,9 @@ import Entities.collectableEntities.materials.Treasure;
 import Items.InventoryItem;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
+import dungeonmania.Buffs.Buffs;
+import dungeonmania.Buffs.Invincible;
+import dungeonmania.Buffs.Invisible;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Battle;
@@ -25,7 +28,24 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
     @Override
     public void makeMovement(Dungeon dungeon) {
         Character character = dungeon.getCharacter();
-        Position positionFromChar = Position.calculatePositionBetween(character.getPosition(), this.getPosition());
+        Position characterPos = character.getPosition();
+        Invincible invin = null;
+        for (Buffs b : dungeon.getCharacter().getBuffs()) {
+            if (b instanceof Invisible) {
+                // invis priority over invin
+                characterPos = getPosition();
+                invin = null;
+                break;
+            }
+            if (b instanceof Invincible) {
+                invin = (Invincible) b;
+            }
+        }
+        if (invin != null) {
+            invin.invinMovement(dungeon, this);
+            return;
+        }
+        Position positionFromChar = Position.calculatePositionBetween(characterPos, this.getPosition());
         Direction directionX = getDirection(positionFromChar.getX(), "x");
         Position nextPositionX = getPosition().translateBy(directionX);
         Direction directionY = getDirection(positionFromChar.getY(), "y");
@@ -82,10 +102,12 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
     @Override
     public void interact(Dungeon dungeon) throws InvalidActionException {
         Character c = dungeon.getCharacter();
+
         InventoryItem i = c.getTreasure();
         if (i == null) {
             throw new InvalidActionException("Character does not have a treasure!!");
         }
+
         Position p = Position.calculatePositionBetween(c.getPosition(), this.getPosition());
         int d = Math.abs(p.getX()) + Math.abs(p.getY());
         if (d > bribeRadius) {

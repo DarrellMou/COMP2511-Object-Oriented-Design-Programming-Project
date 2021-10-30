@@ -37,14 +37,6 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
         return getHealth() * getAttackDamage();
     }
 
-    @Override
-    public void takeDamage(Dungeon dungeon, double damage) {
-        setHealth(getHealth() - (damage / 5));
-        if (isKilled()) {
-            dungeon.getEntities().remove(this);
-        }
-    }
-
     /**
      * 
      * @return maxHealth
@@ -125,7 +117,7 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
         return false;
     }
 
-    protected Direction getDirection(int number, String axis) {
+    public Direction getDirection(int number, String axis) {
         if (number == 0) {
             return Direction.NONE;
         }
