@@ -1,30 +1,27 @@
 package Entities.movingEntities;
 
-import java.util.List;
-
-import Entities.Entities;
 import Entities.Interactable;
-import Entities.WalkedOn;
-import Entities.collectableEntities.materials.Treasure;
 import Items.InventoryItem;
 import dungeonmania.Dungeon;
-import dungeonmania.DungeonManiaController;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
 import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends SpawningEntities implements Interactable, Portalable {
-    private final int bribeRadius = 2;
+    private static final int BRIBE_RADIUS = 2;
+    private static final int ATTACK_DAMAGE = 1;
+    private static final int MAX_HEALTH = 80;
 
     public Mercenary(String id, Position position) {
-        super(id, "mercenary", position, true, true, 80, 1);
+        super(id, "mercenary", position, true, true, ATTACK_DAMAGE, MAX_HEALTH);
     }
 
+    /**
+     * @param dungeon
+     */
     @Override
     public void makeMovement(Dungeon dungeon) {
         Character character = dungeon.getCharacter();
@@ -91,6 +88,9 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
         }
     }
 
+    /**
+     * @param dungeon
+     */
     public void bribeMercenary(Dungeon dungeon) {
         // remove mercenary from list
         dungeon.removeEntities(this);
@@ -99,6 +99,10 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
         dungeon.addEntities(newBribedMercenary);
     }
 
+    /**
+     * @param dungeon
+     * @throws InvalidActionException
+     */
     @Override
     public void interact(Dungeon dungeon) throws InvalidActionException {
         Character c = dungeon.getCharacter();
@@ -110,7 +114,7 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
 
         Position p = Position.calculatePositionBetween(c.getPosition(), this.getPosition());
         int d = Math.abs(p.getX()) + Math.abs(p.getY());
-        if (d > bribeRadius) {
+        if (d > BRIBE_RADIUS) {
             throw new InvalidActionException("Mercenary is not in range!!");
         }
         bribeMercenary(dungeon);

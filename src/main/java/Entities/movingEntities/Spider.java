@@ -20,10 +20,16 @@ public class Spider extends SpawningEntities implements Portalable {
     private int index = -1;
     private int increment = 1;
 
+    /**
+     * @return int
+     */
     public int getIndex() {
         return this.index;
     }
 
+    /**
+     * @param index
+     */
     public void setIndex(int index) {
         this.index = Math.floorMod(index, spiderMovementPositions.size());
     }
@@ -37,11 +43,18 @@ public class Spider extends SpawningEntities implements Portalable {
         setSpiderMovementPositions(getSpiderMovement(position));
     }
 
+    /**
+     * @param index
+     * @return Position
+     */
     public Position getSpiderMovementPosition(int index) {
         int newIndex = Math.floorMod(index, spiderMovementPositions.size());
         return spiderMovementPositions.get(newIndex);
     }
 
+    /**
+     * @param spiderMovementPositions
+     */
     public void setSpiderMovementPositions(List<Position> spiderMovementPositions) {
         this.spiderMovementPositions = spiderMovementPositions;
     }

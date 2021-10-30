@@ -18,16 +18,31 @@ public class ZombieToastSpawner extends StaticEntities implements Interactable {
         super(id, "zombie_toast_spawner", position, true, false);
     }
 
+    /**
+     * Spawns the zombies
+     * 
+     * @return Entities
+     */
     public Entities spawnZombies() {
 
         return EntitiesFactory.createEntities("zombie_toast", getPosition().asLayer(2));
     }
 
+    /**
+     * Given the weapon and dungeon, destroys the zombie spawner
+     * 
+     * @param dungeon
+     * @param w
+     */
     public void destroySpawner(Dungeon dungeon, Weapons w) {
         w.decreaseDurability(dungeon.getCharacter());
         dungeon.getEntities().remove(this);
     }
 
+    /**
+     * @param dungeon
+     * @throws InvalidActionException
+     */
     @Override
     public void interact(Dungeon dungeon) throws InvalidActionException {
         Character c = dungeon.getCharacter();

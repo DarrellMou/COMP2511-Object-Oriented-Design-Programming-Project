@@ -25,6 +25,11 @@ public abstract class Enemy extends Mobs implements WalkedOn {
         super(id, type, position, isInteractable, isWalkable, health, attackDamage);
     }
 
+    /**
+     * @param position
+     * @param dungeon
+     * @return boolean
+     */
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
         if (position.equals(getPosition())) {
@@ -45,6 +50,10 @@ public abstract class Enemy extends Mobs implements WalkedOn {
         return true;
     }
 
+    /**
+     * @param dungeon
+     * @param damage
+     */
     @Override
     public void takeDamage(Dungeon dungeon, double damage) {
         setHealth(getHealth() - (damage / 5));
@@ -54,6 +63,9 @@ public abstract class Enemy extends Mobs implements WalkedOn {
         }
     }
 
+    /**
+     * @param dungeon
+     */
     public void dropItems(Dungeon dungeon) {
         for (String item : itemDrop.keySet()) {
             if (Math.random() <= itemDrop.get(item)) {
@@ -62,6 +74,10 @@ public abstract class Enemy extends Mobs implements WalkedOn {
         }
     }
 
+    /**
+     * @param dungeon
+     * @param walker
+     */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {

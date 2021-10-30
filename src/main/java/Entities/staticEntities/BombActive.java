@@ -12,6 +12,9 @@ public class BombActive extends StaticEntities {
         super(id, "bomb_active", position, false, false);
     }
 
+    /**
+     * @param dungeon
+     */
     public void Detonate(Dungeon dungeon) {
         List<Position> positions = getPosition().getAdjacentPositions();
         for (Position position : positions) {
@@ -24,5 +27,5 @@ public class BombActive extends StaticEntities {
         }
         dungeon.removeEntities(this);
     }
-    
+
 }
