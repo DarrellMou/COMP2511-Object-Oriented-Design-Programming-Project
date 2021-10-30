@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import Entities.Entities;
+import Entities.WalkedOn;
 import dungeonmania.Dungeon;
-import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Position;
 
 public class ZombieToast extends SpawningEntities {
@@ -21,6 +21,14 @@ public class ZombieToast extends SpawningEntities {
         for (Entities e : dungeon.getEntities()) {
             if (e.getPosition().equals(position) && (!e.isWalkable() || isMovingEntityButNotCharacter(e))) {
                 return false;
+            }
+        }
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            // Do what happens when character wants to walk onto entities at
+            // target position
+            if (e instanceof WalkedOn) {
+                WalkedOn w = (WalkedOn) e;
+                w.walkedOn(dungeon, this);
             }
         }
         return true;
