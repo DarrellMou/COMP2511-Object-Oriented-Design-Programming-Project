@@ -16,8 +16,8 @@ public class InvincibilityPotionItem extends Consumables {
     public void consume(Dungeon dungeon, Character character) {
         if (!isDefective) {
             character.addBuff(new Invincible(dungeon.getTicksCounter()));
-            character.removeInventory(this);
         }
+        character.removeInventory(this);
     }
 
     public static void setDefective(boolean isDefective) {

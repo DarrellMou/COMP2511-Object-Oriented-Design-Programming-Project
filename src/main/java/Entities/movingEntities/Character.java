@@ -32,6 +32,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      * inventory = [ {item1}, {item2}... ]
      */
     private static int MAX_HEALTH;
+    public static Object getInventory;
     private static final int ATTACK_DAMAGE = 3;
     private ArrayList<InventoryItem> inventory;
     private Map<String, Integer> materials = new HashMap<>();

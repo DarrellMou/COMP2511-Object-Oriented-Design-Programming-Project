@@ -12,6 +12,7 @@ public class HealthPotionItem extends Consumables {
     @Override
     public void consume(Dungeon dungeon, Character character) {
         character.setHealth(character.getMaxHealth());
+        character.removeInventory(this);
     }
 
 }
