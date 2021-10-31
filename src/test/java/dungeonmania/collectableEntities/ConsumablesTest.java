@@ -329,7 +329,7 @@ public class ConsumablesTest {
             controller.tick("", Direction.NONE);
         }
 
-        // Verify merc towards player as invincibility does not work
+        // Verify potion has expired
         assertTrue(controller.getDungeon().getCharacter().getBuffs().isEmpty());
     }
 }
