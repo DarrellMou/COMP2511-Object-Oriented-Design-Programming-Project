@@ -33,4 +33,14 @@ public class GoalsTest {
 
         assertEquals("", controller.getDungeon().getGoals());
     }
+
+    @Test
+    public void testTreasureWin() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("treasure-goals-test", "Standard");
+
+        controller.tick("", Direction.RIGHT);
+
+        assertEquals("", controller.getDungeon().getGoals());
+    }
 }
