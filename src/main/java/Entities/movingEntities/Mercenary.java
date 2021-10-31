@@ -73,6 +73,7 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
         }
 
         if (newPosition == null) {
+            checkMovable(getPosition(), dungeon);
             return;
         }
 
