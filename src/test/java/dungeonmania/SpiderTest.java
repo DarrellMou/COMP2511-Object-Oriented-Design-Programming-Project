@@ -1,6 +1,9 @@
 package dungeonmania;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,76 +18,91 @@ public class SpiderTest {
     @Test
     public void testSpawnRandomLocation() {
         // Create a new game
-
-        DungeonManiaController controller = new DungeonManiaController();
-        controller.clear();
-
+        Random r = new Random(1234);
+        DungeonManiaController controller = new DungeonManiaController(r);
         controller.newGame("advanced", "Peaceful");
-
-        // Spider spider = new Spider("spider1", new Position(0, 0));
-         // Position spiderLocation = spider.spawnSpider();
-        // assertEquals(spiderLocation, spider.getPosition());
-        
-        
-
+        for (int i = 0; i < 25; i++) {
+            controller.tick("",  Direction.NONE);
+        }
+        int expectedX = r.nextInt(controller.getDungeon().getWidth());
+        int expectedY = r.nextInt(controller.getDungeon().getHeight());
+        Position expectedSpawn = new Position(expectedX, expectedY);
+        for (Entities e : controller.getDungeon().getEntitiesOnTile(expectedSpawn)) {
+            if (e instanceof Spider) {
+                assertEquals(expectedSpawn, e.getPosition());
+            }
+        }
     }
 
     @Test
-    public void testSpiderMovement() {
-        // Create a new game
-        DungeonManiaController controller = new DungeonManiaController();
-        controller.clear();
-
-        controller.newGame("advanced", "Peaceful");
-
-        Spider spider = new Spider("spider1", new Position(0, 0));
-        // Position spiderLocation = spider.spawnSpider();
-        // assertEquals(spiderLocation, spider.getPosition());
-
-
-        // Check that the spider goes up and then circles the position that it spawn in
-        controller.tick("",  Direction.UP);
-        assertEquals(spider.getPosition(), new Position(spider.getPosition().getX(), spider.getPosition().getY() - 1));
-        
-        
-
-    }
-
-    @Test
-    public void testSpiderTraverseWalls() {
-        // Create a new game
-        DungeonManiaController controller = new DungeonManiaController();
-        controller.clear();
-        controller.newGame("advanced", "Peaceful");
-
-        
-        
-
-    }
-
-    @Test
-    public void testSpiderReversePosition() {
-        // Create a new game
-        DungeonManiaController controller = new DungeonManiaController();
-        controller.clear();
-        controller.newGame("advanced", "Peaceful");
-    }
-
-    @Test
-    public void testSpiderStuck() {
+    public void testSpiderStuckAtSpawn() {
         // Start game in advanced map + peaceful difficulty
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
-        Entities s = EntitiesFactory.createEntities("spider", new Position(4, 0, 2));
+        Entities s = EntitiesFactory.createEntities("spider", new Position(2, 1));
         controller.getDungeon().addEntities(s);
-        Entities b2 = EntitiesFactory.createEntities("boulder", new Position(4, -1));
+        Entities b2 = EntitiesFactory.createEntities("boulder", new Position(2, 2));
         controller.getDungeon().addEntities(b2);
-        Entities b3 = EntitiesFactory.createEntities("boulder", new Position(4, 1));
+        Entities b3 = EntitiesFactory.createEntities("boulder", new Position(2, 0));
         controller.getDungeon().addEntities(b3);
 
-        // Spider is below blue portal
-        controller.tick("", Direction.NONE); // into portal, going up
-        assertEquals(new Position(4, 0, 2), s.getPosition());
+        // Spider cant move after spawning because of boulder above and below
+        controller.tick("", Direction.NONE);
+        assertEquals(new Position(2, 1), s.getPosition());
+    }
+
+    @Test
+    public void testSpiderReverseAtSpawn() {
+        // Start game in advanced map + peaceful difficulty
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Standard");
+        Entities s = EntitiesFactory.createEntities("spider", new Position(2, 1));
+        controller.getDungeon().addEntities(s);
+        Entities b3 = EntitiesFactory.createEntities("boulder", new Position(2, 0));
+        controller.getDungeon().addEntities(b3);
+
+        // Spider reverses because cant move up after spawning
+        controller.tick("", Direction.NONE);
+        assertEquals(new Position(2, 2), s.getPosition());
+    }
+
+    @Test
+    public void testSpiderStuckInCycle() {
+        // Start game in advanced map + peaceful difficulty
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Standard");
+        Entities s = EntitiesFactory.createEntities("spider", new Position(2, 1));
+        controller.getDungeon().addEntities(s);
+        Entities b2 = EntitiesFactory.createEntities("boulder", new Position(1, 0));
+        controller.getDungeon().addEntities(b2);
+        Entities b3 = EntitiesFactory.createEntities("boulder", new Position(3, 0));
+        controller.getDungeon().addEntities(b3);
+
+        // Spider cant move after spawning because of boulder above and below
+        controller.tick("", Direction.NONE);
+        assertEquals(new Position(2, 0), s.getPosition()); // moves up
+        controller.tick("", Direction.NONE);
+        // tries to move right, but theres a boulder, tries to move left, but blocked aswell
+        // so stands still
+        assertEquals(new Position(2, 0), s.getPosition());
+    }
+
+    @Test
+    public void testSpiderReverseInCycle() {
+        // Start game in advanced map + peaceful difficulty
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Standard");
+        Entities s = EntitiesFactory.createEntities("spider", new Position(2, 1));
+        controller.getDungeon().addEntities(s);
+        Entities b3 = EntitiesFactory.createEntities("boulder", new Position(3, 0));
+        controller.getDungeon().addEntities(b3);
+
+        // Spider cant move after spawning because of boulder above and below
+        controller.tick("", Direction.NONE);
+        assertEquals(new Position(2, 0), s.getPosition()); // moves up
+        controller.tick("", Direction.NONE);
+        // tries to move right, but theres a boulder, reverses to left
+        assertEquals(new Position(1, 0), s.getPosition());
     }
     
 }
