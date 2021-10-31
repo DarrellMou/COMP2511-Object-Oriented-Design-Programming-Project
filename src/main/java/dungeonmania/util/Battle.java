@@ -9,6 +9,7 @@ import java.util.List;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Fightable;
 import dungeonmania.Dungeon;
+import dungeonmania.Buffs.Invisible;
 
 public final class Battle {
     private static List<Fightable> battledEnemies = new ArrayList<Fightable>();
@@ -19,6 +20,9 @@ public final class Battle {
      * @param enemy
      */
     public static void battle(Fightable ally, Fightable enemy, Dungeon dungeon) {
+        if (dungeon.getCharacter().getBuffs(Invisible.class) != null) {
+            return;
+        }
         // Ensures enemies only engage in battle with character once.
         if (battledEnemies.contains(enemy) && ally instanceof Character) {
             return;

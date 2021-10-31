@@ -20,10 +20,8 @@ public class SpiderTest {
         controller.newGame("advanced", "Peaceful");
 
         // Spider spider = new Spider("spider1", new Position(0, 0));
-         // Position spiderLocation = spider.spawnSpider();
+        // Position spiderLocation = spider.spawnSpider();
         // assertEquals(spiderLocation, spider.getPosition());
-        
-        
 
     }
 
@@ -39,12 +37,9 @@ public class SpiderTest {
         // Position spiderLocation = spider.spawnSpider();
         // assertEquals(spiderLocation, spider.getPosition());
 
-
         // Check that the spider goes up and then circles the position that it spawn in
-        controller.tick("",  Direction.UP);
+        controller.tick("", Direction.UP);
         assertEquals(spider.getPosition(), new Position(spider.getPosition().getX(), spider.getPosition().getY() - 1));
-        
-        
 
     }
 
@@ -55,9 +50,6 @@ public class SpiderTest {
         controller.clear();
         controller.newGame("advanced", "Peaceful");
 
-        
-        
-
     }
 
     @Test
@@ -66,11 +58,7 @@ public class SpiderTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.clear();
         controller.newGame("advanced", "Peaceful");
-        
-        
 
     }
 
-
-    
 }

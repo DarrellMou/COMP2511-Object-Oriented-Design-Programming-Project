@@ -9,10 +9,13 @@ import org.junit.jupiter.api.Test;
 
 import Entities.Entities;
 import Entities.EntitiesFactory;
+import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.movingEntities.Mercenary;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.ConsumableItem.HealthPotionItem;
+import Items.ConsumableItem.InvincibilityPotionItem;
+import Items.ConsumableItem.InvisibilityPotionItem;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -60,13 +63,85 @@ public class ConsumablesTest {
         assertEquals(112, controller.getDungeon().getCharacter().getHealth());
         // Merc HP = 80 - ((120 * 3 ) / 5) = 8
         assertEquals(8, m.getHealth());
-        
-        
+
         controller.tick("", Direction.RIGHT);
         HealthPotionItem healthPotion = (HealthPotionItem) ItemsFactory.createItem("health_potion", "health_potion");
         controller.getDungeon().getCharacter().addInventory(healthPotion);
         controller.tick(healthPotion.getId(), Direction.NONE);
 
         assertEquals(120, controller.getDungeon().getCharacter().getHealth());
+    }
+
+    @Test
+    public void testInvisPotion() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("test-consumables", "Standard");
+
+        // put potion in character inventory
+        InvisibilityPotionItem invisPotion = (InvisibilityPotionItem) ItemsFactory.createItem("invisibility_potion",
+                "invisibility_potion");
+        controller.getDungeon().getCharacter().addInventory(invisPotion);
+
+        // Add merc to right of player
+        Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(1, 2, 1));
+        Position prevPostion = m.getPosition();
+        controller.getDungeon().addEntities(m);
+
+        controller.tick(invisPotion.getId(), Direction.NONE);
+
+        // Verify merc does not move
+        assertEquals(prevPostion, m.getPosition());
+
+        double mercHealth = m.getHealth();
+        // move on to merc
+        controller.tick("", Direction.RIGHT);
+
+        // Verify battle does not occur
+        assertEquals(mercHealth, m.getHealth());
+    }
+
+    @Test
+    public void testInvinPotion() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("test-consumables", "Standard");
+
+        // put potion in character inventory
+        InvincibilityPotionItem invinPotion = (InvincibilityPotionItem) ItemsFactory.createItem("invincibility_potion",
+                "invincibility_potion");
+        controller.getDungeon().getCharacter().addInventory(invinPotion);
+
+        // Add merc to right of player
+        Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(1, 2, 1));
+        controller.getDungeon().addEntities(m);
+
+        controller.tick(invinPotion.getId(), Direction.NONE);
+
+        // Verify merc up (only direction it can move to away from char)
+        assertEquals(new Position(1, 1, 1), m.getPosition());
+
+        controller.tick("", Direction.RIGHT);
+
+        // Verify merc right (only direction it can move to away from char)
+        assertEquals(new Position(2, 1, 1), m.getPosition());
+
+        controller.tick("", Direction.UP);
+
+        // Verify merc right direction away from char
+        assertEquals(new Position(3, 1, 1), m.getPosition());
+
+        controller.tick("", Direction.RIGHT);
+
+        // Verify merc down away from char
+        assertEquals(new Position(3, 2, 1), m.getPosition());
+
+        controller.tick("", Direction.RIGHT);
+
+        // Verify merc doesn't move because no moves away from char
+        assertEquals(new Position(3, 2, 1), m.getPosition());
+
+        controller.tick("", Direction.DOWN);
+
+        // mercenary instantly dies
+        assertEquals(0, m.getHealth());
     }
 }

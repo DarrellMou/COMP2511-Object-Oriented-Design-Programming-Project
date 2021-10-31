@@ -82,10 +82,7 @@ public abstract class Enemy extends Mobs implements WalkedOn {
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             Character character = (Character) walker;
-            // fights if character is not invisible
-            if (character.getBuffs(Invisible.class) == null) {
-                Battle.battle(character, this, dungeon);
-            }
+            Battle.battle(character, this, dungeon);
         }
     }
 }

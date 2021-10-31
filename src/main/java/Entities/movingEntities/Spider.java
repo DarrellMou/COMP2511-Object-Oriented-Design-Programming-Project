@@ -13,6 +13,7 @@ import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
 import dungeonmania.util.Battle;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Spider extends SpawningEntities implements Portalable {
@@ -75,7 +76,7 @@ public class Spider extends SpawningEntities implements Portalable {
     public boolean checkMovable(Position position, Dungeon dungeon) {
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
             // && !(e instanceof Spider) ?
-            if (e instanceof Boulder || isMovingEntityButNotCharacter(e)) {
+            if (e instanceof Boulder || (isMovingEntityButNotCharacter(e) && !this.equals(e))) {
                 // If position isn't walkable OR another moving entity (e.g. spider)
                 return false;
             }
@@ -165,10 +166,11 @@ public class Spider extends SpawningEntities implements Portalable {
             setMovementDirection(getDirection(positionBetween.getX(), "x"));
         } else if (positionBetween.getY() != 0) {
             setMovementDirection(getDirection(positionBetween.getY(), "y"));
+        } else {
+            setMovementDirection(Direction.NONE);
         }
 
-        if (getPosition().translateBy(getMovementDirection()).equals(newPosition)
-                || newPosition.equals(spiderPosition)) {
+        if (getPosition().translateBy(getMovementDirection()).equals(newPosition)) {
             setPosition(newPosition);
         } else {
             Position newerPosition = getPosition().translateBy(getMovementDirection()).asLayer(2);
