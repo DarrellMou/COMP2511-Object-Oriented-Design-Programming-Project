@@ -73,14 +73,6 @@ public class Dungeon {
     }
 
     /**
-     * @param random
-     */
-
-    public void setRandom(Random random) {
-        this.random = random;
-    }
-
-    /**
      * @return Character
      */
     public Character getCharacter() {
@@ -239,13 +231,6 @@ public class Dungeon {
      */
     public void incrementTicks() {
         this.ticksCounter++;
-    }
-
-    /**
-     * @param ticksCounter
-     */
-    public void setTicksCounter(int ticksCounter) {
-        this.ticksCounter = ticksCounter;
     }
 
     /**
@@ -542,19 +527,6 @@ public class Dungeon {
             }
         }
 
-    }
-
-    public void gameLost() {
-        // If you no longer give an entity object for a player to the frontend it'll say
-        // the game has been lost
-        for (Entities entity : getEntities()) {
-            if (entity instanceof Character) {
-                ArrayList<Entities> newList = getEntities();
-                newList.remove(entity);
-                setEntities(newList);
-                return;
-            }
-        }
     }
 
     /**
