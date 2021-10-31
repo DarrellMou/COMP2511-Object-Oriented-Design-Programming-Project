@@ -340,7 +340,6 @@ public class DungeonManiaController {
         dungeon.setDungeonId(dg.getDungeonId());
         dungeon.setDungeonName(dg.getDungeonName());
         dungeon.setEntities(newEntities);
-        // TODO set character
         dungeon.getCharacter().setInventory(newInventory);
         dungeon.setBuildables(newBuildables);
         dungeon.setGoals(dg.getGoals());
@@ -416,7 +415,6 @@ public class DungeonManiaController {
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
         if (getCharacter().build(buildable)) {
-            // TODO Darrell fix this plz :)
             getCharacter().checkForBuildables(null, dungeon);
         }
 
