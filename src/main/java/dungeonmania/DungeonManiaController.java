@@ -33,7 +33,6 @@ import data.Data;
 import data.DataEntities;
 import Entities.staticEntities.ZombieToastSpawner;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -140,18 +139,6 @@ public class DungeonManiaController {
         int currentDungeonNo = getNumCreatedDungeons();
         setNumCreatedDungeons(numCreatedDungeons + 1); // Increment the next id of dungeon
         return "dungeon" + String.valueOf(currentDungeonNo);
-    }
-
-    /**
-     * This generates the position that the spider will spawn in
-     * 
-     * @return Position
-     */
-    public Position getRandomPosition(int xBound, int yBound) {
-        int x = random.nextInt(xBound);
-        int y = random.nextInt(yBound);
-        return new Position(x, y);
-
     }
 
     /**
