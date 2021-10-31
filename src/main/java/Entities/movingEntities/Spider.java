@@ -6,8 +6,12 @@ import java.util.List;
 
 import Entities.Entities;
 import Entities.WalkedOn;
+import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.staticEntities.Boulder;
 import dungeonmania.Dungeon;
+import dungeonmania.Buffs.Buffs;
+import dungeonmania.Buffs.Invincible;
+import dungeonmania.Buffs.Invisible;
 import dungeonmania.util.Battle;
 import dungeonmania.util.Position;
 
@@ -16,10 +20,16 @@ public class Spider extends SpawningEntities implements Portalable {
     private int index = -1;
     private int increment = 1;
 
+    /**
+     * @return int
+     */
     public int getIndex() {
         return this.index;
     }
 
+    /**
+     * @param index
+     */
     public void setIndex(int index) {
         this.index = Math.floorMod(index, spiderMovementPositions.size());
     }
@@ -33,11 +43,18 @@ public class Spider extends SpawningEntities implements Portalable {
         setSpiderMovementPositions(getSpiderMovement(position));
     }
 
+    /**
+     * @param index
+     * @return Position
+     */
     public Position getSpiderMovementPosition(int index) {
         int newIndex = Math.floorMod(index, spiderMovementPositions.size());
         return spiderMovementPositions.get(newIndex);
     }
 
+    /**
+     * @param spiderMovementPositions
+     */
     public void setSpiderMovementPositions(List<Position> spiderMovementPositions) {
         this.spiderMovementPositions = spiderMovementPositions;
     }
@@ -86,6 +103,24 @@ public class Spider extends SpawningEntities implements Portalable {
      */
     @Override
     public void makeMovement(Dungeon dungeon) {
+        Invincible invin = null;
+        for (Buffs b : dungeon.getCharacter().getBuffs()) {
+            if (b instanceof Invisible) {
+                // invis priority over invin
+                invin = null;
+                break;
+            }
+            if (b instanceof Invincible) {
+                invin = (Invincible) b;
+            }
+        }
+        if (invin != null) {
+            invin.invinMovement(dungeon, this);
+            setSpiderMovementPositions(getSpiderMovement(getPosition()));
+            resetIndex();
+            this.increment = 1;
+            return;
+        }
         Position spiderPosition = getPosition();
         // The general movement of the spider is to go up then circles around the
         // starting position
@@ -104,14 +139,19 @@ public class Spider extends SpawningEntities implements Portalable {
                     // if the position is also blocked, it goes back to original direction and does
                     // not move
                     newPosition = getPosition();
+                    checkMovable(newPosition, dungeon);
                     reverseIncrement();
                 }
             } else {
+                // spider would
                 newPosition = getSpiderMovementPosition(getIndex() + increment);
                 if (checkMovable(newPosition, dungeon)) {
                     setIndex(getIndex() + increment);
                 } else {
+                    // if the position is also blocked, it goes back to original direction and does
+                    // not move
                     newPosition = getPosition();
+                    checkMovable(newPosition, dungeon);
                     reverseIncrement();
                 }
             }

@@ -2,6 +2,7 @@ package Items.ConsumableItem;
 
 import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
+import dungeonmania.Buffs.Invincible;
 
 public class InvincibilityPotionItem extends Consumables {
 
@@ -12,7 +13,8 @@ public class InvincibilityPotionItem extends Consumables {
     @Override
     public void consume(Dungeon dungeon, Character character) {
         if (!dungeon.getGameMode().equals("Hard")) {
-            // consume
+            character.addBuff(new Invincible(dungeon.getTicksCounter()));
+            character.removeInventory(this);
         }
     }
 

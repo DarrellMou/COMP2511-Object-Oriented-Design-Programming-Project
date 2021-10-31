@@ -222,14 +222,6 @@ public class MercenaryTest {
     }
 
     @Test
-    public void testMercenaryFollow() {
-        // TODO
-        DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("advanced", "Standard");
-
-    }
-
-    @Test
     public void testMercenaryAllyFight() {
         // TODO
         DungeonManiaController controller = new DungeonManiaController();

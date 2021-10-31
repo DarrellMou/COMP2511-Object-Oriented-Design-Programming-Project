@@ -26,42 +26,72 @@ public abstract class Entities {
         this.isInteractable = isInteractable;
     }
 
+    /**
+     * @return String
+     */
     public String getId() {
         return this.id;
     }
 
+    /**
+     * @param id
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * @return String
+     */
     public String getType() {
         return this.type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * @return Position
+     */
     public Position getPosition() {
         return this.position;
     }
 
+    /**
+     * @param position
+     */
     public void setPosition(Position position) {
         this.position = position;
     }
 
+    /**
+     * @return boolean
+     */
     public boolean isInteractable() {
         return this.isInteractable;
     }
 
+    /**
+     * @param isInteractable
+     */
     public void setInteractable(boolean isInteractable) {
         this.isInteractable = isInteractable;
     }
 
+    /**
+     * @return boolean
+     */
     public boolean isWalkable() {
         return isWalkable;
     }
 
+    /**
+     * @param isWalkable
+     */
     public void setWalkable(boolean isWalkable) {
         this.isWalkable = isWalkable;
     }

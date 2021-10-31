@@ -6,6 +6,7 @@ import Entities.buildableEntities.Bow;
 import Entities.buildableEntities.Shield;
 import Entities.collectableEntities.consumables.Bomb;
 import Entities.collectableEntities.consumables.InvincibilityPotion;
+import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.collectableEntities.consumables.Key;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
@@ -20,7 +21,7 @@ import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.Portal;
 import Entities.staticEntities.Wall;
 import Entities.staticEntities.ZombieToastSpawner;
-import app.data.DataEntities;
+import data.DataEntities;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;
@@ -30,16 +31,31 @@ import dungeonmania.util.Position;
 
 public class EntitiesFactory {
 
+    /**
+     * @return String
+     */
     public static String getNextId() {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * @param entity
+     * @return Entities
+     */
     public static Entities creatingEntitiesFactory(EntityResponse entity) {
 
         return createEntities(entity.getType(), entity.getPosition());
 
     }
 
+    /**
+     * 
+     * Given the dataEntities object converted from the JSON object, it creates
+     * entities
+     * 
+     * @param entity
+     * @return Entities
+     */
     public static Entities creatingEntitiesFactory(DataEntities entity, String gameMode) {
         String type = entity.getType();
         if (type.equals("door") || type.equals("key")) {
@@ -57,6 +73,12 @@ public class EntitiesFactory {
         }
     }
 
+    /**
+     * @param type
+     * @param position
+     * @param colour
+     * @return Entities
+     */
     public static Entities createEntities(String type, Position position, String option) {
 
         Entities newEntity = null;
@@ -71,6 +93,12 @@ public class EntitiesFactory {
         return newEntity;
     }
 
+    /**
+     * @param type
+     * @param position
+     * @param key
+     * @return Entities
+     */
     public static Entities createEntities(String type, Position position, int key) {
 
         Entities newEntity = null;
@@ -109,6 +137,8 @@ public class EntitiesFactory {
             newEntity = new Wood(getNextId(), position);
         } else if (type.equals("invincibility_potion")) {
             newEntity = new InvincibilityPotion(getNextId(), position);
+        } else if (type.equals("invisibility_potion")) {
+            newEntity = new InvisibilityPotion(getNextId(), position);
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), position);
         } else if (type.equals("boulder")) {

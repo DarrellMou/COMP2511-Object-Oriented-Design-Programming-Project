@@ -29,9 +29,10 @@ import Entities.movingEntities.Character;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Triggerable;
 import Items.InventoryItem;
+import data.Data;
+import data.DataEntities;
 import Entities.staticEntities.ZombieToastSpawner;
-import app.data.Data;
-import app.data.DataEntities;
+
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,6 +48,12 @@ public class DungeonManiaController {
     public DungeonManiaController() {
         numCreatedDungeons = 0;
         random = new Random(System.currentTimeMillis()); // Seed is the time
+        dungeon = new Dungeon(getDungeonId(), random);
+    }
+
+    public DungeonManiaController(Random random) {
+        numCreatedDungeons = 0;
+        this.random = random; // Used in testing
         dungeon = new Dungeon(getDungeonId(), random);
     }
 
@@ -189,7 +196,7 @@ public class DungeonManiaController {
 
         newGameCreateMap(entitiesResponses, dungeonName, gameMode);
 
-        return new DungeonResponse(dungeon.getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
+        return new DungeonResponse(getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
                 buildableResponses, dungeon.getGoals());
     }
 
@@ -236,9 +243,9 @@ public class DungeonManiaController {
     /**
      * @param name
      * @return DungeonResponse
-     * @throws IllegalArgumentException
+     * 
      */
-    public DungeonResponse saveGame(String name) throws IllegalArgumentException {
+    public DungeonResponse saveGame(String name) {
         List<EntityResponse> entitiesResponses = new ArrayList<>();
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildablesResponses = new ArrayList<>();
@@ -333,7 +340,6 @@ public class DungeonManiaController {
         dungeon.setDungeonId(dg.getDungeonId());
         dungeon.setDungeonName(dg.getDungeonName());
         dungeon.setEntities(newEntities);
-        // TODO set character
         dungeon.getCharacter().setInventory(newInventory);
         dungeon.setBuildables(newBuildables);
         dungeon.setGoals(dg.getGoals());
@@ -409,7 +415,6 @@ public class DungeonManiaController {
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
         if (getCharacter().build(buildable)) {
-            // TODO Darrell fix this plz :)
             getCharacter().checkForBuildables(null, dungeon);
         }
 

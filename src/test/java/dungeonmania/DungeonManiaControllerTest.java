@@ -23,51 +23,42 @@ public class DungeonManiaControllerTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.clear();
         DungeonResponse dg = controller.newGame("boulders", "Peaceful");
-        List<EntityResponse> entities = new ArrayList<>();
-        List<ItemResponse> inventory = new ArrayList<>();
-        List<String> buildables = new ArrayList<>();
-        assertEquals(dg,
-                new DungeonResponse(dg.getDungeonId(), "boulders", entities, inventory, buildables, "boulders"));
 
-        // This should throw IllegalArgumentException as the gameMode is not a valid game mode
+        List<String> buildables = new ArrayList<>();
+
+        assertEquals(dg.getDungeonName(), "boulders");
+        assertEquals(dg.getBuildables(), buildables);
+        assertEquals(dg.getEntities().size(), 50);
+        assertEquals(dg.getInventory(), new ArrayList<ItemResponse>());
+        assertEquals(dg.getGoals(), "boulders");
+
+        // This should throw IllegalArgumentException as the gameMode is not a valid
+        // game mode
         assertThrows(IllegalArgumentException.class, () -> {
             controller.newGame("advanced", "invalid game mode");
         });
 
-        // This should throw IllegalArgumentException as the as the dungeon name doesn't exist
+        // This should throw IllegalArgumentException as the as the dungeon name doesn't
+        // exist
         assertThrows(IllegalArgumentException.class, () -> {
             controller.newGame("invalid dungeon name", "Peaceful");
         });
     }
 
     @Test
-    public void testDungeonSaveGame() {
+    public void testDungeonSaveGameLoadGame() {
 
-        // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse dg = controller.newGame("advanced", "peaceful");
-        assertEquals(dg, new DungeonResponse("dungeon1", "advanced", null, null, null, null));
+        controller.clear();
+        DungeonResponse dg = controller.newGame("advanced", "Peaceful");
+        assertEquals(dg.getDungeonName(), "advanced");
+
+        controller.saveGame(dg.getDungeonId());
 
         // This should throw IllegalArgumentException as the id is not a valid id to
         // save
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.saveGame("dungeon");
-        });
-
-    }
-
-    @Test
-    public void testDungeonLoadGame() {
-
-        // Create a new game
-        DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse dg = controller.newGame("dungeonWorld", "peaceful");
-        assertEquals(dg, new DungeonResponse("dungeon1", "dungeonWorld", null, null, null, null));
-
-        // This should throw IllegalArgumentException as the id is not a valid id to
-        // save
-        assertThrows(IllegalArgumentException.class, () -> {
-            controller.loadGame("dungeon");
+            controller.loadGame("dungeon2546");
         });
 
     }
@@ -77,11 +68,16 @@ public class DungeonManiaControllerTest {
 
         // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse dg = controller.newGame("dungeonWorld", "peaceful");
-        assertEquals(dg, new DungeonResponse("dungeon1", "dungeonWorld", null, null, null, null));
+        controller.clear();
+        DungeonResponse dg = controller.newGame("maze", "Peaceful");
+        assertEquals(dg.getDungeonId(), "dungeon1");
+        assertEquals(dg.getDungeonName(), "maze");
+        controller.saveGame("dungeon1");
 
-        DungeonResponse dg2 = controller.newGame("dungeonWorld2", "peaceful");
-        assertEquals(dg2, new DungeonResponse("dungeon2", "dungeonWorld2", null, null, null, null));
+        DungeonResponse dg2 = controller.newGame("boulders", "Peaceful");
+        assertEquals(dg2.getDungeonId(), "dungeon2");
+        assertEquals(dg2.getDungeonName(), "boulders");
+        controller.saveGame("dungeon2");
 
         // Returns a list containing all the saved games that are currently stored.
         // Assuming by id - as this is unique identifier
@@ -97,8 +93,8 @@ public class DungeonManiaControllerTest {
 
         // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse dg = controller.newGame("dungeonWorld", "peaceful");
-        assertEquals(dg, new DungeonResponse("dungeon1", "dungeonWorld", null, null, null, null));
+        DungeonResponse dg = controller.newGame("boulders", "Peaceful");
+        assertEquals(dg.getDungeonId(), "dungeon1");
 
         // An IllegalArgumentException will be thrown as itemUsed is not one of bomb,
         // invincibility_potion, invisibility_potion
@@ -121,14 +117,12 @@ public class DungeonManiaControllerTest {
 
         // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse dg = controller.newGame("dungeonWorld", "peaceful");
-        assertEquals(dg, new DungeonResponse("dungeon1", "dungeonWorld", null, null, null, null));
+        controller.newGame("advanced", "Standard");
 
         // An IllegalArgumentException will be thrown as itemUsed is not one of bow,
         // shield
         assertThrows(IllegalArgumentException.class, () -> {
             controller.build("hammer");
-
         });
 
         // InvalidActionException will be thrown if the player does not have sufficient
@@ -136,7 +130,9 @@ public class DungeonManiaControllerTest {
         // to the inventory once we have those dummy methods made
         assertThrows(InvalidActionException.class, () -> {
             controller.build("bow");
-
+        });
+        assertThrows(InvalidActionException.class, () -> {
+            controller.build("shield");
         });
     }
 
