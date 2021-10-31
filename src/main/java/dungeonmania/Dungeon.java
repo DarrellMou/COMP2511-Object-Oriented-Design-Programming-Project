@@ -75,6 +75,7 @@ public class Dungeon {
     /**
      * @param random
      */
+
     public void setRandom(Random random) {
         this.random = random;
     }

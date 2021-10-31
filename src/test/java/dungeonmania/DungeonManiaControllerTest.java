@@ -52,6 +52,33 @@ public class DungeonManiaControllerTest {
     }
 
     @Test
+    public void testDungeonSaveGameWithItems() {
+
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.clear();
+        DungeonResponse dg = controller.newGame("advanced", "Peaceful");
+        assertEquals(dg.getDungeonName(), "advanced");
+
+        // Add the key to the characters inventory
+        InventoryItem key1 = ItemsFactory.createItem("key1", "key");
+        InventoryItem invincibility_potion1 = ItemsFactory.createItem("invincibility_potion1", "invincibility_potion");
+        InventoryItem treasure1 = ItemsFactory.createItem("treasure1", "treasure");
+
+        controller.getDungeon().getCharacter().addInventory(key1);
+        controller.getDungeon().getCharacter().addInventory(invincibility_potion1);
+        controller.getDungeon().getCharacter().addInventory(treasure1);
+
+        Entities bow = EntitiesFactory.createEntities("bow", new Position(0, 2));
+        controller.getDungeon().addBuildables(bow.getType());
+
+        DungeonResponse dg2 = controller.saveGame(dg.getDungeonId());
+        ArrayList<String> builds = new ArrayList<>();
+        builds.add("bow");
+        assertEquals(dg2.getBuildables(), builds);
+
+    }
+
+    @Test
     public void testDungeonSaveGameLoadGame() {
 
         DungeonManiaController controller = new DungeonManiaController();
