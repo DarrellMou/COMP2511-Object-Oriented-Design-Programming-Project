@@ -3,6 +3,7 @@ package Entities.movingEntities;
 import Entities.Interactable;
 import Entities.collectableEntities.materials.Treasure;
 import Items.InventoryItem;
+import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
@@ -104,7 +105,7 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
     public void interact(Dungeon dungeon) throws InvalidActionException {
         Character c = dungeon.getCharacter();
 
-        InventoryItem i = c.getInventoryItem(Treasure.class);
+        InventoryItem i = c.getInventoryItem(TreasureItem.class);
         if (i == null) {
             throw new InvalidActionException("Character does not have a treasure!!");
         }

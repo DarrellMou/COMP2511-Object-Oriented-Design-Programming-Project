@@ -50,7 +50,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      */
     public Buffs getBuffs(Class<?> cls) {
         for (Buffs buff : getBuffs()) {
-            if (buff.getClass() == cls) {
+            if (cls.isInstance(buff)) {
                 return buff;
             }
         }
@@ -109,7 +109,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      */
     public InventoryItem getInventoryItem(Class<?> cls) {
         for (InventoryItem item : getInventory()) {
-            if (item.getClass() == cls) {
+            if (cls.isInstance(item)) {
                 return item;
             }
         }
