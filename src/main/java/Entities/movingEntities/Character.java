@@ -31,7 +31,8 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     /**
      * inventory = [ {item1}, {item2}... ]
      */
-    private static final int MAX_HEALTH = 120;
+    private static int MAX_HEALTH;
+    public static Object getInventory;
     private static final int ATTACK_DAMAGE = 3;
     private ArrayList<InventoryItem> inventory;
     private Map<String, Integer> materials = new HashMap<>();
@@ -40,7 +41,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     private List<Buffs> buffs = new ArrayList<Buffs>();
 
     public Character(String id, Position position) {
-        super(id, "player", position, false, true, MAX_HEALTH, ATTACK_DAMAGE);
+        super(id, "player", position, false, true, Character.MAX_HEALTH, ATTACK_DAMAGE);
         setPrevPosition(getPosition());
         inventory = new ArrayList<InventoryItem>();
     }
@@ -94,6 +95,14 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             }
         }
         return null;
+    }
+
+    public static int getMAX_HEALTH() {
+        return MAX_HEALTH;
+    }
+
+    public static void setMAX_HEALTH(int MAX_HEALTH) {
+        Character.MAX_HEALTH = MAX_HEALTH;
     }
 
     /**

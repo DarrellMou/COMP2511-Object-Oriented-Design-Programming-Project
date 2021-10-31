@@ -24,6 +24,9 @@ import data.Data;
 import data.DataSubgoal;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.gamemodes.Hard;
+import dungeonmania.gamemodes.Peaceful;
+import dungeonmania.gamemodes.Standard;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
@@ -41,6 +44,7 @@ public class Dungeon {
     private int ticksCounter;
     private int width;
     private int height;
+    private int spawnRate;
 
     private Random random;
     private List<String> entitiesClicked = new ArrayList<String>();
@@ -183,6 +187,14 @@ public class Dungeon {
     // this.buildableItems.add(buildableItems);
     // }
 
+    public int getSpawnRate() {
+        return spawnRate;
+    }
+
+    public void setSpawnRate(int spawnRate) {
+        this.spawnRate = spawnRate;
+    }
+
     public String getGoals() {
         return this.goals;
     }
@@ -206,6 +218,13 @@ public class Dungeon {
      */
     public void setGameMode(String gameMode) {
         this.gameMode = gameMode;
+        if (gameMode.equals("Hard")) {
+            Hard.setGameMode(this);
+        } else if (gameMode.equals("Standard")) {
+            Standard.setGameMode(this);
+        } else if (gameMode.equals("Peaceful")) {
+            Peaceful.setGameMode(this);
+        }
     }
 
     /**
@@ -513,14 +532,13 @@ public class Dungeon {
      * @param width
      */
     public void spawnEnemies(String gameMode, int height, int width) {
-
         if (getTicksCounter() % 25 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
                     new Position(random.nextInt(width), random.nextInt(height), 2));
             addEntities(spider);
         }
 
-        if (getTicksCounter() % 20 == 0) {
+        if (getTicksCounter() % spawnRate == 0) {
             for (Entities entity : getEntities()) {
                 if (entity instanceof ZombieToastSpawner) {
                     ZombieToastSpawner zombieToastSpawner = (ZombieToastSpawner) entity;

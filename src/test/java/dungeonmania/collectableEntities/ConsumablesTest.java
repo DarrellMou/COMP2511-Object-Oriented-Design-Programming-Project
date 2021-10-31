@@ -1,4 +1,4 @@
-package dungeonmania;
+package dungeonmania.collectableEntities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,6 +13,7 @@ import Entities.movingEntities.Mercenary;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.ConsumableItem.HealthPotionItem;
+import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -62,11 +63,12 @@ public class ConsumablesTest {
         assertEquals(8, m.getHealth());
         
         
-        controller.tick("", Direction.RIGHT);
+        controller.tick("", Direction.NONE);
         HealthPotionItem healthPotion = (HealthPotionItem) ItemsFactory.createItem("health_potion", "health_potion");
         controller.getDungeon().getCharacter().addInventory(healthPotion);
         controller.tick(healthPotion.getId(), Direction.NONE);
-
+        
         assertEquals(120, controller.getDungeon().getCharacter().getHealth());
+        assertEquals(0, controller.getDungeon().getCharacter().getInventory().size());
     }
 }
