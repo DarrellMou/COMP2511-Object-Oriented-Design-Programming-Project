@@ -8,9 +8,10 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Invincible extends Buffs {
+    private static final int duration = 10;
+
     public Invincible(int tick) {
-        // duration is 10
-        super(tick + 10);
+        super(tick + duration);
     }
 
     public void invinMovement(Dungeon dungeon, Enemy enemy) {
