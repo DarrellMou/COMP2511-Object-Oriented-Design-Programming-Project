@@ -2,6 +2,11 @@ package dungeonmania;
 
 import org.junit.jupiter.api.Test;
 
+import Entities.Entities;
+import Entities.EntitiesFactory;
+import Items.InventoryItem;
+import Items.ItemsFactory;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -10,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -93,15 +99,36 @@ public class DungeonManiaControllerTest {
 
         // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
+        controller.clear();
         DungeonResponse dg = controller.newGame("boulders", "Peaceful");
         assertEquals(dg.getDungeonId(), "dungeon1");
+
+        // Entities key1 = EntitiesFactory.createEntities("key", new Position(2, 1), 1);
+        InventoryItem key1 = ItemsFactory.createItem("key1", "key");
+
+        // Add the key to the characters inventory
+        controller.getDungeon().getCharacter().addInventory(key1);
 
         // An IllegalArgumentException will be thrown as itemUsed is not one of bomb,
         // invincibility_potion, invisibility_potion
         assertThrows(IllegalArgumentException.class, () -> {
-            controller.tick("arrow", Direction.DOWN);
+            controller.tick(key1.getId(), Direction.DOWN);
 
         });
+
+        // Add an item to be used invincibility_potion
+        InventoryItem invincibilityPotion1 = ItemsFactory.createItem("invincibility_potion1", "invincibility_potion");
+        controller.getDungeon().getCharacter().addInventory(invincibilityPotion1);
+
+        // Should not throw any error using the invincibility Potion
+        controller.tick(invincibilityPotion1.getId(), Direction.DOWN);
+
+        // Check that the inventory no longer has invinciblity potion, just the key
+
+        ArrayList<InventoryItem> inventoryList = new ArrayList<>();
+        inventoryList.add(key1);
+
+        assertEquals(controller.getDungeon().getCharacter().getInventory(), inventoryList);
 
         // InvalidActionException will be thrown if itemUsed is not in the player's
         // inventory - need to change this test so i add these items to inventory
@@ -142,23 +169,56 @@ public class DungeonManiaControllerTest {
 
         // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse dg = controller.newGame("dungeonWorld", "peaceful");
-        assertEquals(dg, new DungeonResponse("dungeon1", "dungeonWorld", null, null, null, null));
+        controller.clear();
+        DungeonResponse dg = controller.newGame("boulders", "Peaceful");
+        assertEquals(dg.getDungeonId(), "dungeon1");
 
         // An IllegalArgumentException will be thrown as entityID is not a valid
-        // entityID
+        // entityID - Currently there is no entity created
         assertThrows(IllegalArgumentException.class, () -> {
             controller.interact("zombie400");
 
         });
 
-        // InvalidActionException will be thrown if :
-        // If the player is not cardinally adjacent to the given entity
-        // If the player does not have any gold and attempts to bribe a mercenary
-        // If the player does not have a weapon and attempts to destroy a spawner
-        assertThrows(InvalidActionException.class, () -> {
-            controller.interact("zombie500");
+        // Character can interact with zombie
+        Entities zombieToast1 = EntitiesFactory.createEntities("zombie_toast", new Position(0, 1));
+        assertThrows(IllegalArgumentException.class, () -> {
+            controller.interact(zombieToast1.getId());
 
         });
+
+        controller.tick("", Direction.DOWN);
+        controller.tick("", Direction.RIGHT);
+        controller.tick("", Direction.RIGHT);
+
+        Entities zombieToastSpawner1 = EntitiesFactory.createEntities("zombie_toast_spawner", new Position(1, 2));
+        InventoryItem sword = ItemsFactory.createItem("sword1", "sword");
+        controller.getDungeon().getCharacter().addInventory(sword);
+        controller.getDungeon().addEntities(zombieToastSpawner1);
+
+        // InvalidActionException will be thrown if :
+        // If the player is not cardinally adjacent to the given entity
+        assertThrows(InvalidActionException.class, () -> {
+            controller.interact(zombieToastSpawner1.getId());
+        });
+        // If the player does not have any gold and attempts to bribe a mercenary
+        Entities mercenary1 = EntitiesFactory.createEntities("mercenary", new Position(1, 2));
+        controller.getDungeon().addEntities(mercenary1);
+
+        assertThrows(InvalidActionException.class, () -> {
+            controller.interact(mercenary1.getId());
+        });
+
+        // If the player does not have a weapon and attempts to destroy a spawner
+        // The player is not cardinally adjacent to the spawner but doesnt have a weapon
+        controller.getDungeon().getCharacter().removeInventory(sword);
+        // controller.getDungeon().getCharacter().setPosition(new Position(0, 6));
+        Entities zombieToastSpawner2 = EntitiesFactory.createEntities("zombie_toast_spawner", new Position(5, 3));
+        controller.getDungeon().addEntities(zombieToastSpawner2);
+
+        assertThrows(InvalidActionException.class, () -> {
+            controller.interact(zombieToastSpawner2.getId());
+        });
+
     }
 }
