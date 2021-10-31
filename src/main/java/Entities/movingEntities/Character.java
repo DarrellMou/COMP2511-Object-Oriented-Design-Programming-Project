@@ -50,7 +50,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      */
     public Buffs getBuffs(Class<?> cls) {
         for (Buffs buff : getBuffs()) {
-            if (buff.getClass() == cls) {
+            if (cls.isInstance(buff)) {
                 return buff;
             }
         }
@@ -107,22 +107,10 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     /**
      * @return InventoryItem
      */
-    public InventoryItem getTreasure() {
-        for (InventoryItem i : getInventory()) {
-            if (i instanceof TreasureItem) {
-                return i;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @return Weapons
-     */
-    public Weapons getWeapon() {
-        for (InventoryItem i : getInventory()) {
-            if (i instanceof Weapons) {
-                return (Weapons) i;
+    public InventoryItem getInventoryItem(Class<?> cls) {
+        for (InventoryItem item : getInventory()) {
+            if (cls.isInstance(item)) {
+                return item;
             }
         }
         return null;
@@ -391,7 +379,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
 
         // if character is killed
         if (isKilled()) {
-            InventoryItem i = getOneRing();
+            InventoryItem i = getInventoryItem(TheOneRingItem.class);
             // character revives to full hp if has one ring
             if (i != null) {
                 removeInventory(i);
@@ -401,18 +389,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
                 dungeon.getEntities().remove(this);
             }
         }
-    }
-
-    /**
-     * @return InventoryItem
-     */
-    public InventoryItem getOneRing() {
-        for (InventoryItem i : getInventory()) {
-            if (i instanceof TheOneRingItem) {
-                return i;
-            }
-        }
-        return null;
     }
 
     /**

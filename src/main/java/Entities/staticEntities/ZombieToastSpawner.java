@@ -52,14 +52,14 @@ public class ZombieToastSpawner extends StaticEntities implements Interactable {
     @Override
     public void interact(Dungeon dungeon) throws InvalidActionException {
         Character c = dungeon.getCharacter();
-        Weapons w = c.getWeapon();
+        InventoryItem w = c.getInventoryItem(Weapons.class);
         if (w == null) {
             throw new InvalidActionException("Character does not have a weapon!!");
         }
         if (!Position.isAdjacent(c.getPosition(), this.getPosition())) {
             throw new InvalidActionException("Zombie Toast Spawner is not in range!!");
         }
-        destroySpawner(dungeon, w);
+        destroySpawner(dungeon, (Weapons) w);
     }
 
 }
