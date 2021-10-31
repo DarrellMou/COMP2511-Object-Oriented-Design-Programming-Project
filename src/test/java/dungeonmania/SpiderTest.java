@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import Entities.Entities;
+import Entities.EntitiesFactory;
 import Entities.movingEntities.Spider;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -58,7 +60,23 @@ public class SpiderTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.clear();
         controller.newGame("advanced", "Peaceful");
+    }
 
+    @Test
+    public void testSpiderStuck() {
+        // Start game in advanced map + peaceful difficulty
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Standard");
+        Entities s = EntitiesFactory.createEntities("spider", new Position(4, 0, 2));
+        controller.getDungeon().addEntities(s);
+        Entities b2 = EntitiesFactory.createEntities("boulder", new Position(4, -1));
+        controller.getDungeon().addEntities(b2);
+        Entities b3 = EntitiesFactory.createEntities("boulder", new Position(4, 1));
+        controller.getDungeon().addEntities(b3);
+
+        // Spider is below blue portal
+        controller.tick("", Direction.NONE); // into portal, going up
+        assertEquals(new Position(4, 0, 2), s.getPosition());
     }
 
 }

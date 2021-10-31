@@ -107,21 +107,6 @@ public class EntitiesFactory {
     }
 
     /**
-     * @return Entities
-     */
-    // public Entities createEntities(String type) {
-
-    // Entities newEntity = null;
-
-    // if (type.equals("bow")) {
-    // newEntity = new Bow(getNextId(), true); // is bow interactable?
-    // } else if (type.equals("shield")) {
-    // newEntity = new Shield(getNextId(), false); // is shield interactable?
-    // }
-
-    // return newEntity;
-    // }
-    /**
      * Create entity of given type at given position
      * 
      * @param type
@@ -150,8 +135,6 @@ public class EntitiesFactory {
             newEntity = new InvisibilityPotion(getNextId(), position);
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), position);
-        } else if (type.equals("player")) {
-            newEntity = new Character(getNextId(), position); // What is character health?
         } else if (type.equals("boulder")) {
             newEntity = new Boulder(getNextId(), position);
         } else if (type.equals("sword")) {
@@ -160,6 +143,8 @@ public class EntitiesFactory {
             newEntity = new Mercenary(getNextId(), position); // What is mecernary health?
         } else if (type.equals("spider")) {
             newEntity = new Spider(getNextId(), position);
+        } else if (type.equals("player")) {
+            newEntity = new Character(getNextId(), position);
         } else if (type.equals("bow")) {
             newEntity = new Bow(getNextId());
         } else if (type.equals("shield")) {

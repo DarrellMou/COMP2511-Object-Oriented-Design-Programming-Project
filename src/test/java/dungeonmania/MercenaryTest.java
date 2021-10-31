@@ -211,21 +211,21 @@ public class MercenaryTest {
         });
     }
 
-    @Test
-    public void testMercenaryBattleRadiusSpeed() {
-        // TODO
-        DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("advanced", "Standard");
+    // @Test
+    // public void testMercenaryBattleRadiusSpeed() {
+    //     // TODO
+    //     DungeonManiaController controller = new DungeonManiaController();
+    //     controller.newGame("advanced", "Standard");
 
-        // outside of range, the c
+    //     // outside of range, the c
 
-    }
+    // }
 
-    @Test
-    public void testMercenaryAllyFight() {
-        // TODO
-        DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("advanced", "Standard");
+    // @Test
+    // public void testMercenaryAllyFight() {
+    //     // TODO
+    //     DungeonManiaController controller = new DungeonManiaController();
+    //     controller.newGame("advanced", "Standard");
 
-    }
+    // }
 }

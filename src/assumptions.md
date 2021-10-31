@@ -16,6 +16,8 @@ saveGame
 
 Zombie Toast Spawner
 - A user cannot walk on top of the zombie toast spawner because that is where the zombies are being spawned and the zombie is being spawned
+- The spawner will try to spawn in the following order: above, right, below, left.
+- If no squares cardinally adjacent to the spawned are open, then nothing will spawn.
 
 Zombie toast
 - If a zombie toast were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
