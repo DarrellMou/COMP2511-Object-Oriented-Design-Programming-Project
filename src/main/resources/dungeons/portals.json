@@ -57,6 +57,16 @@
             "y": 6,
             "type": "portal",
             "colour": "GREY"
+        },
+        {
+            "x": 3,
+            "y": 0,
+            "type": "wall"
+        },
+        {
+            "x": 2,
+            "y": 0,
+            "type": "mercenary"
         }
     ],
     "width": 5,
