@@ -48,21 +48,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     /**
      * @return Buffs
      */
-    public Buffs getInvisible() {
+    public Buffs getBuffs(Class<?> cls) {
         for (Buffs buff : getBuffs()) {
-            if (buff instanceof Invisible) {
-                return buff;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @return Buffs
-     */
-    public Buffs getInvincible() {
-        for (Buffs buff : getBuffs()) {
-            if (buff instanceof Invincible) {
+            if (buff.getClass() == cls) {
                 return buff;
             }
         }
@@ -350,7 +338,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         double damage = getAttackDamage();
         // One shot enemy if invincible. Weapon durability is not lowered when
         // invincible.
-        if (getInvincible() != null) {
+        if (getBuffs(Invincible.class) != null) {
             return getHealth() * 1000;
         }
         for (InventoryItem item : getInventory()) {
@@ -372,7 +360,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     @Override
     public void takeDamage(Dungeon dungeon, double damage) {
         // No damage taken when invincible. Equipment durability not lowered.
-        if (getInvincible() != null) {
+        if (getBuffs(Invincible.class) != null) {
             return;
         }
         boolean armourChecked = false;
@@ -436,7 +424,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
-        if (walker instanceof Enemy && getInvisible() == null) {
+        if (walker instanceof Enemy && getBuffs(Invincible.class) == null) {
             Battle.battle(this, (Enemy) walker, dungeon);
         }
         return;
