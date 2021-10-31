@@ -20,8 +20,8 @@ import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.ZombieToastSpawner;
 import Items.InventoryItem;
 import Items.ConsumableItem.Consumables;
-import app.data.Data;
-import app.data.DataSubgoal;
+import data.Data;
+import data.DataSubgoal;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
@@ -318,7 +318,7 @@ public class Dungeon {
             }
 
             // Checks for whether itemUsed is in inventory
-            if (item.equals(null)) {
+            if (item == null) {
                 throw new InvalidActionException(String.format("Character does not have %s in inventory", itemUsedId));
             }
 

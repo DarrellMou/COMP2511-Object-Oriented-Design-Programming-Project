@@ -21,7 +21,7 @@ import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.Portal;
 import Entities.staticEntities.Wall;
 import Entities.staticEntities.ZombieToastSpawner;
-import app.data.DataEntities;
+import data.DataEntities;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;

@@ -16,7 +16,7 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
     private static final int MAX_HEALTH = 80;
 
     public Mercenary(String id, Position position) {
-        super(id, "mercenary", position, true, true, ATTACK_DAMAGE, MAX_HEALTH);
+        super(id, "mercenary", position, true, true, MAX_HEALTH, ATTACK_DAMAGE);
     }
 
     /**
