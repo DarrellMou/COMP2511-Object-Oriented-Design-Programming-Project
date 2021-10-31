@@ -1,6 +1,7 @@
 package dungeonmania.collectableEntities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,5 +146,27 @@ public class ConsumablesTest {
 
         // mercenary instantly dies
         assertEquals(0, m.getHealth());
+    }
+
+    @Test
+    public void testInvinHardPotion() {
+        // invincibility should not work in hard mode
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("test-consumables", "Hard");
+
+        // put potion in character inventory
+        InvincibilityPotionItem invinPotion = (InvincibilityPotionItem) ItemsFactory.createItem("invincibility_potion",
+                "invincibility_potion");
+        controller.getDungeon().getCharacter().addInventory(invinPotion);
+
+        // Add merc to right of player
+        Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(1, 2, 1));
+        controller.getDungeon().addEntities(m);
+
+        // consume potion
+        controller.tick(invinPotion.getId(), Direction.NONE);
+
+        // Verify merc towards player as invincibility does not work
+        assertEquals(new Position(0, 2, 1), m.getPosition());
     }
 }
