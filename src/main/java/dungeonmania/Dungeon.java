@@ -24,6 +24,9 @@ import data.Data;
 import data.DataSubgoal;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.gamemodes.Hard;
+import dungeonmania.gamemodes.Peaceful;
+import dungeonmania.gamemodes.Standard;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
@@ -41,9 +44,9 @@ public class Dungeon {
     private int ticksCounter;
     private int width;
     private int height;
+    private int spawnRate;
 
     private Random random;
-    private List<String> entitiesClicked = new ArrayList<String>();
 
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
@@ -183,6 +186,14 @@ public class Dungeon {
     // this.buildableItems.add(buildableItems);
     // }
 
+    public int getSpawnRate() {
+        return spawnRate;
+    }
+
+    public void setSpawnRate(int spawnRate) {
+        this.spawnRate = spawnRate;
+    }
+
     public String getGoals() {
         return this.goals;
     }
@@ -206,6 +217,13 @@ public class Dungeon {
      */
     public void setGameMode(String gameMode) {
         this.gameMode = gameMode;
+        if (gameMode.equals("Hard")) {
+            Hard.setGameMode(this);
+        } else if (gameMode.equals("Standard")) {
+            Standard.setGameMode(this);
+        } else if (gameMode.equals("Peaceful")) {
+            Peaceful.setGameMode(this);
+        }
     }
 
     /**
@@ -304,7 +322,6 @@ public class Dungeon {
      */
     public DungeonResponse tick(String itemUsedId, Direction movementDirection)
             throws IllegalArgumentException, InvalidActionException {
-        entitiesClicked = new ArrayList<String>();
 
         incrementTicks(); // This increments the number of ticks in this dungeon
 
@@ -437,31 +454,6 @@ public class Dungeon {
         if (getCharacter() == null)
             return newDungeonResponse();
 
-        // List<Entities> newPositionEntities = dungeon.getEntitiesOnTile(newPosition);
-        // for (Entities newPositionEntity : newPositionEntities) {
-        // // Boulder movement
-        // if (newPositionEntity instanceof Boulder) {
-        // Boulder b = (Boulder) newPositionEntity;
-        // Position newBoulderPosition = b.getPosition().translateBy(movementDirection);
-        // if (b.checkMovable(newBoulderPosition, dungeon)) {
-        // b.setPosition(newBoulderPosition);
-        // }
-        // }
-        // if (getCharacter().checkMovable(newPosition, getEntities())) {
-        // Entities entity = getEntityFromPosition(newPosition);
-        // if (entity instanceof Triggerable) {
-        // // something happens when you try to walk onto it
-        // Triggerable triggerable = (Triggerable) entity;
-        // triggerable.trigger(getDungeon(), dungeon.getCharacter());
-        // } else if (entity instanceof CollectableEntity) {
-        // CollectableEntity collectable = (CollectableEntity) entity;
-        // collectable.pickup(dungeon, dungeon.getCharacter());
-        // dungeon.getCharacter().checkForBuildables(dungeon);
-        // }
-        // dungeon.getCharacter().setPosition(newPosition);
-        // }
-        // }
-
         spawnEnemies(getGameMode(), getHeight(), getWidth()); // Spawn Enemies
         if (hasCompletedGoals()) {
             gameCompleted();
@@ -481,11 +473,6 @@ public class Dungeon {
      * @throws InvalidActionException
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        if (entitiesClicked.contains(entityId)) {
-            return newDungeonResponse();
-        } else {
-            entitiesClicked.add(entityId);
-        }
         Interactable i = null;
         // get entity if interactible
         for (Entities e : getEntities()) {
@@ -538,21 +525,20 @@ public class Dungeon {
      * @param width
      */
     public void spawnEnemies(String gameMode, int height, int width) {
-
         if (getTicksCounter() % 25 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
                     new Position(random.nextInt(width), random.nextInt(height), 2));
             addEntities(spider);
         }
 
-        if (getTicksCounter() % 20 == 0) {
+        if (getTicksCounter() % spawnRate == 0) {
             for (Entities entity : getEntities()) {
                 if (entity instanceof ZombieToastSpawner) {
                     ZombieToastSpawner zombieToastSpawner = (ZombieToastSpawner) entity;
-                    Entities zombieToast = zombieToastSpawner.spawnZombies();
-                    addEntities(zombieToast);
+                    Entities zombieToast = zombieToastSpawner.spawnZombies(this);
+                    // zombieToast = null if no cardianlly adjacent open square
+                    if (zombieToast != null) addEntities(zombieToast);
                     break;
-
                 }
             }
         }

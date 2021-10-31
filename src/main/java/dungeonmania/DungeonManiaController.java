@@ -194,7 +194,7 @@ public class DungeonManiaController {
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildableResponses = new ArrayList<>();
 
-        newGameCreateMap(entitiesResponses, dungeonName);
+        newGameCreateMap(entitiesResponses, dungeonName, gameMode);
 
         return new DungeonResponse(getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
                 buildableResponses, dungeon.getGoals());
@@ -204,7 +204,7 @@ public class DungeonManiaController {
      * @param entitiesResponses
      * @param dungeonName
      */
-    public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName) {
+    public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName, String gameMode) {
         try {
             BufferedReader br = new BufferedReader(
                     new FileReader("src/main/resources/dungeons/" + dungeonName + ".json"));
@@ -340,7 +340,6 @@ public class DungeonManiaController {
         dungeon.setDungeonId(dg.getDungeonId());
         dungeon.setDungeonName(dg.getDungeonName());
         dungeon.setEntities(newEntities);
-        // TODO set character
         dungeon.getCharacter().setInventory(newInventory);
         dungeon.setBuildables(newBuildables);
         dungeon.setGoals(dg.getGoals());
@@ -416,7 +415,6 @@ public class DungeonManiaController {
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
         if (getCharacter().build(buildable)) {
-            // TODO Darrell fix this plz :)
             getCharacter().checkForBuildables(null, dungeon);
         }
 

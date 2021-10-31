@@ -144,14 +144,12 @@ public class DungeonManiaControllerTest {
 
         // Create a new game
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse dg = controller.newGame("dungeonWorld", "peaceful");
-        assertEquals(dg, new DungeonResponse("dungeon1", "dungeonWorld", null, null, null, null));
+        controller.newGame("advanced", "Standard");
 
         // An IllegalArgumentException will be thrown as itemUsed is not one of bow,
         // shield
         assertThrows(IllegalArgumentException.class, () -> {
             controller.build("hammer");
-
         });
 
         // InvalidActionException will be thrown if the player does not have sufficient
@@ -159,7 +157,9 @@ public class DungeonManiaControllerTest {
         // to the inventory once we have those dummy methods made
         assertThrows(InvalidActionException.class, () -> {
             controller.build("bow");
-
+        });
+        assertThrows(InvalidActionException.class, () -> {
+            controller.build("shield");
         });
     }
 

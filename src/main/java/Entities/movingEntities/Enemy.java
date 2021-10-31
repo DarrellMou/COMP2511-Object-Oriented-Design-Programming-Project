@@ -8,6 +8,7 @@ import Entities.WalkedOn;
 import Items.ItemsFactory;
 import Items.TheOneRingItem;
 import dungeonmania.Dungeon;
+import dungeonmania.Buffs.Invisible;
 import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -53,7 +54,9 @@ public abstract class Enemy extends Mobs implements WalkedOn {
      */
     @Override
     public void takeDamage(Dungeon dungeon, double damage) {
+        System.out.println(getHealth());
         setHealth(getHealth() - (damage / 5));
+        System.out.println(getHealth());
         if (isKilled()) {
             dropItems(dungeon);
             dungeon.getEntities().remove(this);
@@ -79,10 +82,7 @@ public abstract class Enemy extends Mobs implements WalkedOn {
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             Character character = (Character) walker;
-            // fights if character is not invisible
-            if (character.getInvisible() == null) {
-                Battle.battle(character, this, dungeon);
-            }
+            Battle.battle(character, this, dungeon);
         }
     }
 }

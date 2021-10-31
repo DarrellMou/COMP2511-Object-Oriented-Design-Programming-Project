@@ -11,12 +11,7 @@ public class BattleTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("battle-test", "Standard");
 
-        // get merc health
-        // get char health
-        // tick
-        // test if char health decreased by formula
-        // test if merc health decreased by formula
-
+        
     }
 
 }

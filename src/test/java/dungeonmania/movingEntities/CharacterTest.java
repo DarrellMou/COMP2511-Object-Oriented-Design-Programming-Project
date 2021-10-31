@@ -1,4 +1,4 @@
-package dungeonmania;
+package dungeonmania.movingEntities;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -150,7 +151,7 @@ public class CharacterTest {
     }
 
     @Test
-    public void testCharacterInventoryBuilding() {
+    public void testCharacterInventoryBuildingBow() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Peaceful");
 
@@ -195,6 +196,90 @@ public class CharacterTest {
     }
 
     @Test
+    public void testCharacterInventoryBuildingShieldRecipe1() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Peaceful");
+
+        // Create shield materials to right of player
+        Entities w1 = EntitiesFactory.createEntities("wood", new Position(2, 1));
+        Entities w2 = EntitiesFactory.createEntities("wood", new Position(3, 1));
+        Entities t1 = EntitiesFactory.createEntities("treasure", new Position(4, 1));
+        // Add entities to right of player
+        controller.getDungeon().getEntities().add(w1);
+        controller.getDungeon().getEntities().add(w2);
+        controller.getDungeon().getEntities().add(t1);
+
+        controller.tick("", Direction.RIGHT); // wood1
+        controller.tick("", Direction.RIGHT); // wood2
+        controller.tick("", Direction.RIGHT); // treasure1
+
+        // 1 shield expected after build
+        List<InventoryItem> expectedAfter = new ArrayList<>();
+        expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "shield"));
+
+        // Expected for shield to be buildable
+        List<String> expectedBuildables = new ArrayList<>();
+        expectedBuildables.add("shield");
+
+        assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
+        // build shield
+        controller.build("shield");
+        // Check 1 shield is in inventory
+        assertEquals(1,
+                controller.getDungeon().getCharacter().getInventory().stream()
+                            .filter(i -> i.getType().equals("shield"))
+                            .count());
+        // Check materials are gone
+        Predicate<InventoryItem> woodPred = i -> i.getType().equals("wood");
+        Predicate<InventoryItem> treasurePred = i -> i.getType().equals("treasure");
+        assertEquals(0, controller.getDungeon().getCharacter().getInventory().stream()
+                            .filter(woodPred.or(treasurePred))
+                            .count());
+    }
+
+    @Test
+    public void testCharacterInventoryBuildingShieldRecipe2() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Peaceful");
+
+        // Create shield materials to right of player
+        Entities w1 = EntitiesFactory.createEntities("wood", new Position(2, 1));
+        Entities w2 = EntitiesFactory.createEntities("wood", new Position(3, 1));
+        Entities k1 = EntitiesFactory.createEntities("key", new Position(4, 1), 1);
+        // Add entities to right of player
+        controller.getDungeon().getEntities().add(w1);
+        controller.getDungeon().getEntities().add(w2);
+        controller.getDungeon().getEntities().add(k1);
+
+        controller.tick("", Direction.RIGHT); // wood1
+        controller.tick("", Direction.RIGHT); // wood2
+        controller.tick("", Direction.RIGHT); // key1
+
+        // 1 shield expected after build
+        List<InventoryItem> expectedAfter = new ArrayList<>();
+        expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "shield"));
+
+        // Expected for shield to be buildable
+        List<String> expectedBuildables = new ArrayList<>();
+        expectedBuildables.add("shield");
+
+        assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
+        // build shield
+        controller.build("shield");
+        // Check 1 shield is in inventory
+        assertEquals(1,
+                controller.getDungeon().getCharacter().getInventory().stream()
+                            .filter(i -> i.getType().equals("shield"))
+                            .count());
+        // Check materials are gone
+        Predicate<InventoryItem> woodPred = i -> i.getType().equals("wood");
+        Predicate<InventoryItem> treasurePred = i -> i.getType().equals("key_1");
+        assertEquals(0, controller.getDungeon().getCharacter().getInventory().stream()
+                            .filter(woodPred.or(treasurePred))
+                            .count());
+    }
+
+    @Test
     public void testHPAfterStandardFight() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Standard");
@@ -212,7 +297,6 @@ public class CharacterTest {
     }
 
     @Test
-
     public void testHPAfterHardFight() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Hard");

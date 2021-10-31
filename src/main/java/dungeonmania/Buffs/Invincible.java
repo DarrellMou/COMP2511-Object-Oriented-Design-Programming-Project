@@ -8,9 +8,10 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Invincible extends Buffs {
+    private static final int duration = 10;
+
     public Invincible(int tick) {
-        // duration is 10
-        super(tick + 10);
+        super(tick + duration);
     }
 
     public void invinMovement(Dungeon dungeon, Enemy enemy) {
@@ -26,10 +27,10 @@ public class Invincible extends Buffs {
         Position newPosition = null;
 
         // checks if it can move away on x axis then on y axis
-        if (enemy.checkMovable(nextPositionX, dungeon)) {
+        if (!directionX.equals(Direction.NONE) && enemy.checkMovable(nextPositionX, dungeon)) {
             currentDirection = directionX;
             newPosition = nextPositionX;
-        } else if (enemy.checkMovable(nextPositionY, dungeon)) {
+        } else if (!directionY.equals(Direction.NONE) && enemy.checkMovable(nextPositionY, dungeon)) {
             currentDirection = directionY;
             newPosition = nextPositionY;
         }
