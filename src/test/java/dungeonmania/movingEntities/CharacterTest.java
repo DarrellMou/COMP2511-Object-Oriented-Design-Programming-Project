@@ -213,7 +213,6 @@ public class CharacterTest {
     }
 
     @Test
-
     public void testHPAfterHardFight() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Hard");

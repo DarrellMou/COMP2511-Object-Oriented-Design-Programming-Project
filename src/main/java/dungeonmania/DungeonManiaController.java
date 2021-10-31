@@ -224,7 +224,7 @@ public class DungeonManiaController {
 
             for (DataEntities entity : data.getEntities()) {
 
-                Entities newEntity = EntitiesFactory.creatingEntitiesFactory(entity, gameMode);
+                Entities newEntity = EntitiesFactory.creatingEntitiesFactory(entity);
                 dungeon.addEntities(newEntity); // Adding it to the entities of dungeon
 
                 EntityResponse item = new EntityResponse(newEntity.getId(), newEntity.getType(),
