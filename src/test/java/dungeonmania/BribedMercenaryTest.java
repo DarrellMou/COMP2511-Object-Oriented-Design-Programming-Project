@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import Entities.Entities;
+import Entities.EntitiesFactory;
 import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Mercenary;
+import Entities.staticEntities.Wall;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -67,5 +69,28 @@ public class BribedMercenaryTest {
         // Player is below mercenary
         controller.tick("", Direction.DOWN);
         assertEquals(oldPos, b.getPosition());
+    }
+
+    @Test
+    public void bribedMercenaryPeculiarMovementTest() { 
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("mercenary_bribe", "Standard");
+
+        BribedMercenary m1 = new BribedMercenary("Bribed_Mercenary", new Position(2, 5));
+        controller.getDungeon().addEntities(m1);
+
+        Entities w1 = EntitiesFactory.createEntities("wall", new Position(2, 4));
+        controller.getDungeon().addEntities(w1);
+
+        BribedMercenary m2 = new BribedMercenary("Bribed_Mercenary", new Position(5, 2));
+        controller.getDungeon().addEntities(m2);
+
+        Entities w2 = EntitiesFactory.createEntities("wall", new Position(4, 2));
+        controller.getDungeon().addEntities(w2);
+
+        controller.tick("", Direction.NONE);
+
+        assertEquals(new Position(1, 5), m1.getPosition());
+        assertEquals(new Position(5, 1), m2.getPosition());
     }
 }
