@@ -7,12 +7,17 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class BribedMercenary extends Mobs implements Portalable {
-    private int battleRadius = 5;
+    private static final int BATTLE_RADIUS = 5;
+    private static final int ATTACK_DAMAGE = 1;
+    private static final int MAX_HEALTH = 80;
 
     public BribedMercenary(String id, Position position) {
-        super("id", "mercenary", position, false, true, 80, 1);
+        super("id", "mercenary", position, false, true, MAX_HEALTH, ATTACK_DAMAGE);
     }
 
+    /**
+     * @param dungeon
+     */
     @Override
     public void makeMovement(Dungeon dungeon) {
         Character character = dungeon.getCharacter();
@@ -39,7 +44,7 @@ public class BribedMercenary extends Mobs implements Portalable {
         }
 
         // if character is in battle and within battle range
-        if (character.getInBattleWith() != null && disFromChar <= battleRadius) {
+        if (character.getInBattleWith() != null && disFromChar <= BATTLE_RADIUS) {
             // Move again
             if (Math.abs(positionFromChar.getX()) >= Math.abs(positionFromChar.getY())) {
                 if (checkMovable(nextPositionX, dungeon)) {
@@ -59,6 +64,10 @@ public class BribedMercenary extends Mobs implements Portalable {
         }
     }
 
+    /**
+     * @param dungeon
+     * @param damage
+     */
     @Override
     public void takeDamage(Dungeon dungeon, double damage) {
         // assume that the bribed mercenary never gets injured

@@ -5,8 +5,6 @@ import java.util.Objects;
 import Entities.BeforeWalkedOn;
 import Entities.Entities;
 import Entities.EntitiesFactory;
-import Entities.WalkedOn;
-import Entities.collectableEntities.consumables.Key;
 import Entities.movingEntities.Character;
 import Items.InventoryItem;
 import Items.materialItem.KeyItem;
@@ -43,18 +41,6 @@ public class Door extends StaticEntities implements Triggerable, BeforeWalkedOn 
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(key);
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " key='" + getKey() + "'" +
-            "}";
-    }
-
-    @Override
     public void trigger(Dungeon dungeon, Entities walker) {
         Character character = (Character) walker;
         // check for key, if so make door unlocked + isMovable
@@ -71,8 +57,8 @@ public class Door extends StaticEntities implements Triggerable, BeforeWalkedOn 
     }
 
     /**
-     * If a player wants to walk on a door, calls walkedOn. It calls trigger which searches the inventory
-     * for the matching key and unlocks it if so.
+     * If a player wants to walk on a door, calls walkedOn. It calls trigger which
+     * searches the inventory for the matching key and unlocks it if so.
      */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {

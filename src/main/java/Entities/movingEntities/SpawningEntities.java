@@ -17,10 +17,16 @@ public abstract class SpawningEntities extends Enemy {
         this.spawnPosition = position;
     }
 
+    /**
+     * @return Position
+     */
     public Position getSpawnPosition() {
         return this.spawnPosition;
     }
 
+    /**
+     * @param spawnPosition
+     */
     public void setSpawnPosition(Position spawnPosition) {
         this.spawnPosition = spawnPosition;
     }

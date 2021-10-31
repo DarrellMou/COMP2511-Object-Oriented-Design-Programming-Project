@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import Entities.Entities;
-import Entities.WalkedOn;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
@@ -13,11 +11,16 @@ import dungeonmania.Buffs.Invisible;
 import dungeonmania.util.Position;
 
 public class ZombieToast extends SpawningEntities {
+    private static final int MAX_HEALTH = 50;
+    private static final int ATTACK_DAMAGE = 1;
 
     public ZombieToast(String id, Position position) {
-        super(id, "zombie_toast", position, false, true, 50, 1);
+        super(id, "zombie_toast", position, false, true, MAX_HEALTH, ATTACK_DAMAGE);
     }
 
+    /**
+     * @param dungeon
+     */
     @Override
     public void makeMovement(Dungeon dungeon) {
         Invincible invin = null;
@@ -46,6 +49,10 @@ public class ZombieToast extends SpawningEntities {
         }
     }
 
+    /**
+     * @param position
+     * @return List<Position>
+     */
     public List<Position> getZombieMovablePositions(Position position) {
         int x = position.getX();
         int y = position.getY();

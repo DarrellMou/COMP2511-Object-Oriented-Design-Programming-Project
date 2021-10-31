@@ -38,8 +38,9 @@ Movement order
 - If character moves into boulder, then the boulder will move first.
 
 Battle Order:
-The battle will use the first weapon in their inventory to attack.
-The player will wear the first armour and shield that they have in their inventory. They cant wear more than one of each armour
+- The battle will use the first weapon in their inventory to attack.
+- The player will wear the first armour and shield that they have in their inventory.
+- They cant wear more than one of each armour.
 
 Health, Damages:
 

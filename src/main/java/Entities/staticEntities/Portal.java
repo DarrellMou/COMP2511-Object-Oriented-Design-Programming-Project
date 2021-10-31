@@ -16,14 +16,24 @@ public class Portal extends StaticEntities implements Triggerable, WalkedOn {
         this.colour = colour;
     }
 
+    /**
+     * @return String
+     */
     public String getColour() {
         return this.colour;
     }
 
+    /**
+     * @param colour
+     */
     public void setColour(String colour) {
         this.colour = colour;
     }
 
+    /**
+     * @param dungeon
+     * @param walker
+     */
     @Override
     public void trigger(Dungeon dungeon, Entities walker) {
         // set character position to other portal's position
@@ -37,6 +47,10 @@ public class Portal extends StaticEntities implements Triggerable, WalkedOn {
         }
     }
 
+    /**
+     * @param dungeon
+     * @param walker
+     */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Portalable) {

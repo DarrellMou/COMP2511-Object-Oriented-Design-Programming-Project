@@ -1,7 +1,5 @@
 package dungeonmania.Buffs;
 
-import java.util.List;
-
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Enemy;
 import Entities.movingEntities.Portalable;
@@ -9,12 +7,10 @@ import dungeonmania.Dungeon;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Invincible implements Buffs {
-    public int endTick;
-    public int duration = 10;
-
+public class Invincible extends Buffs {
     public Invincible(int tick) {
-        endTick = tick + duration;
+        // duration is 10
+        super(tick + 10);
     }
 
     public void invinMovement(Dungeon dungeon, Enemy enemy) {
@@ -80,14 +76,6 @@ public class Invincible implements Buffs {
             }
         } else {
             enemy.setPosition(newPosition);
-        }
-    }
-
-    @Override
-    public void durationEnd(int tick, List<Buffs> removeBuffs) {
-        // check if buff duration has expired
-        if (tick == this.endTick) {
-            removeBuffs.add(this);
         }
     }
 }
