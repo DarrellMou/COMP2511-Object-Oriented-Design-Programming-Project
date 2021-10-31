@@ -228,7 +228,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
                     return true;
                 }
             }
-            throw new IllegalArgumentException("Player does not have required materials");
+            throw new InvalidActionException("Player does not have required materials");
         } else if (buildable.equals("shield")) {
             List<InventoryItem> wood = new ArrayList<>();
             List<InventoryItem> key = new ArrayList<>();
@@ -273,7 +273,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
                     }
                 }
             }
-            throw new IllegalArgumentException("Player does not have required materials");
+            throw new InvalidActionException("Player does not have required materials");
         } else {
             throw new IllegalArgumentException("Buildable is not bow or shield");
         }
