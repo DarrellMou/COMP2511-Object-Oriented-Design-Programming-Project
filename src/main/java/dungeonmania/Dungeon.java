@@ -47,7 +47,6 @@ public class Dungeon {
     private int spawnRate;
 
     private Random random;
-    private List<String> entitiesClicked = new ArrayList<String>();
 
     // Map<String, EntityResponse> entitiesResponse = new ArrayList<>();
     // Map<ItemResponse> inventory = new ArrayList<>();
@@ -323,7 +322,6 @@ public class Dungeon {
      */
     public DungeonResponse tick(String itemUsedId, Direction movementDirection)
             throws IllegalArgumentException, InvalidActionException {
-        entitiesClicked = new ArrayList<String>();
 
         incrementTicks(); // This increments the number of ticks in this dungeon
 
@@ -475,11 +473,6 @@ public class Dungeon {
      * @throws InvalidActionException
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        if (entitiesClicked.contains(entityId)) {
-            return newDungeonResponse();
-        } else {
-            entitiesClicked.add(entityId);
-        }
         Interactable i = null;
         // get entity if interactible
         for (Entities e : getEntities()) {

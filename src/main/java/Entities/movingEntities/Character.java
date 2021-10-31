@@ -433,7 +433,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
-        if (walker instanceof Enemy && getBuffs(Invincible.class) == null) {
+        if (walker instanceof Enemy) {
             Battle.battle(this, (Enemy) walker, dungeon);
         }
         return;
