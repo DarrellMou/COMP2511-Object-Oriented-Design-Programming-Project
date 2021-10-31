@@ -23,7 +23,7 @@ public final class Battle {
         if (battledEnemies.contains(enemy) && ally instanceof Character) {
             return;
         } else {
-            battledEnemies.add(enemy);
+            Battle.battledEnemies.add(enemy);
         }
         double allyDamage = ally.calculateDamage();
         double enemyDamage = enemy.calculateDamage();
@@ -34,5 +34,9 @@ public final class Battle {
             Character c = (Character) ally;
             c.setInBattleWith(enemy);
         }
+    }
+
+    public static void clearBattleEnemies() {
+        Battle.battledEnemies = new ArrayList<Fightable>();
     }
 }
