@@ -103,10 +103,16 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
      */
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
-        // if position has unwalkable entity
-        for (Entities e : dungeon.getEntities()) {
-            if (e.getPosition().equals(position) && !e.isWalkable()) {
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            if (!e.isWalkable() || (!e.equals(this) && isMovingEntityButNotCharacter(e))) {
+                // if position isn't walkable OR another moving entity (e.g. spider)
                 return false;
+            }
+        }
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            if (e instanceof WalkedOn) {
+                WalkedOn w = (WalkedOn) e;
+                w.walkedOn(dungeon, this);
             }
         }
         return true;
