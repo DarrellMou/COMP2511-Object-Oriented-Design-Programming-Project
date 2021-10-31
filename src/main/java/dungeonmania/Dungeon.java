@@ -249,7 +249,7 @@ public class Dungeon {
             }
 
             // Checks for whether itemUsed is in inventory
-            if (item.equals(null)) {
+            if (item == null) {
                 throw new InvalidActionException(String.format("Character does not have %s in inventory", itemUsedId));
             }
 

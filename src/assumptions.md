@@ -1,30 +1,20 @@
 Assumptions
 
-Character:
-
-- Only characters can go through portals
-
 Spider
-
 - There is no maximum number of possilbe allowable spiders, this is more than the minimum of 4
 - It is able to walk through anything but boulders and other moving entities (except character)
 - Assume that the spider spawns every 10 ticks
 - If a spider was to spawn on top of the boulder, it will just go in the reverse direction
-- The Spider will break out of its cycle if the player is using the invincivility potion, and will resume the cycle once the invincivility potion is used
+- The Spider will break out of its cycle if the player is using the invincivility potion, and will resume the cycle once the invincivility potion buff ends.
 - Spider cannot go through portals
 - If a spider were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
 - If a spider walks into a portal, the spider will rotate around the position of the other portal translated by it's movement direction.
-
-loadGame
-
-- The itemResponse doesnt store the type of the key and door so we wont be able to match the type of keys and doors for games that are loaded.
+- If a spider's initial movement up is blocked by a boulder/entity, it will go down, then anticlockwise.
 
 saveGame
-
 - The user will get access to all the saves, so they can have access to previous saves which wont be overriden.
 
 Zombie Toast Spawner
-
 - A user cannot walk on top of the zombie toast spawner because that is where the zombies are being spawned and the zombie is being spawned
 
 Zombie toast
@@ -37,7 +27,6 @@ Mercenary
 - Bribe radius is determined by adding the x and y displacement.
 
 Bribed mercenary
-
 - A bribed mercenary will 'follow' the character by trailing behind the player.
 - After bribing a mercenary, it will recover to full hp.
 - Bribed mercenary has a battle radius of 5.
@@ -45,20 +34,15 @@ Bribed mercenary
 - The mercenary will not take damage as it fights with the player, since it fights from a distance.
 
 Movement order
-
 - Character moves first, then merc, then zombie toast, then spider.
 - If character moves into boulder, then the boulder will move first.
 
-Iteration 2
-
-Battle
-
 Battle Order:
-
 The battle will use the first weapon in their inventory to attack.
 The player will wear the first armour and shield that they have in their inventory. They cant wear more than one of each armour
 
-Health, Damages
+Health, Damages:
+
 Rationale: - Character health high enough to survive enemy hits + low enough to notice gradual decrease in damage as fights occur - Character attack low enough to not immediately kill some enemies (merc at full hp and zombie toast as hp goes down)
 Character: Health: 120/100 (standard/hard mode), Attack Damage: 3
 Spider: Health: 30, Attack Damage: 1
@@ -74,7 +58,7 @@ Building
 - Crafting shield will use whatever is first in inventory (treasure/key)
 
 Portal
-- Walking into a portal will teleport the player to the position of the other portal translated by the initial movement direction (and interact with any entities that are there).
+- Walking into a portal will teleport the player to the position of the other portal translated by the initial movement direction (and interact with any entities that are there, except portal).
 - If the other portal translated by the initial movement direction is blocked, then the player will be teleported to the position of the other portal instead (if there is a boulder/locked door, then the player will try to move the boulder/unlock the door).
 - If the player's movement is blocked whilst on the same position as a portal, it will trigger the portal and the player will end up on the position of the other portal.
 

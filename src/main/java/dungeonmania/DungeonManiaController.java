@@ -50,6 +50,12 @@ public class DungeonManiaController {
         dungeon = new Dungeon(getDungeonId(), random);
     }
 
+    public DungeonManiaController(Random random) {
+        numCreatedDungeons = 0;
+        this.random = random; // Used in testing
+        dungeon = new Dungeon(getDungeonId(), random);
+    }
+
     /**
      * @return Random
      */
