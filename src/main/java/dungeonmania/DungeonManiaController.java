@@ -29,9 +29,10 @@ import Entities.movingEntities.Character;
 import Entities.staticEntities.Boulder;
 import Entities.staticEntities.Triggerable;
 import Items.InventoryItem;
+import data.Data;
+import data.DataEntities;
 import Entities.staticEntities.ZombieToastSpawner;
-import app.data.Data;
-import app.data.DataEntities;
+
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,6 +48,12 @@ public class DungeonManiaController {
     public DungeonManiaController() {
         numCreatedDungeons = 0;
         random = new Random(System.currentTimeMillis()); // Seed is the time
+        dungeon = new Dungeon(getDungeonId(), random);
+    }
+
+    public DungeonManiaController(Random random) {
+        numCreatedDungeons = 0;
+        this.random = random; // Used in testing
         dungeon = new Dungeon(getDungeonId(), random);
     }
 
