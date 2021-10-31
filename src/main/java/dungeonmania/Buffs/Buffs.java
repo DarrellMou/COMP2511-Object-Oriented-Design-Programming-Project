@@ -4,6 +4,17 @@ import java.util.List;
 
 import Entities.movingEntities.Character;
 
-public interface Buffs {
-    public void durationEnd(int ticksCounter, List<Buffs> removeBuffs);
+public abstract class Buffs {
+    public int endTick;
+
+    public Buffs(int endTick) {
+        this.endTick = endTick;
+    }
+
+    public void durationEnd(int tick, List<Buffs> removeBuffs) {
+        // check if buff duration has expired
+        if (tick == this.endTick) {
+            removeBuffs.add(this);
+        }
+    }
 }
