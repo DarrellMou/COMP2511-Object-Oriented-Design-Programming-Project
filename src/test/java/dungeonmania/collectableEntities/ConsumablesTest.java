@@ -74,7 +74,14 @@ public class ConsumablesTest {
         controller.tick(healthPotion.getId(), Direction.NONE);
 
         assertEquals(120, controller.getDungeon().getCharacter().getHealth());
-        assertEquals(0, controller.getDungeon().getCharacter().getInventory().size());
+
+        InventoryItem item = null;
+        for (InventoryItem current : controller.getDungeon().getCharacter().getInventory()) {
+            if (current.getType().equals("health_potion")) {
+                item = current;
+            }
+        }
+        assertEquals(null, item);
     }
 
     @Test

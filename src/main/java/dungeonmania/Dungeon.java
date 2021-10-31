@@ -297,11 +297,8 @@ public class Dungeon {
     }
 
     /**
-     * <<<<<<< HEAD Gets position and returns the entities matching the x and y
-     * coordinate (combines all layers)
-     * 
-     * ======= Gets position and returns the entities matching the x and y
-     * coordinate (combines all layers) >>>>>>> master
+     * Gets position and returns the entities matching the x and y coordinate
+     * (combines all layers)
      * 
      * @param position
      * @return Entities
@@ -537,7 +534,8 @@ public class Dungeon {
                     ZombieToastSpawner zombieToastSpawner = (ZombieToastSpawner) entity;
                     Entities zombieToast = zombieToastSpawner.spawnZombies(this);
                     // zombieToast = null if no cardianlly adjacent open square
-                    if (zombieToast != null) addEntities(zombieToast);
+                    if (zombieToast != null)
+                        addEntities(zombieToast);
                     break;
                 }
             }

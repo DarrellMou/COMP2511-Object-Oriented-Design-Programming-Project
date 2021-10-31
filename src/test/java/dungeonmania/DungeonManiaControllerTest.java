@@ -66,6 +66,11 @@ public class DungeonManiaControllerTest {
         assertThrows(IllegalArgumentException.class, () -> {
             controller.loadGame("dungeon2546");
         });
+        DungeonResponse dgRes = controller.loadGame(dg.getDungeonId());
+        assertEquals(dgRes.getDungeonId(), "dungeon0");
+        assertEquals(dgRes.getDungeonName(), dg.getDungeonName());
+        assertEquals(dgRes.getInventory(), new ArrayList<>());
+        assertEquals(dgRes.getBuildables(), new ArrayList<>());
 
     }
 
