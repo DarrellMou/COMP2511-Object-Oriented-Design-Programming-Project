@@ -194,7 +194,7 @@ public class DungeonManiaController {
         List<ItemResponse> inventoryResponses = new ArrayList<>();
         List<String> buildableResponses = new ArrayList<>();
 
-        newGameCreateMap(entitiesResponses, dungeonName);
+        newGameCreateMap(entitiesResponses, dungeonName, gameMode);
 
         return new DungeonResponse(getDungeonId(), dungeonName, entitiesResponses, inventoryResponses,
                 buildableResponses, dungeon.getGoals());
@@ -204,7 +204,7 @@ public class DungeonManiaController {
      * @param entitiesResponses
      * @param dungeonName
      */
-    public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName) {
+    public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName, String gameMode) {
         try {
             BufferedReader br = new BufferedReader(
                     new FileReader("src/main/resources/dungeons/" + dungeonName + ".json"));

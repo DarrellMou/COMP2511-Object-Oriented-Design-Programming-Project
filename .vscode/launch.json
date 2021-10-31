@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch ConsumablesTest",
+            "request": "launch",
+            "mainClass": "dungeonmania.collectableEntities.ConsumablesTest",
+            "projectName": "project"
+        },
+        {
+            "type": "java",
+            "name": "Launch CharacterTest",
+            "request": "launch",
+            "mainClass": "dungeonmania.movingEntities.CharacterTest",
+            "projectName": "project"
+        },
+        {
+            "type": "java",
             "name": "Launch CharacterTest",
             "request": "launch",
             "mainClass": "dungeonmania.CharacterTest",

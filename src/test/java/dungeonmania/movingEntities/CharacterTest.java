@@ -1,4 +1,4 @@
-package dungeonmania;
+package dungeonmania.movingEntities;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -212,7 +213,6 @@ public class CharacterTest {
     }
 
     @Test
-
     public void testHPAfterHardFight() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("advanced", "Hard");

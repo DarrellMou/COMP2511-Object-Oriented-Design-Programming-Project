@@ -31,7 +31,8 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     /**
      * inventory = [ {item1}, {item2}... ]
      */
-    private static final int MAX_HEALTH = 120;
+    private static int MAX_HEALTH;
+    public static Object getInventory;
     private static final int ATTACK_DAMAGE = 3;
     private ArrayList<InventoryItem> inventory;
     private Map<String, Integer> materials = new HashMap<>();
@@ -40,7 +41,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     private List<Buffs> buffs = new ArrayList<Buffs>();
 
     public Character(String id, Position position) {
-        super(id, "player", position, false, true, MAX_HEALTH, ATTACK_DAMAGE);
+        super(id, "player", position, false, true, Character.MAX_HEALTH, ATTACK_DAMAGE);
         setPrevPosition(getPosition());
         inventory = new ArrayList<InventoryItem>();
     }
@@ -48,21 +49,9 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     /**
      * @return Buffs
      */
-    public Buffs getInvisible() {
+    public Buffs getBuffs(Class<?> cls) {
         for (Buffs buff : getBuffs()) {
-            if (buff instanceof Invisible) {
-                return buff;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @return Buffs
-     */
-    public Buffs getInvincible() {
-        for (Buffs buff : getBuffs()) {
-            if (buff instanceof Invincible) {
+            if (buff.getClass() == cls) {
                 return buff;
             }
         }
@@ -106,6 +95,14 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             }
         }
         return null;
+    }
+
+    public static int getMAX_HEALTH() {
+        return MAX_HEALTH;
+    }
+
+    public static void setMAX_HEALTH(int MAX_HEALTH) {
+        Character.MAX_HEALTH = MAX_HEALTH;
     }
 
     /**
@@ -350,7 +347,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         double damage = getAttackDamage();
         // One shot enemy if invincible. Weapon durability is not lowered when
         // invincible.
-        if (getInvincible() != null) {
+        if (getBuffs(Invincible.class) != null) {
             return getHealth() * 1000;
         }
         for (InventoryItem item : getInventory()) {
@@ -372,7 +369,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     @Override
     public void takeDamage(Dungeon dungeon, double damage) {
         // No damage taken when invincible. Equipment durability not lowered.
-        if (getInvincible() != null) {
+        if (getBuffs(Invincible.class) != null) {
             return;
         }
         boolean armourChecked = false;
@@ -436,7 +433,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      */
     @Override
     public void walkedOn(Dungeon dungeon, Entities walker) {
-        if (walker instanceof Enemy && getInvisible() == null) {
+        if (walker instanceof Enemy && getBuffs(Invincible.class) == null) {
             Battle.battle(this, (Enemy) walker, dungeon);
         }
         return;

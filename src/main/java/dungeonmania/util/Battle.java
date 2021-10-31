@@ -11,6 +11,8 @@ import Entities.movingEntities.Fightable;
 import dungeonmania.Dungeon;
 
 public final class Battle {
+
+    private static boolean isPeaceful;
     private static List<Fightable> battledEnemies = new ArrayList<Fightable>();
 
     /**
@@ -27,7 +29,9 @@ public final class Battle {
         }
         double allyDamage = ally.calculateDamage();
         double enemyDamage = enemy.calculateDamage();
-        ally.takeDamage(dungeon, enemyDamage);
+        if (!isPeaceful) {
+            ally.takeDamage(dungeon, enemyDamage);
+        }
         enemy.takeDamage(dungeon, allyDamage);
         // Stores the enemy the character is currently fighting if they are not dead
         if (ally instanceof Character && !enemy.isKilled()) {
@@ -38,5 +42,13 @@ public final class Battle {
 
     public static void clearBattleEnemies() {
         Battle.battledEnemies = new ArrayList<Fightable>();
+    }
+
+    public static boolean isPeaceful() {
+        return isPeaceful;
+    }
+
+    public static void setPeaceful(boolean isPeaceful) {
+        Battle.isPeaceful = isPeaceful;
     }
 }
