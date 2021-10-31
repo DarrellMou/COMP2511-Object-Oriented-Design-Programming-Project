@@ -12,6 +12,8 @@ import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.movingEntities.Mercenary;
+import Entities.movingEntities.Spider;
+import Entities.movingEntities.ZombieToast;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.ConsumableItem.HealthPotionItem;
@@ -76,7 +78,7 @@ public class ConsumablesTest {
     }
 
     @Test
-    public void testInvisPotion() {
+    public void testInvisPotionMercenary() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("test-consumables", "Standard");
 
@@ -104,7 +106,63 @@ public class ConsumablesTest {
     }
 
     @Test
-    public void testInvinPotion() {
+    public void testInvisPotionZombie() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("test-consumables", "Standard");
+
+        // put potion in character inventory
+        InvisibilityPotionItem invisPotion = (InvisibilityPotionItem) ItemsFactory.createItem("invisibility_potion",
+                "invisibility_potion");
+        controller.getDungeon().getCharacter().addInventory(invisPotion);
+
+        // Add merc to right of player
+        Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(1, 2, 1));
+        Position prevPostion = m.getPosition();
+        controller.getDungeon().addEntities(m);
+
+        controller.tick(invisPotion.getId(), Direction.NONE);
+
+        // Verify merc does not move
+        assertEquals(prevPostion, m.getPosition());
+
+        double mercHealth = m.getHealth();
+        // move on to merc
+        controller.tick("", Direction.RIGHT);
+
+        // Verify battle does not occur
+        assertEquals(mercHealth, m.getHealth());
+    }
+
+    @Test
+    public void testInvisPotionSpider() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("test-consumables", "Standard");
+
+        // put potion in character inventory
+        InvisibilityPotionItem invisPotion = (InvisibilityPotionItem) ItemsFactory.createItem("invisibility_potion",
+                "invisibility_potion");
+        controller.getDungeon().getCharacter().addInventory(invisPotion);
+
+        // Add merc to right of player
+        Mercenary m = (Mercenary) EntitiesFactory.createEntities("mercenary", new Position(1, 2, 1));
+        Position prevPostion = m.getPosition();
+        controller.getDungeon().addEntities(m);
+
+        controller.tick(invisPotion.getId(), Direction.NONE);
+
+        // Verify merc does not move
+        assertEquals(prevPostion, m.getPosition());
+
+        double mercHealth = m.getHealth();
+        // move on to merc
+        controller.tick("", Direction.RIGHT);
+
+        // Verify battle does not occur
+        assertEquals(mercHealth, m.getHealth());
+    }
+
+    @Test
+    public void testInvinPotionMercenary() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("test-consumables", "Standard");
 
@@ -146,6 +204,81 @@ public class ConsumablesTest {
 
         // mercenary instantly dies
         assertEquals(0, m.getHealth());
+    }
+
+    @Test
+    public void testInvinPotionZombie() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("test-consumables", "Standard");
+
+        // put potion in character inventory
+        InvincibilityPotionItem invinPotion = (InvincibilityPotionItem) ItemsFactory.createItem("invincibility_potion",
+                "invincibility_potion");
+        controller.getDungeon().getCharacter().addInventory(invinPotion);
+
+        // Add zomb to right of player
+        ZombieToast z = (ZombieToast) EntitiesFactory.createEntities("zombie_toast", new Position(1, 2, 1));
+        controller.getDungeon().addEntities(z);
+
+        controller.tick(invinPotion.getId(), Direction.NONE);
+
+        // Verify zomb up (only direction it can move to away from char)
+        assertEquals(new Position(1, 1, 1), z.getPosition());
+
+        controller.tick("", Direction.RIGHT);
+
+        // Verify zomb right (only direction it can move to away from char)
+        assertEquals(new Position(2, 1, 1), z.getPosition());
+
+        controller.tick("", Direction.UP);
+
+        // Verify zomb right direction away from char
+        assertEquals(new Position(3, 1, 1), z.getPosition());
+
+        controller.tick("", Direction.RIGHT);
+
+        // Verify zomb down away from char
+        assertEquals(new Position(3, 2, 1), z.getPosition());
+
+        controller.tick("", Direction.RIGHT);
+
+        // Verify zomb doesn't move because no moves away from char
+        assertEquals(new Position(3, 2, 1), z.getPosition());
+
+        controller.tick("", Direction.DOWN);
+
+        // zomb instantly dies
+        assertEquals(0, z.getHealth());
+    }
+
+    @Test
+    public void testInvinPotionSpider() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("test-consumables", "Standard");
+
+        // put potion in character inventory
+        InvincibilityPotionItem invinPotion = (InvincibilityPotionItem) ItemsFactory.createItem("invincibility_potion",
+                "invincibility_potion");
+        controller.getDungeon().getCharacter().addInventory(invinPotion);
+
+        // Add merc to right of player
+        Spider s = (Spider) EntitiesFactory.createEntities("spider", new Position(1, 2, 1));
+        controller.getDungeon().addEntities(s);
+
+        controller.tick(invinPotion.getId(), Direction.NONE);
+
+        // Verify merc up (only direction it can move to away from char)
+        assertEquals(new Position(2, 2, 1), s.getPosition());
+
+        controller.tick("", Direction.RIGHT);
+
+        // Verify merc right (only direction it can move to away from char)
+        assertEquals(new Position(3, 2, 1), s.getPosition());
+
+        controller.tick("", Direction.RIGHT);
+
+        // Verify merc right direction away from char
+        assertEquals(new Position(4, 2, 1), s.getPosition());
     }
 
     @Test

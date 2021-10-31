@@ -105,15 +105,9 @@ public class Spider extends SpawningEntities implements Portalable {
     @Override
     public void makeMovement(Dungeon dungeon) {
         Invincible invin = null;
-        for (Buffs b : dungeon.getCharacter().getBuffs()) {
-            if (b instanceof Invisible) {
-                // invis priority over invin
-                invin = null;
-                break;
-            }
-            if (b instanceof Invincible) {
-                invin = (Invincible) b;
-            }
+        // invisible has higher priority
+        if (dungeon.getCharacter().getBuffs(Invisible.class) == null) {
+            invin = (Invincible) dungeon.getCharacter().getBuffs(Invincible.class);
         }
         if (invin != null) {
             invin.invinMovement(dungeon, this);
