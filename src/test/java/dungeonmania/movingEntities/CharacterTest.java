@@ -160,7 +160,7 @@ public class CharacterTest {
         Entities a1 = EntitiesFactory.createEntities("arrow", new Position(3, 1));
         Entities a2 = EntitiesFactory.createEntities("arrow", new Position(4, 1));
         Entities a3 = EntitiesFactory.createEntities("arrow", new Position(5, 1));
-        // Add keys to right of player
+        // Add mats to right of player
         controller.getDungeon().getEntities().add(w);
         controller.getDungeon().getEntities().add(a1);
         controller.getDungeon().getEntities().add(a2);

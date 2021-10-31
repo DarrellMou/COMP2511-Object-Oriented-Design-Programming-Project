@@ -116,7 +116,6 @@ public class EntitiesFactory {
     public static Entities createEntities(String type, Position position) {
         Entities newEntity = null;
 
-        // TODO Can someone finissh the rest of this lol
         if (type.equals("wall")) {
             newEntity = new Wall(getNextId(), position);
         } else if (type.equals("bomb")) {
