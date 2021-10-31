@@ -94,22 +94,22 @@ public class BribedMercenaryTest {
         assertEquals(new Position(5, 1), m2.getPosition());
     }
 
-    // @Test
-    // public void bribeRangeTest() { 
-    //     DungeonManiaController controller = new DungeonManiaController();
-    //     controller.newGame("mercenary_bribe", "Standard");
+    @Test
+    public void bribeRangeTest() { 
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("mercenary_bribe", "Standard");
 
-    //     BribedMercenary m1 = new BribedMercenary("Bribed_Mercenary", new Position(0, 3));
-    //     controller.getDungeon().addEntities(m1);
+        BribedMercenary m1 = new BribedMercenary("Bribed_Mercenary", new Position(0, 3));
+        controller.getDungeon().addEntities(m1);
 
-    //     BribedMercenary m2 = new BribedMercenary("Bribed_Mercenary", new Position(10, 10));
-    //     controller.getDungeon().addEntities(m2);
+        BribedMercenary m2 = new BribedMercenary("Bribed_Mercenary", new Position(10, 10));
+        controller.getDungeon().addEntities(m2);
 
-    //     Entities m3 = EntitiesFactory.createEntities("mercenary", new Position(-1, 0));
-    //     controller.getDungeon().addEntities(m3);
+        Entities m3 = EntitiesFactory.createEntities("mercenary", new Position(-1, 0));
+        controller.getDungeon().addEntities(m3);
 
-    //     controller.tick("", Direction.LEFT);
-    //     assertEquals(new Position(0, 1), m1.getPosition());
-    //     assertEquals(new Position(9, 10), m2.getPosition());
-    // }
+        controller.tick("", Direction.LEFT);
+        assertEquals(new Position(0, 1), m1.getPosition());
+        assertEquals(new Position(9, 10), m2.getPosition());
+    }
 }

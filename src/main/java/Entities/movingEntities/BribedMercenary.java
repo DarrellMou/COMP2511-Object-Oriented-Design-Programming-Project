@@ -45,6 +45,9 @@ public class BribedMercenary extends Mobs implements Portalable {
 
         // if character is in battle and within battle range
         if (character.getInBattleWith() != null && disFromChar <= BATTLE_RADIUS) {
+            positionFromChar = Position.calculatePositionBetween(character.getPrevPosition(), this.getPosition());
+            nextPositionX = getPosition().translateBy(getDirection(positionFromChar.getX(), "x"));
+            nextPositionY = getPosition().translateBy(getDirection(positionFromChar.getY(), "y"));
             // Move again
             if (Math.abs(positionFromChar.getX()) >= Math.abs(positionFromChar.getY())) {
                 if (checkMovable(nextPositionX, dungeon)) {
