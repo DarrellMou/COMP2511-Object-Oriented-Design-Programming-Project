@@ -20,4 +20,17 @@ public class GoalsTest {
 
         assertEquals("", controller.getDungeon().getGoals());
     }
+
+    @Test
+    public void testExitWin() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("boulders-goals-test", "Standard");
+
+        controller.tick("", Direction.DOWN);
+        controller.tick("", Direction.DOWN);
+        controller.tick("", Direction.DOWN);
+        controller.tick("", Direction.DOWN);
+
+        assertEquals("", controller.getDungeon().getGoals());
+    }
 }
