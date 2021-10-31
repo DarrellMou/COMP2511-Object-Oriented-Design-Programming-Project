@@ -35,7 +35,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     public static Object getInventory;
     private static final int ATTACK_DAMAGE = 3;
     private ArrayList<InventoryItem> inventory;
-    private Map<String, Integer> materials = new HashMap<>();
     private Fightable inBattleWith = null;
     private Position prevPosition;
     private List<Buffs> buffs = new ArrayList<Buffs>();
@@ -164,29 +163,36 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     public void checkForBuildables(InventoryItem collectable, Dungeon dungeon) {
         dungeon.setBuildables(new ArrayList<String>());
 
-        if (collectable != null) {
-            if (materials.containsKey(collectable.getType())) {
-                int value = materials.get(collectable.getType());
-                materials.put(collectable.getType(), ++value);
-            } else if (collectable instanceof Materials) {
-                materials.put(collectable.getType(), 1);
+        int wood = 0;
+        int arrow = 0;
+        int key = 0;
+        int treasure = 0;
+
+        for (InventoryItem item : inventory) {
+            if (item.getType().equals("wood")) {
+                wood++;
+            } else if (item.getType().equals("arrow")) {
+                arrow++;
+            } else if (item.getType().substring(0, 3).equals("key")) {
+                key++;
+            } else if (item.getType().equals("treasure")) {
+                treasure++;
             }
         }
 
         // Temporary, refactor later
         // List<Map<String, Integer>> bowRecipes = BowItem.getRecipes();
         // bow
-        if ((materials.containsKey("wood") && materials.get("wood") >= 1)
-                && (materials.containsKey("arrow") && materials.get("arrow") >= 3)) {
+        if (wood >= 1 && arrow >= 3) {
             dungeon.addBuildables("bow");
         }
 
         // shield
-        if ((materials.containsKey("wood") && materials.get("wood") >= 2)) {
-            if (materials.containsKey("treasure") && materials.get("treasure") >= 1) {
+        if (wood >= 1) {
+            if (treasure >= 1) {
                 dungeon.addBuildables("shield");
 
-            } else if (materials.containsKey("key") && materials.get("key") >= 1) {
+            } else if (key >= 1) {
                 dungeon.addBuildables("shield");
             }
         }
@@ -214,12 +220,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
                     inventory.removeAll(wood);
                     inventory.removeAll(arrow);
 
-                    int woodAmount = materials.get("wood");
-                    materials.put("wood", --woodAmount);
-                    int arrowAmount = materials.get("arrow");
-                    arrowAmount -= 3;
-                    materials.put("arrow", arrowAmount);
-
                     InventoryItem bow = ItemsFactory.createItem("bow");
                     inventory.add(bow);
                     return true;
@@ -233,7 +233,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             for (InventoryItem item : inventory) {
                 if (wood.size() < 2 && item.getType().equals("wood"))
                     wood.add(item);
-                else if (key.size() < 1 && item.getType().equals("key"))
+                else if (key.size() < 1 && item.getType().substring(0, 3).equals("key"))
                     key.add(item);
                 else if (treasure.size() < 1 && item.getType().equals("treasure"))
                     treasure.add(item);
@@ -244,12 +244,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
                         inventory.removeAll(wood);
                         inventory.removeAll(key);
 
-                        int woodAmount = materials.get("wood");
-                        woodAmount -= 2;
-                        materials.put("wood", woodAmount);
-                        int keyAmount = materials.get("key");
-                        materials.put("key", --keyAmount);
-
                         InventoryItem shield = ItemsFactory.createItem("shield");
                         inventory.add(shield);
                         return true;
@@ -257,12 +251,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
                         // build bow
                         inventory.removeAll(wood);
                         inventory.removeAll(treasure);
-
-                        int woodAmount = materials.get("wood");
-                        woodAmount -= 2;
-                        materials.put("wood", woodAmount);
-                        int treasureAmount = materials.get("treasure");
-                        materials.put("treasure", --treasureAmount);
 
                         InventoryItem shield = ItemsFactory.createItem("shield");
                         inventory.add(shield);
