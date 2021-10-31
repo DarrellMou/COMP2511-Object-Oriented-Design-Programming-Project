@@ -54,9 +54,7 @@ public abstract class Enemy extends Mobs implements WalkedOn {
      */
     @Override
     public void takeDamage(Dungeon dungeon, double damage) {
-        System.out.println(getHealth());
         setHealth(getHealth() - (damage / 5));
-        System.out.println(getHealth());
         if (isKilled()) {
             dropItems(dungeon);
             dungeon.getEntities().remove(this);

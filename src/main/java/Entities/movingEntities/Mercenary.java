@@ -1,7 +1,9 @@
 package Entities.movingEntities;
 
 import Entities.Interactable;
+import Entities.collectableEntities.materials.Treasure;
 import Items.InventoryItem;
+import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
@@ -27,16 +29,11 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
         Character character = dungeon.getCharacter();
         Position characterPos = character.getPosition();
         Invincible invin = null;
-        for (Buffs b : dungeon.getCharacter().getBuffs()) {
-            if (b instanceof Invisible) {
-                // invis priority over invin
-                characterPos = getPosition();
-                invin = null;
-                break;
-            }
-            if (b instanceof Invincible) {
-                invin = (Invincible) b;
-            }
+        // invisible has higher priority
+        if (dungeon.getCharacter().getBuffs(Invisible.class) == null) {
+            invin = (Invincible) dungeon.getCharacter().getBuffs(Invincible.class);
+        } else {
+            characterPos = getPosition();
         }
         if (invin != null) {
             invin.invinMovement(dungeon, this);
@@ -108,7 +105,7 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
     public void interact(Dungeon dungeon) throws InvalidActionException {
         Character c = dungeon.getCharacter();
 
-        InventoryItem i = c.getTreasure();
+        InventoryItem i = c.getInventoryItem(TreasureItem.class);
         if (i == null) {
             throw new InvalidActionException("Character does not have a treasure!!");
         }
