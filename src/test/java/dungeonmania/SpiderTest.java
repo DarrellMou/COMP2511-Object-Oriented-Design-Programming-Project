@@ -104,5 +104,5 @@ public class SpiderTest {
         // tries to move right, but theres a boulder, reverses to left
         assertEquals(new Position(1, 0), s.getPosition());
     }
-    
+
 }
