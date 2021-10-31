@@ -170,7 +170,7 @@ public class PortalTest {
         controller.tick("", Direction.NONE);
         assertEquals(new Position(4, 0, 2), s.getPosition());
         // goes up, but boulder blocks, so go down (reverse), but boulder blocks, so go back into portal
-        // controller.tick("", Direction.NONE); 
-        // assertEquals(new Position(1, 0, 2), s.getPosition());
+        controller.tick("", Direction.NONE); 
+        assertEquals(new Position(1, 0, 2), s.getPosition());
     }
 }

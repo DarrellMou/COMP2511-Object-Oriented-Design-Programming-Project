@@ -27,8 +27,8 @@ public final class Battle {
         }
         double allyDamage = ally.calculateDamage();
         double enemyDamage = enemy.calculateDamage();
-        enemy.takeDamage(dungeon, allyDamage);
         ally.takeDamage(dungeon, enemyDamage);
+        enemy.takeDamage(dungeon, allyDamage);
         // Stores the enemy the character is currently fighting if they are not dead
         if (ally instanceof Character && !enemy.isKilled()) {
             Character c = (Character) ally;

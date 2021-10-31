@@ -524,10 +524,10 @@ public class Dungeon {
             for (Entities entity : getEntities()) {
                 if (entity instanceof ZombieToastSpawner) {
                     ZombieToastSpawner zombieToastSpawner = (ZombieToastSpawner) entity;
-                    Entities zombieToast = zombieToastSpawner.spawnZombies();
-                    addEntities(zombieToast);
+                    Entities zombieToast = zombieToastSpawner.spawnZombies(this);
+                    // zombieToast = null if no cardianlly adjacent open square
+                    if (zombieToast != null) addEntities(zombieToast);
                     break;
-
                 }
             }
         }

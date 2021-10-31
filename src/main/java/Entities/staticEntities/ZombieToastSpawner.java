@@ -23,9 +23,15 @@ public class ZombieToastSpawner extends StaticEntities implements Interactable {
      * 
      * @return Entities
      */
-    public Entities spawnZombies() {
-
-        return EntitiesFactory.createEntities("zombie_toast", getPosition().asLayer(2));
+    public Entities spawnZombies(Dungeon dungeon) {
+        for (Position adj : getPosition().getAdjacentPositions()) {
+            if (Position.isAdjacent(adj, getPosition()) && dungeon.getEntitiesOnTile(adj).isEmpty()) {
+                // Cardinally adjacent + open (no entities on it)
+                return EntitiesFactory.createEntities("zombie_toast", adj);
+            }
+        }
+        // If no cardinally adjacent open square
+        return null;
     }
 
     /**
