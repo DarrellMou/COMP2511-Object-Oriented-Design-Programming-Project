@@ -27,6 +27,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
+import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -435,6 +436,7 @@ public class Dungeon {
 
         if (getCharacter() == null)
             return newDungeonResponse();
+
         // List<Entities> newPositionEntities = dungeon.getEntitiesOnTile(newPosition);
         // for (Entities newPositionEntity : newPositionEntities) {
         // // Boulder movement
@@ -464,6 +466,9 @@ public class Dungeon {
         if (hasCompletedGoals()) {
             gameCompleted();
         }
+
+        // clear list that stores who character have fought in the current tick
+        Battle.clearBattleEnemies();
 
         // Temporary, store responses and change necessary responses only
         return newDungeonResponse();

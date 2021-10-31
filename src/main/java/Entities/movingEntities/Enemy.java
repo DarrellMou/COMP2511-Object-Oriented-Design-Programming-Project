@@ -32,11 +32,8 @@ public abstract class Enemy extends Mobs implements WalkedOn {
      */
     @Override
     public boolean checkMovable(Position position, Dungeon dungeon) {
-        if (position.equals(getPosition())) {
-            return false;
-        }
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            if (!e.isWalkable() || isMovingEntityButNotCharacter(e)) {
+            if (!e.isWalkable() || (!e.equals(this) && isMovingEntityButNotCharacter(e))) {
                 // if position isn't walkable OR another moving entity (e.g. spider)
                 return false;
             }
