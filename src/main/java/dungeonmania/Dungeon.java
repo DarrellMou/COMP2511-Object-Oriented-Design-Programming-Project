@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -291,8 +292,11 @@ public class Dungeon {
      */
     public List<Entities> getEntitiesOnTile(Position position) {
         List<Entities> entitiesList = new ArrayList<>();
-        entitiesList = getEntities().stream().filter(e -> e.getPosition().getX() == position.getX())
+
+        entitiesList = getEntities().stream().filter(e -> Objects.nonNull(e))
+                .filter(e -> e.getPosition().getX() == position.getX())
                 .filter(e -> e.getPosition().getY() == position.getY()).collect(Collectors.toList());
+
         return entitiesList;
     }
 
@@ -484,8 +488,11 @@ public class Dungeon {
         List<String> buildablesResponses = new ArrayList<>();
 
         for (Entities entity : getEntities()) {
-            entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
-                    entity.isInteractable()));
+            if (entity != null) {
+                entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                        entity.isInteractable()));
+            }
+
         }
 
         if (getCharacter() != null) {
@@ -508,6 +515,10 @@ public class Dungeon {
      * @param width
      */
     public void spawnEnemies(String gameMode, int height, int width) {
+        if (getTicksCounter() == 0 || spawnRate == 0) {
+            return;
+        }
+
         if (getTicksCounter() % 25 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
                     new Position(random.nextInt(width), random.nextInt(height), 2));
@@ -526,12 +537,8 @@ public class Dungeon {
                 }
             }
         }
-
     }
 
-    /**
-     * @return Boolean
-     */
     public Boolean hasCompletedGoals() {
 
         List<String> inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType())
@@ -587,13 +594,13 @@ public class Dungeon {
             }
             return false;
         case "enemies":
-            List<Entities> zombies = getEntities().stream().filter((entity) -> entity.getType().equals("zombie_toast"))
-                    .collect(Collectors.toList());
-            List<Entities> mercenary = getEntities().stream().filter((entity) -> entity.getType().equals("mercenary"))
-                    .collect(Collectors.toList());
-            List<Entities> spiders = getEntities().stream().filter((entity) -> entity.getType().equals("spider"))
-                    .collect(Collectors.toList());
-            List<Entities> zombiespawners = getEntities().stream()
+            List<Entities> zombies = getEntities().stream().filter(e -> Objects.nonNull(e))
+                    .filter((entity) -> entity.getType().equals("zombie_toast")).collect(Collectors.toList());
+            List<Entities> mercenary = getEntities().stream().filter(e -> Objects.nonNull(e))
+                    .filter((entity) -> entity.getType().equals("mercenary")).collect(Collectors.toList());
+            List<Entities> spiders = getEntities().stream().filter(e -> Objects.nonNull(e))
+                    .filter((entity) -> entity.getType().equals("spider")).collect(Collectors.toList());
+            List<Entities> zombiespawners = getEntities().stream().filter(e -> Objects.nonNull(e))
                     .filter((entity) -> entity.getType().equals("zombie_toast_spawner")).collect(Collectors.toList());
 
             if (zombies.isEmpty() && mercenary.isEmpty() && spiders.isEmpty() && zombiespawners.isEmpty()) {
@@ -605,7 +612,7 @@ public class Dungeon {
             for (Entities entity : getEntities()) {
                 if (entity instanceof FloorSwitch) {
                     List<Entities> entityAtPosition = getEntitiesOnTile(entity.getPosition());
-                    List<Entities> bouldersOnSwitch = entityAtPosition.stream()
+                    List<Entities> bouldersOnSwitch = entityAtPosition.stream().filter(e -> Objects.nonNull(e))
                             .filter((entityOnTile) -> entityOnTile.getType().equals("boulder"))
                             .collect(Collectors.toList());
                     if (bouldersOnSwitch.isEmpty()) {
