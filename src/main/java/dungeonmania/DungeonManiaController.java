@@ -174,6 +174,7 @@ public class DungeonManiaController {
 
         dungeon.setDungeonName(dungeonName);
         dungeon.setGameMode(gameMode);
+        dungeon.setTicksCounter(0);
         dungeon.setEntities(new ArrayList<Entities>()); // Clear out anything from the previous game
         dungeon.setBuildables(new ArrayList<String>());
 

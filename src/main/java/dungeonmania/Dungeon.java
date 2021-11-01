@@ -227,6 +227,10 @@ public class Dungeon {
         return this.ticksCounter;
     }
 
+    public void setTicksCounter(int ticksCounter) {
+        this.ticksCounter = ticksCounter;
+    }
+
     /** 
      * 
      */
