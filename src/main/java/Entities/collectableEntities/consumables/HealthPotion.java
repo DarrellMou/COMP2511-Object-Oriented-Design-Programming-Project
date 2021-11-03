@@ -5,7 +5,7 @@ import dungeonmania.util.Position;
 
 public class HealthPotion extends CollectableEntity {
 
-    public HealthPotion(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+    public HealthPotion(String id, Position position) {
+        super(id, "health_potion", position, false);
     }
 }
