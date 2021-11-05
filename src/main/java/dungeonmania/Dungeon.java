@@ -20,6 +20,7 @@ import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.ZombieToastSpawner;
 import Items.InventoryItem;
+import Items.TheOneRingItem;
 import Items.ConsumableItem.Consumables;
 import data.Data;
 import data.DataSubgoal;
@@ -331,7 +332,7 @@ public class Dungeon {
             }
 
             // Checks for valid itemUsedId
-            if (!(item instanceof Consumables || itemUsedId == null)) {
+            if (!(item instanceof Consumables || item instanceof TheOneRingItem || itemUsedId == null)) {
                 throw new IllegalArgumentException("itemUsedId provided does not correspond to a bomb or potion");
             }
 

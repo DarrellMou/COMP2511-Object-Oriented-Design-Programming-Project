@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -239,13 +240,19 @@ public class DungeonManiaController {
         List<String> buildablesResponses = new ArrayList<>();
 
         for (Entities entity : dungeon.getEntities()) {
-            entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
-                    entity.isInteractable()));
+            if (entity != null) {
+                entitiesResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(),
+                        entity.isInteractable()));
+
+            }
 
         }
 
         for (InventoryItem inventoryItem : getCharacter().getInventory()) {
-            inventoryResponses.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
+            if (inventoryItem != null) {
+                inventoryResponses.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
+
+            }
 
         }
 
