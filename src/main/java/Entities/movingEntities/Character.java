@@ -176,7 +176,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         }
 
         // shield
-        if (wood >= 1) {
+        if (wood >= 2) {
             if (treasure >= 1) {
                 dungeon.addBuildables("shield");
 

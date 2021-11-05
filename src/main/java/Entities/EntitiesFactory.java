@@ -5,6 +5,7 @@ import java.util.UUID;
 import Entities.buildableEntities.Bow;
 import Entities.buildableEntities.Shield;
 import Entities.collectableEntities.consumables.Bomb;
+import Entities.collectableEntities.consumables.HealthPotion;
 import Entities.collectableEntities.consumables.InvincibilityPotion;
 import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.collectableEntities.consumables.Key;
@@ -132,6 +133,8 @@ public class EntitiesFactory {
             newEntity = new InvincibilityPotion(getNextId(), position);
         } else if (type.equals("invisibility_potion")) {
             newEntity = new InvisibilityPotion(getNextId(), position);
+        } else if (type.equals("health_potion")) {
+            newEntity = new HealthPotion(getNextId(), position);
         } else if (type.equals("switch")) {
             newEntity = new FloorSwitch(getNextId(), position);
         } else if (type.equals("boulder")) {
@@ -157,7 +160,6 @@ public class EntitiesFactory {
         } else if (type.equals("door_open")) {
             newEntity = new DoorOpen(getNextId(), position);
         }
-
         return newEntity;
     }
 
