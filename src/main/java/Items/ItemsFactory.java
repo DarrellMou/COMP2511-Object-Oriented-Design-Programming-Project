@@ -8,6 +8,7 @@ import Items.ConsumableItem.InvincibilityPotionItem;
 import Items.ConsumableItem.InvisibilityPotionItem;
 import Items.Equipments.Armours.ArmourItem;
 import Items.Equipments.Shields.ShieldItem;
+import Items.Equipments.Weapons.Anduril;
 import Items.Equipments.Weapons.BowItem;
 import Items.Equipments.Weapons.SwordItem;
 import Items.materialItem.ArrowItem;
@@ -46,6 +47,8 @@ public class ItemsFactory {
             newItem = new TheOneRingItem(ItemsFactory.id());
         } else if (type.equals("armour")) {
             newItem = new ArmourItem(ItemsFactory.id());
+        } else if (type.equals("anduril")) {
+            newItem = new Anduril(ItemsFactory.id());
         }
 
         return newItem;

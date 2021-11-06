@@ -12,7 +12,7 @@ public class BribedMercenary extends Mobs implements Portalable {
     private static final int MAX_HEALTH = 80;
 
     public BribedMercenary(String id, Position position) {
-        super("id", "mercenary", position, false, true, MAX_HEALTH, ATTACK_DAMAGE);
+        super(id, "mercenary", position, false, true, MAX_HEALTH, ATTACK_DAMAGE);
     }
 
     /**

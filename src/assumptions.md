@@ -1,5 +1,7 @@
 Assumptions
 
+Milestone 1 + 2:
+
 Spider
 - There is no maximum number of possilbe allowable spiders, this is more than the minimum of 4
 - It is able to walk through anything but boulders and other moving entities (except character)
@@ -79,3 +81,14 @@ Invincibility Potion
 - Have a 10 tick duration.
 - Does not consume durability in battle
 - One shots enemies when active and character does not take damage
+
+Milestone 3:
+
+Hydra
+- Health = 200, Attack Damage = 2
+- Spawns at random location (like spider)
+- Movement is random (up, right, down, left, none) like zombie toast
+
+Anduril
+- Does 1.5x character damage (like normal sword) to non-boss enemies
+- Durability = 4

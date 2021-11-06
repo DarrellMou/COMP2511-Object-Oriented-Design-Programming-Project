@@ -8,6 +8,7 @@ import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class ZombieToast extends SpawningEntities {
@@ -32,11 +33,10 @@ public class ZombieToast extends SpawningEntities {
             invin.invinMovement(dungeon, this);
             return;
         }
-        List<Position> positions = getZombieMovablePositions(getPosition());
-        // 9 possible different directions that the zombie might be able to go
-        Random random = dungeon.getRandom();
-        // Get a random position
-        Position newPosition = positions.get(random.nextInt(4));
+        // Get a random direction and translate current position by it
+        Direction randomDirection = Direction.values()[dungeon.getRandom().nextInt(Direction.values().length)];
+        Position newPosition = getPosition().translateBy(randomDirection);
+        
         // if the position is movable, move otherwise, don't :]
         if (checkMovable(newPosition, dungeon)) {
             setPosition(newPosition);
@@ -44,6 +44,7 @@ public class ZombieToast extends SpawningEntities {
     }
 
     /**
+     * Up, Right, Down, Left
      * @param position
      * @return List<Position>
      */
