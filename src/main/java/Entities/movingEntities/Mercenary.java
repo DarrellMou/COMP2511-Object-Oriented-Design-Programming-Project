@@ -89,10 +89,11 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
     /**
      * @param dungeon
      */
-    public void bribeMercenary(Dungeon dungeon) {
+    public void bribeMercenary(Character c, InventoryItem i, Dungeon dungeon) {
         // remove mercenary from list
         dungeon.removeEntities(this);
         // add bribed mercenary from list
+        c.removeInventory(i);
         BribedMercenary newBribedMercenary = new BribedMercenary(getId(), getPosition());
         dungeon.addEntities(newBribedMercenary);
     }
@@ -115,7 +116,7 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
         if (d > BRIBE_RADIUS) {
             throw new InvalidActionException("Mercenary is not in range!!");
         }
-        bribeMercenary(dungeon);
+        bribeMercenary(c, i, dungeon);
     }
 
 }
