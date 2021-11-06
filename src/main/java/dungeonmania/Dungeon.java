@@ -334,7 +334,7 @@ public class Dungeon {
             }
 
             // Checks for valid itemUsedId
-            if (!(item instanceof Consumables || item instanceof TheOneRingItem || itemUsedId == null)) {
+            if (!(item instanceof Consumables || itemUsedId == null)) {
                 throw new IllegalArgumentException("itemUsedId provided does not correspond to a bomb or potion");
             }
 
