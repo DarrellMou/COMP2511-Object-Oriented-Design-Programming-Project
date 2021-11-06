@@ -115,7 +115,7 @@ public class BribedMercenaryTest {
     }
 
     @Test
-    public void sceptreAlly() {
+    public void sceptreAllyTest() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("mercenary_bribe", "Standard");
 
