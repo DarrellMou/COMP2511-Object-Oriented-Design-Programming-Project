@@ -5,19 +5,17 @@ import org.junit.jupiter.api.Test;
 
 import Entities.Entities;
 import Entities.EntitiesFactory;
-import Items.InventoryItem;
-import Entities.collectableEntities.equipments.Sword;
+import Items.ItemsFactory;
+import Items.ConsumableItem.HealthPotionItem;
+import Items.ConsumableItem.InvincibilityPotionItem;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
 
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -211,21 +209,73 @@ public class MercenaryTest {
         });
     }
 
-    // @Test
-    // public void testMercenaryBattleRadiusSpeed() {
-    //     // TODO
-    //     DungeonManiaController controller = new DungeonManiaController();
-    //     controller.newGame("advanced", "Standard");
+    // test mercenary does not spawn when there are no enemies
+    @Test
+    public void testMercenarySpawnNoEnemies() {
+        // test-mercenary-spawn has width and height set to 1 so that spawned enemies
+        // spawns on top of player
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("test-mercenary-spawn", "Standard");
 
-    //     // outside of range, the c
+        Position startPos = controller.getDungeon().getCharacter().getPosition();
 
-    // }
+        // player uses invincibility potion every tick so that all mobs are instantly
+        // killed on the next tick (spawnable enemies spawn after all movement/battle)
+        for (int i = 0; i < 100; i++) {
+            // put potion in character inventory
+            InvincibilityPotionItem invinPotion = (InvincibilityPotionItem) ItemsFactory
+                    .createItem("invincibility_potion", "invincibility_potion");
+            controller.getDungeon().getCharacter().addInventory(invinPotion);
+            controller.tick(invinPotion.getId(), Direction.RIGHT);
+            // verify that mercenary does not spawn
+            for (Entities current : controller.getDungeon().getEntitiesOnTile(startPos)) {
+                assertEquals(false, current instanceof Mercenary);
+            }
+        }
+    }
 
-    // @Test
-    // public void testMercenaryAllyFight() {
-    //     // TODO
-    //     DungeonManiaController controller = new DungeonManiaController();
-    //     controller.newGame("advanced", "Standard");
+    // test mercenary spawning
+    @Test
+    public void testMercenarySpawnWithEnemies() {
+        // Test-mercenary-spawn has width and height set to 1 so that spawned enemies
+        // spawns on top of player.
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("test-mercenary-spawn", "Standard");
 
-    // }
+        Position startPos = controller.getDungeon().getCharacter().getPosition();
+
+        // Change character position so it does not battle spawned mercenaries.
+        controller.getDungeon().getCharacter().setPosition(new Position(5, 5));
+
+        // Zombie toast stuck so that an enemy always exists.
+        Entities z = EntitiesFactory.createEntities("zombie_toast", startPos);
+        controller.getDungeon().addEntities(z);
+
+        // Player uses health potion to ensure it doesn't die to random spawnable
+        // enemies. Mercenary shouldn't spawn until after 30 ticks
+        for (int i = 0; i < 29; i++) {
+            // Put potion in character inventory.
+            HealthPotionItem healthPotion = (HealthPotionItem) ItemsFactory.createItem("health_potion",
+                    "health_potion");
+            controller.getDungeon().getCharacter().addInventory(healthPotion);
+            controller.tick(healthPotion.getId(), Direction.RIGHT);
+            // verify that mercenary does not spawn
+            for (Entities current : controller.getDungeon().getEntitiesOnTile(startPos)) {
+                // mercenary should not spawn yet
+                assertEquals(false, current instanceof Mercenary);
+            }
+        }
+        // after 30 ticks the mercenary should spawn
+
+        // Put potion in character inventory.
+        HealthPotionItem healthPotion = (HealthPotionItem) ItemsFactory.createItem("health_potion", "health_potion");
+        controller.getDungeon().getCharacter().addInventory(healthPotion);
+        controller.tick(healthPotion.getId(), Direction.RIGHT);
+        int countMerc = 0;
+        for (Entities current : controller.getDungeon().getEntitiesOnTile(startPos)) {
+            if (current instanceof Mercenary)
+                countMerc++;
+        }
+        assertEquals(1, countMerc);
+    }
 }

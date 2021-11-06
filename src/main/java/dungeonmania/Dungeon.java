@@ -13,6 +13,7 @@ import Entities.EntitiesFactory;
 import Entities.Interactable;
 import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Character;
+import Entities.movingEntities.Enemy;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;
 import Entities.movingEntities.ZombieToast;
@@ -47,6 +48,7 @@ public class Dungeon {
     private int width;
     private int height;
     private int spawnRate;
+    private Integer startTick = null;
 
     private Random random;
 
@@ -542,6 +544,24 @@ public class Dungeon {
                 }
             }
         }
+
+        boolean enemyExists = false;
+        for (Entities entity : getEntities()) {
+            if (entity instanceof Enemy)
+                enemyExists = true;
+        }
+        if (enemyExists) {
+            if (startTick == null) {
+                startTick = getTicksCounter() - 1;
+            } else if (getTicksCounter() == startTick + 30) {
+                // mercenary spawns every 30 tick if there are enemies on the field
+                Entities mercenary = EntitiesFactory.createEntities("mercenary", getCharacter().getSpawnPos());
+                addEntities(mercenary);
+            }
+        } else {
+            startTick = null;
+        }
+
     }
 
     public Boolean hasCompletedGoals() {

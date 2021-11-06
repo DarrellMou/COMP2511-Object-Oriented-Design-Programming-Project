@@ -1,9 +1,7 @@
 package Entities.movingEntities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import Entities.BeforeWalkedOn;
 import Entities.Entities;
@@ -11,17 +9,12 @@ import Entities.WalkedOn;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.TheOneRingItem;
-import Items.ConsumableItem.InvincibilityPotionItem;
-import Items.ConsumableItem.InvisibilityPotionItem;
 import Items.Equipments.Armours.Armours;
 import Items.Equipments.Shields.Shields;
 import Items.Equipments.Weapons.Weapons;
-import Items.materialItem.Materials;
-import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
-import dungeonmania.Buffs.Invisible;
 import dungeonmania.util.Battle;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Position;
@@ -38,11 +31,29 @@ public class Character extends Mobs implements WalkedOn, Portalable {
     private Fightable inBattleWith = null;
     private Position prevPosition;
     private List<Buffs> buffs = new ArrayList<Buffs>();
+    private Position spawnPos;
 
     public Character(String id, Position position) {
         super(id, "player", position, false, true, Character.MAX_HEALTH, ATTACK_DAMAGE);
         setPrevPosition(getPosition());
+        this.spawnPos = getPosition();
         inventory = new ArrayList<InventoryItem>();
+    }
+
+    /**
+     * 
+     * @return spawnPos
+     */
+    public Position getSpawnPos() {
+        return spawnPos;
+    }
+
+    /**
+     * 
+     * @param spawnPos
+     */
+    public void setSpawnPos(Position spawnPos) {
+        this.spawnPos = spawnPos;
     }
 
     /**
