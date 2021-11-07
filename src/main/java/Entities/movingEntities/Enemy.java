@@ -39,12 +39,6 @@ public abstract class Enemy extends Mobs implements WalkedOn {
                 return false;
             }
         }
-        for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            if (e instanceof WalkedOn) {
-                WalkedOn w = (WalkedOn) e;
-                w.walkedOn(dungeon, this);
-            }
-        }
         return true;
     }
 

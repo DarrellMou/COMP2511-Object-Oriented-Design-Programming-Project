@@ -15,9 +15,10 @@ import Items.InventoryItem;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class BribedMercenaryTest {
+public class BribedAlliesTest {
+    // bribed assassin and mercenary have the same movement and combat
     @Test
-    public void mercenaryMovementTest() {
+    public void bribedMercenaryMovementTest() {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("mercenary_bribe", "Standard");
 
@@ -111,7 +112,7 @@ public class BribedMercenaryTest {
 
         controller.tick("", Direction.LEFT);
         assertEquals(new Position(0, 1), m1.getPosition());
-        assertEquals(new Position(9, 10), m2.getPosition());
+        assertEquals(new Position(10, 9), m2.getPosition());
     }
 
     @Test

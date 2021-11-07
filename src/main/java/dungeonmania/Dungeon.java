@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.Interactable;
+import Entities.movingEntities.Assassin;
 import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Enemy;
@@ -389,7 +390,7 @@ public class Dungeon {
         // - For now, move character
 
         /**
-         * Movement order: - Character - Mercenary - Zombie Toast - Spider
+         * Movement order: - Character - Assassin - Mercenary - Zombie Toast - Spider
          */
 
         // Set character movement direction (needed for boulder movement)
@@ -399,13 +400,17 @@ public class Dungeon {
         getCharacter().makeMovement(this);
 
         // Mobs List
+        List<Assassin> aList = new ArrayList<Assassin>();
         List<Mercenary> mList = new ArrayList<Mercenary>();
         List<ZombieToast> zList = new ArrayList<ZombieToast>();
         List<Spider> sList = new ArrayList<Spider>();
         List<BribedMercenary> bList = new ArrayList<BribedMercenary>();
 
         for (Entities e : getEntities()) {
-            if (e instanceof Mercenary) {
+            if (e instanceof Assassin) {
+                Assassin a = (Assassin) e;
+                aList.add(a);
+            } else if (e instanceof Mercenary) {
                 Mercenary m = (Mercenary) e;
                 mList.add(m);
             } else if (e instanceof ZombieToast) {
@@ -420,6 +425,12 @@ public class Dungeon {
             }
         }
 
+        // Assassin
+        for (Assassin a : aList) {
+            if (getCharacter() == null)
+                return newDungeonResponse();
+            a.makeMovement(this);
+        }
         // Mercenary
         for (Mercenary m : mList) {
             if (getCharacter() == null)
@@ -448,7 +459,7 @@ public class Dungeon {
         if (getCharacter() == null)
             return newDungeonResponse();
 
-        spawnEnemies(getGameMode(), getHeight(), getWidth()); // Spawn Enemies
+        spawnEnemies(getRandom()); // Spawn Enemies
         if (hasCompletedGoals()) {
             gameCompleted();
         }
@@ -521,14 +532,14 @@ public class Dungeon {
      * @param height
      * @param width
      */
-    public void spawnEnemies(String gameMode, int height, int width) {
+    public void spawnEnemies(Random random) {
         if (getTicksCounter() == 0 || spawnRate == 0) {
             return;
         }
 
         if (getTicksCounter() % 25 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
-                    new Position(random.nextInt(width), random.nextInt(height), 2));
+                    new Position(random.nextInt(getWidth()), random.nextInt(getHeight()), 2));
             addEntities(spider);
         }
 
@@ -554,9 +565,18 @@ public class Dungeon {
             if (startTick == null) {
                 startTick = getTicksCounter() - 1;
             } else if (getTicksCounter() == startTick + 30) {
-                // mercenary spawns every 30 tick if there are enemies on the field
-                Entities mercenary = EntitiesFactory.createEntities("mercenary", getCharacter().getSpawnPos());
-                addEntities(mercenary);
+                // mercenary/assassin spawns every 30 tick if there are enemies on the field
+                int randomInt = random.nextInt(100);
+                // assassin spawn chance is 20%
+                if (randomInt <= 20) {
+                    Entities assassin = EntitiesFactory.createEntities("assassin", getCharacter().getSpawnPos());
+                    addEntities(assassin);
+                    startTick = null;
+                } else {
+                    Entities mercenary = EntitiesFactory.createEntities("mercenary", getCharacter().getSpawnPos());
+                    addEntities(mercenary);
+                    startTick = null;
+                }
             }
         } else {
             startTick = null;
@@ -659,5 +679,40 @@ public class Dungeon {
         // If you stop returning any goals (i.e. empty string) it'll say the game has
         // been completed
         setGoals("");
+    }
+
+    // returns x and y borders where entity exist on map
+    // order starts from up and goes clockwise
+    public List<Integer> getBorders() {
+        List<Integer> borders = new ArrayList<Integer>();
+        Integer upBorder = null;
+        Integer rightBorder = null;
+        Integer downBorder = null;
+        Integer leftBorder = null;
+        for (Entities e : getEntities()) {
+            Position ePos = e.getPosition();
+            if (upBorder == null) {
+                upBorder = ePos.getY();
+                rightBorder = ePos.getX();
+                downBorder = ePos.getY();
+                leftBorder = ePos.getX();
+            } else {
+                if (upBorder > ePos.getY())
+                    upBorder = ePos.getY();
+                if (rightBorder < ePos.getX())
+                    rightBorder = ePos.getX();
+                if (downBorder < ePos.getY())
+                    downBorder = ePos.getY();
+                if (leftBorder > ePos.getX())
+                    leftBorder = ePos.getX();
+            }
+        }
+        // border is made an extra tile wider so that dijkstra calculates around
+        // entities
+        borders.add(upBorder - 1);
+        borders.add(rightBorder + 1);
+        borders.add(downBorder + 1);
+        borders.add(leftBorder - 1);
+        return borders;
     }
 }

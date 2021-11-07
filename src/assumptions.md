@@ -23,20 +23,27 @@ Zombie toast
 - If a zombie toast were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
 
 Mercenary
-- It will normally move in the direction of the player
-- If the path is blocked it will not move
+- Uses Dijkstra's algorithm to determine the shortest path to the character and moves in that direction.
+- If there are no path to the character or if the character has consumed the invisibility potion, the mercenary will not move.
 - If a mercenary were to spawn on the same position as a boulder, it is able to move out of it on the next tick, however, will not be able to move back into it.
-- Bribe radius is determined by adding the x and y displacement.
+- Bribe radius is calculated by the sum of the x and y displacement.
+- Spawn every 30 consecutive ticks with at least one enemy on field.
 
 Bribed mercenary
 - A bribed mercenary will 'follow' the character by trailing behind the player.
 - After bribing a mercenary, it will recover to full hp.
 - Bribed mercenary has a battle radius of 5.
-- Radius is calculated by the sum of the x and y displacement. (NOT PYTHAGORAS)
+- Radius is calculated by the sum of the x and y displacement.
 - The mercenary will not take damage as it fights with the player, since it fights from a distance.
 
+Assassin
+- Follows same movement as mercenary.
+- 20% chance to spawn instead of mercenary
+- Bribe radius is same as mercenary.
+- Bribable with a treasure and the one ring.
+
 Movement order
-- Character moves first, then merc, then zombie toast, then spider.
+- Character moves first, then assassin, then merc, then zombie toast, then spider.
 - If character moves into boulder, then the boulder will move first.
 
 Battle Order:
@@ -51,6 +58,7 @@ Character: Health: 120/100 (standard/hard mode), Attack Damage: 3
 Spider: Health: 30, Attack Damage: 1
 Zombie Toast: Health: 50, Attack Damage: 1
 Mercenary: Health: 80, Attack Damage: 1
+Assassin: Health: 80, Attack Damage: 4
 
 Sword: Durability: 4, Attack Damage: 1.5 x Character Attack Damage
 Bow: Durability: 3, Attack Damage: 2 x Character Attack Damage

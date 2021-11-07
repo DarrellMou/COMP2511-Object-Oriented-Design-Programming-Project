@@ -73,10 +73,10 @@ public class Invincible extends Buffs {
         if (enemy instanceof Portalable && !enemy.getPosition().translateBy(currentDirection).equals(newPosition)) {
             Position newerPosition = enemy.getPosition().translateBy(currentDirection);
             if (enemy.checkMovable(newerPosition, dungeon)) {
-                enemy.setPosition(newerPosition);
+                enemy.setPosition(newerPosition, dungeon);
             }
         } else {
-            enemy.setPosition(newPosition);
+            enemy.setPosition(newPosition, dungeon);
         }
     }
 }

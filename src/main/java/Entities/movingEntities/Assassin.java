@@ -1,32 +1,23 @@
 package Entities.movingEntities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import Entities.Entities;
 import Entities.Interactable;
-import Entities.collectableEntities.materials.Treasure;
-import Entities.staticEntities.SwampTile;
 import Items.InventoryItem;
+import Items.TheOneRingItem;
 import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
-import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends SpawningEntities implements Interactable, Portalable {
+public class Assassin extends SpawningEntities implements Interactable {
     private static final int BRIBE_RADIUS = 2;
-    private static final int ATTACK_DAMAGE = 1;
+    private static final int ATTACK_DAMAGE = 4;
     private static final int MAX_HEALTH = 80;
 
-    public Mercenary(String id, Position position) {
-        super(id, "mercenary", position, true, true, MAX_HEALTH, ATTACK_DAMAGE);
+    public Assassin(String id, Position position) {
+        super(id, "assassin", position, true, true, MAX_HEALTH, ATTACK_DAMAGE);
     }
 
     /**
@@ -38,12 +29,12 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
         Position originalPos = getPosition();
         // invisible has higher priority
         if (dungeon.getCharacter().getBuffs(Invisible.class) != null) {
-            // if invisible, the mercenary does not move
+            // does not move if invis
             setPosition(originalPos, dungeon);
             walkOn(originalPos, dungeon);
             return;
         } else {
-            // if invincible, the mercenary runs
+            // runs away if invis
             Invincible invin = (Invincible) dungeon.getCharacter().getBuffs(Invincible.class);
             if (invin != null) {
                 invin.invinMovement(dungeon, this);
@@ -51,19 +42,18 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
             }
         }
 
-        // get the next position in shortest path
+        // get next position in shortest path
         Position nextPos = getOneStepPos(dungeon, dungeon.getCharacter().getPosition());
-        // if there is no path, the mercenary does not move
+        // if there is no path, it does not move
         if (nextPos == null) {
             setPosition(originalPos, dungeon);
             walkOn(originalPos, dungeon);
         } else {
-            // the mercenary moves to next position and calls walkOn on all entities on that
-            // position
+            // move to next position in shortest path
             setPosition(nextPos, dungeon);
+            // call walk on on all entities that are on the position
             walkOn(nextPos, dungeon);
-            // if the mercenary moves through a portal, correctly position it on the other
-            // side
+            // if it enters a portal, correct its position
             if (getPosition() != nextPos) {
                 Position changePos = Position.calculatePositionBetween(nextPos, originalPos);
                 if (changePos.getX() != 0) {
@@ -82,28 +72,34 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
     /**
      * @param dungeon
      */
-    public void bribeMercenary(Dungeon dungeon) {
+    public void bribeAssassin(Dungeon dungeon) throws InvalidActionException {
         Character c = dungeon.getCharacter();
 
-        // check if treasure is in inventory
-        InventoryItem i = c.getInventoryItem(TreasureItem.class);
-        if (i == null) {
+        // check if char has treasure
+        InventoryItem t = c.getInventoryItem(TreasureItem.class);
+        if (t == null) {
             throw new InvalidActionException("Character does not have a treasure!!");
         }
 
-        // check if mercenary is in range
+        // check if char has one ring
+        InventoryItem o = c.getInventoryItem(TheOneRingItem.class);
+        if (o == null) {
+            throw new InvalidActionException("Character does not have the one ring!!");
+        }
+
+        // check if assassin is in range
         Position p = Position.calculatePositionBetween(c.getPosition(), this.getPosition());
         int d = Math.abs(p.getX()) + Math.abs(p.getY());
         if (d > BRIBE_RADIUS) {
-            throw new InvalidActionException("Mercenary is not in range!!");
+            throw new InvalidActionException("Assassin is not in range!!");
         }
-
-        // remove mercenary from list
+        // remove assassin from list
         dungeon.removeEntities(this);
-        // add bribed mercenary from list
-        c.removeInventory(i);
-        BribedMercenary newBribedMercenary = new BribedMercenary(getId(), getPosition());
-        dungeon.addEntities(newBribedMercenary);
+        // add bribed assassin from list
+        c.removeInventory(t);
+        c.removeInventory(o);
+        BribedAssassin newBribedAssassin = new BribedAssassin(getId(), getPosition());
+        dungeon.addEntities(newBribedAssassin);
     }
 
     /**
@@ -112,7 +108,7 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
      */
     @Override
     public void interact(Dungeon dungeon) throws InvalidActionException {
-        bribeMercenary(dungeon);
+        bribeAssassin(dungeon);
     }
 
 }

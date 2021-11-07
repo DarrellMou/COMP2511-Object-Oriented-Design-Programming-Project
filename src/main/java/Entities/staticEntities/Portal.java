@@ -41,7 +41,7 @@ public class Portal extends StaticEntities implements Triggerable, WalkedOn {
             if (e instanceof Portal && !e.getId().equals(getId())) {
                 Portal p = (Portal) e;
                 if (p.getColour().equals(getColour())) {
-                    walker.setPosition(p.getPosition());
+                    walker.setPosition(p.getPosition().asLayer(1), dungeon);
                 }
             }
         }
