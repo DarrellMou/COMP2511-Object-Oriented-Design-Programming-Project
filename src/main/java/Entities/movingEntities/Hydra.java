@@ -40,7 +40,7 @@ public class Hydra extends Boss {
         
         // if the position is movable, move otherwise, don't :]
         if (checkMovable(newPosition, dungeon)) {
-            setPosition(newPosition);
+            setPosition(newPosition, dungeon);
         }
     }
 

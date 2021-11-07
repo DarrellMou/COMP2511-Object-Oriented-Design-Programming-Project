@@ -44,12 +44,18 @@ Assassin
 - Bribe radius is same as mercenary.
 - Bribable with a treasure and the one ring.
 
+Hydra
+- Health = 200, Attack Damage = 2
+- Spawns at random location (like spider)
+- Movement is random (up, right, down, left) like zombie toast
+- If the hydra were to heal past it's max health, it will be restored to full health instead.
+
 Movement order
-- Character moves first, then assassin, then merc, then zombie toast, then spider.
+- Character moves first, then assassin, then merc, then zombie toast, then spider, then hydra.
 - If character moves into boulder, then the boulder will move first.
 
 Battle Order:
-- The battle will use the first weapon in their inventory to attack.
+- The battle will use the first weapon in their inventory to attack (unless fighting a boss, where it will use Anduril if character has it).
 - The player will wear the first armour and shield that they have in their inventory.
 - They cant wear more than one of each armour.
 
@@ -61,11 +67,15 @@ Spider: Health: 30, Attack Damage: 1
 Zombie Toast: Health: 50, Attack Damage: 1
 Mercenary: Health: 80, Attack Damage: 1
 Assassin: Health: 80, Attack Damage: 4
+Hydra: Health: 200, Attack Damage: 2
 
 Sword: Durability: 4, Attack Damage: 1.5 x Character Attack Damage
 Bow: Durability: 3, Attack Damage: 2 x Character Attack Damage
 Armour: Durability: 4, Decrease Attack Damage of Enemy: 0.5
 Shield: Durability: 3, Decrease Attack Damage of Enemy: 0.5
+Anduril:
+- Does 1.5x character damage (like normal sword) to non-boss enemies
+- Durability = 4
 
 Building
 - Crafting shield will use whatever is first in inventory (treasure/key)
@@ -89,15 +99,3 @@ Invincibility Potion
 - Have a 10 tick duration.
 - Does not consume durability in battle
 - One shots enemies when active and character does not take damage
-
-Milestone 3:
-
-Hydra
-- Health = 200, Attack Damage = 2
-- Spawns at random location (like spider)
-- Movement is random (up, right, down, left) like zombie toast
-- If the hydra were to heal past it's max health, it will be restored to full health instead.
-
-Anduril
-- Does 1.5x character damage (like normal sword) to non-boss enemies
-- Durability = 4

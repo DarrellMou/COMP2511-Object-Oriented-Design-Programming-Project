@@ -391,7 +391,7 @@ public class Dungeon {
         // - For now, move character
 
         /**
-         * Movement order: - Character - Assassin - Mercenary - Zombie Toast - Spider
+         * Movement order: - Character - Assassin - Mercenary - Zombie Toast - Spider - Hydra
          */
 
         // Set character movement direction (needed for boulder movement)
