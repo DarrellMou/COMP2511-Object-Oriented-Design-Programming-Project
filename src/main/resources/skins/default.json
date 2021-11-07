@@ -49,6 +49,7 @@
     "enemies": "images/enemies.png",
     "boulders": "images/tileset/entities/boulder_00.png",
     "hydra": "images/tileset/entities/hydra.png",
-    "anduril": "images/tileset/entities/anduril.png"
+    "anduril": "images/tileset/entities/anduril.png",
+    "assassin": "images/tileset/entities/assassin.png"
   }
 }

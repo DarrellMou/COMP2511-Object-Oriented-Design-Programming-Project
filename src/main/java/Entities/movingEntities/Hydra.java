@@ -101,12 +101,10 @@ public class Hydra extends Boss {
      * @return boolean
      */
     private boolean checkAnduril(Dungeon dungeon) {
-        if (dungeon.getCharacter() != null) {
-            for (InventoryItem i : dungeon.getCharacter().getInventory()) {
-                if (i instanceof Anduril) {
-                    return true;
-                }
-            }
+        Character c = dungeon.getCharacter();
+        if (c != null) {
+            InventoryItem i = c.getInventoryItem(Anduril.class);
+            if (i != null) return true;
         }
         return false;
     }

@@ -321,7 +321,6 @@ public class Dungeon {
 
         incrementTicks(); // This increments the number of ticks in this dungeon
 
-        // Character character = getCharacter();
         if (itemUsedId != null && !itemUsedId.equals("")) {
             InventoryItem item = null;
             for (InventoryItem currItem : getCharacter().getInventory()) {
