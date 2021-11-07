@@ -448,7 +448,7 @@ public class Dungeon {
         if (getCharacter() == null)
             return newDungeonResponse();
 
-        spawnEnemies(getGameMode(), getHeight(), getWidth()); // Spawn Enemies
+        spawnEnemies(getRandom()); // Spawn Enemies
         if (hasCompletedGoals()) {
             gameCompleted();
         }
@@ -521,14 +521,14 @@ public class Dungeon {
      * @param height
      * @param width
      */
-    public void spawnEnemies(String gameMode, int height, int width) {
+    public void spawnEnemies(Random random) {
         if (getTicksCounter() == 0 || spawnRate == 0) {
             return;
         }
 
         if (getTicksCounter() % 25 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
-                    new Position(random.nextInt(width), random.nextInt(height), 2));
+                    new Position(random.nextInt(getWidth()), random.nextInt(getHeight()), 2));
             addEntities(spider);
         }
 
@@ -554,9 +554,18 @@ public class Dungeon {
             if (startTick == null) {
                 startTick = getTicksCounter() - 1;
             } else if (getTicksCounter() == startTick + 30) {
-                // mercenary spawns every 30 tick if there are enemies on the field
-                Entities mercenary = EntitiesFactory.createEntities("mercenary", getCharacter().getSpawnPos());
-                addEntities(mercenary);
+                // mercenary/assassin spawns every 30 tick if there are enemies on the field
+                int randomInt = random.nextInt(100);
+                // assassin spawn chance is 20%
+                if (randomInt <= 20) {
+                    Entities assassin = EntitiesFactory.createEntities("assassin", getCharacter().getSpawnPos());
+                    addEntities(assassin);
+                    startTick = null;
+                } else {
+                    Entities mercenary = EntitiesFactory.createEntities("mercenary", getCharacter().getSpawnPos());
+                    addEntities(mercenary);
+                    startTick = null;
+                }
             }
         } else {
             startTick = null;

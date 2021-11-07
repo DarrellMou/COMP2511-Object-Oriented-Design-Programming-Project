@@ -88,11 +88,6 @@
         "type": "player"
       },
       {
-        "x": 3,
-        "y": 2,
-        "type": "mercenary"
-      },
-      {
         "x": 10,
         "y": 10,
         "type": "mercenary"
