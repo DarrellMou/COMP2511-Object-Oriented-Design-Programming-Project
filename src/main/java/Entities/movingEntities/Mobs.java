@@ -2,12 +2,17 @@ package Entities.movingEntities;
 
 import Entities.Entities;
 import Entities.WalkedOn;
+import Entities.staticEntities.SwampTile;
 import dungeonmania.Dungeon;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public abstract class Mobs extends Entities implements Movable, Fightable {
     private double maxHealth;
@@ -109,13 +114,16 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
                 return false;
             }
         }
+        return true;
+    }
+
+    public void walkOn(Position position, Dungeon dungeon) {
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
             if (e instanceof WalkedOn) {
                 WalkedOn w = (WalkedOn) e;
                 w.walkedOn(dungeon, this);
             }
         }
-        return true;
     }
 
     /**
@@ -159,5 +167,102 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
         } else {
             return Direction.DOWN;
         }
+    }
+
+    // get the next position to the destination
+    public Position getOneStepPos(Dungeon dungeon, Position destination) {
+        Map<Position, Position> prev = dijkstraPrev(dungeon, destination);
+        // if there is no path, return null
+        if (prev == null) {
+            return null;
+        } else {
+            // get the next position to the destination
+            Position curPosition = destination;
+            while (prev.get(curPosition) != this.getPosition()) {
+                curPosition = prev.get(curPosition);
+            }
+            return curPosition;
+        }
+    }
+
+    /**
+     * 
+     * @param dungeon
+     * @param destination
+     * @return map of shortest path to destination
+     */
+    public Map<Position, Position> dijkstraPrev(Dungeon dungeon, Position destination) {
+        List<Integer> borders = dungeon.getBorders();
+        Map<Position, Double> dist = new HashMap<Position, Double>();
+        Map<Position, Position> prev = new HashMap<Position, Position>();
+        List<Position> queue = new ArrayList<Position>();
+
+        // set the dist of all positions to infinity
+        for (int i = borders.get(0); i <= borders.get(2); i++) {
+            for (int j = borders.get(3); j <= borders.get(1); j++) {
+                dist.put(new Position(j, i, 1), Double.POSITIVE_INFINITY);
+            }
+        }
+
+        // set dist of current position to 0
+        dist.put(this.getPosition(), 0.0);
+
+        // add current position to queue
+        queue.add(this.getPosition());
+
+        while (queue.size() != 0) {
+            Position curPosition = null;
+            // get the position in queue with smallest dist
+            for (Position p : queue) {
+                if (curPosition == null || dist.get(curPosition) > dist.get(p)) {
+                    curPosition = p;
+                }
+            }
+            // remove from queue
+            queue.remove(curPosition);
+
+            // cost of normal tiles are 1 whereas cost of swamp tile is 2
+            int cost = 1;
+            for (Entities e : dungeon.getEntitiesOnTile(curPosition)) {
+                if (e instanceof SwampTile)
+                    cost = 2;
+            }
+
+            // get all adjacent positions to the current position
+            List<Position> adjacentPositions = new ArrayList<Position>();
+            Position up = curPosition.translateBy(Direction.UP);
+            adjacentPositions.add(up);
+            Position right = curPosition.translateBy(Direction.RIGHT);
+            adjacentPositions.add(right);
+            Position down = curPosition.translateBy(Direction.DOWN);
+            adjacentPositions.add(down);
+            Position left = curPosition.translateBy(Direction.LEFT);
+            adjacentPositions.add(left);
+
+            // loop through adjacent positions
+            for (Position p : adjacentPositions) {
+                // if the position is not within the borders, go to next position
+                if (!dist.keySet().contains(p))
+                    continue;
+
+                // if the entity can not move to the position, go to next position
+                if (!checkMovable(p, dungeon))
+                    continue;
+                // if the current cost to get to position p is larger than the cost to get to
+                // position p from current position, change the cost and set the prev position
+                // to be the current position
+                if (dist.get(curPosition) + cost < dist.get(p)) {
+                    queue.add(p);
+                    dist.put(p, dist.get(curPosition) + cost);
+                    prev.put(p, curPosition);
+                }
+            }
+        }
+        // if prev contains the destination, there is a path
+        if (prev.containsKey(destination)) {
+            return prev;
+        }
+        // returns null if there is no path
+        return null;
     }
 }

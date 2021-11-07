@@ -20,6 +20,7 @@ import Entities.staticEntities.DoorOpen;
 import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.Portal;
+import Entities.staticEntities.SwampTile;
 import Entities.staticEntities.Wall;
 import Entities.staticEntities.ZombieToastSpawner;
 import data.DataEntities;
@@ -162,6 +163,8 @@ public class EntitiesFactory {
             newEntity = new DoorOpen(getNextId(), position);
         } else if (type.equals("assassin")) {
             newEntity = new Assassin(getNextId(), position);
+        } else if (type.equals("swamp_tile")) {
+            newEntity = new SwampTile(getNextId(), position);
         }
         return newEntity;
     }

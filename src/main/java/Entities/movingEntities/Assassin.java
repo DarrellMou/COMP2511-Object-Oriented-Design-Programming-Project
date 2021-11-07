@@ -13,9 +13,7 @@ import dungeonmania.util.Position;
 
 public class Assassin extends SpawningEntities implements Interactable {
     private static final int BRIBE_RADIUS = 2;
-    private static final int ATTACK_DAMAGE = 3;
-    private static final int CRIT_DAMAGE = 3;
-    private static final int CRIT_CHANCE = 10;
+    private static final int ATTACK_DAMAGE = 4;
     private static final int MAX_HEALTH = 80;
 
     public Assassin(String id, Position position) {
@@ -27,63 +25,47 @@ public class Assassin extends SpawningEntities implements Interactable {
      */
     @Override
     public void makeMovement(Dungeon dungeon) {
-        Character character = dungeon.getCharacter();
-        Position characterPos = character.getPosition();
-        Invincible invin = null;
+        Direction moveDirection = Direction.NONE;
+        Position originalPos = getPosition();
         // invisible has higher priority
-        if (dungeon.getCharacter().getBuffs(Invisible.class) == null) {
-            invin = (Invincible) dungeon.getCharacter().getBuffs(Invincible.class);
-        } else {
-            characterPos = getPosition();
-        }
-        if (invin != null) {
-            invin.invinMovement(dungeon, this);
+        if (dungeon.getCharacter().getBuffs(Invisible.class) != null) {
+            // does not move if invis
+            setPosition(originalPos, dungeon);
+            walkOn(originalPos, dungeon);
             return;
-        }
-        Position positionFromChar = Position.calculatePositionBetween(characterPos, this.getPosition());
-        Direction directionX = getDirection(positionFromChar.getX(), "x");
-        Position nextPositionX = getPosition().translateBy(directionX);
-        Direction directionY = getDirection(positionFromChar.getY(), "y");
-        Direction currentDirection = null;
-        Position nextPositionY = getPosition().translateBy(directionY);
-        Position newPosition = null;
-
-        // the movement of the mercenary would prioritise the larger displacement
-        // if it isn't movable in the prioritised direction, it would try to move in
-        // other direction
-
-        if (Math.abs(positionFromChar.getX()) >= Math.abs(positionFromChar.getY())) {
-            if (checkMovable(nextPositionX, dungeon)) {
-                currentDirection = directionX;
-                newPosition = nextPositionX;
-            } else if (checkMovable(nextPositionY, dungeon)) {
-                currentDirection = directionY;
-                newPosition = nextPositionY;
-            }
         } else {
-            if (checkMovable(nextPositionY, dungeon)) {
-                currentDirection = directionY;
-                newPosition = nextPositionY;
-            } else if (checkMovable(nextPositionX, dungeon)) {
-                currentDirection = directionX;
-                newPosition = nextPositionX;
+            // runs away if invis
+            Invincible invin = (Invincible) dungeon.getCharacter().getBuffs(Invincible.class);
+            if (invin != null) {
+                invin.invinMovement(dungeon, this);
+                return;
             }
         }
 
-        if (newPosition == null) {
-            checkMovable(getPosition(), dungeon);
-            return;
-        }
-
-        // If position changed after walking on newPosition
-        // (e.g. walking into portal)
-        if (!getPosition().translateBy(currentDirection).equals(newPosition)) {
-            Position newerPosition = getPosition().translateBy(currentDirection);
-            if (checkMovable(newerPosition, dungeon)) {
-                setPosition(newerPosition);
-            }
+        // get next position in shortest path
+        Position nextPos = getOneStepPos(dungeon, dungeon.getCharacter().getPosition());
+        // if there is no path, it does not move
+        if (nextPos == null) {
+            setPosition(originalPos, dungeon);
+            walkOn(originalPos, dungeon);
         } else {
-            setPosition(newPosition);
+            // move to next position in shortest path
+            setPosition(nextPos, dungeon);
+            // call walk on on all entities that are on the position
+            walkOn(nextPos, dungeon);
+            // if it enters a portal, correct its position
+            if (getPosition() != nextPos) {
+                Position changePos = Position.calculatePositionBetween(nextPos, originalPos);
+                if (changePos.getX() != 0) {
+                    moveDirection = getDirection(changePos.getX(), "x");
+                } else {
+                    moveDirection = getDirection(changePos.getY(), "y");
+                }
+                Position newerPosition = getPosition().translateBy(moveDirection);
+                if (checkMovable(newerPosition, dungeon)) {
+                    setPosition(getPosition().translateBy(moveDirection), dungeon);
+                }
+            }
         }
     }
 
@@ -93,16 +75,19 @@ public class Assassin extends SpawningEntities implements Interactable {
     public void bribeAssassin(Dungeon dungeon) throws InvalidActionException {
         Character c = dungeon.getCharacter();
 
+        // check if char has treasure
         InventoryItem t = c.getInventoryItem(TreasureItem.class);
         if (t == null) {
             throw new InvalidActionException("Character does not have a treasure!!");
         }
 
+        // check if char has one ring
         InventoryItem o = c.getInventoryItem(TheOneRingItem.class);
         if (o == null) {
             throw new InvalidActionException("Character does not have the one ring!!");
         }
 
+        // check if assassin is in range
         Position p = Position.calculatePositionBetween(c.getPosition(), this.getPosition());
         int d = Math.abs(p.getX()) + Math.abs(p.getY());
         if (d > BRIBE_RADIUS) {
@@ -113,8 +98,8 @@ public class Assassin extends SpawningEntities implements Interactable {
         // add bribed assassin from list
         c.removeInventory(t);
         c.removeInventory(o);
-        BribedMercenary newBribedMercenary = new BribedMercenary(getId(), getPosition());
-        dungeon.addEntities(newBribedMercenary);
+        BribedAssassin newBribedAssassin = new BribedAssassin(getId(), getPosition());
+        dungeon.addEntities(newBribedAssassin);
     }
 
     /**

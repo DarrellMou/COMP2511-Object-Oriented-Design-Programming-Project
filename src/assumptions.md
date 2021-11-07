@@ -58,7 +58,7 @@ Character: Health: 120/100 (standard/hard mode), Attack Damage: 3
 Spider: Health: 30, Attack Damage: 1
 Zombie Toast: Health: 50, Attack Damage: 1
 Mercenary: Health: 80, Attack Damage: 1
-Assassin: Health: 80, Attack Damage: 3 and 5 on crit, Crit Chance: 10%
+Assassin: Health: 80, Attack Damage: 4
 
 Sword: Durability: 4, Attack Damage: 1.5 x Character Attack Damage
 Bow: Durability: 3, Attack Damage: 2 x Character Attack Damage

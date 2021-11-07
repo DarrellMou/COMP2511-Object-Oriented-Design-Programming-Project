@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.Interactable;
+import Entities.movingEntities.Assassin;
 import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Enemy;
@@ -389,7 +390,7 @@ public class Dungeon {
         // - For now, move character
 
         /**
-         * Movement order: - Character - Mercenary - Zombie Toast - Spider
+         * Movement order: - Character - Assassin - Mercenary - Zombie Toast - Spider
          */
 
         // Set character movement direction (needed for boulder movement)
@@ -399,13 +400,17 @@ public class Dungeon {
         getCharacter().makeMovement(this);
 
         // Mobs List
+        List<Assassin> aList = new ArrayList<Assassin>();
         List<Mercenary> mList = new ArrayList<Mercenary>();
         List<ZombieToast> zList = new ArrayList<ZombieToast>();
         List<Spider> sList = new ArrayList<Spider>();
         List<BribedMercenary> bList = new ArrayList<BribedMercenary>();
 
         for (Entities e : getEntities()) {
-            if (e instanceof Mercenary) {
+            if (e instanceof Assassin) {
+                Assassin a = (Assassin) e;
+                aList.add(a);
+            } else if (e instanceof Mercenary) {
                 Mercenary m = (Mercenary) e;
                 mList.add(m);
             } else if (e instanceof ZombieToast) {
@@ -420,6 +425,12 @@ public class Dungeon {
             }
         }
 
+        // Assassin
+        for (Assassin a : aList) {
+            if (getCharacter() == null)
+                return newDungeonResponse();
+            a.makeMovement(this);
+        }
         // Mercenary
         for (Mercenary m : mList) {
             if (getCharacter() == null)
@@ -668,5 +679,40 @@ public class Dungeon {
         // If you stop returning any goals (i.e. empty string) it'll say the game has
         // been completed
         setGoals("");
+    }
+
+    // returns x and y borders where entity exist on map
+    // order starts from up and goes clockwise
+    public List<Integer> getBorders() {
+        List<Integer> borders = new ArrayList<Integer>();
+        Integer upBorder = null;
+        Integer rightBorder = null;
+        Integer downBorder = null;
+        Integer leftBorder = null;
+        for (Entities e : getEntities()) {
+            Position ePos = e.getPosition();
+            if (upBorder == null) {
+                upBorder = ePos.getY();
+                rightBorder = ePos.getX();
+                downBorder = ePos.getY();
+                leftBorder = ePos.getX();
+            } else {
+                if (upBorder > ePos.getY())
+                    upBorder = ePos.getY();
+                if (rightBorder < ePos.getX())
+                    rightBorder = ePos.getX();
+                if (downBorder < ePos.getY())
+                    downBorder = ePos.getY();
+                if (leftBorder > ePos.getX())
+                    leftBorder = ePos.getX();
+            }
+        }
+        // border is made an extra tile wider so that dijkstra calculates around
+        // entities
+        borders.add(upBorder - 1);
+        borders.add(rightBorder + 1);
+        borders.add(downBorder + 1);
+        borders.add(leftBorder - 1);
+        return borders;
     }
 }

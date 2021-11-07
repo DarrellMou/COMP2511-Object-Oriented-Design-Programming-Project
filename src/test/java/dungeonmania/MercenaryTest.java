@@ -227,7 +227,7 @@ public class MercenaryTest {
         Position startPos = controller.getDungeon().getCharacter().getPosition();
 
         // Change character position so it does not battle spawned mercenaries.
-        controller.getDungeon().getCharacter().setPosition(new Position(5, 5));
+        controller.getDungeon().getCharacter().setPosition(new Position(5, 5), controller.getDungeon());
 
         // Zombie toast stuck so that an enemy always exists.
         Entities z = EntitiesFactory.createEntities("zombie_toast", startPos);

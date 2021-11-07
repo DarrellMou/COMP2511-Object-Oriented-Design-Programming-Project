@@ -85,11 +85,18 @@ public class PortalTest {
 
         // Make merc walk into portal again, but boulder blocks translateBy
         // so merc ends up ontop of portal
-        Entities b = EntitiesFactory.createEntities("boulder", new Position(3, 0));
-        controller.getDungeon().addEntities(b);
+        Entities b1 = EntitiesFactory.createEntities("boulder", new Position(3, 0));
+        controller.getDungeon().addEntities(b1);
         controller.tick("", Direction.LEFT);
         controller.tick("", Direction.LEFT);
         assertEquals(new Position(4, 0), m.getPosition());
+        // block all directions around mercenary, forcing it to go back into portal
+        Entities b2 = EntitiesFactory.createEntities("boulder", new Position(4, 1));
+        controller.getDungeon().addEntities(b2);
+        Entities b3 = EntitiesFactory.createEntities("boulder", new Position(4, -1));
+        controller.getDungeon().addEntities(b3);
+        Entities b4 = EntitiesFactory.createEntities("boulder", new Position(5, 0));
+        controller.getDungeon().addEntities(b4);
         // merc goes into portal again
         controller.tick("", Direction.LEFT);
         assertEquals(new Position(1, 0), m.getPosition());
@@ -107,7 +114,7 @@ public class PortalTest {
         // Red portal: (2, 1)
         controller.tick("", Direction.NONE);
         // Check zombie didnt go through portal at (2, 1)
-        assertEquals(new Position(2, 1), z.getPosition());    
+        assertEquals(new Position(2, 1), z.getPosition());
     }
 
     @Test
@@ -128,11 +135,12 @@ public class PortalTest {
         controller.tick("", Direction.NONE);
         controller.tick("", Direction.NONE);
         controller.tick("", Direction.NONE);
-        // back into portal going left. but boulder blocks the left of portal. so its stuck at portal
+        // back into portal going left. but boulder blocks the left of portal. so its
+        // stuck at portal
         controller.tick("", Direction.NONE);
         assertEquals(new Position(4, 0, 2), s.getPosition());
         // goes up
-        controller.tick("", Direction.NONE); 
+        controller.tick("", Direction.NONE);
         assertEquals(new Position(4, -1, 2), s.getPosition());
     }
 
@@ -157,11 +165,13 @@ public class PortalTest {
         controller.tick("", Direction.NONE);
         controller.tick("", Direction.NONE);
         controller.tick("", Direction.NONE);
-        // back into portal going left. but boulder blocks the left of portal. so its set at portal
+        // back into portal going left. but boulder blocks the left of portal. so its
+        // set at portal
         controller.tick("", Direction.NONE);
         assertEquals(new Position(4, 0, 2), s.getPosition());
-        // goes up, but boulder blocks, so go down (reverse), but boulder blocks, so go back into portal
-        controller.tick("", Direction.NONE); 
+        // goes up, but boulder blocks, so go down (reverse), but boulder blocks, so go
+        // back into portal
+        controller.tick("", Direction.NONE);
         assertEquals(new Position(1, 0, 2), s.getPosition());
     }
 }

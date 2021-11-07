@@ -1,6 +1,7 @@
 package Entities;
 
 import Entities.movingEntities.Character;
+import Entities.staticEntities.SwampTile;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
@@ -10,6 +11,7 @@ public abstract class Entities {
     private Position position;
     private boolean isInteractable;
     private boolean isWalkable;
+    private int movementAttempted = 0;
 
     public Entities(String id, String type, Position position, boolean isInteractable, boolean isWalkable) {
         this.id = id;
@@ -64,8 +66,36 @@ public abstract class Entities {
     /**
      * @param position
      */
-    public void setPosition(Position position) {
+    public void setPosition(Position position, Dungeon dungeon) {
+        // checks if entity is on swamp tile
+        for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
+            if (e instanceof SwampTile) {
+                // if the entity is on a swamp tile, it should not move unless it is the second
+                // attempt in moving
+                setMovementAttempted(getMovementAttempted() + 1);
+                if (getMovementAttempted() < 2) {
+                    return;
+                }
+            }
+        }
         this.position = position;
+        setMovementAttempted(0);
+    }
+
+    /**
+     * 
+     * @return movementAttempted
+     */
+    public int getMovementAttempted() {
+        return movementAttempted;
+    }
+
+    /**
+     * 
+     * @param movementAttempted
+     */
+    public void setMovementAttempted(int movementAttempted) {
+        this.movementAttempted = movementAttempted;
     }
 
     /**

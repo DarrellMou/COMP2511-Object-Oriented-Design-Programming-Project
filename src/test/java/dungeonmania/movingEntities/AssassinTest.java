@@ -153,13 +153,19 @@ public class AssassinTest {
         });
 
         // picks up one ring
-        TheOneRingItem oneRingItem = (TheOneRingItem) ItemsFactory.createItem("one_ring", "one_ring");
+        TheOneRingItem oneRingItem = (TheOneRingItem) ItemsFactory.createItem("one_ring");
         controller.getDungeon().getCharacter().addInventory(oneRingItem);
+
+        Position assPosition = a.getPosition();
 
         // should not be able to interact with assassin as char does not have one ring
         assertDoesNotThrow(() -> {
             controller.interact(id);
         });
+
+        // check if bribed assassin has spawned on old ass location
+        assertTrue(controller.getDungeon().getEntitiesOnTile(assPosition).stream()
+                .anyMatch(e -> e instanceof BribedAssassin));
     }
 
     // test character bribing merc out of range without and with treasure.
@@ -189,16 +195,10 @@ public class AssassinTest {
         TheOneRingItem oneRingItem = (TheOneRingItem) ItemsFactory.createItem("one_ring", "one_ring");
         controller.getDungeon().getCharacter().addInventory(oneRingItem);
 
-        Position assPosition = a.getPosition();
-
         // still should not be able to interact with assassin as they are out of range
         assertThrows(InvalidActionException.class, () -> {
             controller.interact(id);
         });
-
-        // check if bribed assassin has spawned on old ass location
-        assertTrue(controller.getDungeon().getEntitiesOnTile(assPosition).stream()
-                .anyMatch(e -> e instanceof BribedAssassin));
     }
 
     @Test
@@ -212,7 +212,7 @@ public class AssassinTest {
 
         // Change character position so it does not battle spawned
         // mercenaries/assassins.
-        controller.getDungeon().getCharacter().setPosition(new Position(5, 5));
+        controller.getDungeon().getCharacter().setPosition(new Position(5, 5), controller.getDungeon());
 
         // Zombie toast stuck so that an enemy always exists.
         Entities z = EntitiesFactory.createEntities("zombie_toast", startPos);

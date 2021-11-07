@@ -33,13 +33,8 @@ public class Boulder extends StaticEntities implements Movable, BeforeWalkedOn {
         Position newPosition = getPosition().translateBy(dungeon.getCharacter().getMovementDirection());
         if (checkMovable(newPosition, dungeon)) {
             // Call walked on for entities at newPosition
-            for (Entities e : dungeon.getEntitiesOnTile(newPosition)) {
-                if (e instanceof WalkedOn) {
-                    WalkedOn w = (WalkedOn) e;
-                    w.walkedOn(dungeon, this);
-                }
-            }
-            setPosition(newPosition);
+            walkOn(newPosition, dungeon);
+            setPosition(newPosition, dungeon);
         }
     }
 
@@ -60,5 +55,15 @@ public class Boulder extends StaticEntities implements Movable, BeforeWalkedOn {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void walkOn(Position position, Dungeon dungeon) {
+        for (Entities e : dungeon.getEntitiesOnTile(position)) {
+            if (e instanceof WalkedOn) {
+                WalkedOn w = (WalkedOn) e;
+                w.walkedOn(dungeon, this);
+            }
+        }
     }
 }
