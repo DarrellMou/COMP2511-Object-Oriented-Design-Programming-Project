@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,8 +15,6 @@ import Entities.EntitiesFactory;
 import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Hydra;
 import Entities.movingEntities.Mobs;
-import Items.ItemsFactory;
-import Items.Equipments.Weapons.Anduril;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -76,76 +74,76 @@ public class HydraTest {
 
     @Test
     public void testHydraMovement() {
-        Random random = new Random(1234);
         // Hydra should spawn in hard
-        DungeonManiaController controller = new DungeonManiaController(random);
+        DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("test-hydra", "Hard");
 
         Entities h = EntitiesFactory.createEntities("hydra", new Position(5, 6));
         controller.getDungeon().addEntities(h);
 
-        // Get a random position
-        Direction randomDirection = Direction.values()[random.nextInt(Direction.values().length)];
-        Position expected = h.getPosition().translateBy(randomDirection);
+        // Get possible positions
+        List<Position> possiblePositions = new ArrayList<>();
+        for (Direction d : Direction.values()) {
+            possiblePositions.add(h.getPosition().translateBy(d));
+        }
 
         controller.tick("", Direction.NONE);
 
-        assertEquals(expected, h.getPosition());
+        assertTrue(possiblePositions.contains(h.getPosition()));
     }
 
     @Test
-    public void testHydraFightCharacterNoWeapon() {
-        Random random = new Random(1234);
+    public void testHydraFightCharacterNoWeapon1() {
+        // Seed = 1 will damage hydra first, then heal
+        Random r = new Random(1);
         // Hydra should spawn in hard
-        DungeonManiaController controller = new DungeonManiaController(random);
+        DungeonManiaController controller = new DungeonManiaController(r);
         controller.newGame("test-hydra", "Hard");
 
         Entities h = EntitiesFactory.createEntities("hydra", new Position(2, 1));
         controller.getDungeon().addEntities(h);
 
         controller.tick("", Direction.RIGHT);
-        // TODO calculate if it damages or heals
 
         // Character HP = 100 - ((200 * 2) / 10)) = 60
         assertEquals(60, controller.getDungeon().getCharacter().getHealth());
         // Hydra HP = 200 - ((100 * 3) / 5) = 140
+        // At current seed, damages hydra first
         assertEquals(140, ((Mobs) h).getHealth());
 
-        // Fights after
-        // Character HP = 32, 11.2, -5.76 (DEAD)
-        // Hydra HP = 104, 84.8, 78.08
+        controller.tick("", Direction.NONE);
 
+        // Hydra HP = 140 + ((60 * 3) / 5) = 176
+        // At current seed, heals hydra second
+        assertEquals(176, ((Mobs) h).getHealth());
     }
 
     @Test
-    public void testHydraFightCharacterAnduril() {
-        DungeonManiaController controller = new DungeonManiaController();
+    public void testHydraFightCharacterNoWeapon2() {
+        // Seed = 2 will heal the hydra
+        Random r = new Random(2);
+        // Hydra should spawn in hard
+        DungeonManiaController controller = new DungeonManiaController(r);
         controller.newGame("test-hydra", "Hard");
 
-        // Create hydra
         Entities h = EntitiesFactory.createEntities("hydra", new Position(2, 1));
         controller.getDungeon().addEntities(h);
-
-        // Add anduril to inventory
-        Anduril a = (Anduril) ItemsFactory.createItem("anduril");
-        controller.getDungeon().getCharacter().addInventory(a);
 
         controller.tick("", Direction.RIGHT);
 
         // Character HP = 100 - ((200 * 2) / 10)) = 60
         assertEquals(60, controller.getDungeon().getCharacter().getHealth());
-        // Hydra HP = 200 - ((100 * 3 * 3) / 5) = 20
-        assertEquals(20, ((Mobs) h).getHealth());
-
-        // Fights after
-        // Character HP = 56
-        // Hydra HP = -88 (DEAD)
+        // Hydra HP = 200 + ((100 * 3) / 5) = 260 = 200
+        // At current seed, heals hydra, check that it caps at MAX HEALTH
+        assertEquals(200, ((Mobs) h).getHealth());
 
     }
 
     @Test
     public void testHydraFightCharacterAndAlly() {
-        DungeonManiaController controller = new DungeonManiaController();
+        // Seed = 1, Hydra takes damage first fight
+        Random r = new Random(1);
+        DungeonManiaController controller = new DungeonManiaController(r);
         controller.newGame("test-hydra", "Hard");
 
         // Create hydra
@@ -158,11 +156,9 @@ public class HydraTest {
 
         controller.tick("", Direction.RIGHT);
 
-        // TODO Calculate if damage or heal
         // Character HP = 100 - ((200 * 2) / 10)) = 60
         assertEquals(60, controller.getDungeon().getCharacter().getHealth());
         // Hydra HP = 200 - ((100 * 3) / 5) - ((80 * 1) / 5) = 124
         assertEquals(124, ((Mobs) h).getHealth());
-
     }
 }

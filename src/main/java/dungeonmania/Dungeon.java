@@ -14,6 +14,7 @@ import Entities.Interactable;
 import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Enemy;
+import Entities.movingEntities.Hydra;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;
 import Entities.movingEntities.ZombieToast;
@@ -403,6 +404,7 @@ public class Dungeon {
         List<ZombieToast> zList = new ArrayList<ZombieToast>();
         List<Spider> sList = new ArrayList<Spider>();
         List<BribedMercenary> bList = new ArrayList<BribedMercenary>();
+        List<Hydra> hList = new ArrayList<Hydra>();
 
         for (Entities e : getEntities()) {
             if (e instanceof Mercenary) {
@@ -417,6 +419,9 @@ public class Dungeon {
             } else if (e instanceof BribedMercenary) {
                 BribedMercenary b = (BribedMercenary) e;
                 bList.add(b);
+            } else if (e instanceof Hydra) {
+                Hydra h = (Hydra) e;
+                hList.add(h);
             }
         }
 
@@ -438,17 +443,24 @@ public class Dungeon {
                 return newDungeonResponse();
             s.makeMovement(this);
         }
-        // Spider
+        // Bribed mercenary
         for (BribedMercenary b : bList) {
             if (getCharacter() == null)
                 return newDungeonResponse();
             b.makeMovement(this);
         }
+        // Hydra
+        for (Hydra h : hList) {
+            if (getCharacter() == null)
+                return newDungeonResponse();
+            h.makeMovement(this);
+        }
 
         if (getCharacter() == null)
             return newDungeonResponse();
 
-        spawnEnemies(getGameMode(), getHeight(), getWidth()); // Spawn Enemies
+        spawnEnemies();
+
         if (hasCompletedGoals()) {
             gameCompleted();
         }
@@ -521,17 +533,20 @@ public class Dungeon {
      * @param height
      * @param width
      */
-    public void spawnEnemies(String gameMode, int height, int width) {
+    public void spawnEnemies() {
+        // Don't spawn stuff at game start
         if (getTicksCounter() == 0 || spawnRate == 0) {
             return;
         }
 
+        // Spider
         if (getTicksCounter() % 25 == 0) {
             Entities spider = EntitiesFactory.createEntities("spider",
-                    new Position(random.nextInt(width), random.nextInt(height), 2));
+                    new Position(random.nextInt(getWidth()), random.nextInt(getHeight()), 2));
             addEntities(spider);
         }
 
+        // Zombie Toast
         if (getTicksCounter() % spawnRate == 0) {
             for (Entities entity : getEntities()) {
                 if (entity instanceof ZombieToastSpawner) {
@@ -542,6 +557,15 @@ public class Dungeon {
                         addEntities(zombieToast);
                     break;
                 }
+            }
+        }
+
+        // Hydra
+        if (getGameMode().equals("Hard")) {
+            if (getTicksCounter() % 50 == 0) {
+                Entities hydra = EntitiesFactory.createEntities("hydra",
+                        new Position(random.nextInt(getWidth()), random.nextInt(getHeight()), 2));
+                addEntities(hydra);
             }
         }
 
@@ -619,16 +643,12 @@ public class Dungeon {
             }
             return false;
         case "enemies":
-            List<Entities> zombies = getEntities().stream().filter(e -> Objects.nonNull(e))
-                    .filter((entity) -> entity.getType().equals("zombie_toast")).collect(Collectors.toList());
-            List<Entities> mercenary = getEntities().stream().filter(e -> Objects.nonNull(e))
-                    .filter((entity) -> entity.getType().equals("mercenary")).collect(Collectors.toList());
-            List<Entities> spiders = getEntities().stream().filter(e -> Objects.nonNull(e))
-                    .filter((entity) -> entity.getType().equals("spider")).collect(Collectors.toList());
-            List<Entities> zombiespawners = getEntities().stream().filter(e -> Objects.nonNull(e))
-                    .filter((entity) -> entity.getType().equals("zombie_toast_spawner")).collect(Collectors.toList());
+            List<Entities> enemies = getEntities().stream()
+                    .filter(e -> Objects.nonNull(e))
+                    .filter((entity) -> entity instanceof Enemy)
+                    .collect(Collectors.toList());
 
-            if (zombies.isEmpty() && mercenary.isEmpty() && spiders.isEmpty() && zombiespawners.isEmpty()) {
+            if (enemies.isEmpty()) {
                 return true;
             }
             return false;

@@ -33,9 +33,11 @@ public class ZombieToast extends SpawningEntities {
             invin.invinMovement(dungeon, this);
             return;
         }
-        // Get a random direction and translate current position by it
-        Direction randomDirection = Direction.values()[dungeon.getRandom().nextInt(Direction.values().length)];
-        Position newPosition = getPosition().translateBy(randomDirection);
+
+        // 4 possible different directions that the zombie might be able to go
+        List<Position> positions = getZombieMovablePositions(getPosition());
+        // Get a random position
+        Position newPosition = positions.get(dungeon.getRandom().nextInt(4));
         
         // if the position is movable, move otherwise, don't :]
         if (checkMovable(newPosition, dungeon)) {

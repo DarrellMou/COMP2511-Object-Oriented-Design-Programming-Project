@@ -87,7 +87,8 @@ Milestone 3:
 Hydra
 - Health = 200, Attack Damage = 2
 - Spawns at random location (like spider)
-- Movement is random (up, right, down, left, none) like zombie toast
+- Movement is random (up, right, down, left) like zombie toast
+- If the hydra were to heal past it's max health, it will be restored to full health instead.
 
 Anduril
 - Does 1.5x character damage (like normal sword) to non-boss enemies

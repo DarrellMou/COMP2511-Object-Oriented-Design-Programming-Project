@@ -11,6 +11,7 @@ import Items.ItemsFactory;
 import Items.TheOneRingItem;
 import Items.Equipments.Armours.Armours;
 import Items.Equipments.Shields.Shields;
+import Items.Equipments.Weapons.Anduril;
 import Items.Equipments.Weapons.Weapons;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Buffs;
@@ -330,13 +331,24 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      * @return double
      */
     @Override
-    public double calculateDamage() {
+    public double calculateDamage(Fightable enemy) {
         double damage = getAttackDamage();
         // One shot enemy if invincible. Weapon durability is not lowered when
         // invincible.
         if (getBuffs(Invincible.class) != null) {
             return getHealth() * 1000;
         }
+        // If fighting boss, check for anduril first and use if so
+        if (enemy instanceof Boss) {
+            for (InventoryItem item : getInventory()) {
+                if (item instanceof Anduril) {
+                    Anduril a = (Anduril) item;
+                    damage = a.calculateBossDamage(this, damage);
+                    return getHealth() * damage;
+                }
+            }
+        }
+        // Either fighting boss without anduril, or fighting non-boss
         for (InventoryItem item : getInventory()) {
             // get first weapon in inventory
             if (item instanceof Weapons) {

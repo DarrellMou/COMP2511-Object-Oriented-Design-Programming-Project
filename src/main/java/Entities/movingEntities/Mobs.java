@@ -38,10 +38,11 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
     }
 
     /**
+     * Calculates mob damage. Does nothing with enemy.
      * @return double
      */
     @Override
-    public double calculateDamage() {
+    public double calculateDamage(Fightable enemy) {
         return getHealth() * getAttackDamage();
     }
 

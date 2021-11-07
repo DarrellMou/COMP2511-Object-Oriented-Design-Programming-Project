@@ -6,18 +6,19 @@ import java.util.Map;
 import Entities.Entities;
 import Entities.WalkedOn;
 import Items.ItemsFactory;
-import Items.TheOneRingItem;
 import dungeonmania.Dungeon;
-import dungeonmania.Buffs.Invisible;
 import dungeonmania.util.Battle;
-import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public abstract class Enemy extends Mobs implements WalkedOn {
     public Map<String, Double> itemDrop = new HashMap<String, Double>() {
         {
+            // One ring = 5%
+            // Armour = 20%
+            // Anduril = 10%
             put("one_ring", 0.05);
             put("armour", 0.20);
+            put("anduril", 0.10);
         }
     };
 
