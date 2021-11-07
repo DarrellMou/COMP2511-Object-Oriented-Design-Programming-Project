@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch test",
+            "request": "launch",
+            "mainClass": "dungeonmania.test",
+            "projectName": "project"
+        },
+        {
+            "type": "java",
             "name": "Launch BribedMercenaryTest",
             "request": "launch",
             "mainClass": "dungeonmania.BribedMercenaryTest",

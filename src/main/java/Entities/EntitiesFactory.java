@@ -20,9 +20,11 @@ import Entities.staticEntities.DoorOpen;
 import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.Portal;
+import Entities.staticEntities.SwampTile;
 import Entities.staticEntities.Wall;
 import Entities.staticEntities.ZombieToastSpawner;
 import data.DataEntities;
+import Entities.movingEntities.Assassin;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Hydra;
 import Entities.movingEntities.Mercenary;
@@ -141,9 +143,9 @@ public class EntitiesFactory {
         } else if (type.equals("boulder")) {
             newEntity = new Boulder(getNextId(), position);
         } else if (type.equals("sword")) {
-            newEntity = new Sword(getNextId(), position); // is sword interctable?no
+            newEntity = new Sword(getNextId(), position);
         } else if (type.equals("mercenary")) {
-            newEntity = new Mercenary(getNextId(), position); // What is mecernary health?
+            newEntity = new Mercenary(getNextId(), position);
         } else if (type.equals("spider")) {
             newEntity = new Spider(getNextId(), position);
         } else if (type.equals("player")) {
@@ -162,6 +164,10 @@ public class EntitiesFactory {
             newEntity = new DoorOpen(getNextId(), position);
         } else if (type.equals("hydra")) {
             newEntity = new Hydra(getNextId(), position);
+        } else if (type.equals("assassin")) {
+            newEntity = new Assassin(getNextId(), position);
+        } else if (type.equals("swamp_tile")) {
+            newEntity = new SwampTile(getNextId(), position);
         }
         return newEntity;
     }

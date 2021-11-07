@@ -272,6 +272,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         setInBattleWith(null);
         Position newPosition = getPosition().translateBy(getMovementDirection());
         if (checkMovable(newPosition, dungeon)) {
+            walkOn(newPosition, dungeon);
             setPrevPosition(getPosition());
 
             // If position changed after walking on newPosition
@@ -279,10 +280,11 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             if (!getPosition().translateBy(getMovementDirection()).equals(newPosition)) {
                 Position newerPosition = getPosition().translateBy(getMovementDirection());
                 if (checkMovable(newerPosition, dungeon)) {
-                    setPosition(newerPosition);
+                    walkOn(newerPosition, dungeon);
+                    setPosition(newerPosition, dungeon);
                 }
             } else {
-                setPosition(newPosition);
+                setPosition(newPosition, dungeon);
             }
         } else {
             for (Entities e : dungeon.getEntitiesOnTile(getPosition())) {
@@ -313,15 +315,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
             if (!e.isWalkable()) {
                 return false;
-            }
-        }
-        // Player CAN move to given position
-        for (Entities e : dungeon.getEntitiesOnTile(position)) {
-            // Do what happens when character wants to walk onto entities at
-            // target position
-            if (e instanceof WalkedOn) {
-                WalkedOn w = (WalkedOn) e;
-                w.walkedOn(dungeon, this);
             }
         }
         return true;

@@ -41,7 +41,8 @@ public class ZombieToast extends SpawningEntities {
         
         // if the position is movable, move otherwise, don't :]
         if (checkMovable(newPosition, dungeon)) {
-            setPosition(newPosition);
+            walkOn(newPosition, dungeon);
+            setPosition(newPosition, dungeon);
         }
     }
 

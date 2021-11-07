@@ -7,15 +7,10 @@
         },
         {
             "x": 0,
-            "y": -1,
-            "type": "treasure"
-        },
-        {
-            "x": -1,
             "y": 0,
-            "type": "wall"
+            "type": "swamp_tile"
         }
     ],
     "width": 20,
     "height": 20
-}
+  }
