@@ -31,8 +31,10 @@ public final class Battle {
         } else {
             Battle.battledEnemies.add(enemy);
         }
-        double allyDamage = ally.calculateDamage();
-        double enemyDamage = enemy.calculateDamage();
+        double allyDamage = ally.calculateDamage(enemy);
+        double enemyDamage = enemy.calculateDamage(ally);
+        // Ally takes damage first, since if enemy dies,
+        // player can pick up dropped armour and reduce damage taken
         if (!isPeaceful) {
             ally.takeDamage(dungeon, enemyDamage);
         }

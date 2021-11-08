@@ -26,6 +26,7 @@ import Entities.staticEntities.ZombieToastSpawner;
 import data.DataEntities;
 import Entities.movingEntities.Assassin;
 import Entities.movingEntities.Character;
+import Entities.movingEntities.Hydra;
 import Entities.movingEntities.Mercenary;
 import Entities.movingEntities.Spider;
 import Entities.movingEntities.ZombieToast;
@@ -161,6 +162,8 @@ public class EntitiesFactory {
             newEntity = new BombActive(getNextId(), position);
         } else if (type.equals("door_open")) {
             newEntity = new DoorOpen(getNextId(), position);
+        } else if (type.equals("hydra")) {
+            newEntity = new Hydra(getNextId(), position);
         } else if (type.equals("assassin")) {
             newEntity = new Assassin(getNextId(), position);
         } else if (type.equals("swamp_tile")) {

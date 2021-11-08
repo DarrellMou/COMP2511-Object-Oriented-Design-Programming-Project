@@ -12,7 +12,7 @@ public interface Fightable {
      * 
      * @return
      */
-    public double calculateDamage();
+    public double calculateDamage(Fightable enemy);
 
     public void takeDamage(Dungeon dungeon, double damage);
 
