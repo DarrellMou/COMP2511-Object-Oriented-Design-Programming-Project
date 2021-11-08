@@ -295,24 +295,7 @@ public class Dungeon {
 
         GoalNode res = createParsedExpression(json);
         setGoals(res.toString());
-        // Potentially remove all of this bottom stuff
-        // if (data.getGoalCondition().getGoal().equals("AND") ||
-        // data.getGoalCondition().getGoal().equals("OR")) {
-        // String goal = "";
-        // List<DataSubgoal> subgoals = data.getGoalCondition().getSubgoals();
-        // for (int i = 0; i < subgoals.size() - 1; i++) {
-        // // If it is the last item dont append AND to it
-        // goal += ":" + subgoals.get(i).getGoal() + " " +
-        // data.getGoalCondition().getGoal() + " ";
-        // }
-        // goal += ":" + subgoals.get(subgoals.size() - 1).getGoal();
 
-        // this.setGoals(goal);
-
-        // // Need to see how to implement two goals in a string
-        // } else {
-        // this.setGoals(data.getGoalCondition().getGoal());
-        // }
     }
 
     /**
@@ -604,37 +587,6 @@ public class Dungeon {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // List<String> goalsList = new ArrayList<>();
-        // for (String goals : getGoals().split(" ")) {
-        // if (goals.contains(":")) {
-        // goalsList.add(goals.split(":")[1]);
-        // }
-
-        // }
-        // if (goalsList.isEmpty()) {
-        // goalsList.add(getGoals());
-        // }
-
-        // for (String goal : goalsList) {
-        // if (getGoals().contains("OR")) { // Check if the goal is OR or AND
-        // if (checkIndividualGoals(goal, inventoryTypes, goalsList))
-        // return true;
-
-        // } else if (getGoals().contains("AND")) {
-        // if (!checkIndividualGoals(goal, inventoryTypes, goalsList)) {
-        // return false;
-        // }
-
-        // } else {
-        // if (checkIndividualGoals(goal, inventoryTypes, goalsList))
-        // return true;
-        // }
-
-        // }
-        // if (getGoals().contains("AND")) {
-        // return true;
-        // }
 
         return false;
     }
