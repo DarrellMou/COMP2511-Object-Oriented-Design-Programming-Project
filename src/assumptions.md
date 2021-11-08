@@ -99,3 +99,8 @@ Invincibility Potion
 - Have a 10 tick duration.
 - Does not consume durability in battle
 - One shots enemies when active and character does not take damage
+
+Milestone 3:
+
+Sun Stone
+- Opening doors and bribing will first try to use sun stone before any other items
