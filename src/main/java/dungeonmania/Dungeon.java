@@ -1,5 +1,13 @@
 package dungeonmania;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,6 +15,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import Entities.Entities;
 import Entities.EntitiesFactory;
@@ -32,12 +43,18 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.gamemodes.Hard;
 import dungeonmania.gamemodes.Peaceful;
 import dungeonmania.gamemodes.Standard;
+import dungeonmania.goals.AndGoal;
+import dungeonmania.goals.BooleanGoalEvaluator;
+import dungeonmania.goals.GoalLeaf;
+import dungeonmania.goals.GoalNode;
+import dungeonmania.goals.OrGoal;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import spark.utils.IOUtils;
 
 public class Dungeon {
     private String dungeonId;
@@ -273,23 +290,14 @@ public class Dungeon {
 
     /**
      * @param data
+     * @throws URISyntaxException
+     * @throws IOException
      */
-    public void setAllGoals(Data data) {
-        if (data.getGoalCondition().getGoal().equals("AND") || data.getGoalCondition().getGoal().equals("OR")) {
-            String goal = "";
-            List<DataSubgoal> subgoals = data.getGoalCondition().getSubgoals();
-            for (int i = 0; i < subgoals.size() - 1; i++) {
-                // If it is the last item dont append AND to it
-                goal += ":" + subgoals.get(i).getGoal() + " " + data.getGoalCondition().getGoal() + " ";
-            }
-            goal += ":" + subgoals.get(subgoals.size() - 1).getGoal();
+    public void setAllGoals(Data data, JSONObject json) {
 
-            this.setGoals(goal);
+        GoalNode res = createParsedExpression(json);
+        setGoals(res.toString());
 
-            // Need to see how to implement two goals in a string
-        } else {
-            this.setGoals(data.getGoalCondition().getGoal());
-        }
     }
 
     /**
@@ -607,40 +615,55 @@ public class Dungeon {
 
     public Boolean hasCompletedGoals() {
 
-        List<String> inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType())
-                .collect(Collectors.toList());
-        List<String> goalsList = new ArrayList<>();
-        for (String goals : getGoals().split(" ")) {
-            if (goals.contains(":")) {
-                goalsList.add(goals.split(":")[1]);
-            }
+        try {
+            String fileName = "src/main/resources/dungeons/" + dungeonName + ".json";
+            InputStream is = new FileInputStream(fileName);
+            String jsonTxt = IOUtils.toString(is);
+            JSONObject json = new JSONObject(jsonTxt);
+            GoalNode res = createParsedExpression(json.getJSONObject("goal-condition"));
+            return BooleanGoalEvaluator.evaluate(res);
 
-        }
-        if (goalsList.isEmpty()) {
-            goalsList.add(getGoals());
-        }
-
-        for (String goal : goalsList) {
-            if (getGoals().contains("OR")) { // Check if the goal is OR or AND
-                if (checkIndividualGoals(goal, inventoryTypes, goalsList))
-                    return true;
-
-            } else if (getGoals().contains("AND")) {
-                if (!checkIndividualGoals(goal, inventoryTypes, goalsList)) {
-                    return false;
-                }
-
-            } else {
-                if (checkIndividualGoals(goal, inventoryTypes, goalsList))
-                    return true;
-            }
-
-        }
-        if (getGoals().contains("AND")) {
-            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return false;
+    }
+
+    public GoalNode createParsedExpression(JSONObject json) {
+
+        List<String> inventoryTypes = new ArrayList<>();
+
+        if (getCharacter() != null) {
+            inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType())
+                    .collect(Collectors.toList());
+        }
+
+        String nodeType = json.getString("goal");
+        JSONArray subgoals = null;
+        JSONObject goal1 = null;
+        JSONObject goal2 = null;
+        if (json.has("subgoals")) {
+            subgoals = json.getJSONArray("subgoals");
+            goal1 = subgoals.getJSONObject(0);
+            goal2 = subgoals.getJSONObject(1);
+        }
+        GoalNode current = null;
+        if (nodeType.equals("AND")) {
+            current = new AndGoal(createParsedExpression(goal1), createParsedExpression(goal2), goal1.getString("goal"),
+                    goal2.getString("goal"));
+
+        } else if (nodeType.equals("OR")) {
+            current = new OrGoal(createParsedExpression(goal1), createParsedExpression(goal2), goal1.getString("goal"),
+                    goal2.getString("goal"));
+        } else {
+            current = new GoalLeaf(checkIndividualGoals(json.getString("goal"), inventoryTypes),
+                    json.getString("goal"));
+        }
+        return current;
+
     }
 
     /**
@@ -649,7 +672,10 @@ public class Dungeon {
      * @param goalsList
      * @return Boolean
      */
-    public Boolean checkIndividualGoals(String goal, List<String> inventoryTypes, List<String> goalsList) {
+    public Boolean checkIndividualGoals(String goal, List<String> inventoryTypes) {
+        if (getCharacter() == null) {
+            return false;
+        }
         switch (goal.toLowerCase()) {
         case "exit":
             List<Entities> entitiesAtPosition = getEntitiesOnTile(getCharacter().getPosition());
