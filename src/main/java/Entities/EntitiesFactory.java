@@ -11,6 +11,7 @@ import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.collectableEntities.consumables.Key;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
+import Entities.collectableEntities.materials.SunStone;
 import Entities.collectableEntities.materials.Treasure;
 import Entities.collectableEntities.materials.Wood;
 import Entities.staticEntities.BombActive;
@@ -168,6 +169,8 @@ public class EntitiesFactory {
             newEntity = new Assassin(getNextId(), position);
         } else if (type.equals("swamp_tile")) {
             newEntity = new SwampTile(getNextId(), position);
+        } else if (type.equals("sun_stone")) {
+            newEntity = new SunStone(getNextId(), position);
         }
         return newEntity;
     }

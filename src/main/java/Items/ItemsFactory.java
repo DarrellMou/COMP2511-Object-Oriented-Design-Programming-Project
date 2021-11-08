@@ -13,6 +13,7 @@ import Items.Equipments.Weapons.BowItem;
 import Items.Equipments.Weapons.SwordItem;
 import Items.materialItem.ArrowItem;
 import Items.materialItem.KeyItem;
+import Items.materialItem.SunStoneItem;
 import Items.materialItem.TreasureItem;
 import Items.materialItem.WoodItem;
 
@@ -80,6 +81,8 @@ public class ItemsFactory {
             newItem = new BombItem(id);
         } else if (type.equals("sword")) {
             newItem = new SwordItem(id);
+        } else if (type.equals("sun_stone")) {
+            newItem = new SunStoneItem(id);
         }
         return newItem;
     }

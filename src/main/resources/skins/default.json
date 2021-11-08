@@ -50,6 +50,7 @@
     "boulders": "images/tileset/entities/boulder_00.png",
     "hydra": "images/tileset/entities/hydra.png",
     "anduril": "images/tileset/entities/anduril.png",
-    "assassin": "images/tileset/entities/assassin.png"
+    "assassin": "images/tileset/entities/assassin.png",
+    "sun_stone": "images/tileset/entities/sun_stone.png"
   }
 }

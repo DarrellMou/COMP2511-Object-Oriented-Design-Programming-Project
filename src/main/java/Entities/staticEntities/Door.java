@@ -1,5 +1,6 @@
 package Entities.staticEntities;
 
+import java.awt.RenderingHints.Key;
 import java.util.Objects;
 
 import Entities.BeforeWalkedOn;
@@ -8,6 +9,7 @@ import Entities.EntitiesFactory;
 import Entities.movingEntities.Character;
 import Items.InventoryItem;
 import Items.materialItem.KeyItem;
+import Items.materialItem.SunStoneItem;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
@@ -44,9 +46,15 @@ public class Door extends StaticEntities implements Triggerable, BeforeWalkedOn 
     public void trigger(Dungeon dungeon, Entities walker) {
         Character character = (Character) walker;
         // check for key, if so make door unlocked + isMovable
-        InventoryItem item = character.hasKey();
-        if (!(item == null)) {
-            KeyItem key = (KeyItem) item;
+        InventoryItem item1 = character.getInventoryItem(KeyItem.class);
+        InventoryItem item2 = character.getInventoryItem(SunStoneItem.class);
+        if (item2 != null) {
+            Entities door_open = EntitiesFactory.createEntities("door_open", this.getPosition());
+            dungeon.removeEntities(this);
+            dungeon.addEntities(door_open);
+        }
+        else if (item1 != null) {
+            KeyItem key = (KeyItem) item1;
             if (key.getType().substring(4, 5).equals(Integer.toString(this.key))) {
                 Entities door_open = EntitiesFactory.createEntities("door_open", this.getPosition());
                 dungeon.removeEntities(this);

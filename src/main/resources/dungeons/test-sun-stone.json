@@ -52,5 +52,16 @@
         }
     ],
     "width": 5,
-    "height": 5
+    "height": 5,
+    "goal-condition": {
+        "goal": "AND",
+        "subgoals": [
+            {
+                "goal": "enemies"
+            },
+            {
+                "goal": "treasure"
+            }
+        ]
+    }
 }

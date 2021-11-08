@@ -11,6 +11,7 @@ import Entities.Interactable;
 import Entities.collectableEntities.materials.Treasure;
 import Entities.staticEntities.SwampTile;
 import Items.InventoryItem;
+import Items.materialItem.SunStoneItem;
 import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Buffs;
@@ -85,10 +86,15 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
     public void bribeMercenary(Dungeon dungeon) {
         Character c = dungeon.getCharacter();
 
-        // check if treasure is in inventory
-        InventoryItem i = c.getInventoryItem(TreasureItem.class);
-        if (i == null) {
-            throw new InvalidActionException("Character does not have a treasure!!");
+        // check if sun_stone is in inventory
+        InventoryItem s = c.getInventoryItem(SunStoneItem.class);
+        InventoryItem i = null;
+        if (s == null) {
+            // check if treasure is in inventory
+            i = c.getInventoryItem(TreasureItem.class);
+            if (i == null) {
+                throw new InvalidActionException("Character does not have a treasure!!");
+            }
         }
 
         // check if mercenary is in range

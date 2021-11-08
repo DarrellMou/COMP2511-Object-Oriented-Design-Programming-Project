@@ -56,6 +56,16 @@ public class SunStoneTest {
         return false;
     }
 
+    public boolean CheckClassNameOnTile (String className, Position position, Dungeon dungeon) {
+        List<Entities> entities = dungeon.getEntitiesOnTile(position);
+        for (Entities entity : entities) {
+            if (entity.getClass().getSimpleName().equals(className)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Test
     public void testPickUp() {
         // Start game in test-sun-stone map + standard difficulty
@@ -79,11 +89,17 @@ public class SunStoneTest {
         Dungeon dungeon = controller.getDungeon();
 
         // Doors at positions (4, 1), (4, 2), (4, 3), (4, 4), (4, 5)
-        assertEquals(true, CheckEntityTypeOnTile("door", new Position(4, 1), dungeon));
-        assertEquals(true, CheckEntityTypeOnTile("door", new Position(4, 2), dungeon));
-        assertEquals(true, CheckEntityTypeOnTile("door", new Position(4, 3), dungeon));
-        assertEquals(true, CheckEntityTypeOnTile("door", new Position(4, 4), dungeon));
-        assertEquals(true, CheckEntityTypeOnTile("door", new Position(4, 5), dungeon));
+        assertEquals(true, CheckEntityTypeOnTile("door_1", new Position(4, 1), dungeon));
+        assertEquals(true, CheckEntityTypeOnTile("door_2", new Position(4, 2), dungeon));
+        assertEquals(true, CheckEntityTypeOnTile("door_3", new Position(4, 3), dungeon));
+        assertEquals(true, CheckEntityTypeOnTile("door_4", new Position(4, 4), dungeon));
+        assertEquals(true, CheckEntityTypeOnTile("door_5", new Position(4, 5), dungeon));
+
+        assertEquals(true, CheckClassNameOnTile("Door", new Position(4, 1), dungeon));
+        assertEquals(true, CheckClassNameOnTile("Door", new Position(4, 2), dungeon));
+        assertEquals(true, CheckClassNameOnTile("Door", new Position(4, 3), dungeon));
+        assertEquals(true, CheckClassNameOnTile("Door", new Position(4, 4), dungeon));
+        assertEquals(true, CheckClassNameOnTile("Door", new Position(4, 5), dungeon));
 
         // Pickup sun_stone, (2, 1)
         controller.tick("", Direction.RIGHT);
@@ -94,23 +110,18 @@ public class SunStoneTest {
         // Open first door, (4, 1)
         controller.tick("", Direction.RIGHT);
 
-        assertEquals(true, CheckEntityTypeOnTile("door_open", new Position(4, 1), dungeon));
+        assertEquals(true, CheckClassNameOnTile("DoorOpen", new Position(4, 1), dungeon));
+        assertEquals(false, CheckClassNameOnTile("door", new Position(4, 1), dungeon));
         assertEquals(true, CheckItemInInventory("sun_stone", dungeon.getCharacter()));
 
         for (int i = 2; i <= 5; i++) {
             // Open ith door, (4, i)
             controller.tick("", Direction.DOWN);
 
-            assertEquals(true, CheckEntityTypeOnTile("door_open", new Position(4, i), dungeon));
+            assertEquals(true, CheckClassNameOnTile("DoorOpen", new Position(4, i), dungeon));
+            assertEquals(false, CheckClassNameOnTile("door", new Position(4, i), dungeon));
             assertEquals(true, CheckItemInInventory("sun_stone", dungeon.getCharacter()));
         }
-
-        // Doors no longer at positions (4, 1), (4, 2), (4, 3), (4, 4), (4, 5)
-        assertEquals(false, CheckEntityTypeOnTile("door", new Position(4, 1), dungeon));
-        assertEquals(false, CheckEntityTypeOnTile("door", new Position(4, 2), dungeon));
-        assertEquals(false, CheckEntityTypeOnTile("door", new Position(4, 3), dungeon));
-        assertEquals(false, CheckEntityTypeOnTile("door", new Position(4, 4), dungeon));
-        assertEquals(false, CheckEntityTypeOnTile("door", new Position(4, 5), dungeon));
     }
 
     @Test
@@ -131,6 +142,9 @@ public class SunStoneTest {
         // Pickup sun_stone, (2, 1)
         // Assassins and mercenaries move up
         controller.tick("", Direction.RIGHT);
+
+        // Assassins and mercenaries move up
+        controller.tick("", Direction.LEFT);
 
         Position assassin1Pos = assassin1.getPosition();
         Position mercenary1Pos = mercenary1.getPosition();

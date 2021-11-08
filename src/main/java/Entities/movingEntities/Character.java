@@ -96,18 +96,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         return buffs;
     }
 
-    /**
-     * @return InventoryItem
-     */
-    public InventoryItem hasKey() {
-        for (InventoryItem i : getInventory()) {
-            if (i.getType().substring(0, 3).equals("key")) {
-                return i;
-            }
-        }
-        return null;
-    }
-
     public static int getMAX_HEALTH() {
         return MAX_HEALTH;
     }
