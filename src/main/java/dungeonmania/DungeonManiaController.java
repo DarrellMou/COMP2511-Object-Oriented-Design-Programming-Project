@@ -7,11 +7,15 @@ import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
+import spark.utils.IOUtils;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,6 +26,9 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import Entities.Entities;
 import Entities.EntitiesFactory;
@@ -163,8 +170,9 @@ public class DungeonManiaController {
      * @param gameMode
      * @return DungeonResponse
      * @throws IllegalArgumentException
+     * @throws URISyntaxException
      */
-    public DungeonResponse newGame(String dungeonName, String gameMode) throws IllegalArgumentException {
+    public DungeonResponse newGame(String dungeonName, String gameMode) {
         if (!getGameModes().contains(gameMode)) {
             throw new IllegalArgumentException("Game mode is not a valid game mode");
         }
@@ -192,14 +200,19 @@ public class DungeonManiaController {
     /**
      * @param entitiesResponses
      * @param dungeonName
+     * @throws URISyntaxException
      */
     public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName, String gameMode) {
         try {
-            BufferedReader br = new BufferedReader(
-                    new FileReader("src/main/resources/dungeons/" + dungeonName + ".json"));
+            String fileName = "src/main/resources/dungeons/" + dungeonName + ".json";
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
             Data data = new Gson().fromJson(br, Data.class);
+            InputStream is = new FileInputStream(fileName);
+            String jsonTxt = IOUtils.toString(is);
+            JSONObject json = new JSONObject(jsonTxt);
             if (data.getGoalCondition() != null) {
-                dungeon.setAllGoals(data); // Set the goals given by the map only if there is a goal condition
+                dungeon.setAllGoals(data, json.getJSONObject("goal-condition")); // Set the goals given by the map only
+                                                                                 // if there is a goal condition
 
             } else {
                 dungeon.setGoals("");
