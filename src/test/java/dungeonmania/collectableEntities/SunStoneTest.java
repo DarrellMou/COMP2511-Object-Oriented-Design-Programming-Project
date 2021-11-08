@@ -21,7 +21,7 @@ public class SunStoneTest {
     public void testPickUp() {
         // Start game in test-sun-stone map + standard difficulty
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("test-sun-stone", "Peaceful");
+        controller.newGame("test-sun-stone", "Standard");
 
         // Pickup sun_stone
         controller.tick("", Direction.RIGHT);
@@ -35,13 +35,11 @@ public class SunStoneTest {
     public void testOpenDoors() {
         // Start game in test-sun-stone map + standard difficulty
         DungeonManiaController controller = new DungeonManiaController();
-        controller.newGame("test-sun-stone", "Peaceful");
+        controller.newGame("test-sun-stone", "Standard");
 
         // Pickup sun_stone
         controller.tick("", Direction.RIGHT);
 
-        // Check sun_stone in inventory
-        assertEquals(1, controller.getDungeon().getCharacter().getInventory().size());
-        assertEquals("sun_stone", controller.getDungeon().getCharacter().getInventory().get(0).getType());
+        
     }
 }
