@@ -9,6 +9,7 @@ import Entities.collectableEntities.consumables.HealthPotion;
 import Entities.collectableEntities.consumables.InvincibilityPotion;
 import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.collectableEntities.consumables.Key;
+import Entities.collectableEntities.equipments.Armour;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
 import Entities.collectableEntities.materials.SunStone;
@@ -145,6 +146,8 @@ public class EntitiesFactory {
             newEntity = new Boulder(getNextId(), position);
         } else if (type.equals("sword")) {
             newEntity = new Sword(getNextId(), position);
+        } else if (type.equals("armour")) {
+            newEntity = new Armour(getNextId(), position);
         } else if (type.equals("mercenary")) {
             newEntity = new Mercenary(getNextId(), position);
         } else if (type.equals("spider")) {

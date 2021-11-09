@@ -46,8 +46,6 @@ public class ItemsFactory {
             newItem = new ShieldItem(ItemsFactory.id());
         } else if (type.equals("one_ring")) {
             newItem = new TheOneRingItem(ItemsFactory.id());
-        } else if (type.equals("armour")) {
-            newItem = new ArmourItem(ItemsFactory.id());
         } else if (type.equals("anduril")) {
             newItem = new Anduril(ItemsFactory.id());
         }
@@ -81,6 +79,8 @@ public class ItemsFactory {
             newItem = new BombItem(id);
         } else if (type.equals("sword")) {
             newItem = new SwordItem(id);
+        } else if (type.equals("armour")) {
+            newItem = new ArmourItem(ItemsFactory.id());
         } else if (type.equals("sun_stone")) {
             newItem = new SunStoneItem(id);
         }
