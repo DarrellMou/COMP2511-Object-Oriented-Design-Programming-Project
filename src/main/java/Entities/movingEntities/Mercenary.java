@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import Entities.Entities;
+import Entities.EntitiesFactory;
 import Entities.Interactable;
 import Entities.collectableEntities.materials.Treasure;
 import Entities.staticEntities.SwampTile;
@@ -102,7 +103,7 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
         dungeon.removeEntities(this);
         // add bribed mercenary from list
         c.removeInventory(i);
-        BribedMercenary newBribedMercenary = new BribedMercenary(getId(), getPosition());
+        Entities newBribedMercenary = EntitiesFactory.createEntities("bribed_mercenary", this.getPosition());
         dungeon.addEntities(newBribedMercenary);
     }
 

@@ -1,5 +1,7 @@
 package Entities.movingEntities;
 
+import Entities.Entities;
+import Entities.EntitiesFactory;
 import Entities.Interactable;
 import Items.InventoryItem;
 import Items.TheOneRingItem;
@@ -98,7 +100,7 @@ public class Assassin extends Boss implements Interactable {
         // add bribed assassin from list
         c.removeInventory(t);
         c.removeInventory(o);
-        BribedAssassin newBribedAssassin = new BribedAssassin(getId(), getPosition());
+        Entities newBribedAssassin = EntitiesFactory.createEntities("bribed_assassin", this.getPosition());
         dungeon.addEntities(newBribedAssassin);
     }
 

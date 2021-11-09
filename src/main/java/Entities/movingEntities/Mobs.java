@@ -44,6 +44,7 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
 
     /**
      * Calculates mob damage. Does nothing with enemy.
+     * 
      * @return double
      */
     @Override
@@ -226,7 +227,7 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
             int cost = 1;
             for (Entities e : dungeon.getEntitiesOnTile(curPosition)) {
                 if (e instanceof SwampTile)
-                    cost = 2;
+                    cost = ((SwampTile) e).getMovementFactor();
             }
 
             // get all adjacent positions to the current position
