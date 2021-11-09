@@ -13,7 +13,10 @@
         {
             "x": 4,
             "y": 0,
-            "type": "assassin"
+            "type": "mercenary"
         }
-    ]
+    ],
+    "goal-condition": {
+      "goal": "exit"
+    }
 }

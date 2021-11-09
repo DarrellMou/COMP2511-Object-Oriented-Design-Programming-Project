@@ -120,6 +120,9 @@ public class BribedAlliesTest {
         DungeonManiaController controller = new DungeonManiaController();
         controller.newGame("mercenary_bribe", "Standard");
 
+        // Player picks up treasure, mercenary also moves left
+        controller.tick("", Direction.RIGHT);
+
         boolean mercenaryExists = false;
         Mercenary m = null;
         for (Entities current : controller.getDungeon().getEntitiesOnTile(new Position(3, 0))) {
