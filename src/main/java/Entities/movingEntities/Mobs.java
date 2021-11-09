@@ -4,7 +4,6 @@ import Entities.Entities;
 import Entities.WalkedOn;
 import Entities.staticEntities.SwampTile;
 import dungeonmania.Dungeon;
-import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public abstract class Mobs extends Entities implements Movable, Fightable {
     private double maxHealth;
@@ -44,6 +42,7 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
 
     /**
      * Calculates mob damage. Does nothing with enemy.
+     * 
      * @return double
      */
     @Override
@@ -226,7 +225,7 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
             int cost = 1;
             for (Entities e : dungeon.getEntitiesOnTile(curPosition)) {
                 if (e instanceof SwampTile)
-                    cost = 2;
+                    cost = ((SwampTile) e).getMovementFactor();
             }
 
             // get all adjacent positions to the current position

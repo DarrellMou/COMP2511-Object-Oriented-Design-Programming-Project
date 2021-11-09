@@ -2,8 +2,6 @@ package dungeonmania.Buffs;
 
 import java.util.List;
 
-import Entities.movingEntities.Character;
-
 public abstract class Buffs {
     public int endTick;
 

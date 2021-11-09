@@ -1,7 +1,5 @@
 package Entities.staticEntities;
 
-import Entities.Entities;
-import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
 public class Wall extends StaticEntities {

@@ -6,7 +6,6 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
-import dungeonmania.util.Position;
 import spark.utils.IOUtils;
 
 import java.io.BufferedReader;
@@ -21,31 +20,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import Entities.Entities;
 import Entities.EntitiesFactory;
-import Entities.movingEntities.*;
 import Entities.movingEntities.Character;
-import Entities.staticEntities.Boulder;
-import Entities.staticEntities.Triggerable;
 import Items.InventoryItem;
 import data.Data;
 import data.DataEntities;
-import Entities.staticEntities.ZombieToastSpawner;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-
-import Entities.collectableEntities.CollectableEntity;
 
 public class DungeonManiaController {
     private int numCreatedDungeons;

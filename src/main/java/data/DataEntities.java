@@ -7,15 +7,19 @@ public class DataEntities {
     private int y;
     private String type;
     private int key;
+    private int movement_factor;
     private String colour;
 
-
-    public DataEntities(int x, int y, String type, int key) {
+    public DataEntities(int x, int y, String type, int num) {
         this.x = x;
         this.y = y;
         this.type = type;
-        this.key = key;
-    
+        if (type == "key") {
+            this.key = num;
+        } else if (type == "swamp_tile") {
+            this.movement_factor = num;
+        }
+
     }
 
     public DataEntities(int x, int y, String type) {
@@ -24,16 +28,13 @@ public class DataEntities {
         this.type = type;
     }
 
-
     public DataEntities(int x, int y, String type, String colour) {
         this.x = x;
         this.y = y;
         this.type = type;
         this.colour = colour;
-    
+
     }
-
-
 
     public int getX() {
         return this.x;
@@ -82,7 +83,13 @@ public class DataEntities {
         this.key = key;
     }
 
-     
+    public int getMovementFactor() {
+        return movement_factor;
+    }
+
+    public void setMovementFactor(int movement_factor) {
+        this.movement_factor = movement_factor;
+    }
 
     public String getColour() {
         return this.colour;

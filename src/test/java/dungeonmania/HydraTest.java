@@ -141,7 +141,7 @@ public class HydraTest {
 
     @Test
     public void testHydraFightCharacterAndAlly() {
-        // Seed = 1, Hydra takes damage first fight
+        // Seed = 1, first = damage, second = damage, third = heal
         Random r = new Random(1);
         DungeonManiaController controller = new DungeonManiaController(r);
         controller.newGame("test-hydra", "Hard");
@@ -158,7 +158,7 @@ public class HydraTest {
 
         // Character HP = 100 - ((200 * 2) / 10)) = 60
         assertEquals(60, controller.getDungeon().getCharacter().getHealth());
-        // Hydra HP = 200 - ((100 * 3) / 5) - ((80 * 1) / 5) = 124
-        assertEquals(124, ((Mobs) h).getHealth());
+        // Hydra HP = 200 - ((100 * 3) / 5) + ((80 * 1) / 5) = 156
+        assertEquals(156, ((Mobs) h).getHealth());
     }
 }
