@@ -4,7 +4,6 @@ import Entities.Entities;
 import Entities.WalkedOn;
 import Entities.staticEntities.SwampTile;
 import dungeonmania.Dungeon;
-import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public abstract class Mobs extends Entities implements Movable, Fightable {
     private double maxHealth;

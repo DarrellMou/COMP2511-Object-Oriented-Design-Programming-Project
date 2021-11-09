@@ -1,7 +1,6 @@
 package Entities.staticEntities;
 
 import Entities.Entities;
-import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 
 public interface Triggerable {

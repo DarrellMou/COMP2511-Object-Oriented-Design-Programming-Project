@@ -1,6 +1,5 @@
 package Entities;
 
-import Entities.movingEntities.Character;
 import Entities.staticEntities.SwampTile;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;

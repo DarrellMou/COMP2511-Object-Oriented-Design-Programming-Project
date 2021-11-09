@@ -1,9 +1,5 @@
 package Entities.movingEntities;
 
-import Entities.Entities;
-import dungeonmania.Dungeon;
-import dungeonmania.util.Battle;
-import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class BribedMercenary extends Ally implements Portalable {
