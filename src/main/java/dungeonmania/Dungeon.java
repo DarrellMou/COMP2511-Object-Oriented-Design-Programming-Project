@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.Interactable;
+import Entities.buildableEntities.Sceptre;
+import Entities.movingEntities.Ally;
 import Entities.movingEntities.Assassin;
 import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Character;
@@ -23,10 +25,12 @@ import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.ZombieToastSpawner;
 import Items.InventoryItem;
+import Items.SceptreItem;
 import Items.TheOneRingItem;
 import Items.ConsumableItem.Consumables;
 import data.Data;
 import data.DataSubgoal;
+import dungeonmania.Buffs.AllyBuff;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.gamemodes.Hard;
@@ -327,6 +331,23 @@ public class Dungeon {
                 if (currItem.getId().equals(itemUsedId)) {
                     item = currItem;
                 }
+
+                // Check to see if there is a sceptre in inventory
+                if (currItem instanceof SceptreItem) {
+                    // Check if buff has been activated already
+                    if (!hasAllyBuff()) {
+                        for (Entities entity : getEntities()) {
+                            if (entity instanceof Enemy) {
+
+                                AllyBuff.turnAlly(this, (Enemy) entity);
+                            }
+
+                        }
+                        // Activate SceptreAlly Buff
+
+                    }
+                }
+
             }
 
             // Checks for whether itemUsed is in inventory
@@ -348,7 +369,18 @@ public class Dungeon {
         for (Buffs b : getCharacter().getBuffs()) {
             b.durationEnd(getTicksCounter(), removeBuffs);
         }
+
         for (Buffs b : removeBuffs) {
+            if (b instanceof AllyBuff) {
+                AllyBuff allyBuff = (AllyBuff) b;
+                for (Entities entity : getEntities()) {
+                    if (entity instanceof Ally) {
+                        allyBuff.endAllyBuff(this, (Ally) entity);
+
+                    }
+                }
+                // Remove the sceptre from the inventory here
+            }
             getCharacter().removeBuff(b);
         }
 
@@ -390,7 +422,8 @@ public class Dungeon {
         // - For now, move character
 
         /**
-         * Movement order: - Character - Assassin - Mercenary - Zombie Toast - Spider - Hydra
+         * Movement order: - Character - Assassin - Mercenary - Zombie Toast - Spider -
+         * Hydra
          */
 
         // Set character movement direction (needed for boulder movement)
@@ -660,10 +693,8 @@ public class Dungeon {
             }
             return false;
         case "enemies":
-            List<Entities> enemies = getEntities().stream()
-                    .filter(e -> Objects.nonNull(e))
-                    .filter((entity) -> entity instanceof Enemy)
-                    .collect(Collectors.toList());
+            List<Entities> enemies = getEntities().stream().filter(e -> Objects.nonNull(e))
+                    .filter((entity) -> entity instanceof Enemy).collect(Collectors.toList());
 
             if (enemies.isEmpty()) {
                 return true;
@@ -731,5 +762,15 @@ public class Dungeon {
         borders.add(downBorder + 1);
         borders.add(leftBorder - 1);
         return borders;
+    }
+
+    public Boolean hasAllyBuff() {
+        for (Buffs b : getCharacter().getBuffs()) {
+            if (b instanceof AllyBuff) {
+                return true;
+
+            }
+        }
+        return false;
     }
 }
