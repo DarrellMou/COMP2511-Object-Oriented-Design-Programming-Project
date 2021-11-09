@@ -1,8 +1,10 @@
 package Items;
 
+import Entities.Interactable;
 import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.AllyBuff;
+import dungeonmania.exceptions.InvalidActionException;
 
 public class SceptreItem extends InventoryItem {
 
