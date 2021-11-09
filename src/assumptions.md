@@ -99,3 +99,7 @@ Invincibility Potion
 - Have a 10 tick duration.
 - Does not consume durability in battle
 - One shots enemies when active and character does not take damage
+
+Swamp Tile
+- Character is able to push boulders if they are on swamp tile, although they do not move off of tile.
+- Mobs can jump into portals if they are on swamp tile ignoring movement factor.
