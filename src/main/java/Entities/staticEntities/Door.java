@@ -1,8 +1,5 @@
 package Entities.staticEntities;
 
-import java.awt.RenderingHints.Key;
-import java.util.Objects;
-
 import Entities.BeforeWalkedOn;
 import Entities.Entities;
 import Entities.EntitiesFactory;

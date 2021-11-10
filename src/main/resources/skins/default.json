@@ -27,6 +27,7 @@
     "wall": "images/tileset/walls/wooden/wood_bottom.png",
     "spider": "images/tileset/entities/spider_00.png",
     "mercenary": "images/tileset/entities/ranger.png",
+    "bribed_mercenary": "images/tileset/entities/ranger.png",
     "switch": "images/tileset/floor_switch.png",
     "invincibility_potion": "images/tileset/items/potion_10.png",
     "sword": "images/tileset/items/sword_silver.png",
@@ -51,6 +52,8 @@
     "hydra": "images/tileset/entities/hydra.png",
     "anduril": "images/tileset/entities/anduril.png",
     "assassin": "images/tileset/entities/assassin.png",
-    "sun_stone": "images/tileset/entities/sun_stone.png"
+    "sun_stone": "images/tileset/entities/sun_stone.png",
+    "bribed_assassin": "images/tileset/entities/assassin.png",
+    "swamp_tile": "images/tileset/entities/swamp_tile.png"
   }
 }

@@ -5,12 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -23,6 +18,7 @@ import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.Interactable;
 import Entities.movingEntities.Assassin;
+import Entities.movingEntities.BribedAssassin;
 import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Enemy;
@@ -34,10 +30,8 @@ import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.ZombieToastSpawner;
 import Items.InventoryItem;
-import Items.TheOneRingItem;
 import Items.ConsumableItem.Consumables;
 import data.Data;
-import data.DataSubgoal;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.gamemodes.Hard;
@@ -398,7 +392,8 @@ public class Dungeon {
         // - For now, move character
 
         /**
-         * Movement order: - Character - Assassin - Mercenary - Zombie Toast - Spider - Hydra
+         * Movement order: - Character - Assassin - Mercenary - Zombie Toast - Spider -
+         * Hydra
          */
 
         // Set character movement direction (needed for boulder movement)
@@ -412,8 +407,9 @@ public class Dungeon {
         List<Mercenary> mList = new ArrayList<Mercenary>();
         List<ZombieToast> zList = new ArrayList<ZombieToast>();
         List<Spider> sList = new ArrayList<Spider>();
-        List<BribedMercenary> bList = new ArrayList<BribedMercenary>();
         List<Hydra> hList = new ArrayList<Hydra>();
+        List<BribedAssassin> baList = new ArrayList<BribedAssassin>();
+        List<BribedMercenary> bList = new ArrayList<BribedMercenary>();
 
         for (Entities e : getEntities()) {
             if (e instanceof Assassin) {
@@ -428,12 +424,15 @@ public class Dungeon {
             } else if (e instanceof Spider) {
                 Spider s = (Spider) e;
                 sList.add(s);
-            } else if (e instanceof BribedMercenary) {
-                BribedMercenary b = (BribedMercenary) e;
-                bList.add(b);
             } else if (e instanceof Hydra) {
                 Hydra h = (Hydra) e;
                 hList.add(h);
+            } else if (e instanceof BribedAssassin) {
+                BribedAssassin b = (BribedAssassin) e;
+                baList.add(b);
+            } else if (e instanceof BribedMercenary) {
+                BribedMercenary b = (BribedMercenary) e;
+                bList.add(b);
             }
         }
 
@@ -461,17 +460,23 @@ public class Dungeon {
                 return newDungeonResponse();
             s.makeMovement(this);
         }
-        // Bribed mercenary
-        for (BribedMercenary b : bList) {
-            if (getCharacter() == null)
-                return newDungeonResponse();
-            b.makeMovement(this);
-        }
         // Hydra
         for (Hydra h : hList) {
             if (getCharacter() == null)
                 return newDungeonResponse();
             h.makeMovement(this);
+        }
+        // Bribed assassin
+        for (BribedAssassin ba : baList) {
+            if (getCharacter() == null)
+                return newDungeonResponse();
+            ba.makeMovement(this);
+        }
+        // Bribed mercenary
+        for (BribedMercenary b : bList) {
+            if (getCharacter() == null)
+                return newDungeonResponse();
+            b.makeMovement(this);
         }
 
         if (getCharacter() == null)
@@ -686,10 +691,8 @@ public class Dungeon {
             }
             return false;
         case "enemies":
-            List<Entities> enemies = getEntities().stream()
-                    .filter(e -> Objects.nonNull(e))
-                    .filter((entity) -> entity instanceof Enemy)
-                    .collect(Collectors.toList());
+            List<Entities> enemies = getEntities().stream().filter(e -> Objects.nonNull(e))
+                    .filter((entity) -> entity instanceof Enemy).collect(Collectors.toList());
 
             if (enemies.isEmpty()) {
                 return true;

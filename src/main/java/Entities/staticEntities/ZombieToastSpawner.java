@@ -1,7 +1,5 @@
 package Entities.staticEntities;
 
-import java.io.CharConversionException;
-
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.Interactable;

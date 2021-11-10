@@ -49,6 +49,7 @@ Hydra
 - Spawns at random location (like spider)
 - Movement is random (up, right, down, left) like zombie toast
 - If the hydra were to heal past it's max health, it will be restored to full health instead.
+- The chances of Ally and Character to damage/heal the hydra are independent. For instance, an ally does not always have to damage the hydra if the character damages the hydra and vice versa.
 
 Movement order
 - Character moves first, then assassin, then merc, then zombie toast, then spider, then hydra.
@@ -107,3 +108,7 @@ Sun Stone
 
 Midnight Armour
 - If the player attemps to build midnight armour while a zombie exists, raise InvalidActionException error
+
+Swamp Tile
+- Character is able to push boulders if they are on swamp tile, although they do not move off of tile.
+- Mobs can jump into portals if they are on swamp tile ignoring movement factor.

@@ -4,8 +4,6 @@ import java.util.List;
 
 import Entities.Entities;
 import Entities.WalkedOn;
-import Entities.collectableEntities.consumables.Bomb;
-import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 

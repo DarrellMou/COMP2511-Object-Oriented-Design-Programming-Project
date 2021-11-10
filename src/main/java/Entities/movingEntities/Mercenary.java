@@ -1,20 +1,12 @@
 package Entities.movingEntities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import Entities.Entities;
+import Entities.EntitiesFactory;
 import Entities.Interactable;
-import Entities.collectableEntities.materials.Treasure;
-import Entities.staticEntities.SwampTile;
 import Items.InventoryItem;
 import Items.materialItem.SunStoneItem;
 import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
-import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
 import dungeonmania.exceptions.InvalidActionException;
@@ -108,7 +100,7 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
         dungeon.removeEntities(this);
         // add bribed mercenary from list
         c.removeInventory(i);
-        BribedMercenary newBribedMercenary = new BribedMercenary(getId(), getPosition());
+        Entities newBribedMercenary = EntitiesFactory.createEntities("bribed_mercenary", this.getPosition());
         dungeon.addEntities(newBribedMercenary);
     }
 
