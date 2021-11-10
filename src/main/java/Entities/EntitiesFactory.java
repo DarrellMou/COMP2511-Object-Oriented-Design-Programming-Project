@@ -187,8 +187,6 @@ public class EntitiesFactory {
             newEntity = new Hydra(getNextId(), position);
         } else if (type.equals("assassin")) {
             newEntity = new Assassin(getNextId(), position);
-        } else if (type.equals("swamp_tile")) {
-            newEntity = new SwampTile(getNextId(), position, 0);
         } else if (type.equals("sun_stone")) {
             newEntity = new SunStone(getNextId(), position);
         } else if (type.equals("bribed_assassin")) {
@@ -196,6 +194,7 @@ public class EntitiesFactory {
         } else if (type.equals("bribed_mercenary")) {
             newEntity = new BribedMercenary(getNextId(), position);
         }
+        
         return newEntity;
     }
 
