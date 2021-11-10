@@ -72,11 +72,11 @@ public class SunStoneTest {
         controller.newGame("test-sun-stone", "Standard");
         Dungeon dungeon = controller.getDungeon();
 
-        // Pickup sun_stone
+        // Pickup sun_stone, treasure (2, 1)
         controller.tick("", Direction.RIGHT);
 
         // Check sun_stone in inventory
-        assertEquals(1, dungeon.getCharacter().getInventory().size());
+        assertEquals(2, dungeon.getCharacter().getInventory().size());
         assertEquals("sun_stone", dungeon.getCharacter().getInventory().get(0).getType());
     }
 
@@ -100,7 +100,7 @@ public class SunStoneTest {
         assertEquals(true, CheckClassNameOnTile("Door", new Position(4, 4), dungeon));
         assertEquals(true, CheckClassNameOnTile("Door", new Position(4, 5), dungeon));
 
-        // Pickup sun_stone, (2, 1)
+        // Pickup sun_stone, treasure (2, 1)
         controller.tick("", Direction.RIGHT);
 
         // Right movement, (3, 1)
@@ -138,7 +138,7 @@ public class SunStoneTest {
         Assassin assassin1 = (Assassin) GetEntityOnTile("assassin", new Position(1, 4), dungeon);
         Mercenary mercenary1 = (Mercenary) GetEntityOnTile("mercenary", new Position(2, 4), dungeon);
 
-        // Pickup sun_stone, (2, 1)
+        // Pickup sun_stone, treasure, (2, 1)
         // Assassins and mercenaries move up
         controller.tick("", Direction.RIGHT);
 
