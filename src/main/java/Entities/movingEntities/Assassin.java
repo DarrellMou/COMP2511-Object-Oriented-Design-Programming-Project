@@ -81,19 +81,18 @@ public class Assassin extends Boss implements Interactable {
         // check if sun_stone is in inventory
         InventoryItem s = c.getInventoryItem(SunStoneItem.class);
         InventoryItem t = null;
-        InventoryItem o = null;
+        InventoryItem o = c.getInventoryItem(TheOneRingItem.class);
+        // check if char has treasure
         if (s == null) {
-            // check if char has treasure
             t = c.getInventoryItem(TreasureItem.class);
             if (t == null) {
-                throw new InvalidActionException("Character does not have a treasure!!");
+                throw new InvalidActionException("Character does not have a treasure or sun stone!!");
             }
+        }
 
-            // check if char has one ring
-            o = c.getInventoryItem(TheOneRingItem.class);
-            if (o == null) {
-                throw new InvalidActionException("Character does not have the one ring!!");
-            }
+        // check if char has one ring
+        if (o == null) {
+            throw new InvalidActionException("Character does not have the one ring!!");
         }
 
         // check if assassin is in range

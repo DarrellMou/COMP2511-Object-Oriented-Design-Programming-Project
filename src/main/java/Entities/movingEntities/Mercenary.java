@@ -81,15 +81,13 @@ public class Mercenary extends MindControllableEntities implements Interactable,
     public void bribeMercenary(Dungeon dungeon) {
         Character c = dungeon.getCharacter();
 
-        // check if sun_stone is in inventory
-        InventoryItem s = c.getInventoryItem(SunStoneItem.class);
-        InventoryItem i = null;
-        if (s == null) {
-            // check if treasure is in inventory
-            i = c.getInventoryItem(TreasureItem.class);
-            if (i == null) {
-                throw new InvalidActionException("Character does not have a treasure!!");
-            }
+        // check if treasure is in inventory
+        InventoryItem i = c.getInventoryItem(TreasureItem.class);
+        InventoryItem s = c.getInventoryItem(SceptreItem.class);
+        InventoryItem sunStone = c.getInventoryItem(SunStoneItem.class);
+
+        if (i == null && s == null && sunStone == null) {
+            throw new InvalidActionException("Character does not have a treasure or sceptre or sun stone!!");
         }
 
         // check if mercenary is in range
