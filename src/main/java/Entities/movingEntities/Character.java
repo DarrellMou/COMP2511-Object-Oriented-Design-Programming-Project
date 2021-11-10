@@ -9,7 +9,7 @@ import java.util.Map;
 import Entities.BeforeWalkedOn;
 import Entities.Entities;
 import Entities.WalkedOn;
-import Entities.movingEntities.Build.NodeFactory;
+import Entities.movingEntities.Buildable.NodeFactory;
 import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.TheOneRingItem;
