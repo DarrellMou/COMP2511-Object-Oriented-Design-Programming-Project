@@ -334,22 +334,6 @@ public class Dungeon {
                     item = currItem;
                 }
 
-                // Check to see if there is a sceptre in inventory
-                if (currItem instanceof SceptreItem) {
-                    // Check if buff has been activated already
-                    if (!hasAllyBuff()) {
-                        for (Entities entity : getEntities()) {
-                            if (entity instanceof Enemy) {
-
-                                AllyBuff.turnAlly(this, (Enemy) entity);
-                            }
-
-                        }
-                        // Activate SceptreAlly Buff
-
-                    }
-                }
-
             }
 
             // Checks for whether itemUsed is in inventory
@@ -794,13 +778,4 @@ public class Dungeon {
         return borders;
     }
 
-    public Boolean hasAllyBuff() {
-        for (Buffs b : getCharacter().getBuffs()) {
-            if (b instanceof AllyBuff) {
-                return true;
-
-            }
-        }
-        return false;
-    }
 }

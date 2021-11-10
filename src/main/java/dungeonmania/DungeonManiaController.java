@@ -164,6 +164,7 @@ public class DungeonManiaController {
      * @throws URISyntaxException
      */
     public DungeonResponse newGame(String dungeonName, String gameMode) {
+
         if (!getGameModes().contains(gameMode)) {
             throw new IllegalArgumentException("Game mode is not a valid game mode");
         }
