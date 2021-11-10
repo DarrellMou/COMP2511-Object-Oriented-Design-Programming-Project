@@ -116,6 +116,7 @@ public class DungeonManiaController {
         return Arrays.asList("Standard", "Peaceful", "Hard");
     }
 
+    
     /**
      * /dungeons
      * 
@@ -164,6 +165,9 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException
      */
     public DungeonResponse newGame(String dungeonName, String gameMode) throws IllegalArgumentException {
+        // Convert gamemode to capitalised first letter e.g. Peaceful
+        gameMode = gameMode.substring(0, 1).toUpperCase() + gameMode.substring(1);
+
         if (!getGameModes().contains(gameMode)) {
             throw new IllegalArgumentException("Game mode is not a valid game mode");
         }
