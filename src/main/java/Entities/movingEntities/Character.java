@@ -18,7 +18,6 @@ import Items.Equipments.Shields.Shields;
 import Items.Equipments.Weapons.Anduril;
 import Items.Equipments.Weapons.Weapons;
 import dungeonmania.Dungeon;
-import dungeonmania.Buffs.AllyBuff;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.util.Battle;
@@ -210,65 +209,6 @@ public class Character extends Mobs implements WalkedOn, Portalable {
             }
         }
         return false;
-
-
-        // // Refactor later
-        // if (buildable.equals("bow")) {
-        //     List<InventoryItem> wood = new ArrayList<>();
-        //     List<InventoryItem> arrow = new ArrayList<>();
-        //     for (InventoryItem item : inventory) {
-        //         if (wood.size() < 1 && item.getType().equals("wood"))
-        //             wood.add(item);
-        //         else if (arrow.size() < 3 && item.getType().equals("arrow"))
-        //             arrow.add(item);
-
-        //         if (wood.size() == 1 && arrow.size() == 3) {
-        //             // build bow
-        //             inventory.removeAll(wood);
-        //             inventory.removeAll(arrow);
-
-        //             InventoryItem bow = ItemsFactory.createItem("bow");
-        //             inventory.add(bow);
-        //             return true;
-        //         }
-        //     }
-        //     throw new InvalidActionException("Player does not have required materials");
-        // } else if (buildable.equals("shield")) {
-        //     List<InventoryItem> wood = new ArrayList<>();
-        //     List<InventoryItem> key = new ArrayList<>();
-        //     List<InventoryItem> treasure = new ArrayList<>();
-        //     for (InventoryItem item : inventory) {
-        //         if (wood.size() < 2 && item.getType().equals("wood"))
-        //             wood.add(item);
-        //         else if (key.size() < 1 && item.getType().substring(0, 3).equals("key"))
-        //             key.add(item);
-        //         else if (treasure.size() < 1 && item.getType().equals("treasure"))
-        //             treasure.add(item);
-
-        //         if (wood.size() == 2) {
-        //             if (key.size() == 1) {
-        //                 // build shield
-        //                 inventory.removeAll(wood);
-        //                 inventory.removeAll(key);
-
-        //                 InventoryItem shield = ItemsFactory.createItem("shield");
-        //                 inventory.add(shield);
-        //                 return true;
-        //             } else if (treasure.size() == 1) {
-        //                 // build bow
-        //                 inventory.removeAll(wood);
-        //                 inventory.removeAll(treasure);
-
-        //                 InventoryItem shield = ItemsFactory.createItem("shield");
-        //                 inventory.add(shield);
-        //                 return true;
-        //             }
-        //         }
-        //     }
-        //     throw new InvalidActionException("Player does not have required materials");
-        // } else {
-        //     throw new IllegalArgumentException("Buildable is not bow or shield");
-        // }
     }
 
     /**
