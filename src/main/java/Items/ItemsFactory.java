@@ -80,6 +80,8 @@ public class ItemsFactory {
             newItem = new BombItem(id);
         } else if (type.equals("sword")) {
             newItem = new SwordItem(id);
+        } else if (type.equals("sceptre")) {
+            newItem = new SceptreItem(id);
         }
         return newItem;
     }

@@ -14,6 +14,7 @@ import Items.Equipments.Shields.Shields;
 import Items.Equipments.Weapons.Anduril;
 import Items.Equipments.Weapons.Weapons;
 import dungeonmania.Dungeon;
+import dungeonmania.Buffs.AllyBuff;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.util.Battle;
@@ -87,6 +88,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      */
     public void removeBuff(Buffs b) {
         buffs.remove(b);
+
     }
 
     /**
@@ -167,6 +169,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         int arrow = 0;
         int key = 0;
         int treasure = 0;
+        int sunStone = 0;
 
         for (InventoryItem item : inventory) {
             if (item.getType().equals("wood")) {
@@ -177,6 +180,8 @@ public class Character extends Mobs implements WalkedOn, Portalable {
                 key++;
             } else if (item.getType().equals("treasure")) {
                 treasure++;
+            } else if (item.getType().equals("sun_stone")) {
+                sunStone++;
             }
         }
 
@@ -194,6 +199,17 @@ public class Character extends Mobs implements WalkedOn, Portalable {
 
             } else if (key >= 1) {
                 dungeon.addBuildables("shield");
+            }
+        }
+        // Build Sceptre TODO:@Darrell Do the build stuff down there thx
+        if (arrow >= 2 || wood >= 1) {
+            if (treasure >= 1 || key >= 1) {
+
+                if (sunStone >= 1) {
+
+                    dungeon.addBuildables("sceptre");
+                }
+
             }
         }
     }

@@ -26,6 +26,11 @@
       "x": 5,
       "y": 3,
       "type": "player"
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "type": "player"
     }
   ],
   "goal-condition": {
