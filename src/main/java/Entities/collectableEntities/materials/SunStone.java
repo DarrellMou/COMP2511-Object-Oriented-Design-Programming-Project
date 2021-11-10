@@ -6,10 +6,9 @@ import Entities.movingEntities.Character;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
-public class Treasure extends CollectableEntity { // fix this to collectables
-
-    public Treasure(String id, Position position) {
-        super(id, "treasure", position, false);
+public class SunStone extends CollectableEntity{
+    public SunStone(String id, Position position) {
+        super(id, "sun_stone", position, false);
     }
 
     /**

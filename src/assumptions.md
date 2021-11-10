@@ -118,19 +118,24 @@ Invincibility Potion
 - Does not consume durability in battle
 - One shots enemies when active and character does not take damage
 
-Milestone 3+
+Milestone 3:
+
+Sun Stone
+- Opening doors and bribing will first try to use sun stone before any other items
+
+Midnight Armour
+- If the player attemps to build midnight armour while a zombie exists, raise InvalidActionException error
+
+Swamp Tile
+- Character is able to push boulders if they are on swamp tile, although they do not move off of tile.
 
 Sceptre
-
 The Sceptre will be used either when the character interacts with the mercenary or interacts with the assassin. In either case, once used all the assassins and mercenary will be allies for 10 ticks. The interact will look for the sceptre first to bribe and then any other other additional material if there is no sceptre.
-
 - After 10 ticks of holding the sceptre, the mercenary and assasins will no longer be allies, and the sceptre will be destroyed and removed from the inventory
   Swamp Tile
 
 Characters
-
 - Character is able to push boulders if they are on swamp tile, although they do not move off of tile.
 
 Mobs
-
 - Mobs can jump into portals if they are on swamp tile ignoring movement factor.
