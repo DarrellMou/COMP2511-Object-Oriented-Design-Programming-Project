@@ -26,7 +26,7 @@ import Entities.staticEntities.Portal;
 import Entities.staticEntities.SwampTile;
 import Entities.staticEntities.Wall;
 import Entities.staticEntities.ZombieToastSpawner;
-import Items.SceptreItem;
+import Items.Equipments.SceptreItem;
 import data.DataEntities;
 import Entities.movingEntities.Assassin;
 import Entities.movingEntities.BribedAssassin;
@@ -196,7 +196,7 @@ public class EntitiesFactory {
         } else if (type.equals("bribed_mercenary")) {
             newEntity = new BribedMercenary(getNextId(), position);
         }
-        
+
         return newEntity;
     }
 

@@ -32,8 +32,8 @@ import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.ZombieToastSpawner;
 import Items.InventoryItem;
-import Items.SceptreItem;
 import Items.ConsumableItem.Consumables;
+import Items.Equipments.SceptreItem;
 import data.Data;
 import dungeonmania.Buffs.AllyBuff;
 import dungeonmania.Buffs.Buffs;
@@ -362,6 +362,7 @@ public class Dungeon {
                 for (Entities entity : getEntities()) {
                     if (entity instanceof Ally) {
                         allyBuff.endAllyBuff(this, (Ally) entity);
+                        break;
 
                     }
                 }
@@ -554,7 +555,10 @@ public class Dungeon {
 
         if (getCharacter() != null) {
             for (InventoryItem inventoryItem : getCharacter().getInventory()) {
-                inventoryResponses.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
+                if (inventoryItem != null) {
+
+                    inventoryResponses.add(new ItemResponse(inventoryItem.getId(), inventoryItem.getType()));
+                }
             }
         }
 
@@ -657,9 +661,9 @@ public class Dungeon {
 
         List<String> inventoryTypes = new ArrayList<>();
 
-        if (getCharacter() != null) {
-            inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType())
-                    .collect(Collectors.toList());
+        if (getCharacter() != null && getCharacter().getInventory() != null) {
+            inventoryTypes = getCharacter().getInventory().stream().filter(i -> Objects.nonNull(i))
+                    .map((item) -> item.getType()).collect(Collectors.toList());
         }
 
         String nodeType = json.getString("goal");

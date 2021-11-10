@@ -12,6 +12,7 @@ import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Mercenary;
 import Entities.staticEntities.Wall;
 import Items.InventoryItem;
+import Items.ItemsFactory;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -115,78 +116,76 @@ public class BribedAlliesTest {
         assertEquals(new Position(10, 9), m2.getPosition());
     }
 
-    // @Test
-    // public void sceptreAllyTest() {
-    // DungeonManiaController controller = new DungeonManiaController();
-    // controller.newGame("mercenary_bribe", "Standard");
+    @Test
+    public void sceptreAllyTest() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("mercenary_bribe", "Standard");
 
-    // // Player picks up treasure, mercenary also moves left
-    // controller.tick("", Direction.RIGHT);
+        // Player picks up treasure, mercenary also moves left
+        controller.tick("", Direction.RIGHT);
 
-    // boolean mercenaryExists = false;
-    // Mercenary m = null;
-    // for (Entities current : controller.getDungeon().getEntitiesOnTile(new
-    // Position(3, 0))) {
-    // if (current instanceof Mercenary) {
-    // mercenaryExists = true;
-    // m = (Mercenary) current;
-    // break;
-    // }
-    // }
-    // assertTrue(mercenaryExists);
+        boolean mercenaryExists = false;
+        Mercenary m = null;
+        for (Entities current : controller.getDungeon().getEntitiesOnTile(new Position(3, 0))) {
+            if (current instanceof Mercenary) {
+                mercenaryExists = true;
+                m = (Mercenary) current;
+                break;
+            }
+        }
+        assertTrue(mercenaryExists);
 
-    // // Add sceptre to the inventory
-    // InventoryItem sceptre = new InventoryItem(EntitiesFactory.getNextId(),
-    // "sceptre");
-    // controller.getDungeon().getCharacter().addInventory(sceptre); // Add sceptre
-    // to inventory
+        // Add sceptre to the inventory
+        InventoryItem w = ItemsFactory.createItem(ItemsFactory.id(), "wood");
+        InventoryItem k = ItemsFactory.createItem(ItemsFactory.id(), "key");
+        InventoryItem s = ItemsFactory.createItem(ItemsFactory.id(), "sun_stone");
 
-    // controller.interact(m.getId());
-    // m = null;
-    // BribedMercenary b = null;
-    // for (Entities entity : controller.getDungeon().getEntities()) {
-    // if (entity instanceof Mercenary) {
-    // mercenaryExists = true;
-    // m = (Mercenary) entity;
-    // break;
-    // } else if (entity instanceof BribedMercenary) {
-    // mercenaryExists = true;
-    // b = (BribedMercenary) entity;
-    // break;
-    // }
-    // }
-    // assertEquals(null, m);
-    // assertNotEquals(null, b); // Check if the mercenary is now bribed
+        controller.getDungeon().getCharacter().addInventory(w); // Add wood to inventory
+        controller.getDungeon().getCharacter().addInventory(k); // Add key to inventory
+        controller.getDungeon().getCharacter().addInventory(s); // Add sun_stone to inventory
 
-    // // After 10 ticks the mercenary should no longer be bribed
-    // controller.tick("", Direction.NONE);
-    // controller.tick("", Direction.NONE);
-    // controller.tick("", Direction.NONE);
-    // controller.tick("", Direction.NONE);
-    // controller.tick("", Direction.NONE);
-    // controller.tick("", Direction.NONE);
-    // controller.tick("", Direction.NONE);
-    // controller.tick("", Direction.NONE);
-    // controller.tick("", Direction.NONE);
-    // controller.tick("", Direction.NONE);
-    // controller.tick("", Direction.NONE);
+        controller.build("sceptre");
 
-    // m = null;
-    // b = null;
-    // for (Entities entity : controller.getDungeon().getEntities()) {
-    // if (entity instanceof Mercenary) {
-    // mercenaryExists = true;
-    // m = (Mercenary) entity;
-    // break;
-    // } else if (entity instanceof BribedMercenary) {
-    // mercenaryExists = true;
-    // b = (BribedMercenary) entity;
-    // break;
-    // }
-    // }
-    // assertEquals(null, b);
-    // assertNotEquals(null, m); // Check if the mercenary is no longer bribed
+        controller.interact(m.getId());
+        m = null;
+        BribedMercenary b = null;
+        for (Entities entity : controller.getDungeon().getEntities()) {
+            if (entity instanceof Mercenary) {
+                mercenaryExists = true;
+                m = (Mercenary) entity;
+                break;
+            } else if (entity instanceof BribedMercenary) {
+                mercenaryExists = true;
+                b = (BribedMercenary) entity;
+                break;
+            }
+        }
+        assertEquals(null, m);
+        assertNotEquals(null, b); // Check if the mercenary is now bribed
 
-    // }
+        // After 10 ticks the mercenary should no longer be bribed
+        for (int i = 0; i < 10; i++) {
+            controller.tick("", Direction.UP);
+        }
+
+        controller.tick("", Direction.UP);
+
+        m = null;
+        b = null;
+        for (Entities entity : controller.getDungeon().getEntities()) {
+            if (entity instanceof Mercenary) {
+                mercenaryExists = true;
+                m = (Mercenary) entity;
+                break;
+            } else if (entity instanceof BribedMercenary) {
+                mercenaryExists = true;
+                b = (BribedMercenary) entity;
+                break;
+            }
+        }
+        assertEquals(null, b);
+        assertNotEquals(null, m); // Check if the mercenary is no longer bribed
+
+    }
 
 }

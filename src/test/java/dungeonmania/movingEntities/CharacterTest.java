@@ -184,95 +184,79 @@ public class CharacterTest {
         assertEquals(20, m.getHealth());
     }
 
-    // @Test
-    // public void sceptreTestRecipe1() {
-    // DungeonManiaController controller = new DungeonManiaController();
-    // controller.newGame("advanced", "Peaceful");
+    @Test
+    public void sceptreTestRecipe1() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Standard");
 
-    // // Get materials for sceptre
-    // Entities w = EntitiesFactory.createEntities("wood", new Position(2, 1));
-    // Entities k = EntitiesFactory.createEntities("key", new Position(3, 1));
-    // Entities s = EntitiesFactory.createEntities("sun_stone", new Position(4, 1));
-    // // Entities a3 = EntitiesFactory.createEntities("arrow", new Position(5, 1));
-    // // Add mats to right of player
-    // controller.getDungeon().getEntities().add(w);
-    // controller.getDungeon().getEntities().add(k);
-    // controller.getDungeon().getEntities().add(s);
-    // // controller.getDungeon().getEntities().add(a3);
+        // Get materials for sceptre
+        Entities w = EntitiesFactory.createEntities("wood", new Position(2, 1));
+        Entities k = EntitiesFactory.createEntities("key", new Position(3, 1), 1);
+        Entities s = EntitiesFactory.createEntities("sun_stone", new Position(4, 1));
 
-    // controller.tick("", Direction.RIGHT); // wood
-    // controller.tick("", Direction.RIGHT); // key
-    // controller.tick("", Direction.RIGHT); // sun_stone
-    // // controller.tick("", Direction.RIGHT); // arroe3
+        // Add mats to right of player
+        controller.getDungeon().getEntities().add(w);
+        controller.getDungeon().getEntities().add(k);
+        controller.getDungeon().getEntities().add(s);
 
-    // // 1 sceptre expected after build
-    // List<InventoryItem> expectedAfter = new ArrayList<>();
-    // expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "sceptre"));
+        controller.tick("", Direction.RIGHT); // wood
+        controller.tick("", Direction.RIGHT); // key
+        controller.tick("", Direction.RIGHT); // sun_stone
 
-    // // Expected for sceptre to be buildable
-    // List<String> expectedBuildables = new ArrayList<>();
-    // expectedBuildables.add("sceptre");
+        controller.build("sceptre");
+        // Check 1 sceptre is in inventory
+        assertEquals(1, controller.getDungeon().getCharacter().getInventory().stream()
+                .filter(i -> i.getType().equals("sceptre")).count());
+        // Check materials are gone
+        Predicate<InventoryItem> woodPred = i -> i.getType().equals("wood");
+        Predicate<InventoryItem> keyPred = i -> i.getType().equals("key");
+        Predicate<InventoryItem> sunStone = i -> i.getType().equals("sun_stone");
 
-    // assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
-    // // build bow
-    // controller.build("sceptre");
-    // // Check 1 sceptre is in inventory
-    // assertEquals(1,
-    // controller.getDungeon().getCharacter().getInventory().stream()
-    // .filter(i -> i.getType().equals("sceptre")).count());
-    // // Check materials are gone
-    // Predicate<InventoryItem> woodPred = i -> i.getType().equals("wood");
-    // Predicate<InventoryItem> keyPred = i -> i.getType().equals("key");
-    // Predicate<InventoryItem> sunStone = i -> i.getType().equals("sun_stone");
+        assertEquals(0, controller.getDungeon().getCharacter().getInventory().stream()
+                .filter(woodPred.or(keyPred.or(sunStone))).count());
+    }
 
-    // assertEquals(0,
-    // controller.getDungeon().getCharacter().getInventory().stream()
-    // .filter(woodPred.or(keyPred.or(sunStone))).count());
-    // }
+    @Test
+    public void sceptreTestRecipe2() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("advanced", "Peaceful");
 
-    // @Test
-    // public void sceptreTestRecipe2() {
-    // DungeonManiaController controller = new DungeonManiaController();
-    // controller.newGame("advanced", "Peaceful");
+        // Get materials for sceptre
+        Entities t = EntitiesFactory.createEntities("treasure", new Position(2, 1));
+        Entities a1 = EntitiesFactory.createEntities("arrow", new Position(3, 1));
+        Entities a2 = EntitiesFactory.createEntities("arrow", new Position(4, 1));
+        Entities s = EntitiesFactory.createEntities("sun_stone", new Position(5, 1));
+        // Add mats to right of player
+        controller.getDungeon().getEntities().add(t);
+        controller.getDungeon().getEntities().add(a1);
+        controller.getDungeon().getEntities().add(a2);
+        controller.getDungeon().getEntities().add(s);
 
-    // // Get materials for sceptre
-    // Entities t = EntitiesFactory.createEntities("treasure", new Position(2, 1));
-    // Entities a1 = EntitiesFactory.createEntities("arrow", new Position(3, 1));
-    // Entities a2 = EntitiesFactory.createEntities("arrow", new Position(4, 1));
-    // Entities s = EntitiesFactory.createEntities("sun_stone", new Position(5, 1));
-    // // Add mats to right of player
-    // controller.getDungeon().getEntities().add(t);
-    // controller.getDungeon().getEntities().add(a1);
-    // controller.getDungeon().getEntities().add(a2);
-    // controller.getDungeon().getEntities().add(s);
+        controller.tick("", Direction.RIGHT); // wood
+        controller.tick("", Direction.RIGHT); // arrow1
+        controller.tick("", Direction.RIGHT); // arrow2
+        controller.tick("", Direction.RIGHT); // sun stone
 
-    // controller.tick("", Direction.RIGHT); // wood
-    // controller.tick("", Direction.RIGHT); // arrow1
-    // controller.tick("", Direction.RIGHT); // arrow2
-    // controller.tick("", Direction.RIGHT); // sun stone
+        // 1 sceptre expected after build
+        List<InventoryItem> expectedAfter = new ArrayList<>();
+        expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "sceptre"));
 
-    // // 1 sceptre expected after build
-    // List<InventoryItem> expectedAfter = new ArrayList<>();
-    // expectedAfter.add(new InventoryItem(EntitiesFactory.getNextId(), "sceptre"));
+        // Expected for bow to be buildable
+        List<String> expectedBuildables = new ArrayList<>();
+        expectedBuildables.add("sceptre");
 
-    // // Expected for bow to be buildable
-    // List<String> expectedBuildables = new ArrayList<>();
-    // expectedBuildables.add("sceptre");
+        assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
+        // build bow
+        controller.build("sceptre");
+        // Check 1 bow is in inventory
+        assertEquals(1, controller.getDungeon().getCharacter().getInventory().stream()
+                .filter(i -> i.getType().equals("sceptre")).count());
+        // Check materials are gone
+        Predicate<InventoryItem> treasurePred = i -> i.getType().equals("treasure");
+        Predicate<InventoryItem> arrowPred = i -> i.getType().equals("arrow");
+        Predicate<InventoryItem> sunStonePred = i -> i.getType().equals("sun_stone");
 
-    // assertEquals(expectedBuildables, controller.getDungeon().getBuildables());
-    // // build bow
-    // controller.build("sceptre");
-    // // Check 1 bow is in inventory
-    // assertEquals(1,
-    // controller.getDungeon().getCharacter().getInventory().stream()
-    // .filter(i -> i.getType().equals("sceptre")).count());
-    // // Check materials are gone
-    // Predicate<InventoryItem> treasurePred = i -> i.getType().equals("treasure");
-    // Predicate<InventoryItem> arrowPred = i -> i.getType().equals("arrow");
-    // Predicate<InventoryItem> sunStonePred = i -> i.getType().equals("sun_stone");
-
-    // assertEquals(0,
-    // controller.getDungeon().getCharacter().getInventory().stream()
-    // .filter(treasurePred.or(arrowPred).or(sunStonePred)).count());
-    // }
+        assertEquals(0, controller.getDungeon().getCharacter().getInventory().stream()
+                .filter(treasurePred.or(arrowPred).or(sunStonePred)).count());
+    }
 }
