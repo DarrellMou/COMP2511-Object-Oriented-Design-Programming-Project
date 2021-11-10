@@ -11,7 +11,6 @@ import Entities.movingEntities.Assassin;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mercenary;
 import Items.InventoryItem;
-import dungeonmania.DungeonManiaController;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -160,14 +159,4 @@ public class SunStoneTest {
 
         assertEquals(true, CheckItemInInventory("sun_stone", dungeon.getCharacter()));
     }
-
-    // @Test
-    // public void testBuild() {
-    //     // Start game in test-sun-stone map + peaceful difficulty
-    //     DungeonManiaController controller = new DungeonManiaController();
-    //     controller.newGame("test-build", "Peaceful");
-    //     Dungeon dungeon = controller.getDungeon();
-    //     // TO-DO: make test-build dungeon
-    //     // TO-DO: test building with the sun stone
-    // }
 }

@@ -6,7 +6,9 @@ import Items.ConsumableItem.BombItem;
 import Items.ConsumableItem.HealthPotionItem;
 import Items.ConsumableItem.InvincibilityPotionItem;
 import Items.ConsumableItem.InvisibilityPotionItem;
+import Items.Equipments.SceptreItem;
 import Items.Equipments.Armours.ArmourItem;
+import Items.Equipments.Armours.MidnightArmourItem;
 import Items.Equipments.Shields.ShieldItem;
 import Items.Equipments.Weapons.Anduril;
 import Items.Equipments.Weapons.BowItem;
@@ -48,6 +50,10 @@ public class ItemsFactory {
             newItem = new TheOneRingItem(ItemsFactory.id());
         } else if (type.equals("anduril")) {
             newItem = new Anduril(ItemsFactory.id());
+        } else if (type.equals("sceptre")) {
+            newItem = new SceptreItem(ItemsFactory.id());
+        } else if (type.equals("midnight_armour")) {
+            newItem = new MidnightArmourItem(ItemsFactory.id());
         }
 
         return newItem;
@@ -84,6 +90,7 @@ public class ItemsFactory {
         } else if (type.equals("sun_stone")) {
             newItem = new SunStoneItem(id);
         }
+        
         return newItem;
     }
 

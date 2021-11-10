@@ -1,12 +1,11 @@
 package dungeonmania;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +15,7 @@ import Entities.movingEntities.Character;
 import Items.InventoryItem;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import dungeonmania.exceptions.InvalidActionException;
 
 public class BuildTest {
 
@@ -563,15 +563,17 @@ public class BuildTest {
         // Check no sceptre is in inventory
         assertTrue(CheckMaterialsInInventory("MidnightArmourItem", 0, dungeon));
 
-        // build sceptre
-        controller.build("midnight_armour");
+        // attempt to build sceptre
+        assertThrows(InvalidActionException.class, () -> {
+            controller.build("midnight_armour");
+        });
 
         // Check 1 sceptre is in inventory
-        assertTrue(CheckMaterialsInInventory("MidnightArmourItem", 1, dungeon));
+        assertTrue(CheckMaterialsInInventory("MidnightArmourItem", 0, dungeon));
 
-        // Check materials are gone
-        assertTrue(CheckMaterialsInInventory("ArmourItem", 0, dungeon));
-        assertTrue(CheckMaterialsInInventory("SunStoneItem", 0, dungeon));
+        // Check materials are still there
+        assertTrue(CheckMaterialsInInventory("ArmourItem", 1, dungeon));
+        assertTrue(CheckMaterialsInInventory("SunStoneItem", 1, dungeon));
     }
 
     @Test
@@ -584,9 +586,6 @@ public class BuildTest {
         Dungeon dungeon = controller.getDungeon();
         Character character = dungeon.getCharacter();
 
-        Entities zombie = EntitiesFactory.createEntities("zombie_toast", new Position(10, 10));
-        dungeon.addEntities(zombie);
-
         // Check empty inventory
         assertTrue(character.getInventory().isEmpty());
 
@@ -598,6 +597,7 @@ public class BuildTest {
         // bow
         // nothing, wood, arrow, arrow, arrow
         MoveCharacter(Direction.RIGHT, 5, controller);
+        controller.build("bow");
         MoveCharacter(Direction.LEFT, 4, controller);
 
         MoveCharacter(Direction.DOWN, 2, controller);
@@ -605,18 +605,21 @@ public class BuildTest {
         // shield
         // wood, wood, treasure
         MoveCharacter(Direction.RIGHT, 3, controller);
+        controller.build("shield");
         MoveCharacter(Direction.LEFT, 3, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
         
         // wood, wood, sun stone
         MoveCharacter(Direction.RIGHT, 3, controller);
+        controller.build("shield");
         MoveCharacter(Direction.LEFT, 3, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
         
         // wood, wood, key
         MoveCharacter(Direction.RIGHT, 3, controller);
+        controller.build("shield");
         MoveCharacter(Direction.LEFT, 3, controller);
 
         MoveCharacter(Direction.DOWN, 2, controller);
@@ -624,92 +627,54 @@ public class BuildTest {
         // sceptre
         // wood, treasure, sun stone
         MoveCharacter(Direction.RIGHT, 3, controller);
+        controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 3, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
         
         // wood, sun stone, sun stone
         MoveCharacter(Direction.RIGHT, 3, controller);
+        controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 3, controller);
         
         MoveCharacter(Direction.DOWN, 1, controller);
         
         // wood, key, sun stone (would not pick up key since player already has one)
         MoveCharacter(Direction.RIGHT, 3, controller);
+        controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 3, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
         
         // arrow, arrow, treasure, sun stone
         MoveCharacter(Direction.RIGHT, 4, controller);
+        controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 4, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
         
         // arrow, arrow, sun stone, sun stone
         MoveCharacter(Direction.RIGHT, 4, controller);
+        controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 4, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
         
         // arrow, arrow, key, sun stone (would not pick up key since player already has one)
         MoveCharacter(Direction.RIGHT, 4, controller);
+        controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 4, controller);
 
         MoveCharacter(Direction.DOWN, 2, controller);
         
         // armour, sun stone
         MoveCharacter(Direction.RIGHT, 2, controller);
-
-        // Check materials in inventory
-        assertTrue(CheckMaterialsInInventory("WoodItem", 10, dungeon));
-        assertTrue(CheckMaterialsInInventory("ArrowItem", 9, dungeon));
-        assertTrue(CheckMaterialsInInventory("TreasureItem", 3, dungeon));
-        assertTrue(CheckMaterialsInInventory("SunStoneItem", 10, dungeon));
-        assertTrue(CheckMaterialsInInventory("KeyItem", 1, dungeon));
-        assertTrue(CheckMaterialsInInventory("ArmourItem", 1, dungeon));
-
-        // Expected for all buildables
-        List<String> expectedBuildables = new ArrayList<>();
-        expectedBuildables.add("bow");
-        expectedBuildables.add("shield");
-        expectedBuildables.add("sceptre");
-        expectedBuildables.add("midnight_armour");
-        assertEquals(expectedBuildables, dungeon.getBuildables());
-
-        // Check no buildables in inventory
-        assertTrue(CheckMaterialsInInventory("BowItem", 0, dungeon));
-        assertTrue(CheckMaterialsInInventory("ShieldItem", 0, dungeon));
-        assertTrue(CheckMaterialsInInventory("Sceptre", 0, dungeon));
-        assertTrue(CheckMaterialsInInventory("MidnightArmourItem", 0, dungeon));
-
-        // build all buildables
-        controller.build("bow");
-        controller.build("shield");
-        controller.build("shield");
-        controller.build("shield");
-
-        // key
-        MoveCharacter(Direction.UP, 2, controller);
-        MoveCharacter(Direction.RIGHT, 1, controller);
-
-        controller.build("sceptre");
-        controller.build("sceptre");
-        controller.build("sceptre");
-
-        // key
-        MoveCharacter(Direction.UP, 3, controller);
-        MoveCharacter(Direction.LEFT, 1, controller);
-
-        controller.build("sceptre");
-        controller.build("sceptre");
-        controller.build("sceptre");
         controller.build("midnight_armour");
 
         // Check all buildables in inventory
         assertTrue(CheckMaterialsInInventory("BowItem", 1, dungeon));
         assertTrue(CheckMaterialsInInventory("ShieldItem", 3, dungeon));
-        assertTrue(CheckMaterialsInInventory("Sceptre", 6, dungeon));
+        assertTrue(CheckMaterialsInInventory("SceptreItem", 6, dungeon));
         assertTrue(CheckMaterialsInInventory("MidnightArmourItem", 1, dungeon));
 
         // Check materials are gone
