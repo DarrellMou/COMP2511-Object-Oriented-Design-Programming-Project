@@ -36,7 +36,7 @@ public class DungeonManiaControllerTest {
         assertEquals(dg.getBuildables(), buildables);
         assertEquals(dg.getEntities().size(), 50);
         assertEquals(dg.getInventory(), new ArrayList<ItemResponse>());
-        assertEquals(dg.getGoals(), "boulders");
+        assertEquals(dg.getGoals(), ":boulders");
 
         // This should throw IllegalArgumentException as the gameMode is not a valid
         // game mode
