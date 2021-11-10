@@ -5,6 +5,7 @@ import java.util.UUID;
 import Entities.buildableEntities.Bow;
 import Entities.buildableEntities.Sceptre;
 import Entities.buildableEntities.Shield;
+import Entities.collectableEntities.OneRing;
 import Entities.collectableEntities.consumables.Bomb;
 import Entities.collectableEntities.consumables.HealthPotion;
 import Entities.collectableEntities.consumables.InvincibilityPotion;
@@ -167,6 +168,8 @@ public class EntitiesFactory {
             newEntity = new Sword(getNextId(), position);
         } else if (type.equals("armour")) {
             newEntity = new Armour(getNextId(), position);
+        } else if (type.equals("one_ring")) {
+            newEntity = new OneRing(getNextId(), position);
         } else if (type.equals("mercenary")) {
             newEntity = new Mercenary(getNextId(), position);
         } else if (type.equals("spider")) {
