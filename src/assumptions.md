@@ -104,3 +104,6 @@ Milestone 3:
 
 Sun Stone
 - Opening doors and bribing will first try to use sun stone before any other items
+
+Midnight Armour
+- If the player attemps to build midnight armour while a zombie exists, raise InvalidActionException error
