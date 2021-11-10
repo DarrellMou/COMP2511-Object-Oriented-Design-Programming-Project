@@ -28,6 +28,7 @@ public class Key extends CollectableEntity {
         if (walker instanceof Character) {
             Character character = (Character) walker;
             if (character.getInventoryItem(KeyItem.class) == null) {
+                pickup(dungeon, character);
                 character.checkForBuildables(dungeon);
             }
         }

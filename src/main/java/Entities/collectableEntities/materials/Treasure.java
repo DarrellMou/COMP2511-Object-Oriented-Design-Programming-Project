@@ -20,6 +20,7 @@ public class Treasure extends CollectableEntity { // fix this to collectables
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             Character character = (Character) walker;
+            pickup(dungeon, character);
             character.checkForBuildables(dungeon);
         }
     }

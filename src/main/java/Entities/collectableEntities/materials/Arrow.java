@@ -20,6 +20,7 @@ public class Arrow extends CollectableEntity {
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             Character character = (Character) walker;
+            pickup(dungeon, character);
             character.checkForBuildables(dungeon);
         }
     }
