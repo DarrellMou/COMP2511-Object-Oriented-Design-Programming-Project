@@ -158,7 +158,7 @@ public class HydraTest {
 
         // Character HP = 100 - ((200 * 2) / 10)) = 60
         assertEquals(60, controller.getDungeon().getCharacter().getHealth());
-        // Hydra HP = 200 - ((100 * 3) / 5) - ((80 * 1) / 5) = 124
-        assertEquals(124, ((Mobs) h).getHealth());
+        // Hydra HP = 200 - ((100 * 3) / 5) + ((80 * 1) / 5) = 124
+        assertEquals(156, ((Mobs) h).getHealth());
     }
 }
