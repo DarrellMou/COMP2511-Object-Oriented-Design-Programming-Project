@@ -10,8 +10,10 @@ import Entities.collectableEntities.consumables.HealthPotion;
 import Entities.collectableEntities.consumables.InvincibilityPotion;
 import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.collectableEntities.consumables.Key;
+import Entities.collectableEntities.equipments.Armour;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
+import Entities.collectableEntities.materials.SunStone;
 import Entities.collectableEntities.materials.Treasure;
 import Entities.collectableEntities.materials.Wood;
 import Entities.staticEntities.BombActive;
@@ -163,6 +165,8 @@ public class EntitiesFactory {
             newEntity = new Boulder(getNextId(), position);
         } else if (type.equals("sword")) {
             newEntity = new Sword(getNextId(), position);
+        } else if (type.equals("armour")) {
+            newEntity = new Armour(getNextId(), position);
         } else if (type.equals("mercenary")) {
             newEntity = new Mercenary(getNextId(), position);
         } else if (type.equals("spider")) {
@@ -185,11 +189,14 @@ public class EntitiesFactory {
             newEntity = new Hydra(getNextId(), position);
         } else if (type.equals("assassin")) {
             newEntity = new Assassin(getNextId(), position);
+        } else if (type.equals("sun_stone")) {
+            newEntity = new SunStone(getNextId(), position);
         } else if (type.equals("bribed_assassin")) {
             newEntity = new BribedAssassin(getNextId(), position);
         } else if (type.equals("bribed_mercenary")) {
             newEntity = new BribedMercenary(getNextId(), position);
         }
+        
         return newEntity;
     }
 

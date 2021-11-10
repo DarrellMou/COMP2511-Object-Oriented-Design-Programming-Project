@@ -6,13 +6,16 @@ import Items.ConsumableItem.BombItem;
 import Items.ConsumableItem.HealthPotionItem;
 import Items.ConsumableItem.InvincibilityPotionItem;
 import Items.ConsumableItem.InvisibilityPotionItem;
+import Items.Equipments.SceptreItem;
 import Items.Equipments.Armours.ArmourItem;
+import Items.Equipments.Armours.MidnightArmourItem;
 import Items.Equipments.Shields.ShieldItem;
 import Items.Equipments.Weapons.Anduril;
 import Items.Equipments.Weapons.BowItem;
 import Items.Equipments.Weapons.SwordItem;
 import Items.materialItem.ArrowItem;
 import Items.materialItem.KeyItem;
+import Items.materialItem.SunStoneItem;
 import Items.materialItem.TreasureItem;
 import Items.materialItem.WoodItem;
 
@@ -45,10 +48,12 @@ public class ItemsFactory {
             newItem = new ShieldItem(ItemsFactory.id());
         } else if (type.equals("one_ring")) {
             newItem = new TheOneRingItem(ItemsFactory.id());
-        } else if (type.equals("armour")) {
-            newItem = new ArmourItem(ItemsFactory.id());
         } else if (type.equals("anduril")) {
             newItem = new Anduril(ItemsFactory.id());
+        } else if (type.equals("sceptre")) {
+            newItem = new SceptreItem(ItemsFactory.id());
+        } else if (type.equals("midnight_armour")) {
+            newItem = new MidnightArmourItem(ItemsFactory.id());
         }
 
         return newItem;
@@ -80,9 +85,12 @@ public class ItemsFactory {
             newItem = new BombItem(id);
         } else if (type.equals("sword")) {
             newItem = new SwordItem(id);
-        } else if (type.equals("sceptre")) {
-            newItem = new SceptreItem(id);
+        } else if (type.equals("armour")) {
+            newItem = new ArmourItem(ItemsFactory.id());
+        } else if (type.equals("sun_stone")) {
+            newItem = new SunStoneItem(id);
         }
+        
         return newItem;
     }
 
