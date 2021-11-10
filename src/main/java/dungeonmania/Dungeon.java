@@ -1,17 +1,26 @@
 package dungeonmania;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.Interactable;
+import Entities.buildableEntities.Sceptre;
+import Entities.movingEntities.Ally;
 import Entities.movingEntities.Assassin;
+import Entities.movingEntities.BribedAssassin;
 import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Enemy;
@@ -23,21 +32,27 @@ import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.ZombieToastSpawner;
 import Items.InventoryItem;
-import Items.TheOneRingItem;
+import Items.SceptreItem;
 import Items.ConsumableItem.Consumables;
 import data.Data;
-import data.DataSubgoal;
+import dungeonmania.Buffs.AllyBuff;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.gamemodes.Hard;
 import dungeonmania.gamemodes.Peaceful;
 import dungeonmania.gamemodes.Standard;
+import dungeonmania.goals.AndGoal;
+import dungeonmania.goals.BooleanGoalEvaluator;
+import dungeonmania.goals.GoalLeaf;
+import dungeonmania.goals.GoalNode;
+import dungeonmania.goals.OrGoal;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import spark.utils.IOUtils;
 
 public class Dungeon {
     private String dungeonId;
@@ -273,23 +288,14 @@ public class Dungeon {
 
     /**
      * @param data
+     * @throws URISyntaxException
+     * @throws IOException
      */
-    public void setAllGoals(Data data) {
-        if (data.getGoalCondition().getGoal().equals("AND") || data.getGoalCondition().getGoal().equals("OR")) {
-            String goal = "";
-            List<DataSubgoal> subgoals = data.getGoalCondition().getSubgoals();
-            for (int i = 0; i < subgoals.size() - 1; i++) {
-                // If it is the last item dont append AND to it
-                goal += ":" + subgoals.get(i).getGoal() + " " + data.getGoalCondition().getGoal() + " ";
-            }
-            goal += ":" + subgoals.get(subgoals.size() - 1).getGoal();
+    public void setAllGoals(Data data, JSONObject json) {
 
-            this.setGoals(goal);
+        GoalNode res = createParsedExpression(json);
+        setGoals(res.toString());
 
-            // Need to see how to implement two goals in a string
-        } else {
-            this.setGoals(data.getGoalCondition().getGoal());
-        }
     }
 
     /**
@@ -327,6 +333,7 @@ public class Dungeon {
                 if (currItem.getId().equals(itemUsedId)) {
                     item = currItem;
                 }
+
             }
 
             // Checks for whether itemUsed is in inventory
@@ -348,7 +355,18 @@ public class Dungeon {
         for (Buffs b : getCharacter().getBuffs()) {
             b.durationEnd(getTicksCounter(), removeBuffs);
         }
+
         for (Buffs b : removeBuffs) {
+            if (b instanceof AllyBuff) {
+                AllyBuff allyBuff = (AllyBuff) b;
+                for (Entities entity : getEntities()) {
+                    if (entity instanceof Ally) {
+                        allyBuff.endAllyBuff(this, (Ally) entity);
+
+                    }
+                }
+                // Remove the sceptre from the inventory here
+            }
             getCharacter().removeBuff(b);
         }
 
@@ -390,7 +408,8 @@ public class Dungeon {
         // - For now, move character
 
         /**
-         * Movement order: - Character - Assassin - Mercenary - Zombie Toast - Spider - Hydra
+         * Movement order: - Character - Assassin - Mercenary - Zombie Toast - Spider -
+         * Hydra
          */
 
         // Set character movement direction (needed for boulder movement)
@@ -404,8 +423,9 @@ public class Dungeon {
         List<Mercenary> mList = new ArrayList<Mercenary>();
         List<ZombieToast> zList = new ArrayList<ZombieToast>();
         List<Spider> sList = new ArrayList<Spider>();
-        List<BribedMercenary> bList = new ArrayList<BribedMercenary>();
         List<Hydra> hList = new ArrayList<Hydra>();
+        List<BribedAssassin> baList = new ArrayList<BribedAssassin>();
+        List<BribedMercenary> bList = new ArrayList<BribedMercenary>();
 
         for (Entities e : getEntities()) {
             if (e instanceof Assassin) {
@@ -420,12 +440,15 @@ public class Dungeon {
             } else if (e instanceof Spider) {
                 Spider s = (Spider) e;
                 sList.add(s);
-            } else if (e instanceof BribedMercenary) {
-                BribedMercenary b = (BribedMercenary) e;
-                bList.add(b);
             } else if (e instanceof Hydra) {
                 Hydra h = (Hydra) e;
                 hList.add(h);
+            } else if (e instanceof BribedAssassin) {
+                BribedAssassin b = (BribedAssassin) e;
+                baList.add(b);
+            } else if (e instanceof BribedMercenary) {
+                BribedMercenary b = (BribedMercenary) e;
+                bList.add(b);
             }
         }
 
@@ -453,17 +476,23 @@ public class Dungeon {
                 return newDungeonResponse();
             s.makeMovement(this);
         }
-        // Bribed mercenary
-        for (BribedMercenary b : bList) {
-            if (getCharacter() == null)
-                return newDungeonResponse();
-            b.makeMovement(this);
-        }
         // Hydra
         for (Hydra h : hList) {
             if (getCharacter() == null)
                 return newDungeonResponse();
             h.makeMovement(this);
+        }
+        // Bribed assassin
+        for (BribedAssassin ba : baList) {
+            if (getCharacter() == null)
+                return newDungeonResponse();
+            ba.makeMovement(this);
+        }
+        // Bribed mercenary
+        for (BribedMercenary b : bList) {
+            if (getCharacter() == null)
+                return newDungeonResponse();
+            b.makeMovement(this);
         }
 
         if (getCharacter() == null)
@@ -607,40 +636,55 @@ public class Dungeon {
 
     public Boolean hasCompletedGoals() {
 
-        List<String> inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType())
-                .collect(Collectors.toList());
-        List<String> goalsList = new ArrayList<>();
-        for (String goals : getGoals().split(" ")) {
-            if (goals.contains(":")) {
-                goalsList.add(goals.split(":")[1]);
-            }
+        try {
+            String fileName = "src/main/resources/dungeons/" + dungeonName + ".json";
+            InputStream is = new FileInputStream(fileName);
+            String jsonTxt = IOUtils.toString(is);
+            JSONObject json = new JSONObject(jsonTxt);
+            GoalNode res = createParsedExpression(json.getJSONObject("goal-condition"));
+            return BooleanGoalEvaluator.evaluate(res);
 
-        }
-        if (goalsList.isEmpty()) {
-            goalsList.add(getGoals());
-        }
-
-        for (String goal : goalsList) {
-            if (getGoals().contains("OR")) { // Check if the goal is OR or AND
-                if (checkIndividualGoals(goal, inventoryTypes, goalsList))
-                    return true;
-
-            } else if (getGoals().contains("AND")) {
-                if (!checkIndividualGoals(goal, inventoryTypes, goalsList)) {
-                    return false;
-                }
-
-            } else {
-                if (checkIndividualGoals(goal, inventoryTypes, goalsList))
-                    return true;
-            }
-
-        }
-        if (getGoals().contains("AND")) {
-            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return false;
+    }
+
+    public GoalNode createParsedExpression(JSONObject json) {
+
+        List<String> inventoryTypes = new ArrayList<>();
+
+        if (getCharacter() != null) {
+            inventoryTypes = getCharacter().getInventory().stream().map((item) -> item.getType())
+                    .collect(Collectors.toList());
+        }
+
+        String nodeType = json.getString("goal");
+        JSONArray subgoals = null;
+        JSONObject goal1 = null;
+        JSONObject goal2 = null;
+        if (json.has("subgoals")) {
+            subgoals = json.getJSONArray("subgoals");
+            goal1 = subgoals.getJSONObject(0);
+            goal2 = subgoals.getJSONObject(1);
+        }
+        GoalNode current = null;
+        if (nodeType.equals("AND")) {
+            current = new AndGoal(createParsedExpression(goal1), createParsedExpression(goal2), goal1.getString("goal"),
+                    goal2.getString("goal"));
+
+        } else if (nodeType.equals("OR")) {
+            current = new OrGoal(createParsedExpression(goal1), createParsedExpression(goal2), goal1.getString("goal"),
+                    goal2.getString("goal"));
+        } else {
+            current = new GoalLeaf(checkIndividualGoals(json.getString("goal"), inventoryTypes),
+                    json.getString("goal"));
+        }
+        return current;
+
     }
 
     /**
@@ -649,7 +693,10 @@ public class Dungeon {
      * @param goalsList
      * @return Boolean
      */
-    public Boolean checkIndividualGoals(String goal, List<String> inventoryTypes, List<String> goalsList) {
+    public Boolean checkIndividualGoals(String goal, List<String> inventoryTypes) {
+        if (getCharacter() == null) {
+            return false;
+        }
         switch (goal.toLowerCase()) {
         case "exit":
             List<Entities> entitiesAtPosition = getEntitiesOnTile(getCharacter().getPosition());
@@ -660,10 +707,8 @@ public class Dungeon {
             }
             return false;
         case "enemies":
-            List<Entities> enemies = getEntities().stream()
-                    .filter(e -> Objects.nonNull(e))
-                    .filter((entity) -> entity instanceof Enemy)
-                    .collect(Collectors.toList());
+            List<Entities> enemies = getEntities().stream().filter(e -> Objects.nonNull(e))
+                    .filter((entity) -> entity instanceof Enemy).collect(Collectors.toList());
 
             if (enemies.isEmpty()) {
                 return true;
@@ -732,4 +777,5 @@ public class Dungeon {
         borders.add(leftBorder - 1);
         return borders;
     }
+
 }

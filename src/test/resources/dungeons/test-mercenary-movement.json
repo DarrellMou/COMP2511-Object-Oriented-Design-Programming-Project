@@ -97,6 +97,9 @@
         "y": 10,
         "type": "mercenary"
       }
-    ]
+    ],
+    "goal-condition": {
+      "goal": "exit"
+    }
   }
   

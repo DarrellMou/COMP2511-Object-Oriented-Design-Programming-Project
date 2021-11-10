@@ -1,18 +1,13 @@
 package Entities.movingEntities;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import Entities.Entities;
-import Entities.WalkedOn;
-import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.staticEntities.Boulder;
 import dungeonmania.Dungeon;
-import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
-import dungeonmania.util.Battle;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 

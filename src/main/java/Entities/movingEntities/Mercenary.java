@@ -1,18 +1,14 @@
 package Entities.movingEntities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import Entities.Entities;
+import Entities.EntitiesFactory;
 import Entities.Interactable;
-import Entities.collectableEntities.materials.Treasure;
-import Entities.staticEntities.SwampTile;
 import Items.InventoryItem;
+import Items.materialItem.SunStoneItem;
+import Items.SceptreItem;
 import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
+import dungeonmania.Buffs.AllyBuff;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
@@ -20,7 +16,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends SpawningEntities implements Interactable, Portalable {
+public class Mercenary extends MindControllableEntities implements Interactable, Portalable {
     private static final int BRIBE_RADIUS = 2;
     private static final int ATTACK_DAMAGE = 1;
     private static final int MAX_HEALTH = 80;
@@ -87,8 +83,10 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
 
         // check if treasure is in inventory
         InventoryItem i = c.getInventoryItem(TreasureItem.class);
-        if (i == null) {
-            throw new InvalidActionException("Character does not have a treasure!!");
+        InventoryItem s = c.getInventoryItem(SceptreItem.class);
+
+        if (i == null && s == null) {
+            throw new InvalidActionException("Character does not have a treasure or sceptre!!");
         }
 
         // check if mercenary is in range
@@ -100,9 +98,11 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
 
         // remove mercenary from list
         dungeon.removeEntities(this);
-        // add bribed mercenary from list
+
         c.removeInventory(i);
-        BribedMercenary newBribedMercenary = new BribedMercenary(getId(), getPosition());
+
+        // add bribed mercenary from list
+        Entities newBribedMercenary = EntitiesFactory.createEntities("bribed_mercenary", this.getPosition());
         dungeon.addEntities(newBribedMercenary);
     }
 
@@ -112,7 +112,10 @@ public class Mercenary extends SpawningEntities implements Interactable, Portala
      */
     @Override
     public void interact(Dungeon dungeon) throws InvalidActionException {
-        bribeMercenary(dungeon);
+        if (!mindControl(dungeon)) {
+            bribeMercenary(dungeon);
+
+        }
     }
 
 }

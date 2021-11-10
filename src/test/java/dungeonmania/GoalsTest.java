@@ -43,4 +43,33 @@ public class GoalsTest {
 
         assertEquals("", controller.getDungeon().getGoals());
     }
+
+    @Test
+    public void testComplexGoals() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.newGame("complex-goals-test", "Standard");
+
+        for (int i = 0; i < 8; i++) {
+            controller.tick("", Direction.DOWN);
+
+        }
+
+        for (int i = 0; i < 6; i++) {
+            controller.tick("", Direction.RIGHT);
+
+        }
+        controller.tick("", Direction.DOWN);
+
+        for (int i = 0; i < 6; i++) {
+            controller.tick("", Direction.UP);
+
+        }
+
+        for (int i = 0; i < 2; i++) {
+            controller.tick("", Direction.LEFT);
+
+        }
+        assertEquals("", controller.getDungeon().getGoals());
+    }
+
 }

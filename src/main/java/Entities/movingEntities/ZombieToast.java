@@ -2,13 +2,10 @@ package Entities.movingEntities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import dungeonmania.Dungeon;
-import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
-import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class ZombieToast extends SpawningEntities {
@@ -38,7 +35,7 @@ public class ZombieToast extends SpawningEntities {
         List<Position> positions = getZombieMovablePositions(getPosition());
         // Get a random position
         Position newPosition = positions.get(dungeon.getRandom().nextInt(4));
-        
+
         // if the position is movable, move otherwise, don't :]
         if (checkMovable(newPosition, dungeon)) {
             walkOn(newPosition, dungeon);
@@ -48,6 +45,7 @@ public class ZombieToast extends SpawningEntities {
 
     /**
      * Up, Right, Down, Left
+     * 
      * @param position
      * @return List<Position>
      */

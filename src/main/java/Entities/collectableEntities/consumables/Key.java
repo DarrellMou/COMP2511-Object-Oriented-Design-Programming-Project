@@ -3,7 +3,7 @@ package Entities.collectableEntities.consumables;
 import Entities.Entities;
 import Entities.collectableEntities.CollectableEntity;
 import Entities.movingEntities.Character;
-import Items.InventoryItem;
+import Items.materialItem.KeyItem;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
@@ -27,9 +27,9 @@ public class Key extends CollectableEntity {
     public void walkedOn(Dungeon dungeon, Entities walker) {
         if (walker instanceof Character) {
             Character character = (Character) walker;
-            if (character.hasKey() == null) {
-                InventoryItem item = pickup(dungeon, character);
-                character.checkForBuildables(item, dungeon);
+            if (character.getInventoryItem(KeyItem.class) == null) {
+                pickup(dungeon, character);
+                character.checkForBuildables(dungeon);
             }
         }
     }

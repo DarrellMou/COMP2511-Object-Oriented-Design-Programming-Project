@@ -1,9 +1,5 @@
 package Entities.staticEntities;
 
-import Entities.Entities;
-import Entities.WalkedOn;
-import Entities.movingEntities.Character;
-import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 
 public class Exit extends StaticEntities {

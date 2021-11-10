@@ -1,0 +1,67 @@
+{
+    "entities": [
+        {
+            "x": 1,
+            "y": 1,
+            "type": "player"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "sun_stone"
+        },
+        {
+            "x": 4,
+            "y": 1,
+            "type": "door",
+            "key": 1
+        },
+        {
+            "x": 4,
+            "y": 2,
+            "type": "door",
+            "key": 2
+        },
+        {
+            "x": 4,
+            "y": 3,
+            "type": "door",
+            "key": 3
+        },
+        {
+            "x": 4,
+            "y": 4,
+            "type": "door",
+            "key": 4
+        },
+        {
+            "x": 4,
+            "y": 5,
+            "type": "door",
+            "key": 5
+        },
+        {
+            "x": 1,
+            "y": 4,
+            "type": "assassin"
+        },
+        {
+            "x": 2,
+            "y": 4,
+            "type": "mercenary"
+        }
+    ],
+    "width": 5,
+    "height": 5,
+    "goal-condition": {
+        "goal": "AND",
+        "subgoals": [
+            {
+                "goal": "enemies"
+            },
+            {
+                "goal": "treasure"
+            }
+        ]
+    }
+}

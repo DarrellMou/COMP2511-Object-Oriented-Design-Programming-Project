@@ -22,5 +22,8 @@
       }
   ],
   "width": 20,
-  "height": 20
+  "height": 20,
+  "goal-condition": {
+    "goal": "exit"
+  }
 }

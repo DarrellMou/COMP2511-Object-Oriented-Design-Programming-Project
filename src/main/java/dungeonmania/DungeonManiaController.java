@@ -6,39 +6,37 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
-import dungeonmania.util.Position;
+import spark.utils.IOUtils;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONObject;
+
 import Entities.Entities;
 import Entities.EntitiesFactory;
-import Entities.movingEntities.*;
 import Entities.movingEntities.Character;
-import Entities.staticEntities.Boulder;
-import Entities.staticEntities.Triggerable;
 import Items.InventoryItem;
 import data.Data;
 import data.DataEntities;
-import Entities.staticEntities.ZombieToastSpawner;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-
-import Entities.collectableEntities.CollectableEntity;
 
 public class DungeonManiaController {
     private int numCreatedDungeons;
@@ -163,8 +161,10 @@ public class DungeonManiaController {
      * @param gameMode
      * @return DungeonResponse
      * @throws IllegalArgumentException
+     * @throws URISyntaxException
      */
-    public DungeonResponse newGame(String dungeonName, String gameMode) throws IllegalArgumentException {
+    public DungeonResponse newGame(String dungeonName, String gameMode) {
+
         if (!getGameModes().contains(gameMode)) {
             throw new IllegalArgumentException("Game mode is not a valid game mode");
         }
@@ -192,14 +192,19 @@ public class DungeonManiaController {
     /**
      * @param entitiesResponses
      * @param dungeonName
+     * @throws URISyntaxException
      */
     public void newGameCreateMap(List<EntityResponse> entitiesResponses, String dungeonName, String gameMode) {
         try {
-            BufferedReader br = new BufferedReader(
-                    new FileReader("src/main/resources/dungeons/" + dungeonName + ".json"));
+            String fileName = "src/main/resources/dungeons/" + dungeonName + ".json";
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
             Data data = new Gson().fromJson(br, Data.class);
+            InputStream is = new FileInputStream(fileName);
+            String jsonTxt = IOUtils.toString(is);
+            JSONObject json = new JSONObject(jsonTxt);
             if (data.getGoalCondition() != null) {
-                dungeon.setAllGoals(data); // Set the goals given by the map only if there is a goal condition
+                dungeon.setAllGoals(data, json.getJSONObject("goal-condition")); // Set the goals given by the map only
+                                                                                 // if there is a goal condition
 
             } else {
                 dungeon.setGoals("");
@@ -409,8 +414,8 @@ public class DungeonManiaController {
      * @throws InvalidActionException
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        if (getCharacter().build(buildable)) {
-            getCharacter().checkForBuildables(null, dungeon);
+        if (getCharacter().build(buildable, dungeon)) {
+            getCharacter().checkForBuildables(dungeon);
         }
 
         // Temporary, store responses and change necessary responses only
