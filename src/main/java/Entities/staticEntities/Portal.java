@@ -2,7 +2,6 @@ package Entities.staticEntities;
 
 import Entities.Entities;
 import Entities.WalkedOn;
-import Entities.movingEntities.Character;
 import Entities.movingEntities.Portalable;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;

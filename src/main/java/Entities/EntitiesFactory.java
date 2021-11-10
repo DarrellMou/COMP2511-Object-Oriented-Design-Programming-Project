@@ -25,6 +25,8 @@ import Entities.staticEntities.Wall;
 import Entities.staticEntities.ZombieToastSpawner;
 import data.DataEntities;
 import Entities.movingEntities.Assassin;
+import Entities.movingEntities.BribedAssassin;
+import Entities.movingEntities.BribedMercenary;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Hydra;
 import Entities.movingEntities.Mercenary;
@@ -68,6 +70,10 @@ public class EntitiesFactory {
         } else if (type.equals("portal")) {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()), entity.getColour());
 
+        } else if (type.equals("swamp_tile")) {
+            return createSwampTile(entity.getType(), new Position(entity.getX(), entity.getY()),
+                    entity.getMovementFactor());
+
         } else {
             return createEntities(entity.getType(), new Position(entity.getX(), entity.getY()));
 
@@ -86,6 +92,17 @@ public class EntitiesFactory {
 
         if (type.substring(0, 6).equals("portal")) {
             newEntity = new Portal(getNextId(), position, colour);
+        }
+
+        return newEntity;
+    }
+
+    public static Entities createSwampTile(String type, Position position, int movementFactor) {
+
+        Entities newEntity = null;
+
+        if (type.equals("swamp_tile")) {
+            newEntity = new SwampTile(getNextId(), position, movementFactor);
         }
 
         return newEntity;
@@ -166,8 +183,10 @@ public class EntitiesFactory {
             newEntity = new Hydra(getNextId(), position);
         } else if (type.equals("assassin")) {
             newEntity = new Assassin(getNextId(), position);
-        } else if (type.equals("swamp_tile")) {
-            newEntity = new SwampTile(getNextId(), position);
+        } else if (type.equals("bribed_assassin")) {
+            newEntity = new BribedAssassin(getNextId(), position);
+        } else if (type.equals("bribed_mercenary")) {
+            newEntity = new BribedMercenary(getNextId(), position);
         }
         return newEntity;
     }

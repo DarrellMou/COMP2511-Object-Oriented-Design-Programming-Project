@@ -1,6 +1,5 @@
 package Entities;
 
-import Entities.movingEntities.Character;
 import Entities.staticEntities.SwampTile;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
@@ -73,7 +72,7 @@ public abstract class Entities {
                 // if the entity is on a swamp tile, it should not move unless it is the second
                 // attempt in moving
                 setMovementAttempted(getMovementAttempted() + 1);
-                if (getMovementAttempted() < 2) {
+                if (getMovementAttempted() < ((SwampTile) e).getMovementFactor()) {
                     return;
                 }
             }

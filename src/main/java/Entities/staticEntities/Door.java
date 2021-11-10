@@ -1,7 +1,5 @@
 package Entities.staticEntities;
 
-import java.util.Objects;
-
 import Entities.BeforeWalkedOn;
 import Entities.Entities;
 import Entities.EntitiesFactory;
