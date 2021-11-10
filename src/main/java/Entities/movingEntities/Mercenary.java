@@ -15,7 +15,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends MindControllableEntities implements Interactable, Portalable, MindControl {
+public class Mercenary extends MindControllableEntities implements Interactable, Portalable {
     private static final int BRIBE_RADIUS = 2;
     private static final int ATTACK_DAMAGE = 1;
     private static final int MAX_HEALTH = 80;
