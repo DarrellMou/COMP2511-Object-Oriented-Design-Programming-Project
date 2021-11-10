@@ -16,7 +16,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Mercenary extends MindControllableEntities implements Interactable, Portalable, MindControl {
+public class Mercenary extends MindControllableEntities implements Interactable, Portalable {
     private static final int BRIBE_RADIUS = 2;
     private static final int ATTACK_DAMAGE = 1;
     private static final int MAX_HEALTH = 80;
@@ -81,24 +81,12 @@ public class Mercenary extends MindControllableEntities implements Interactable,
     public void bribeMercenary(Dungeon dungeon) {
         Character c = dungeon.getCharacter();
 
-<<<<<<< src/main/java/Entities/movingEntities/Mercenary.java
-        // check if sun_stone is in inventory
-        InventoryItem s = c.getInventoryItem(SunStoneItem.class);
-        InventoryItem i = null;
-        if (s == null) {
-            // check if treasure is in inventory
-            i = c.getInventoryItem(TreasureItem.class);
-            if (i == null) {
-                throw new InvalidActionException("Character does not have a treasure!!");
-            }
-=======
         // check if treasure is in inventory
         InventoryItem i = c.getInventoryItem(TreasureItem.class);
         InventoryItem s = c.getInventoryItem(SceptreItem.class);
 
         if (i == null && s == null) {
             throw new InvalidActionException("Character does not have a treasure or sceptre!!");
->>>>>>> src/main/java/Entities/movingEntities/Mercenary.java
         }
 
         // check if mercenary is in range
