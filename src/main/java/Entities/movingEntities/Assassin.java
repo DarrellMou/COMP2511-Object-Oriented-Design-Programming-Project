@@ -117,7 +117,10 @@ public class Assassin extends Boss implements Interactable {
      */
     @Override
     public void interact(Dungeon dungeon) throws InvalidActionException {
-        bribeAssassin(dungeon);
+        if (!mindControl(dungeon)) {
+            bribeAssassin(dungeon);
+
+        }
     }
 
 }

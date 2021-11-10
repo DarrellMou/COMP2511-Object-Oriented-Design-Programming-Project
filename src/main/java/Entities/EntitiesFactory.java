@@ -3,6 +3,7 @@ package Entities;
 import java.util.UUID;
 
 import Entities.buildableEntities.Bow;
+import Entities.buildableEntities.Sceptre;
 import Entities.buildableEntities.Shield;
 import Entities.collectableEntities.consumables.Bomb;
 import Entities.collectableEntities.consumables.HealthPotion;
@@ -25,6 +26,7 @@ import Entities.staticEntities.Portal;
 import Entities.staticEntities.SwampTile;
 import Entities.staticEntities.Wall;
 import Entities.staticEntities.ZombieToastSpawner;
+import Items.SceptreItem;
 import data.DataEntities;
 import Entities.movingEntities.Assassin;
 import Entities.movingEntities.BribedAssassin;

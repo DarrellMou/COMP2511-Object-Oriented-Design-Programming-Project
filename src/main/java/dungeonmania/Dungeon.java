@@ -17,6 +17,8 @@ import org.json.JSONObject;
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.Interactable;
+import Entities.buildableEntities.Sceptre;
+import Entities.movingEntities.Ally;
 import Entities.movingEntities.Assassin;
 import Entities.movingEntities.BribedAssassin;
 import Entities.movingEntities.BribedMercenary;
@@ -30,8 +32,10 @@ import Entities.staticEntities.Exit;
 import Entities.staticEntities.FloorSwitch;
 import Entities.staticEntities.ZombieToastSpawner;
 import Items.InventoryItem;
+import Items.SceptreItem;
 import Items.ConsumableItem.Consumables;
 import data.Data;
+import dungeonmania.Buffs.AllyBuff;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.gamemodes.Hard;
@@ -329,6 +333,7 @@ public class Dungeon {
                 if (currItem.getId().equals(itemUsedId)) {
                     item = currItem;
                 }
+
             }
 
             // Checks for whether itemUsed is in inventory
@@ -350,7 +355,18 @@ public class Dungeon {
         for (Buffs b : getCharacter().getBuffs()) {
             b.durationEnd(getTicksCounter(), removeBuffs);
         }
+
         for (Buffs b : removeBuffs) {
+            if (b instanceof AllyBuff) {
+                AllyBuff allyBuff = (AllyBuff) b;
+                for (Entities entity : getEntities()) {
+                    if (entity instanceof Ally) {
+                        allyBuff.endAllyBuff(this, (Ally) entity);
+
+                    }
+                }
+                // Remove the sceptre from the inventory here
+            }
             getCharacter().removeBuff(b);
         }
 
@@ -761,4 +777,5 @@ public class Dungeon {
         borders.add(leftBorder - 1);
         return borders;
     }
+
 }

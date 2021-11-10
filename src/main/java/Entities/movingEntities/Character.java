@@ -18,6 +18,7 @@ import Items.Equipments.Shields.Shields;
 import Items.Equipments.Weapons.Anduril;
 import Items.Equipments.Weapons.Weapons;
 import dungeonmania.Dungeon;
+import dungeonmania.Buffs.AllyBuff;
 import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.util.Battle;
@@ -91,6 +92,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      */
     public void removeBuff(Buffs b) {
         buffs.remove(b);
+
     }
 
     /**
