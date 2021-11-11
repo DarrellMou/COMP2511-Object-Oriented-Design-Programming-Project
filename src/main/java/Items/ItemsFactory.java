@@ -89,6 +89,10 @@ public class ItemsFactory {
             newItem = new SwordItem(id);
         } else if (type.equals("sun_stone")) {
             newItem = new SunStoneItem(id);
+        } else if (type.equals("one_ring")) {
+            newItem = new TheOneRingItem(id);
+        } else if (type.equals("armour")) {
+            newItem = new ArmourItem(ItemsFactory.id());
         }
         
         return newItem;

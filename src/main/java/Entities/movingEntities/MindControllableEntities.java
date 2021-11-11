@@ -1,7 +1,7 @@
 package Entities.movingEntities;
 
 import Items.InventoryItem;
-import Items.SceptreItem;
+import Items.Equipments.SceptreItem;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.AllyBuff;
 import dungeonmania.Buffs.Buffs;
@@ -36,6 +36,7 @@ public abstract class MindControllableEntities extends SpawningEntities {
             }
 
         }
+        SceptreItem.activateSceptreBuff(c, dungeon);
 
         return true;
     }

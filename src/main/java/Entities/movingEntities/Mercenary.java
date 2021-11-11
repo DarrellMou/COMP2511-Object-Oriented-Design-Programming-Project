@@ -4,8 +4,8 @@ import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.Interactable;
 import Items.InventoryItem;
+import Items.Equipments.SceptreItem;
 import Items.materialItem.SunStoneItem;
-import Items.SceptreItem;
 import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.AllyBuff;
@@ -84,9 +84,10 @@ public class Mercenary extends MindControllableEntities implements Interactable,
         // check if treasure is in inventory
         InventoryItem i = c.getInventoryItem(TreasureItem.class);
         InventoryItem s = c.getInventoryItem(SceptreItem.class);
+        InventoryItem sunStone = c.getInventoryItem(SunStoneItem.class);
 
-        if (i == null && s == null) {
-            throw new InvalidActionException("Character does not have a treasure or sceptre!!");
+        if (i == null && s == null && sunStone == null) {
+            throw new InvalidActionException("Character does not have a treasure or sceptre or sun stone!!");
         }
 
         // check if mercenary is in range
