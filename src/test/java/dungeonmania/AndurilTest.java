@@ -8,7 +8,7 @@ import Entities.EntitiesFactory;
 import Entities.movingEntities.Hydra;
 import Entities.movingEntities.Mercenary;
 import Items.ItemsFactory;
-import Items.Equipments.Weapons.Anduril;
+import Items.Equipments.Weapons.AndurilItem;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -23,7 +23,7 @@ public class AndurilTest {
         controller.getDungeon().addEntities(h);
 
         // Add anduril to inventory
-        Anduril a = (Anduril) ItemsFactory.createItem("anduril");
+        AndurilItem a = (AndurilItem) ItemsFactory.createItem("anduril");
         controller.getDungeon().getCharacter().addInventory(a);
 
         controller.tick("", Direction.RIGHT);
@@ -45,7 +45,7 @@ public class AndurilTest {
         controller.getDungeon().addEntities(m);
 
         // Add anduril to inventory
-        Anduril a = (Anduril) ItemsFactory.createItem("anduril");
+        AndurilItem a = (AndurilItem) ItemsFactory.createItem("anduril");
         controller.getDungeon().getCharacter().addInventory(a);
         
         // Set Character HP lower so that merc doesn't die

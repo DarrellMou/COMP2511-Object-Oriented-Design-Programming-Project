@@ -61,7 +61,7 @@ Hydra
 
 Movement order
 
-- Character moves first, then assassin, then merc, then zombie toast, then spider, then hydra.
+- Character moves first, then assassin, then merc, then zombie toast, then spider, then hydra, then allies.
 - If character moves into boulder, then the boulder will move first.
 
 Battle Order:
@@ -77,17 +77,12 @@ Character: Health: 120/100 (standard/hard mode), Attack Damage: 3
 Spider: Health: 30, Attack Damage: 1
 Zombie Toast: Health: 50, Attack Damage: 1
 Mercenary: Health: 80, Attack Damage: 1
-Assassin: Health: 80, Attack Damage: 4
-Hydra: Health: 200, Attack Damage: 2
 
 Sword: Durability: 4, Attack Damage: 1.5 x Character Attack Damage
 Bow: Durability: 3, Attack Damage: 2 x Character Attack Damage
-Armour: Durability: 4, Decrease Attack Damage of Enemy: 0.5
-Shield: Durability: 3, Decrease Attack Damage of Enemy: 0.5
-Anduril:
+Armour: Durability: 4, Decrease damage taken from enemy: 0.5 x Damage taken
+Shield: Durability: 3, Decrease damage taken from enemy: 0.5 x Damage taken
 
-- Does 1.5x character damage (like normal sword) to non-boss enemies
-- Durability = 4
 
 Building
 
@@ -120,22 +115,26 @@ Invincibility Potion
 
 Milestone 3:
 
+Hydra: Health: 200, Attack Damage: 2
+Assassin: Health: 80, Attack Damage: 4
+
 Sun Stone
 - Opening doors and bribing will first try to use sun stone before any other items
 
+Anduril:
+- Increases 1.5x current damage (like normal sword) to non-boss enemies
+- Durability = 4
+
 Midnight Armour
 - If the player attemps to build midnight armour while a zombie exists, raise InvalidActionException error
+- Increases 2x current damage
+- Decreases damage taken to 0.25 x original damage
+- Durability = 8
 
 Swamp Tile
 - Character is able to push boulders if they are on swamp tile, although they do not move off of tile.
+- Mobs can jump into portals if they are on swamp tile ignoring movement factor.
 
 Sceptre
 The Sceptre will be used either when the character interacts with the mercenary or interacts with the assassin. In either case, once used all the assassins and mercenary will be allies for 10 ticks. The interact will look for the sceptre first to bribe and then any other other additional material if there is no sceptre.
 - After 10 ticks of holding the sceptre, the mercenary and assasins will no longer be allies, and the sceptre will be destroyed and removed from the inventory
-  Swamp Tile
-
-Characters
-- Character is able to push boulders if they are on swamp tile, although they do not move off of tile.
-
-Mobs
-- Mobs can jump into portals if they are on swamp tile ignoring movement factor.

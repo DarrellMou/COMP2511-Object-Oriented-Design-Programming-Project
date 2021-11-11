@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Items.InventoryItem;
-import Items.Equipments.Weapons.Anduril;
+import Items.Equipments.Weapons.AndurilItem;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
@@ -103,7 +103,7 @@ public class Hydra extends Boss {
     private boolean checkAnduril(Dungeon dungeon) {
         Character c = dungeon.getCharacter();
         if (c != null) {
-            InventoryItem i = c.getInventoryItem(Anduril.class);
+            InventoryItem i = c.getInventoryItem(AndurilItem.class);
             if (i != null) return true;
         }
         return false;

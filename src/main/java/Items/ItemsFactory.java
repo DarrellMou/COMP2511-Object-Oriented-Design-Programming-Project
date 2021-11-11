@@ -10,7 +10,7 @@ import Items.Equipments.SceptreItem;
 import Items.Equipments.Armours.ArmourItem;
 import Items.Equipments.Armours.MidnightArmourItem;
 import Items.Equipments.Shields.ShieldItem;
-import Items.Equipments.Weapons.Anduril;
+import Items.Equipments.Weapons.AndurilItem;
 import Items.Equipments.Weapons.BowItem;
 import Items.Equipments.Weapons.SwordItem;
 import Items.materialItem.ArrowItem;
@@ -46,10 +46,12 @@ public class ItemsFactory {
             newItem = new BowItem(ItemsFactory.id());
         } else if (type.equals("shield")) {
             newItem = new ShieldItem(ItemsFactory.id());
+        } else if (type.equals("armour")) {
+            newItem = new ArmourItem(ItemsFactory.id());
         } else if (type.equals("one_ring")) {
             newItem = new TheOneRingItem(ItemsFactory.id());
         } else if (type.equals("anduril")) {
-            newItem = new Anduril(ItemsFactory.id());
+            newItem = new AndurilItem(ItemsFactory.id());
         } else if (type.equals("sceptre")) {
             newItem = new SceptreItem(ItemsFactory.id());
         } else if (type.equals("midnight_armour")) {
@@ -85,8 +87,6 @@ public class ItemsFactory {
             newItem = new BombItem(id);
         } else if (type.equals("sword")) {
             newItem = new SwordItem(id);
-        } else if (type.equals("armour")) {
-            newItem = new ArmourItem(ItemsFactory.id());
         } else if (type.equals("sun_stone")) {
             newItem = new SunStoneItem(id);
         }

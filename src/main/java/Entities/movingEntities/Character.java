@@ -14,8 +14,9 @@ import Items.InventoryItem;
 import Items.ItemsFactory;
 import Items.TheOneRingItem;
 import Items.Equipments.Armours.Armours;
+import Items.Equipments.Armours.MidnightArmourItem;
 import Items.Equipments.Shields.Shields;
-import Items.Equipments.Weapons.Anduril;
+import Items.Equipments.Weapons.AndurilItem;
 import Items.Equipments.Weapons.Weapons;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Buffs;
@@ -278,24 +279,28 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         if (getBuffs(Invincible.class) != null) {
             return getHealth() * 1000;
         }
-        // If fighting boss, check for anduril first and use if so
-        if (enemy instanceof Boss) {
-            for (InventoryItem item : getInventory()) {
-                if (item instanceof Anduril) {
-                    Anduril a = (Anduril) item;
-                    damage = a.calculateBossDamage(this, damage);
-                    return getHealth() * damage;
-                }
-            }
+        // Check for midnight armour, add damage if so
+        InventoryItem i1 = getInventoryItem(MidnightArmourItem.class);
+        if (i1 != null) {
+            MidnightArmourItem m = (MidnightArmourItem) i1;
+            damage = m.calculateDamageIncrease(this, damage);
         }
-        // Either fighting boss without anduril, or fighting non-boss
-        for (InventoryItem item : getInventory()) {
-            // get first weapon in inventory
-            if (item instanceof Weapons) {
-                Weapons weapon = (Weapons) item;
-                // increase damage
-                damage = weapon.calculateDamage(this, damage);
-                break;
+        // If fighting boss, check for anduril first and use if so
+        InventoryItem i2 = getInventoryItem(AndurilItem.class);
+        if (enemy instanceof Boss && i2 != null) {
+            AndurilItem a = (AndurilItem) i2;
+            damage = a.calculateBossDamage(this, damage);
+        } else {
+            // Either fighting boss without anduril, or fighting non-boss,
+            // so fight with first weapon in inventory
+            for (InventoryItem item : getInventory()) {
+                // get first weapon in inventory
+                if (item instanceof Weapons) {
+                    Weapons weapon = (Weapons) item;
+                    // increase damage
+                    damage = weapon.calculateDamage(this, damage);
+                    break;
+                }
             }
         }
         return getHealth() * damage;
