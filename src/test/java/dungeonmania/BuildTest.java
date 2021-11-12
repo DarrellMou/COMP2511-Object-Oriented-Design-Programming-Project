@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 
@@ -578,7 +579,8 @@ public class BuildTest {
 
     @Test
     public void testBuildingEverything() {
-        DungeonManiaController controller = new DungeonManiaController();
+        Random r = new Random(1);
+        DungeonManiaController controller = new DungeonManiaController(r);
 
         // Character spawns at (1, 1)
         controller.newGame("test-build", "Peaceful");
