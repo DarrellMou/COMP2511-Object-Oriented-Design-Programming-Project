@@ -1,6 +1,7 @@
 package Entities.movingEntities;
 
 import Items.InventoryItem;
+import Items.ItemsFactory;
 import Items.Equipments.SceptreItem;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.AllyBuff;
@@ -20,7 +21,7 @@ public abstract class MindControllableEntities extends SpawningEntities {
     public boolean mindControl(Dungeon dungeon) {
         Character c = dungeon.getCharacter();
 
-        InventoryItem s = c.getInventoryItem(SceptreItem.class);
+        SceptreItem s = (SceptreItem) c.getInventoryItem(SceptreItem.class);
         if (s == null) {
             return false;
         }
@@ -36,7 +37,7 @@ public abstract class MindControllableEntities extends SpawningEntities {
             }
 
         }
-        SceptreItem.activateSceptreBuff(c, dungeon);
+        s.activateSceptreBuff(c, dungeon);
 
         return true;
     }
