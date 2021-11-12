@@ -15,7 +15,7 @@ import Items.ItemsFactory;
 import Items.TheOneRingItem;
 import Items.Equipments.Armours.Armours;
 import Items.Equipments.Shields.Shields;
-import Items.Equipments.Weapons.Anduril;
+import Items.Equipments.Weapons.AndurilItem;
 import Items.Equipments.Weapons.Weapons;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Buffs;
@@ -153,14 +153,19 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      * @param collectable
      * @param dungeon
      */
-    public Map<String, List<InventoryItem>> checkForBuildables(Dungeon dungeon) {
+    public Map<String, List<InventoryItem>> checkForBuildables(Dungeon dungeon, String buildable) {
         dungeon.setBuildables(new ArrayList<String>());
         Map<String, List<InventoryItem>> buildables = new HashMap<>();
+        
         List<String> buildableItems = new ArrayList<>();
-        buildableItems.add("bow");
-        buildableItems.add("shield");
-        buildableItems.add("sceptre");
-        buildableItems.add("midnight_armour");
+        if (buildable == null) {
+            buildableItems.add("bow");
+            buildableItems.add("shield");
+            buildableItems.add("sceptre");
+            buildableItems.add("midnight_armour");
+        } else {
+            buildableItems.add(buildable);
+        }
 
         for (String buildableItem : buildableItems) {
             List<InventoryItem> materials = new ArrayList<>();
@@ -176,6 +181,7 @@ public class Character extends Mobs implements WalkedOn, Portalable {
                 dungeon.addBuildables(buildableItem);
             }
         }
+        
        
         return buildables;
     }
@@ -187,28 +193,34 @@ public class Character extends Mobs implements WalkedOn, Portalable {
      * @throws InvalidActionException
      */
     public boolean build(String buildable, Dungeon dungeon) throws IllegalArgumentException, InvalidActionException {
-        Map<String, List<InventoryItem>> buildables = checkForBuildables(dungeon);
         List<String> buildableItems = new ArrayList<>();
         buildableItems.add("bow");
         buildableItems.add("shield");
         buildableItems.add("sceptre");
         buildableItems.add("midnight_armour");
-        for (String buildableItem : buildableItems) {
-            if (buildableItem.equals("midnight_armour")) {
-                for (Entities entity : dungeon.getEntities()) {
-                    if (entity.getType().equals("zombie_toast")) {
-                        throw new InvalidActionException("You cannot build Midnight Armour with zombies around!!!");
-                    }
+
+        if (!buildableItems.contains(buildable)) {
+            throw new IllegalArgumentException("Buildable given is not bow, shield, sceptre or midnight armour!!!");
+        }
+
+        Map<String, List<InventoryItem>> buildables = checkForBuildables(dungeon, buildable);
+
+        if (!buildables.containsKey(buildable)) {
+            throw new InvalidActionException("You do not have the materials to build that!!!");
+        }
+
+        if (buildable.equals("midnight_armour")) {
+            for (Entities entity : dungeon.getEntities()) {
+                if (entity.getType().equals("zombie_toast")) {
+                    throw new InvalidActionException("You cannot build Midnight Armour with zombies around!!!");
                 }
             }
-            if (buildableItem.equals(buildable)) {
-                inventory.removeAll(buildables.get(buildableItem));
-                InventoryItem item = ItemsFactory.createItem(buildableItem);
-                inventory.add(item);
-                return true;
-            }
         }
-        return false;
+
+        inventory.removeAll(buildables.get(buildable));
+        InventoryItem item = ItemsFactory.createItem(buildable);
+        inventory.add(item);
+        return true;
     }
 
     /**
@@ -281,8 +293,8 @@ public class Character extends Mobs implements WalkedOn, Portalable {
         // If fighting boss, check for anduril first and use if so
         if (enemy instanceof Boss) {
             for (InventoryItem item : getInventory()) {
-                if (item instanceof Anduril) {
-                    Anduril a = (Anduril) item;
+                if (item instanceof AndurilItem) {
+                    AndurilItem a = (AndurilItem) item;
                     damage = a.calculateBossDamage(this, damage);
                     return getHealth() * damage;
                 }
