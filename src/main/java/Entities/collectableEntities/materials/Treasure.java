@@ -21,7 +21,7 @@ public class Treasure extends CollectableEntity { // fix this to collectables
         if (walker instanceof Character) {
             Character character = (Character) walker;
             pickup(dungeon, character);
-            character.checkForBuildables(dungeon);
+            character.checkForBuildables(dungeon, null);
         }
     }
 }

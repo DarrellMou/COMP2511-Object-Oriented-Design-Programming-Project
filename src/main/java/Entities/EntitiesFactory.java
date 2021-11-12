@@ -11,6 +11,7 @@ import Entities.collectableEntities.consumables.HealthPotion;
 import Entities.collectableEntities.consumables.InvincibilityPotion;
 import Entities.collectableEntities.consumables.InvisibilityPotion;
 import Entities.collectableEntities.consumables.Key;
+import Entities.collectableEntities.equipments.Anduril;
 import Entities.collectableEntities.equipments.Armour;
 import Entities.collectableEntities.equipments.Sword;
 import Entities.collectableEntities.materials.Arrow;
@@ -168,6 +169,8 @@ public class EntitiesFactory {
             newEntity = new Sword(getNextId(), position);
         } else if (type.equals("armour")) {
             newEntity = new Armour(getNextId(), position);
+        } else if (type.equals("anduril")) {
+            newEntity = new Anduril(getNextId(), position);
         } else if (type.equals("one_ring")) {
             newEntity = new OneRing(getNextId(), position);
         } else if (type.equals("mercenary")) {

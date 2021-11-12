@@ -29,7 +29,7 @@ public class Key extends CollectableEntity {
             Character character = (Character) walker;
             if (character.getInventoryItem(KeyItem.class) == null) {
                 pickup(dungeon, character);
-                character.checkForBuildables(dungeon);
+                character.checkForBuildables(dungeon, null);
             }
         }
     }

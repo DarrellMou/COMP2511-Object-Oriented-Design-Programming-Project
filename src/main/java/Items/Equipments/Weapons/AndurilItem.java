@@ -2,10 +2,10 @@ package Items.Equipments.Weapons;
 
 import Entities.movingEntities.Character;
 
-public class Anduril extends Weapons {
+public class AndurilItem extends Weapons {
     private double bossMultiplier = 3;
 
-    public Anduril(String id) {
+    public AndurilItem(String id) {
         super(id, "anduril", 1.5, 4);
     }
 
