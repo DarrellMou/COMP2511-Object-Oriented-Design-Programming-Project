@@ -11,14 +11,14 @@ import dungeonmania.util.Battle;
 import dungeonmania.util.Position;
 
 public abstract class Enemy extends Mobs implements WalkedOn {
-    public Map<String, Double> itemDrop = new HashMap<String, Double>() {
+    private Map<String, Double> itemDrop = new HashMap<String, Double>() {
         {
+            // One ring and Anduril dropped by all enemies
+            // Armours only dropped by zombie toasts, mercenary (and assassin)
             // One ring = 5%
-            // Armour = 20%
             // Anduril = 10%
-            put("one_ring", 0.05);
-            put("armour", 0.20);
-            put("anduril", 0.10);
+            put("one_ring", 5.0);
+            put("anduril", 10.0);
         }
     };
 
@@ -61,7 +61,7 @@ public abstract class Enemy extends Mobs implements WalkedOn {
      */
     public void dropItems(Dungeon dungeon) {
         for (String item : itemDrop.keySet()) {
-            if (Math.random() <= itemDrop.get(item)) {
+            if (dungeon.getRandom().nextInt(100) < itemDrop.get(item)) {
                 dungeon.getCharacter().addInventory(ItemsFactory.createItem(item));
             }
         }

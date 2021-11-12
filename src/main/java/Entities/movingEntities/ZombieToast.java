@@ -1,8 +1,11 @@
 package Entities.movingEntities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import Items.ItemsFactory;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
@@ -11,6 +14,16 @@ import dungeonmania.util.Position;
 public class ZombieToast extends SpawningEntities {
     private static final int MAX_HEALTH = 50;
     private static final int ATTACK_DAMAGE = 1;
+    private Map<String, Double> itemDrop = new HashMap<String, Double>() {
+        {
+            // One ring = 5%
+            // Armour = 20%
+            // Anduril = 10%
+            put("one_ring", 5.0);
+            put("armour", 20.0);
+            put("anduril", 10.0);
+        }
+    };
 
     public ZombieToast(String id, Position position) {
         super(id, "zombie_toast", position, false, true, MAX_HEALTH, ATTACK_DAMAGE);
@@ -59,5 +72,17 @@ public class ZombieToast extends SpawningEntities {
         adjacentPositions.add(new Position(x, y + 1, 2));
         adjacentPositions.add(new Position(x - 1, y, 2));
         return adjacentPositions;
+    }
+
+    /**
+     * @param dungeon
+     */
+    @Override
+    public void dropItems(Dungeon dungeon) {
+        for (String item : itemDrop.keySet()) {
+            if (dungeon.getRandom().nextInt(100) < itemDrop.get(item)) {
+                dungeon.getCharacter().addInventory(ItemsFactory.createItem(item));
+            }
+        }
     }
 }

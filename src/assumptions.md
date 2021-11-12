@@ -44,21 +44,6 @@ Bribed mercenary
 - Radius is calculated by the sum of the x and y displacement.
 - The mercenary will not take damage as it fights with the player, since it fights from a distance.
 
-Assassin
-
-- Follows same movement as mercenary.
-- 20% chance to spawn instead of mercenary
-- Bribe radius is same as mercenary.
-- Bribable with a treasure and the one ring.
-
-Hydra
-
-- Health = 200, Attack Damage = 2
-- Spawns at random location (like spider)
-- Movement is random (up, right, down, left) like zombie toast
-- If the hydra were to heal past it's max health, it will be restored to full health instead.
-- The chances of Ally and Character to damage/heal the hydra are independent. For instance, an ally does not always have to damage the hydra if the character damages the hydra and vice versa.
-
 Movement order
 
 - Character moves first, then assassin, then merc, then zombie toast, then spider, then hydra, then allies.
@@ -83,6 +68,11 @@ Bow: Durability: 3, Attack Damage: 2 x Character Attack Damage
 Armour: Durability: 4, Decrease damage taken from enemy: 0.5 x Damage taken
 Shield: Durability: 3, Decrease damage taken from enemy: 0.5 x Damage taken
 
+Dropped items:
+
+- All enemies have a chance to drop Anduril and One Ring (chances are independent of one another)
+- Only zombie toasts, mercenaries (and assassins) can 'have' armour. If they have armour, they do not wear it, hence will not have their damage taken reduced. Hence, the durability of the armour when dropped will always be full.
+- Drop rates: One Ring = 5%, Anduril = 10%, Armour = 20%
 
 Building
 
@@ -115,8 +105,21 @@ Invincibility Potion
 
 Milestone 3:
 
-Hydra: Health: 200, Attack Damage: 2
-Assassin: Health: 80, Attack Damage: 4
+Assassin
+
+- Assassin: Health: 80, Attack Damage: 4
+- Follows same movement as mercenary.
+- 20% chance to spawn instead of mercenary
+- Bribe radius is same as mercenary.
+- Bribable with a treasure and the one ring.
+
+Hydra
+
+- Health = 200, Attack Damage = 2
+- Spawns at random location (like spider)
+- Movement is random (up, right, down, left) like zombie toast
+- If the hydra were to heal past it's max health, it will be restored to full health instead.
+- The chances of Ally and Character to damage/heal the hydra are independent. For instance, an ally does not always have to damage the hydra if the character damages the hydra and vice versa.
 
 Sun Stone
 - Opening doors and bribing will first try to use sun stone before any other items
