@@ -7,11 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 
 import Entities.Entities;
 import Entities.EntitiesFactory;
+import Entities.collectableEntities.equipments.Sword;
 import Entities.movingEntities.Character;
 import Entities.movingEntities.Mobs;
 import Items.InventoryItem;
@@ -19,6 +21,10 @@ import Items.ItemsFactory;
 import Items.TheOneRingItem;
 import Items.Equipments.Armours.ArmourItem;
 import Items.Equipments.Shields.ShieldItem;
+import Items.Equipments.Weapons.BowItem;
+import Items.Equipments.Weapons.SwordItem;
+import Items.materialItem.ArrowItem;
+import Items.materialItem.WoodItem;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -26,48 +32,38 @@ public class BattleTest {
 
     @Test
     public void testBreakBow() {
-        DungeonManiaController controller = new DungeonManiaController();
+        Random r = new Random(1);
+        DungeonManiaController controller = new DungeonManiaController(r);
         controller.newGame("test-zombie", "Standard");
 
-        // Create bow materials to right of player
-        Entities w = EntitiesFactory.createEntities("wood", new Position(2, 1));
-        Entities a1 = EntitiesFactory.createEntities("arrow", new Position(3, 1));
-        Entities a2 = EntitiesFactory.createEntities("arrow", new Position(4, 1));
-        Entities a3 = EntitiesFactory.createEntities("arrow", new Position(5, 1));
-        // Add mats to right of player
-        controller.getDungeon().getEntities().add(w);
-        controller.getDungeon().getEntities().add(a1);
-        controller.getDungeon().getEntities().add(a2);
-        controller.getDungeon().getEntities().add(a3);
-        controller.tick("", Direction.RIGHT);
-        controller.tick("", Direction.RIGHT);
-        controller.tick("", Direction.RIGHT);
-        controller.tick("", Direction.RIGHT);
+        // Add bow materials
+        WoodItem w = (WoodItem) ItemsFactory.createItem(ItemsFactory.id(), "wood");
+        controller.getDungeon().getCharacter().addInventory(w);
+        ArrowItem a1 = (ArrowItem) ItemsFactory.createItem(ItemsFactory.id(), "arrow");
+        controller.getDungeon().getCharacter().addInventory(a1);
+        ArrowItem a2 = (ArrowItem) ItemsFactory.createItem(ItemsFactory.id(), "arrow");
+        controller.getDungeon().getCharacter().addInventory(a2);
+        ArrowItem a3 = (ArrowItem) ItemsFactory.createItem(ItemsFactory.id(), "arrow");
+        controller.getDungeon().getCharacter().addInventory(a3);
 
-        List<InventoryItem> expected = new ArrayList<>();
-        expected.add(new InventoryItem(EntitiesFactory.getNextId(), "bow"));
         controller.build("bow");
+        BowItem b = (BowItem) controller.getDungeon().getCharacter().getInventoryItem(BowItem.class);
 
         // Use bow
-        Entities s = EntitiesFactory.createEntities("spider", new Position(5, 2));
+        Entities s = EntitiesFactory.createEntities("spider", new Position(1, 2));
         controller.getDungeon().addEntities(s);
         controller.tick("", Direction.DOWN);
-        // Check 1 bow is in inventory
-        assertEquals(1,
-                controller.getDungeon().getCharacter().getInventory().stream()
-                            .filter(i -> i.getType().equals("bow"))
-                            .count());
-        Entities s2 = EntitiesFactory.createEntities("spider", new Position(5, 3));
+        assertEquals(2, b.getDurability());
+
+        Entities s2 = EntitiesFactory.createEntities("spider", new Position(1, 3));
         controller.getDungeon().addEntities(s2);
         controller.tick("", Direction.DOWN);
-        // Check 1 bow is in inventory
-        assertEquals(1,
-                controller.getDungeon().getCharacter().getInventory().stream()
-                            .filter(i -> i.getType().equals("bow"))
-                            .count());
-        Entities s3 = EntitiesFactory.createEntities("spider", new Position(5, 4));
+        assertEquals(1, b.getDurability());
+        
+        Entities s3 = EntitiesFactory.createEntities("spider", new Position(1, 4));
         controller.getDungeon().addEntities(s3);
         controller.tick("", Direction.DOWN);
+        assertEquals(0, b.getDurability());
         // Check bow is not in inventory
         assertEquals(0,
                 controller.getDungeon().getCharacter().getInventory().stream()
@@ -77,43 +73,34 @@ public class BattleTest {
 
     @Test
     public void testBreakSword() {
-        DungeonManiaController controller = new DungeonManiaController();
+        Random r = new Random(1);
+        DungeonManiaController controller = new DungeonManiaController(r);
         controller.newGame("test-zombie", "Standard");
 
-        // pickup sword
-        Entities sw = EntitiesFactory.createEntities("sword", new Position(1, 2));
-        controller.getDungeon().getEntities().add(sw);
-        controller.tick("", Direction.DOWN);
+        // Get sword
+        SwordItem sw = (SwordItem) ItemsFactory.createItem(ItemsFactory.id(), "sword");
+        controller.getDungeon().getCharacter().addInventory(sw);
 
         // Use sword
-        Entities s = EntitiesFactory.createEntities("spider", new Position(1, 3));
+        Entities s = EntitiesFactory.createEntities("spider", new Position(1, 2));
         controller.getDungeon().addEntities(s);
         controller.tick("", Direction.DOWN);
-        // Check 1 bow is in inventory
-        assertEquals(1,
-                controller.getDungeon().getCharacter().getInventory().stream()
-                            .filter(i -> i.getType().equals("sword"))
-                            .count());
-        Entities s2 = EntitiesFactory.createEntities("spider", new Position(1, 4));
+        assertEquals(3, sw.getDurability());
+
+        Entities s2 = EntitiesFactory.createEntities("spider", new Position(1, 3));
         controller.getDungeon().addEntities(s2);
         controller.tick("", Direction.DOWN);
-        // Check 1 bow is in inventory
-        assertEquals(1,
-                controller.getDungeon().getCharacter().getInventory().stream()
-                            .filter(i -> i.getType().equals("sword"))
-                            .count());
-        Entities s3 = EntitiesFactory.createEntities("spider", new Position(1, 5));
+        assertEquals(2, sw.getDurability());
+
+        Entities s3 = EntitiesFactory.createEntities("spider", new Position(1, 4));
         controller.getDungeon().addEntities(s3);
         controller.tick("", Direction.DOWN);
-        // Check bow is not in inventory
-        assertEquals(1,
-                controller.getDungeon().getCharacter().getInventory().stream()
-                            .filter(i -> i.getType().equals("sword"))
-                            .count());
-        Entities s4 = EntitiesFactory.createEntities("spider", new Position(1, 6));
+        assertEquals(1, sw.getDurability());
+
+        Entities s4 = EntitiesFactory.createEntities("spider", new Position(1, 5));
         controller.getDungeon().addEntities(s4);
         controller.tick("", Direction.DOWN);
-        // Check 1 bow is in inventory
+        assertEquals(0, sw.getDurability());
         assertEquals(0,
                 controller.getDungeon().getCharacter().getInventory().stream()
                             .filter(i -> i.getType().equals("sword"))
@@ -122,7 +109,8 @@ public class BattleTest {
 
     @Test
     public void testBreakArmourShield() {
-        DungeonManiaController controller = new DungeonManiaController();
+        Random r = new Random(1);
+        DungeonManiaController controller = new DungeonManiaController(r);
         controller.newGame("test-zombie", "Standard");
 
         // Get armour

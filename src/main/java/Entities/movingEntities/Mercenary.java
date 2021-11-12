@@ -1,15 +1,17 @@
 package Entities.movingEntities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.Interactable;
 import Items.InventoryItem;
+import Items.ItemsFactory;
 import Items.Equipments.SceptreItem;
 import Items.materialItem.SunStoneItem;
 import Items.materialItem.TreasureItem;
 import dungeonmania.Dungeon;
-import dungeonmania.Buffs.AllyBuff;
-import dungeonmania.Buffs.Buffs;
 import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
 import dungeonmania.exceptions.InvalidActionException;
@@ -20,6 +22,16 @@ public class Mercenary extends MindControllableEntities implements Interactable,
     private static final int BRIBE_RADIUS = 2;
     private static final int ATTACK_DAMAGE = 1;
     private static final int MAX_HEALTH = 80;
+    private Map<String, Double> itemDrop = new HashMap<String, Double>() {
+        {
+            // One ring = 5%
+            // Armour = 20%
+            // Anduril = 10%
+            put("one_ring", 5.0);
+            put("armour", 20.0);
+            put("anduril", 10.0);
+        }
+    };
 
     public Mercenary(String id, Position position) {
         super(id, "mercenary", position, true, true, MAX_HEALTH, ATTACK_DAMAGE);
@@ -116,6 +128,18 @@ public class Mercenary extends MindControllableEntities implements Interactable,
         if (!mindControl(dungeon)) {
             bribeMercenary(dungeon);
 
+        }
+    }
+
+    /**
+     * @param dungeon
+     */
+    @Override
+    public void dropItems(Dungeon dungeon) {
+        for (String item : itemDrop.keySet()) {
+            if (dungeon.getRandom().nextInt(100) < itemDrop.get(item)) {
+                dungeon.getCharacter().addInventory(ItemsFactory.createItem(item));
+            }
         }
     }
 
