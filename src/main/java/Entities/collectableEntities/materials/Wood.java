@@ -21,7 +21,7 @@ public class Wood extends CollectableEntity {
         if (walker instanceof Character) {
             Character character = (Character) walker;
             pickup(dungeon, character);
-            character.checkForBuildables(dungeon);
+            character.checkForBuildables(dungeon, null);
         }
     }
 }

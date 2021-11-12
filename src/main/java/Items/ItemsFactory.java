@@ -87,12 +87,14 @@ public class ItemsFactory {
             newItem = new BombItem(id);
         } else if (type.equals("sword")) {
             newItem = new SwordItem(id);
-        } else if (type.equals("sun_stone")) {
-            newItem = new SunStoneItem(id);
+        } else if (type.equals("armour")) {
+            newItem = new ArmourItem(id);
         } else if (type.equals("one_ring")) {
             newItem = new TheOneRingItem(id);
-        } else if (type.equals("armour")) {
-            newItem = new ArmourItem(ItemsFactory.id());
+        } else if (type.equals("sun_stone")) {
+            newItem = new SunStoneItem(id);
+        } else if (type.equals("anduril")) {
+            newItem = new AndurilItem(id);
         }
         
         return newItem;
