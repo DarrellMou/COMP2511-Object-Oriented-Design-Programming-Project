@@ -12,9 +12,4 @@ public class BooleanGoalEvaluator {
         return expression.evaluate();
     }
 
-    public static String prettyPrint(GoalNode expression) {
-        return expression.toString();
-
-    }
-
 }

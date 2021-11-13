@@ -5,12 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Entities.Interactable;
 import Entities.movingEntities.Character;
 import Items.BuildableItems;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.AllyBuff;
-import dungeonmania.exceptions.InvalidActionException;
 
 public class SceptreItem extends Equipments implements BuildableItems {
 

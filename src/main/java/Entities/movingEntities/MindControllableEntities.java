@@ -1,7 +1,6 @@
 package Entities.movingEntities;
 
 import Items.InventoryItem;
-import Items.ItemsFactory;
 import Items.Equipments.SceptreItem;
 import dungeonmania.Dungeon;
 import dungeonmania.Buffs.AllyBuff;
