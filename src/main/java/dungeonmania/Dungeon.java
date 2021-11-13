@@ -677,12 +677,10 @@ public class Dungeon {
         }
         GoalNode current = null;
         if (nodeType.equals("AND")) {
-            current = new AndGoal(createParsedExpression(goal1), createParsedExpression(goal2), goal1.getString("goal"),
-                    goal2.getString("goal"));
+            current = new AndGoal(createParsedExpression(goal1), createParsedExpression(goal2));
 
         } else if (nodeType.equals("OR")) {
-            current = new OrGoal(createParsedExpression(goal1), createParsedExpression(goal2), goal1.getString("goal"),
-                    goal2.getString("goal"));
+            current = new OrGoal(createParsedExpression(goal1), createParsedExpression(goal2));
         } else {
             current = new GoalLeaf(checkIndividualGoals(json.getString("goal"), inventoryTypes),
                     json.getString("goal"));
