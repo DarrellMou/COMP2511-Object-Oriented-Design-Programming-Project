@@ -579,7 +579,8 @@ public class BuildTest {
 
     @Test
     public void testBuildingEverything() {
-        Random r = new Random(1);
+        // Doesn't make the mercenary drop armour after killing it
+        Random r = new Random(3);
         DungeonManiaController controller = new DungeonManiaController(r);
 
         // Character spawns at (1, 1)
