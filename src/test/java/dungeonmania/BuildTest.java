@@ -21,10 +21,8 @@ import dungeonmania.exceptions.InvalidActionException;
 public class BuildTest {
 
     /**
-     * Tests to implement: 
-     * Build all 11 recipes separately
-     * Build all 11 recipes together
-     * For midnight armour, build with and without zombie
+     * Tests to implement: Build all 11 recipes separately Build all 11 recipes
+     * together For midnight armour, build with and without zombie
      */
 
     // Helper functions
@@ -460,7 +458,6 @@ public class BuildTest {
         MoveCharacter(Direction.DOWN, 11, controller);
         MoveCharacter(Direction.RIGHT, 5, controller);
 
-
         // Check materials in inventory
         assertTrue(CheckMaterialsInInventory("ArrowItem", 2, dungeon));
         assertTrue(CheckMaterialsInInventory("KeyItem", 1, dungeon));
@@ -604,7 +601,7 @@ public class BuildTest {
         MoveCharacter(Direction.LEFT, 4, controller);
 
         MoveCharacter(Direction.DOWN, 2, controller);
-        
+
         // shield
         // wood, wood, treasure
         MoveCharacter(Direction.RIGHT, 3, controller);
@@ -612,21 +609,21 @@ public class BuildTest {
         MoveCharacter(Direction.LEFT, 3, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
-        
+
         // wood, wood, sun stone
         MoveCharacter(Direction.RIGHT, 3, controller);
         controller.build("shield");
         MoveCharacter(Direction.LEFT, 3, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
-        
+
         // wood, wood, key
         MoveCharacter(Direction.RIGHT, 3, controller);
         controller.build("shield");
         MoveCharacter(Direction.LEFT, 3, controller);
 
         MoveCharacter(Direction.DOWN, 2, controller);
-        
+
         // sceptre
         // wood, treasure, sun stone
         MoveCharacter(Direction.RIGHT, 3, controller);
@@ -634,42 +631,43 @@ public class BuildTest {
         MoveCharacter(Direction.LEFT, 3, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
-        
+
         // wood, sun stone, sun stone
         MoveCharacter(Direction.RIGHT, 3, controller);
         controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 3, controller);
-        
+
         MoveCharacter(Direction.DOWN, 1, controller);
-        
+
         // wood, key, sun stone (would not pick up key since player already has one)
         MoveCharacter(Direction.RIGHT, 3, controller);
         controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 3, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
-        
+
         // arrow, arrow, treasure, sun stone
         MoveCharacter(Direction.RIGHT, 4, controller);
         controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 4, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
-        
+
         // arrow, arrow, sun stone, sun stone
         MoveCharacter(Direction.RIGHT, 4, controller);
         controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 4, controller);
 
         MoveCharacter(Direction.DOWN, 1, controller);
-        
-        // arrow, arrow, key, sun stone (would not pick up key since player already has one)
+
+        // arrow, arrow, key, sun stone (would not pick up key since player already has
+        // one)
         MoveCharacter(Direction.RIGHT, 4, controller);
         controller.build("sceptre");
         MoveCharacter(Direction.LEFT, 4, controller);
 
         MoveCharacter(Direction.DOWN, 2, controller);
-        
+
         // armour, sun stone
         MoveCharacter(Direction.RIGHT, 2, controller);
         controller.build("midnight_armour");

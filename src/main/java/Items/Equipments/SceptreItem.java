@@ -15,13 +15,12 @@ import dungeonmania.exceptions.InvalidActionException;
 public class SceptreItem extends Equipments implements BuildableItems {
 
     public SceptreItem(String id) {
-        // TO-DO: edit values for this item
-        super(id, "sceptre", 1, 4);
+        super(id, "sceptre", 1, 3);
     }
 
-    public static void activateSceptreBuff(Character character, Dungeon dungeon) {
+    public void activateSceptreBuff(Character character, Dungeon dungeon) {
         character.addBuff(new AllyBuff(dungeon.getTicksCounter()));
-        // character.removeInventory(this); // Remove this from inventory after 10 ticks
+        decreaseDurability(character);
 
     }
 
