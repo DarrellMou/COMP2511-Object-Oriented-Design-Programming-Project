@@ -10,7 +10,7 @@ import dungeonmania.Buffs.Invincible;
 import dungeonmania.Buffs.Invisible;
 import dungeonmania.util.Position;
 
-public class Hydra extends Boss {
+public class Hydra extends SpawningEntities implements Boss {
     private static final int ATTACK_DAMAGE = 2;
     private static final int MAX_HEALTH = 200;
 
@@ -34,7 +34,7 @@ public class Hydra extends Boss {
         }
 
         // 4 possible different directions that the hydra might be able to go
-        List<Position> positions = getHydraMovablePositions(getPosition());
+        List<Position> positions = getHydraMovablePositions();
         // Get a random position
         Position newPosition = positions.get(dungeon.getRandom().nextInt(4));
         
@@ -46,12 +46,11 @@ public class Hydra extends Boss {
 
     /**
      * Up, Right, Down, Left
-     * @param position
      * @return List<Position>
      */
-    public List<Position> getHydraMovablePositions(Position position) {
-        int x = position.getX();
-        int y = position.getY();
+    public List<Position> getHydraMovablePositions() {
+        int x = getPosition().getX();
+        int y = getPosition().getY();
 
         List<Position> adjacentPositions = new ArrayList<>();
         adjacentPositions.add(new Position(x, y - 1, 2));
