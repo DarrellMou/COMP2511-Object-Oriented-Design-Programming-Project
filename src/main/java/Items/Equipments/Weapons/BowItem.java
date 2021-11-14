@@ -21,6 +21,9 @@ public class BowItem extends Weapons implements BuildableItems {
         super(id, "bow", 2, 3);
     }
 
+    /**
+     * @return List<Map<String, Integer>>
+     */
     public static List<Map<String, Integer>> getRecipes() {
         return BowItem.recipes;
     }

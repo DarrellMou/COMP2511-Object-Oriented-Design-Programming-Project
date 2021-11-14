@@ -12,6 +12,10 @@ public class InvincibilityPotionItem extends Consumables {
         super(id, "invincibility_potion");
     }
 
+    /**
+     * @param dungeon
+     * @param character
+     */
     @Override
     public void consume(Dungeon dungeon, Character character) {
         if (!isDefective) {
@@ -20,6 +24,9 @@ public class InvincibilityPotionItem extends Consumables {
         character.removeInventory(this);
     }
 
+    /**
+     * @param isDefective
+     */
     public static void setDefective(boolean isDefective) {
         InvincibilityPotionItem.isDefective = isDefective;
     }

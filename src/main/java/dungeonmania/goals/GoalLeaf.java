@@ -10,11 +10,17 @@ public class GoalLeaf implements GoalNode {
         this.goal = goal;
     }
 
+    /**
+     * @return Boolean
+     */
     @Override
     public Boolean evaluate() {
         return this.b1;
     }
 
+    /**
+     * @return String
+     */
     public String toString() {
         return ":" + goal.toString();
     }

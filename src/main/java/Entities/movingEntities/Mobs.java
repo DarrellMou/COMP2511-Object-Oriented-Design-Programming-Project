@@ -117,6 +117,10 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
         return true;
     }
 
+    /**
+     * @param position
+     * @param dungeon
+     */
     public void walkOn(Position position, Dungeon dungeon) {
         for (Entities e : dungeon.getEntitiesOnTile(position)) {
             if (e instanceof WalkedOn) {
@@ -169,6 +173,11 @@ public abstract class Mobs extends Entities implements Movable, Fightable {
         }
     }
 
+    /**
+     * @param dungeon
+     * @param destination
+     * @return Position
+     */
     // get the next position to the destination
     public Position getOneStepPos(Dungeon dungeon, Position destination) {
         Map<Position, Position> prev = dijkstraPrev(dungeon, destination);

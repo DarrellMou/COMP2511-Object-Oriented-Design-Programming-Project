@@ -14,9 +14,16 @@ public abstract class MindControllableEntities extends SpawningEntities {
         super(id, type, position, isInteractable, isWalkable, health, attackDamage);
     }
 
+    /**
+     * @param dungeon
+     */
     @Override
     public abstract void makeMovement(Dungeon dungeon);
 
+    /**
+     * @param dungeon
+     * @return boolean
+     */
     public boolean mindControl(Dungeon dungeon) {
         Character c = dungeon.getCharacter();
 
@@ -41,6 +48,12 @@ public abstract class MindControllableEntities extends SpawningEntities {
         return true;
     }
 
+    /**
+     * This checks if each of the ally has the buff to be controlled
+     * 
+     * @param dungeon
+     * @return Boolean
+     */
     public Boolean hasAllyBuff(Dungeon dungeon) {
         for (Buffs b : dungeon.getCharacter().getBuffs()) {
             if (b instanceof AllyBuff) {

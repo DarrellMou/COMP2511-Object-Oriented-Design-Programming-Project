@@ -43,6 +43,12 @@ public class AllyBuff extends Buffs {
 
     }
 
+    /**
+     * This will end the ally buff, and is deactivated once the buff ends
+     * 
+     * @param dungeon
+     * @param ally
+     */
     public void endAllyBuff(Dungeon dungeon, Ally ally) {
 
         if (ally instanceof BribedMercenary) {

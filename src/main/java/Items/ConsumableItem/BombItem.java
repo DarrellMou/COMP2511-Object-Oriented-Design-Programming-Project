@@ -11,6 +11,10 @@ public class BombItem extends Consumables {
         super(id, "bomb");
     }
 
+    /**
+     * @param dungeon
+     * @param character
+     */
     @Override
     public void consume(Dungeon dungeon, Character character) {
         Entities bomb_active = EntitiesFactory.createEntities("bomb_active", character.getPosition());

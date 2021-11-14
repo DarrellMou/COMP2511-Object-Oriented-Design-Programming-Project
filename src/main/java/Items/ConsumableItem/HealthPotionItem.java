@@ -9,6 +9,10 @@ public class HealthPotionItem extends Consumables {
         super(id, "health_potion");
     }
 
+    /**
+     * @param dungeon
+     * @param character
+     */
     @Override
     public void consume(Dungeon dungeon, Character character) {
         character.setHealth(character.getMaxHealth());

@@ -9,6 +9,11 @@ public class AndurilItem extends Weapons {
         super(id, "anduril", 1.5, 4);
     }
 
+    /**
+     * @param character
+     * @param damage
+     * @return double
+     */
     public double calculateBossDamage(Character character, double damage) {
         decreaseDurability(character);
         return bossMultiplier * damage;

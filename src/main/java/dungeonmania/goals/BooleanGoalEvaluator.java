@@ -8,6 +8,10 @@ public class BooleanGoalEvaluator {
 
     }
 
+    /**
+     * @param expression
+     * @return boolean
+     */
     public static boolean evaluate(GoalNode expression) {
         return expression.evaluate();
     }

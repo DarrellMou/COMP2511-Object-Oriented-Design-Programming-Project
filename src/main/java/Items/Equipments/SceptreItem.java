@@ -12,17 +12,23 @@ import dungeonmania.Buffs.AllyBuff;
 
 public class SceptreItem extends Equipments implements BuildableItems {
 
+    private static List<Map<String, Integer>> recipes = new ArrayList<>();
+
     public SceptreItem(String id) {
         super(id, "sceptre", 1, 3);
     }
 
+    /**
+     * This activates the sceptre buff
+     * 
+     * @param character
+     * @param dungeon
+     */
     public void activateSceptreBuff(Character character, Dungeon dungeon) {
         character.addBuff(new AllyBuff(dungeon.getTicksCounter()));
         decreaseDurability(character);
 
     }
-
-    private static List<Map<String, Integer>> recipes = new ArrayList<>();
 
     static {
         recipes.add(new HashMap<>());
@@ -47,6 +53,9 @@ public class SceptreItem extends Equipments implements BuildableItems {
 
     }
 
+    /**
+     * @return List<Map<String, Integer>>
+     */
     public static List<Map<String, Integer>> getRecipes() {
         return SceptreItem.recipes;
     }

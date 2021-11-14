@@ -9,6 +9,13 @@ public abstract class Buffs {
         this.endTick = endTick;
     }
 
+    /**
+     * This checks that the tick is equal to the duration end of the buff and will
+     * remove it
+     * 
+     * @param tick
+     * @param removeBuffs
+     */
     public void durationEnd(int tick, List<Buffs> removeBuffs) {
         // check if buff duration has expired
         if (tick == this.endTick) {

@@ -14,6 +14,10 @@ public class Invincible extends Buffs {
         super(tick + DURATION);
     }
 
+    /**
+     * @param dungeon
+     * @param enemy
+     */
     public void invinMovement(Dungeon dungeon, Enemy enemy) {
         Character character = dungeon.getCharacter();
         // get direction away from character
