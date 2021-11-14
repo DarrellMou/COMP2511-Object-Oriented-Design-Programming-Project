@@ -18,7 +18,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Assassin extends Boss implements Interactable {
+public class Assassin extends MindControllableEntities implements Interactable, Portalable, Boss {
     private static final int BRIBE_RADIUS = 2;
     private static final int ATTACK_DAMAGE = 4;
     private static final int MAX_HEALTH = 80;
