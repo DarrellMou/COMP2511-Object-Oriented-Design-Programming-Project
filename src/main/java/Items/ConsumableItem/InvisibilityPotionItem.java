@@ -10,6 +10,10 @@ public class InvisibilityPotionItem extends Consumables {
         super(id, "invisibility_potion");
     }
 
+    /**
+     * @param dungeon
+     * @param character
+     */
     @Override
     public void consume(Dungeon dungeon, Character character) {
         character.addBuff(new Invisible(dungeon.getTicksCounter()));

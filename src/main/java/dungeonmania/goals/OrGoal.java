@@ -10,11 +10,17 @@ public class OrGoal implements GoalNode {
         this.b2 = b2;
     }
 
+    /**
+     * @return Boolean
+     */
     @Override
     public Boolean evaluate() {
         return b1.evaluate() || b2.evaluate();
     }
 
+    /**
+     * @return String
+     */
     public String toString() {
         return "( " + b1.toString() + " OR " + b2.toString() + ")";
     }

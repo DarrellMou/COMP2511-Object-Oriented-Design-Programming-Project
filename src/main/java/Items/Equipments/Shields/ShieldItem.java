@@ -25,6 +25,9 @@ public class ShieldItem extends Shields implements BuildableItems {
         super(id, "shield", 0.5, 3);
     }
 
+    /**
+     * @return List<Map<String, Integer>>
+     */
     public static List<Map<String, Integer>> getRecipes() {
         return ShieldItem.recipes;
     }

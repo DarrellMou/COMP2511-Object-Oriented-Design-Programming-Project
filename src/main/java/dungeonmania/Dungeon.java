@@ -17,7 +17,6 @@ import org.json.JSONObject;
 import Entities.Entities;
 import Entities.EntitiesFactory;
 import Entities.Interactable;
-import Entities.buildableEntities.Sceptre;
 import Entities.movingEntities.Ally;
 import Entities.movingEntities.Assassin;
 import Entities.movingEntities.BribedAssassin;
@@ -204,10 +203,16 @@ public class Dungeon {
         return spawnRate;
     }
 
+    /**
+     * @param spawnRate
+     */
     public void setSpawnRate(int spawnRate) {
         this.spawnRate = spawnRate;
     }
 
+    /**
+     * @return String
+     */
     public String getGoals() {
         return this.goals;
     }
@@ -247,6 +252,9 @@ public class Dungeon {
         return this.ticksCounter;
     }
 
+    /**
+     * @param ticksCounter
+     */
     public void setTicksCounter(int ticksCounter) {
         this.ticksCounter = ticksCounter;
     }
@@ -638,6 +646,11 @@ public class Dungeon {
 
     }
 
+    /**
+     * This reads the individual goals and checks whether it has been completed
+     * 
+     * @return Boolean
+     */
     public Boolean hasCompletedGoals() {
 
         try {
@@ -657,6 +670,10 @@ public class Dungeon {
         return false;
     }
 
+    /**
+     * @param json
+     * @return GoalNode
+     */
     public GoalNode createParsedExpression(JSONObject json) {
 
         List<String> inventoryTypes = new ArrayList<>();
@@ -690,6 +707,9 @@ public class Dungeon {
     }
 
     /**
+     * This individually checks all of the goals met by the given goal type and
+     * returns a boolean
+     * 
      * @param goal
      * @param inventoryTypes
      * @param goalsList
@@ -745,6 +765,9 @@ public class Dungeon {
         setGoals("");
     }
 
+    /**
+     * @return List<Integer>
+     */
     // returns x and y borders where entity exist on map
     // order starts from up and goes clockwise
     public List<Integer> getBorders() {
